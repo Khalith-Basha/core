@@ -84,7 +84,7 @@ function basic_info() {
     }
 
     try{
-        require_once LIB_PATH . 'phpmailer/class.phpmailer.php' ;
+        require_once 'phpmailer/class.phpmailer.php' ;
         $mail = new PHPMailer(true) ;
         $mail->CharSet  = "utf-8" ;
         $mail->Host     = "localhost" ;
@@ -601,161 +601,16 @@ function finish_installation( $password ) {
     return $data ;
 }
 
-/* Menus */
 function display_database_config() {
-?>
-<form action="index.php" method="POST">
-    <input type="hidden" name="step" value="3" />
-    <h2 class="target">Database information</h2>
-    <div class="form-table">
-        <table>
-            <tbody>
-                <tr>
-                    <th align="left"><label for="dbhost">Host</label></th>
-                    <td><input type="text" id="dbhost" name="dbhost" value="localhost" size="25" /></td>
-                    <td class="small">Server name or IP where the database engine resides</td>
-                </tr>
-                <tr>
-                    <th align="left"><label for="dbname">Database name</label></th>
-                    <td><input type="text" id="dbname" name="dbname" value="osc_db" size="25" /></td>
-                    <td class="small">The name of the database you want to run OpenSourceClassifieds in</td>
-                </tr>
-                <tr>
-                    <th align="left"><label for="username">User Name</label></th>
-                    <td><input type="text" id="username" name="username" size="25" /></td>
-                    <td class="small">Your MySQL username</td>
-                </tr>
-                <tr>
-                    <th align="left"><label for="password">Password</label></th>
-                    <td><input type="password" id="password" name="password" value="" size="25" /></td>
-                    <td class="small">Your MySQL password</td>
-                </tr>
-                <tr>
-                    <th align="left"><label for="tableprefix">Table prefix</label></th>
-		    <td><input type="text" id="tableprefix" name="tableprefix" value="<?php echo DEFAULT_TABLE_PREFIX; ?>" size="25" /></td>
-                    <td class="small">If you want to run multiple OpenSourceClassifieds installations in a single database, change this</td>
-                </tr>
-            </tbody>
-        </table>
-        <div id="advanced_install" class="shrink">
-            <div class="text">
-                <span>Advanced</span>
-            </div>
-        </div>
-        <script type="text/javascript">
-            $(document).ready(function() {
-                $('#advanced_install').click(function() {
-                    $('#more-options').toggle();
-                    if( $('#advanced_install').attr('class') == 'shrink' ) {
-                        $('#advanced_install').removeClass('shrink');
-                        $('#advanced_install').addClass('expanded');
-                    } else {
-                        $('#advanced_install').addClass('shrink');
-                        $('#advanced_install').removeClass('expanded');
-                    }
-                });
-            });
-        </script>
-        <div style="clear:both;"></div>
-        <table id="more-options" style="display:none;">
-            <tbody>
-                <tr>
-                    <th></th>
-                    <td><input type="checkbox" id="createdb" name="createdb" onclick="db_admin();" value="1" /><label for="createdb">Create DB</label></td>
-                    <td class="small">Check here if the database is not created and you want to create it now</td>
-                </tr>
-                <tr id="admin_username_row">
-                    <th align="left"><label for="admin_username">DB admin username</label></th>
-                    <td><input type="text" id="admin_username" name="admin_username" size="25" disabled/></td>
-                    <td></td>
-                </tr>
-                <tr id="admin_password_row">
-                    <th align="left"><label for="admin_password">DB admin password</label></th>
-                    <td><input type="password" id="admin_password" name="admin_password" value="" size="25" disabled/></td>
-                    <td></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    <div class="clear"></div>
-    <p class="margin20">
-        <input type="submit" class="button" name="submit" value="Next"/>
-    </p>
-    <div class="clear"></div>
-</form>
-<?php
+	require 'views/db_config.php';
 }
 
 function display_target() {
-?>
-<form id="target_form" name="target_form" action="#" method="POST">
-<input type="hidden" name="step" value="4" />
-    <h2 class="target">Information needed</h2>
-    <div class="form-table">
-        <h2 class="title">Admin user</h2>
-        <table class="admin-user">
-            <tbody>
-                <tr>
-                    <th><label>Username</label></th>
-                    <td>
-                        <input size="25" id="admin_user" name="s_name" type="text" value="admin"/>
-                    </td>
-                    <td><span id="admin-user-error" class="error" style="display:none;">Admin user is required</span></td>
-                </tr>
-                <tr>
-                    <th><label>Password</label></th>
-                    <td>
-                        <input size="25" class="password_test" name="s_passwd" type="text" value=""/>
-                    </td>
-                    <td></td>
-                </tr>
-            </tbody>
-        </table>
-        <div class="admin-user">
-            A password will be automatically generated for you if you leave this blank.
-            <img src="<?php echo get_absolute_url() ?>installer/data/images/question.png" class="question-skip vtip" title="You can modify username and password if you like, only need change the inputs value." alt=""/>
-        </div>
-        <h2 class="title">Contact information</h2>
-        <table class="contact-info">
-            <tbody>
-                <tr>
-                    <th><label for="webtitle">Web title</label></th>
-                    <td><input type="text" id="webtitle" name="webtitle" size="25"/></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <th><label for="email">Contact e-mail</label></th>
-                    <td><input type="text" id="email" name="email" size="25"/></td>
-                    <td><span id="email-error" class="error" style="display:none;">Put your e-mail here</span></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    <div class="clear"></div>
-    <p class="margin20">
-        <input type="submit" class="button" value="Next" />
-    </p>
-    <div class="clear"></div>
-<input type="hidden" id="skip-location-h" name="skip-location-h" value="1"/>
-<input id="skip-location" name="skip-location" type="hidden" value="1" />
-</form>
-<div id="lightbox" style="display:none;">
-    <div class="center">
-        <img src="<?php echo get_absolute_url(); ?>installer/data/images/loading.gif" alt="" title=""/>
-    </div>
-</div>
-<?php
+	require 'views/target.php';
 }
 
 function display_database_error($error ,$step) {
-?>
-<h2 class="target">Error</h2>
-<p class="bottom space-left-10">
-    <?php echo $error['error']?>
-</p>
-<a href="<?php echo get_absolute_url(); ?>installer/index.php?step=<?php echo $step; ?>" class="button">Go back</a>
-<div class="clear bottom"></div>
-<?php
+	require 'views/db_error.php';
 }
 
 function display_categories($error, $password) {
@@ -765,76 +620,7 @@ function display_categories($error, $password) {
     $categories = Category::newInstance()->toTreeAll();
     $numCols = 3;
     $catsPerCol = ceil(count($categories)/$numCols) ;
-?>
-<?php if($error) { ?>
-
-    <h2 class="target">Error</h2>
-    <p class="bottom space-left-10">
-        <?php echo $error;?>
-    </p>
-
-<?php } ?>
-<form id="category_form" action="index.php?step=5" method="POST">
-    <input type="hidden" name="password" value="<?php echo $password;?>"/>
-    <h2 class="target">Categories</h2>
-    <div class="form-table">
-        <?php if(Params::getParam('error_location') == 1) { ?>
-        <script type="text/javascript">
-            setTimeout (function(){
-                $('.error-location').fadeOut('slow');
-            }, 2500);
-        </script>
-        <div class="error-location">
-            The location selected could not been installed
-        </div>
-        <?php } ?>
-        <div class="select-categories">
-            &nbsp;
-            <div class="right">
-                <a href="#" onclick="check_all('category_form', true); return false;">Check all</a>
-                ·
-                <a href="#" onclick="check_all('category_form', false); return false;">Uncheck all</a>
-            </div>
-            <div class="left">
-                <h3>Select your classified categories <span style="font-size:11px;">or</span> <a href="index.php?step=5">Skip</a><img src="<?php echo get_absolute_url() ?>installer/data/images/question.png" class="question-skip vtip" title="You can add/remove categories after the installation, using the admin dashboard." alt=""/></h3>
-            </div>
-        </div>
-        <table class="list-categories">
-            <tr>
-                <?php for ($j = 0 ; $j < $numCols ; $j++) {?>
-                        <td>
-                            <?php for ($i = $catsPerCol*$j ; $i < $catsPerCol*($j+1) ; $i++) {?>
-                            <?php if (isset($categories[$i]) && is_array($categories[$i])) {?>
-                            <div class="cat-title">
-                                <label for="category-<?php echo $categories[$i]['pk_i_id']?>">
-                                    <input id="category-<?php echo $categories[$i]['pk_i_id']?>" class="left" type="checkbox" name="categories[]" value="<?php echo $categories[$i]['pk_i_id']?>" onclick="javascript:check_cat('<?php echo $categories[$i]['pk_i_id']?>', this.checked);"/>
-                                    <span><?php echo $categories[$i]['s_name']?></span>
-                                </label>
-                            </div>
-                            <div id="cat<?php echo $categories[$i]['pk_i_id'];?>" class="sub-cat-title">
-                                <?php foreach($categories[$i]['categories'] as $sc) { ?>
-                                <div id="category" class="space">
-                                    <label for="category-<?php echo $sc['pk_i_id']?>" class="space">
-                                        <input id="category-<?php echo $sc['pk_i_id']?>" type="checkbox" name="categories[]" value="<?php echo $sc['pk_i_id']?>" onclick="javascript:check('category-<?php echo $categories[$i]['pk_i_id']?>')"/>
-                                        <?php echo $sc['s_name']; ?>
-                                    </label>
-                                </div>
-                                <?php } ?>
-                            </div>
-                            <?php } ?>
-                        <?php } ?>
-                        </td>
-                <?php } ?>
-            </tr>
-        </table>
-    </div>
-    <div class="clear"></div>
-    <p class="margin20">
-        <input type="submit" class="button" name="submit" value="Next"/>
-    </p>
-    <div class="clear"></div>
-</form>
-<?php
+    require 'views/categories.php';
 }
 
 function ping_search_engines($bool){
@@ -867,35 +653,6 @@ function ping_search_engines($bool){
 }
 function display_finish($password) {
     $data = finish_installation( $password );
-?>
-<h2 class="target">Congratulations!</h2>
-<p class="space-left-10">OpenSourceClassifieds has been installed. Were you expecting more steps? Sorry to disappoint.</p>
-<p class="space-left-10">An e-mail with the password for administration has sent to: <?php echo $data['s_email']?></p>
-<div style="clear:both;"></div>
-<div class="form-table finish">
-    <table>
-        <tbody>
-            <tr>
-                <th><label>Username</label></th>
-                <td>
-                    <div class="s_name">
-                        <span style="float:left;" ><?php echo $data['admin_user']; ?></span>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <th><label>Password</label></th>
-                <td>
-                    <div class="s_passwd">
-                        <span style="float: left;"><?php echo $data['password']; ?></span>
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</div>
-<p class="margin20">
-    <a target="_blank" href="<?php echo get_absolute_url() ?>/administration/index.php" class="button">Finish and go to the administration panel</a>
-</p>
-<?php
+    require 'views/finish.php';
 }
+

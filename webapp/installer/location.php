@@ -2,12 +2,11 @@
 
 error_reporting(E_ERROR | E_CORE_ERROR | E_COMPILE_ERROR | E_PARSE);
 
-define( 'ABS_PATH', dirname(dirname(dirname(__FILE__))) . '/' );
-define( 'LIB_PATH', ABS_PATH . 'library/');
+define( 'ABS_PATH', dirname( dirname( dirname( __FILE__ ) ) ) );
 
-set_include_path( get_include_path() . PATH_SEPARATOR . LIB_PATH );
+set_include_path( get_include_path() . PATH_SEPARATOR . ABS_PATH . DIRECTORY_SEPARATOR . 'library' );
 
-require_once ABS_PATH . 'config.php';
+require_once ABS_PATH . '/config.php';
 
 require_once 'osc/classes/database/DBConnectionClass.php';
 require_once 'osc/classes/database/DBCommandClass.php';
@@ -332,9 +331,9 @@ function install_locations ( ) {
         return false;
     }
 
-    require_once ABS_PATH . 'library/osclass/model/Country.php';
-    require_once ABS_PATH . 'library/osclass/model/Region.php';
-    require_once ABS_PATH . 'library/osclass/model/City.php';
+    require_once 'osc/model/Country.php';
+    require_once 'osc/model/Region.php';
+    require_once 'osc/model/City.php';
 
     if( Params::getParam('city') != '' ) {
         return location_by_city() ;
