@@ -123,3 +123,6 @@
         }
     }
 
+$do = new CWebRegister() ;
+$do->doModel() ;
+

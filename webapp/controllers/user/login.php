@@ -207,3 +207,6 @@
         }
     }
 
+$do = new CWebLogin() ;
+$do->doModel() ;
+

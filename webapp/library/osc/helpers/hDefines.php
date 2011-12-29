@@ -41,7 +41,7 @@
         } else {
             $path = WEB_PATH ;
         }
-        if ($with_index) $path .= "index.php" ;
+        if ($with_index) $path .= "/index.php" ;
         return($path) ;
     }
 

@@ -48,14 +48,35 @@ define( 'CTRL_PATH', ABS_PATH . DIRECTORY_SEPARATOR . 'controllers' );
         Cookie::newInstance()->set() ;
     }
 
-    switch( Params::getParam('page') )
+	$page = Params::getParam( 'page' );
+	$action = Params::getParam( 'action' );
+    if( empty( $action ) )
+    {
+	$action = 'index';
+    }
+
+	$controllerPath = "controllers/$page/$action.php";
+	if( file_exists( $controllerPath ) )
+	{
+		require $controllerPath;
+
+		$className = 'CWeb' . ucfirst( $page );
+		if ( class_exists( $className ) )
+		{
+			$classInstance = new $className;
+			$classInstance->doModel();
+		}
+
+		exit( 0 );
+	}
+    switch( $page )
     {
         case ('cron'):      // cron system
                             define('__FROM_CRON__', true);
                             require_once(osc_lib_path() . 'osclass/cron.php');
         break;
         case ('user'):      // user pages (with security)
-                            if(Params::getParam('action')=='change_email_confirm' || Params::getParam('action')=='activate_alert'
+                            if($action=='change_email_confirm' || Params::getParam('action')=='activate_alert'
                             || (Params::getParam('action')=='unsub_alert' && !osc_is_web_user_logged_in())
                             || Params::getParam('action')=='contact_post'
                             || Params::getParam('action')=='pub_profile') {
@@ -68,34 +89,14 @@ define( 'CTRL_PATH', ABS_PATH . DIRECTORY_SEPARATOR . 'controllers' );
                                 $do->doModel() ;
                             }
         break;
-        case ('item'):      // item pages
-                            require_once( CTRL_PATH . '/item.php');
-                            $do = new CWebItem() ;
-                            $do->doModel() ;
-        break;
-        case ('search'):    // search pages
-                            require_once( CTRL_PATH . '/search.php') ;
-                            $do = new CWebSearch() ;
-                            $do->doModel() ;
-        break;
         case ('page'):      // static pages
                             require_once( CTRL_PATH . '/page.php') ;
                             $do = new CWebPage() ;
                             $do->doModel() ;
         break;
-        case ('register'):  // register page
-                            require_once( CTRL_PATH . '/register.php') ;
-                            $do = new CWebRegister() ;
-                            $do->doModel() ;
-        break;
         case ('ajax'):      // ajax
                             require_once( CTRL_PATH . '/ajax.php') ;
                             $do = new CWebAjax() ;
-                            $do->doModel() ;
-        break;
-        case ('login'):     // login page
-                            require_once( CTRL_PATH . '/login.php') ;
-                            $do = new CWebLogin() ;
                             $do->doModel() ;
         break;
         case ('language'):  // set language
