@@ -114,7 +114,6 @@ require_once 'osc/ItemActions.php';
 require_once 'osc/emails.php';
 require_once 'osc/model/Admin.php';
 require_once 'osc/model/Alerts.php';
-require_once 'osc/model/Cron.php';
 require_once 'osc/model/Category.php';
 require_once 'osc/model/CategoryStats.php';
 require_once 'osc/model/City.php';

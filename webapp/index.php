@@ -49,11 +49,11 @@ define( 'CTRL_PATH', ABS_PATH . DIRECTORY_SEPARATOR . 'controllers' );
     }
 
 	$page = Params::getParam( 'page' );
+    if ( empty( $page ) )
+	    $page = 'index';
 	$action = Params::getParam( 'action' );
     if( empty( $action ) )
-    {
 	$action = 'index';
-    }
 
 	$controllerPath = "controllers/$page/$action.php";
 	if( file_exists( $controllerPath ) )
@@ -89,11 +89,6 @@ define( 'CTRL_PATH', ABS_PATH . DIRECTORY_SEPARATOR . 'controllers' );
                                 $do->doModel() ;
                             }
         break;
-        case ('page'):      // static pages
-                            require_once( CTRL_PATH . '/page.php') ;
-                            $do = new CWebPage() ;
-                            $do->doModel() ;
-        break;
         case ('ajax'):      // ajax
                             require_once( CTRL_PATH . '/ajax.php') ;
                             $do = new CWebAjax() ;
@@ -104,19 +99,9 @@ define( 'CTRL_PATH', ABS_PATH . DIRECTORY_SEPARATOR . 'controllers' );
                             $do = new CWebLanguage();
                             $do->doModel();
         break;
-        case ('contact'):   //contact
-                            require_once( CTRL_PATH . '/contact.php') ;
-                            $do = new CWebContact() ;
-                            $do->doModel() ;
-        break;
         case ('custom'):   //contact
                             require_once( CTRL_PATH . '/custom.php') ;
                             $do = new CWebCustom() ;
-                            $do->doModel() ;
-        break;
-        default:            // home and static pages that are mandatory...
-                            require_once(CTRL_PATH . '/main.php') ;
-                            $do = new CWebMain() ;
                             $do->doModel() ;
         break;
     }

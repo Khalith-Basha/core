@@ -143,6 +143,8 @@ function get_requirements( ) {
         'PHP version >= 5.x' => version_compare(PHP_VERSION, '5.0.0', '>='),
         'MySQLi extension for PHP' => extension_loaded('mysqli'),
         'GD extension for PHP' => extension_loaded('gd'),
+        'CURL extension for PHP' => extension_loaded('curl'),
+        'ZIP extension for PHP' => extension_loaded('zip'),
         'Folder <code>components/uploads</code> exists' => file_exists( ABS_PATH . '/components/uploads/' ),
         'Folder <code>components/uploads</code> is writable' => is_writable( ABS_PATH . '/components/uploads/' ),
         'Folder <code>components/languages</code> exists' => file_exists( ABS_PATH . '/components/languages/' )

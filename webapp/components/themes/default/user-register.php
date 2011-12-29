@@ -37,7 +37,7 @@
                     <h1><?php _e('Register an account for free', 'modern') ; ?></h1>
                     <ul id="error_list"></ul>
                     <form name="register" id="register" action="<?php echo osc_base_url(true) ; ?>" method="post" >
-                        <input type="hidden" name="page" value="register" />
+                        <input type="hidden" name="page" value="user" />
                         <input type="hidden" name="action" value="register_post" />
                         
                         <fieldset>

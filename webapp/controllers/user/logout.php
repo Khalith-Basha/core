@@ -26,8 +26,7 @@
 
         //Business Layer...
         function doModel() {
-            switch($this->action) {
-                case('logout'):         // unset only the required parameters in Session
+         // unset only the required parameters in Session
                                         Session::newInstance()->_drop('userId') ;
                                         Session::newInstance()->_drop('userName') ;
                                         Session::newInstance()->_drop('userEmail') ;
@@ -38,9 +37,6 @@
                                         Cookie::newInstance()->set() ;
 
                                         $this->redirectTo( osc_base_url() ) ;
-                break;
-                default:                $this->doView('main.php') ;
-            }
         }
 
         //hopefully generic...

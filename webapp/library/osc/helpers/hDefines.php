@@ -262,7 +262,7 @@
             if ( osc_rewrite_enabled() ) {
                 $path = osc_base_url() . 'item/new/' . osc_category_id();
             } else {
-                $path = sprintf(osc_base_url(true) . '?page=item&action=item_add&catId=%d', osc_category_id()) ;
+                $path = sprintf(osc_base_url(true) . '?page=item&action=add&catId=%d', osc_category_id()) ;
             }
         } else {
             $path = osc_item_post_url() ;
@@ -279,7 +279,7 @@
         if ( osc_rewrite_enabled() ) {
             $path = osc_base_url() . 'item/new' ;
         } else {
-            $path = sprintf(osc_base_url(true) . '?page=item&action=item_add') ;
+            $path = sprintf(osc_base_url(true) . '?page=item&action=add') ;
         }
         return $path ;
     }
@@ -353,7 +353,7 @@
         if ( osc_rewrite_enabled() ) {
             $path = osc_base_url() . 'user/login' ;
         } else {
-            $path = osc_base_url(true) . '?page=login' ;
+            $path = osc_base_url(true) . '?page=user&action=login' ;
         }
         return $path ;
     }
@@ -367,7 +367,7 @@
         if ( osc_rewrite_enabled() ) {
             $path = osc_base_url() . 'user/register' ;
         } else {
-            $path = osc_base_url(true) . '?page=register&action=register' ;
+            $path = osc_base_url(true) . '?page=user&action=register' ;
         }
         return $path ;
     }
@@ -383,7 +383,7 @@
         if ( osc_rewrite_enabled() ) {
             return osc_base_url() . 'user/activate/' . $id . '/' . $code ;
         } else {
-            return osc_base_url(true) . '?page=register&action=validate&id=' . $id . '&code=' . $code ;
+            return osc_base_url(true) . '?page=user&action=validate&id=' . $id . '&code=' . $code ;
         }
     }
 
@@ -618,7 +618,7 @@
         if ( osc_rewrite_enabled() ) {
             return osc_base_url() . 'user/recover' ;
         } else {
-            return osc_base_url(true) . '?page=login&action=recover' ;
+            return osc_base_url(true) . '?page=user&action=recover' ;
         }
     }
     
@@ -633,7 +633,7 @@
         if ( osc_rewrite_enabled() ) {
             return osc_base_url() . 'user/forgot/' . $userId . '/' . $code ;
         } else {
-            return osc_base_url(true) . '?page=login&action=forgot&userId='.$userId.'&code='.$code;
+            return osc_base_url(true) . '?page=user&action=forgot&userId='.$userId.'&code='.$code;
         }
     }
 
@@ -645,7 +645,7 @@
      * @return string
      */
     function osc_forgot_admin_password_confirm_url($adminId, $code) {
-        return osc_admin_base_url(true) . '?page=login&action=forgot&adminId='.$adminId.'&code='.$code;
+        return osc_admin_base_url(true) . '?page=user&action=forgot&adminId='.$adminId.'&code='.$code;
     }
 
     /**
@@ -899,7 +899,7 @@
     function osc_is_publish_page() {
         $location = Rewrite::newInstance()->get_location();
         $section = Rewrite::newInstance()->get_section();
-        if($location=='item' && $section=='item_add') {
+        if( 'item' == $location && 'add' == $section ) {
             return true;
         }
         return false;
