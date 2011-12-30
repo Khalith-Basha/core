@@ -61,7 +61,7 @@
     // User rules
     $rewrite->addRule('^user/login$', 'index.php?page=login');
     $rewrite->addRule('^user/dashboard/?$', 'index.php?page=user&action=dashboard');
-    $rewrite->addRule('^user/logout$', 'index.php?page=main&action=logout');
+    $rewrite->addRule('^user/logout$', 'index.php?page=user&action=logout');
     $rewrite->addRule('^user/register$', 'index.php?page=register&action=register');
     $rewrite->addRule('^user/activate/([0-9]+)/(.*?)/?$', 'index.php?page=register&action=validate&id=$1&code=$2');
     $rewrite->addRule('^user/activate_alert/([a-zA-Z0-9]+)/(.+)$', 'index.php?page=user&action=activate_alert&email=$2&secret=$1');

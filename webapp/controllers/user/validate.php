@@ -36,7 +36,39 @@
 
         function doModel()
         {
-		$this->doView('user-register.php') ;
+		$id          = intval( Params::getParam('id') ) ;
+		$code        = Params::getParam('code') ;
+		$userManager = new User() ;
+		$user        = $userManager->findByIdSecret($id, $code) ;
+
+		if ( !$user ) {
+		    osc_add_flash_error_message( _m('The link is not valid anymore. Sorry for the inconvenience!') ) ;
+		    $this->redirectTo( osc_base_url() ) ;
+		}
+
+		if ( $user['b_active'] == 1 ) {
+		    osc_add_flash_error_message( _m('Your account has already been validated')) ;
+		    $this->redirectTo( osc_base_url() ) ;
+		}
+
+		$userManager = new User() ;
+		$userManager->update(
+			 array('b_active' => '1')
+			,array('pk_i_id' => $id, 's_secret' => $code)
+		) ;
+
+		osc_run_hook('hook_email_user_registration', $user);
+		osc_run_hook('validate_user', $user) ;
+
+		// Auto-login
+		Session::newInstance()->_set('userId', $user['pk_i_id']) ;
+		Session::newInstance()->_set('userName', $user['s_name']) ;
+		Session::newInstance()->_set('userEmail', $user['s_email']) ;
+		$phone = ($user['s_phone_mobile']) ? $user['s_phone_mobile'] : $user['s_phone_land'];
+		Session::newInstance()->_set('userPhone', $phone) ;
+
+		osc_add_flash_ok_message( _m('Your account has been validated')) ;
+		$this->redirectTo( osc_base_url() ) ;
         }
 
         function doView($file)

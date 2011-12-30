@@ -24,24 +24,20 @@
         define('MULTISITE', 0);
     }
 
-    if( !defined('LIB_PATH') ) {
-        define('LIB_PATH', ABS_PATH . 'library/') ;
-    }
-
     if( !defined('CONTENT_PATH') ) {
-        define('CONTENT_PATH', ABS_PATH . 'components/') ;
+        define('CONTENT_PATH', ABS_PATH . '/components') ;
     }
 
     if( !defined('THEMES_PATH') ) {
-        define('THEMES_PATH', CONTENT_PATH . 'themes/') ;
+        define('THEMES_PATH', CONTENT_PATH . '/themes' ) ;
     }
 
     if( !defined('PLUGINS_PATH') ) {
-        define('PLUGINS_PATH', CONTENT_PATH . 'plugins/') ;
+        define('PLUGINS_PATH', CONTENT_PATH . '/plugins') ;
     }
 
     if( !defined('TRANSLATIONS_PATH') ) {
-        define('TRANSLATIONS_PATH', CONTENT_PATH . 'languages/') ;
+        define('TRANSLATIONS_PATH', CONTENT_PATH . '/languages') ;
     }
 
     if( !defined('OSC_DEBUG_DB') ) {

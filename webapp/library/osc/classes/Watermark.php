@@ -5,7 +5,7 @@ class Watermark{
     private $color;
 
     public function __construct() {
-        $this->font = osc_apply_filter('watermark_font_path', LIB_PATH . "osclass/classes/Arial.ttf");
+        $this->font = osc_apply_filter('watermark_font_path', ABS_PATH . '/library/classes/Arial.ttf' );
     }
 
     /**

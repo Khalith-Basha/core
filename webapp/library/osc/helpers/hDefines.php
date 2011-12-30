@@ -87,7 +87,7 @@
     * @return string
     */
     function osc_lib_path() {
-        return(LIB_PATH) ;
+        return ABS_PATH . '/library';
     }
 
     /**
@@ -203,13 +203,19 @@
      */
     function osc_current_web_theme_path($file = '') {
 
-        if( file_exists(WebThemes::newInstance()->getCurrentThemePath() . $file) ){
-            require WebThemes::newInstance()->getCurrentThemePath() . $file ;
+	    $filePath = WebThemes::newInstance()->getCurrentThemePath() . $file;
+        if( file_exists( $filePath ) ){
+            require $filePath;
         } else {
-            WebThemes::newInstance()->setGuiTheme();
-            if( file_exists(WebThemes::newInstance()->getCurrentThemePath() . $file) ) {
-                require WebThemes::newInstance()->getCurrentThemePath() . $file;
-            }
+		WebThemes::newInstance()->setGuiTheme();
+		$filePath = WebThemes::newInstance()->getCurrentThemePath() . DIRECTORY_SEPARATOR . $file;
+            if( file_exists( $filePath ) ) {
+                require $filePath;
+	    }
+	    else
+	    {
+		    trigger_error( 'File not found: ' . $filePath, E_USER_NOTICE );
+	    }
         }
     }
 
@@ -339,7 +345,7 @@
         if ( osc_rewrite_enabled() ) {
             $path = osc_base_url() . 'user/logout' ;
         } else {
-            $path = osc_base_url(true) . '?page=main&action=logout' ;
+            $path = osc_base_url(true) . '?page=user&action=logout' ;
         }
         return $path ;
     }

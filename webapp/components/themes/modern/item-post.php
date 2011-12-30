@@ -79,7 +79,7 @@
                 <ul id="error_list"></ul>
                 <form name="item" action="<?php echo osc_base_url(true);?>" method="post" enctype="multipart/form-data">
                     <fieldset>
-                    <input type="hidden" name="action" value="item_add_post" />
+                    <input type="hidden" name="action" value="add_post" />
                     <input type="hidden" name="page" value="item" />
                         <div class="box general_info">
                             <h2><?php _e('General Information', 'modern'); ?></h2>

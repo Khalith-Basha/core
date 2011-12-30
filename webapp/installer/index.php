@@ -19,15 +19,12 @@
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-error_reporting(E_ERROR | E_CORE_ERROR | E_COMPILE_ERROR | E_PARSE);
-
 define( 'ABS_PATH', dirname( dirname( __FILE__ ) ) );
-define( 'LIB_PATH', ABS_PATH . '/library/' ) ;
-define( 'CONTENT_PATH', ABS_PATH . '/components/' ) ;
-define( 'TRANSLATIONS_PATH', CONTENT_PATH . '/languages/' ) ;
+define( 'CONTENT_PATH', ABS_PATH . '/components' ) ;
+define( 'TRANSLATIONS_PATH', CONTENT_PATH . '/languages' ) ;
 define( 'OSC_INSTALLING', 1 );
 
-set_include_path( get_include_path() . PATH_SEPARATOR . LIB_PATH );
+set_include_path( get_include_path() . PATH_SEPARATOR . ABS_PATH . '/library' );
 
 require_once 'osc/Logger/Logger.php' ;
 require_once 'osc/Logger/LogDatabase.php' ;

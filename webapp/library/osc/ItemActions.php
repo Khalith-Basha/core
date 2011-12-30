@@ -40,7 +40,7 @@
             $flash_error = '';
 
             // Initiate HTML Purifier
-            require_once LIB_PATH . 'htmlpurifier/HTMLPurifier.auto.php';
+            require_once 'htmlpurifier/HTMLPurifier.auto.php';
 
             $config = HTMLPurifier_Config::createDefault();
             $config->set('HTML.Allowed', 'b,strong,i,em,u,a[href|title],ul,ol,li,p[style],br,span[style]');
@@ -238,7 +238,7 @@
             $flash_error = '';
 
             // Initiate HTML Purifier
-            require_once LIB_PATH . 'htmlpurifier/HTMLPurifier.auto.php';
+            require_once 'htmlpurifier/HTMLPurifier.auto.php';
 
             $config = HTMLPurifier_Config::createDefault();
             $config->set('HTML.Allowed', 'b,strong,i,em,u,a[href|title],ul,ol,li,p[style],br,span[style]');
@@ -634,7 +634,7 @@
             }
 
             if (osc_akismet_key()) {
-                require_once LIB_PATH . 'Akismet.class.php' ;
+                require_once 'Akismet.class.php' ;
                 $akismet = new Akismet(osc_base_url(), osc_akismet_key()) ;
                 $akismet->setCommentAuthor($authorName) ;
                 $akismet->setCommentAuthorEmail($authorEmail) ;

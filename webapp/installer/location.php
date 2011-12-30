@@ -1,7 +1,5 @@
 <?php
 
-error_reporting(E_ERROR | E_CORE_ERROR | E_COMPILE_ERROR | E_PARSE);
-
 define( 'ABS_PATH', dirname( dirname( dirname( __FILE__ ) ) ) );
 
 set_include_path( get_include_path() . PATH_SEPARATOR . ABS_PATH . DIRECTORY_SEPARATOR . 'library' );
@@ -19,7 +17,6 @@ require_once 'osc/core/Params.php';
 require_once 'osc/model/Preference.php' ;
 require_once 'osc/helpers/hDatabaseInfo.php';
 require_once 'osc/helpers/hPreference.php' ;
-require_once 'osc/compatibility.php';
 require_once 'osc/default-constants.php';
 require_once 'osc/formatting.php';
 require_once 'osc/install-functions.php';

@@ -36,7 +36,40 @@
 
         function doModel()
         {
-		$this->doView('user-register.php') ;
+		if( !osc_users_enabled() ) {
+		    osc_add_flash_error_message( _m('Users are not enabled') ) ;
+		    $this->redirectTo( osc_base_url() ) ;
+		}
+
+		osc_run_hook('before_user_register') ;
+
+		require_once 'osc/UserActions.php' ;
+		$userActions = new UserActions(false) ;
+		$success     = $userActions->add() ;
+
+		switch($success) {
+		    case 1: osc_add_flash_ok_message( _m('The user has been created. An activation email has been sent')) ;
+			    $this->redirectTo( osc_base_url() ) ;
+		    break;
+		    case 2: osc_add_flash_ok_message( _m('Your account has been created successfully')) ;
+			    $this->doView('user-login.php') ;
+		    break;
+		    case 3: osc_add_flash_warning_message( _m('The specified e-mail is already in use')) ;
+			    $this->doView('user-register.php') ;
+		    break;
+		    case 4: osc_add_flash_error_message( _m('The reCAPTCHA was not introduced correctly')) ;
+			    $this->doView('user-register.php') ;
+		    break;
+		    case 5: osc_add_flash_warning_message( _m('The email is not valid')) ;
+			    $this->doView('user-register.php') ;
+		    break;
+		    case 6: osc_add_flash_warning_message( _m('The password cannot be empty')) ;
+			    $this->doView('user-register.php') ;
+		    break;
+		    case 7: osc_add_flash_warning_message( _m("Passwords don't match")) ;
+			    $this->doView('user-register.php') ;
+		    break;
+		}
         }
 
         function doView($file)

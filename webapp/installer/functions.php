@@ -141,14 +141,16 @@ function get_relative_url( ) {
 function get_requirements( ) {
     $array = array(
         'PHP version >= 5.x' => version_compare(PHP_VERSION, '5.0.0', '>='),
-        'MySQLi extension for PHP' => extension_loaded('mysqli'),
-        'GD extension for PHP' => extension_loaded('gd'),
-        'CURL extension for PHP' => extension_loaded('curl'),
-        'ZIP extension for PHP' => extension_loaded('zip'),
         'Folder <code>components/uploads</code> exists' => file_exists( ABS_PATH . '/components/uploads/' ),
         'Folder <code>components/uploads</code> is writable' => is_writable( ABS_PATH . '/components/uploads/' ),
         'Folder <code>components/languages</code> exists' => file_exists( ABS_PATH . '/components/languages/' )
-    );
+);
+
+	$php_extensions = array( 'mysqli', 'gd', 'curl', 'zip', 'memcached', 'mbstring' );
+    	foreach( $php_extensions as $php_ext )
+	{
+		$array[ $php_ext . ' extension for PHP' ] = extension_loaded( $php_ext );
+	}
 
     $config_writable = false;
     $root_writable = false;
@@ -561,7 +563,6 @@ function finish_installation( $password ) {
     require_once 'osc/model/Category.php';
     require_once 'osc/model/Item.php';
     require_once 'osc/helpers/hPlugins.php';
-    require_once 'osc/compatibility.php';
     require_once 'osc/plugins.php';
     
     $data = array();

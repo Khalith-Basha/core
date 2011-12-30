@@ -77,7 +77,6 @@
                     $pn = Params::getParam("plugin");
 
                     // CATCH FATAL ERRORS
-                    $old_value = error_reporting(0);
                     register_shutdown_function(array($this, 'errorHandler'), $pn, 'install');
                     $installed = Plugins::install($pn);
                     
@@ -88,7 +87,6 @@
                     } else {
                         osc_add_flash_error_message( _m('Error: Plugin already installed'), 'admin') ;
                     }
-                    error_reporting($old_value);            
 
                     $this->redirectTo(osc_admin_base_url(true)."?page=plugins");
                     break;
@@ -105,7 +103,6 @@
                     $pn = Params::getParam("plugin");
 
                     // CATCH FATAL ERRORS
-                    $old_value = error_reporting(0);
                     register_shutdown_function(array($this, 'errorHandler'), $pn, 'enable');
                     $enabled = Plugins::activate($pn);
                     
@@ -115,7 +112,6 @@
                     } else {
                         osc_add_flash_error_message( _m('Error: Plugin already enabled'), 'admin') ;
                     }
-                    error_reporting($old_value);            
 
                     $this->redirectTo(osc_admin_base_url(true)."?page=plugins");
                     break;

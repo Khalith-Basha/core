@@ -17,26 +17,25 @@
      * License along with this program. If not, see <http://www.gnu.org/licenses/>.
      */
 
-    class CWebMain extends BaseModel
+    class CWebUser extends BaseModel
     {
 
         function __construct() {
             parent::__construct() ;
         }
 
-        //Business Layer...
-        function doModel() {
-         // unset only the required parameters in Session
-                                        Session::newInstance()->_drop('userId') ;
-                                        Session::newInstance()->_drop('userName') ;
-                                        Session::newInstance()->_drop('userEmail') ;
-                                        Session::newInstance()->_drop('userPhone') ;
+	function doModel() {
+		$session = Session::newInstance();
+		$session->_drop('userId') ;
+		$session->_drop('userName') ;
+		$session->_drop('userEmail') ;
+		$session->_drop('userPhone') ;
 
-                                        Cookie::newInstance()->pop('oc_userId') ;
-                                        Cookie::newInstance()->pop('oc_userSecret') ;
-                                        Cookie::newInstance()->set() ;
+		Cookie::newInstance()->pop('oc_userId') ;
+		Cookie::newInstance()->pop('oc_userSecret') ;
+		Cookie::newInstance()->set() ;
 
-                                        $this->redirectTo( osc_base_url() ) ;
+		$this->redirectTo( osc_base_url() ) ;
         }
 
         //hopefully generic...

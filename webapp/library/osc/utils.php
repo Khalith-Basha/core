@@ -463,9 +463,6 @@ function osc_dbdump($path, $file) {
 }
 
 function osc_downloadFile($sourceFile, $downloadedFile) {
-    $iErrorReporting = error_reporting();
-    error_reporting(E_ERROR | E_CORE_ERROR | E_COMPILE_ERROR | E_PARSE);
-
 	@set_time_limit(0);
 	ini_set('display_errors',true);
 			
@@ -478,19 +475,14 @@ function osc_downloadFile($sourceFile, $downloadedFile) {
 	    curl_exec($ch);
 	    curl_close($ch);
 	    fclose($fp);
-        error_reporting($iErrorReporting);
 	    return true;
     } else {
-        error_reporting($iErrorReporting);
         return false;
     }
 }
 
 
 function osc_file_get_contents($url){
-    $iErrorReporting = error_reporting();
-    error_reporting(E_ERROR | E_CORE_ERROR | E_COMPILE_ERROR | E_PARSE);
-
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
     if( !defined('CURLOPT_RETURNTRANSFER') ) define('CURLOPT_RETURNTRANSFER', 1);
@@ -498,8 +490,6 @@ function osc_file_get_contents($url){
 
     $data = curl_exec($ch);
     curl_close($ch);
-
-    error_reporting($iErrorReporting);
 
     return $data;
 }
@@ -642,9 +632,6 @@ function _unzip_file_ziparchive($file, $to) {
  * @return int 
  */
 function _unzip_file_pclzip($zip_file, $to) {
-    // first, we load the library
-    require_once LIB_PATH . 'pclzip/pclzip.lib.php';
-
     $archive = new PclZip($zip_file);
     if (($files = $archive->extract(PCLZIP_OPT_EXTRACT_AS_STRING)) == false) {
         return 2;
@@ -743,10 +730,6 @@ function _zip_folder_ziparchive($archive_folder, $archive_name) {
  * @return int
  */
 function _zip_folder_pclzip($archive_folder, $archive_name) {
-
-    // first, we load the library
-    require_once LIB_PATH . 'pclzip/pclzip.lib.php';
-
     $zip = new PclZip($archive_name);
     if($zip) {
 		$dir = preg_replace('/[\/]{2,}/', '/', $archive_folder."/");

@@ -20,8 +20,8 @@
      * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
      */
 
-    require_once osc_lib_path() . 'php-gettext/streams.php';
-    require_once osc_lib_path() . 'php-gettext/gettext.php';
+    require_once osc_lib_path() . '/php-gettext/streams.php';
+    require_once osc_lib_path() . '/php-gettext/gettext.php';
 
     class Translation {
         private $messages;

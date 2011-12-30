@@ -116,10 +116,10 @@
             $this->theme = '' ;
 
             $this->theme_exists = false;
-            $this->theme_path   = osc_abs_path() . '/components/themes/default/' ;
+            $this->theme_path   = ABS_PATH . '/components/themes/default' ;
             $this->theme_url    = osc_base_url() . '/components/themes/default/' ;
 
-            $functions_path = $this->getCurrentThemePath() . 'functions.php';
+            $functions_path = $this->getCurrentThemePath() . '/functions.php';
             if(file_exists($functions_path)) {
                 require_once $functions_path;
             }

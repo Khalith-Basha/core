@@ -19,8 +19,6 @@
      * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
      */
 
-    error_reporting(0);
-
     define( 'ABS_PATH', dirname(dirname(dirname(__FILE__))) . '/' );
 
     require_once ABS_PATH . 'library/osclass/db.php';
@@ -28,7 +26,6 @@
     require_once ABS_PATH . 'library/osclass/model/Admin.php';
     require_once ABS_PATH . 'library/osclass/helpers/hDatabaseInfo.php';
     require_once ABS_PATH . 'library/osclass/core/Params.php';
-    require_once ABS_PATH . 'library/osclass/compatibility.php';
     require_once ABS_PATH . 'config.php';
 
     $old_passwd   = Params::getParam('old_password');
