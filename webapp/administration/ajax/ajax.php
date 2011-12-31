@@ -536,10 +536,10 @@
                                             /**********************************
                                              ** EXECUTING ADDITIONAL ACTIONS **
                                              **********************************/
-                                            if (file_exists(osc_lib_path() . 'osclass/upgrade-funcs.php')) {
+                                            if (file_exists(osc_lib_path() . 'osc/upgrade-funcs.php')) {
                                                 // There should be no errors here
                                                 define('AUTO_UPGRADE', true);
-                                                require_once osc_lib_path() . 'osclass/upgrade-funcs.php';
+                                                require_once 'osc/upgrade-funcs.php';
                                             }
                                             // Additional actions is not important for the rest of the proccess
                                             // We will inform the user of the problems but the upgrade could continue

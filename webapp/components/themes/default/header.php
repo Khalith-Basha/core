@@ -39,7 +39,7 @@
                         <?php }; ?>
                         <form id="login" action="<?php echo osc_base_url(true) ; ?>" method="post">
                             <fieldset>
-                                <input type="hidden" name="page" value="login" />
+                                <input type="hidden" name="page" value="user" />
                                 <input type="hidden" name="action" value="login_post" />
                                 <label for="email"><?php _e('E-mail', 'modern') ; ?></label>
                                 <?php UserForm::email_login_text() ; ?>

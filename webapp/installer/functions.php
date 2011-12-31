@@ -139,8 +139,9 @@ function get_relative_url( ) {
  * @return array Requirements
  */
 function get_requirements( ) {
-    $array = array(
-        'PHP version >= 5.x' => version_compare(PHP_VERSION, '5.0.0', '>='),
+	$minimumPhpVersion = '5.2';
+$array = array(
+        'PHP version >= ' . $minimumPhpVersion => version_compare( PHP_VERSION, $minimumPhpVersion, '>=' ),
         'Folder <code>components/uploads</code> exists' => file_exists( ABS_PATH . '/components/uploads/' ),
         'Folder <code>components/uploads</code> is writable' => is_writable( ABS_PATH . '/components/uploads/' ),
         'Folder <code>components/languages</code> exists' => file_exists( ABS_PATH . '/components/languages/' )

@@ -49,20 +49,6 @@
                                         osc_add_flash_ok_message( _m('Your profile has been updated successfully') ) ;
                                         $this->redirectTo( osc_user_profile_url() ) ;
                 break ;
-                case('alerts'):         //alerts
-                                        $aAlerts = Alerts::newInstance()->findByUser( Session::newInstance()->_get('userId') ) ;
-                                        $user = User::newInstance()->findByPrimaryKey( Session::newInstance()->_get('userId'));
-                                        foreach($aAlerts as $k => $a) {
-                                            $search = osc_unserialize(base64_decode($a['s_search'])) ;
-                                            $search->limit(0, 3) ;
-                                            $aAlerts[$k]['items'] = $search->doSearch() ;
-                                        }
-
-                                        $this->_exportVariableToView('alerts', $aAlerts) ;
-                                        View::newInstance()->_reset('alerts') ;
-                                        $this->_exportVariableToView('user', $user) ;
-                                        $this->doView('user-alerts.php') ;
-                break;
                 case('change_email'):           //change email
                                                 $this->doView('user-change_email.php') ;
                 break;
@@ -128,22 +114,6 @@
 
                                                 osc_add_flash_ok_message( _m('Password has been changed')) ;
                                                 $this->redirectTo( osc_user_profile_url() ) ;
-                break;
-                case 'items':                   // view items user
-                                                $itemsPerPage = (Params::getParam('itemsPerPage')!='')?Params::getParam('itemsPerPage'):5;
-                                                $page = (Params::getParam('iPage')!='')?Params::getParam('iPage'):0;
-                                                $total_items = Item::newInstance()->countByUserIDEnabled($_SESSION['userId']);
-                                                $total_pages = ceil($total_items/$itemsPerPage);
-                                                $items = Item::newInstance()->findByUserIDEnabled($_SESSION['userId'], $page*$itemsPerPage, $itemsPerPage);
-
-                                                $this->_exportVariableToView('items', $items);
-                                                $this->_exportVariableToView('list_total_pages', $total_pages);
-                                                $this->_exportVariableToView('list_total_items', $total_items);
-                                                $this->_exportVariableToView('items_per_page', $itemsPerPage);
-                                                $this->_exportVariableToView('list_page', $page);
-
-                                                $this->doView('user-items.php');
-
                 break;
                 case 'activate_alert':
                     $email  = Params::getParam('email');

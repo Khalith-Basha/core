@@ -147,7 +147,7 @@
 
                                 <fieldset>
                                     <legend><?php _e('Timezone'); ?></legend>
-                                    <?php require osc_lib_path() . 'osc/timezones.php' ; ?>
+                                    <?php require 'osc/timezones.php' ; ?>
                                     <select name="timezone" id="timezone">
                                         <?php $selected_tz = osc_timezone() ; ?>
                                         <option value="" selected="selected"><?php _e('Select a timezone...') ; ?></option>

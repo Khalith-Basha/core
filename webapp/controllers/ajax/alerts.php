@@ -167,7 +167,7 @@
 
                                 echo "1";
                             } else {
-                                echo "0";
+                                echo 'Alert creation failed';
                             }
                             return true;
                         } else {
@@ -175,7 +175,7 @@
                             return false;
                         }
                     }
-                    echo '0';
+                    echo 'Missing parameters: alert, email';
                     return false;
                     break;
                     

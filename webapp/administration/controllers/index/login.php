@@ -36,7 +36,7 @@
                                             if ( $admin["s_password"] == sha1( Params::getParam('password') ) ) {
                                                 if ( Params::getParam('remember') ) {
                                                     //this include contains de osc_genRandomPassword function
-                                                    require_once osc_lib_path() . 'osc/helpers/hSecurity.php';
+                                                    require_once 'osc/helpers/hSecurity.php';
                                                     $secret = osc_genRandomPassword() ;
 
                                                     Admin::newInstance()->update(
@@ -89,7 +89,7 @@
                                                 }
                                             }
 
-                                            require_once osc_lib_path() . 'osc/helpers/hSecurity.php' ;
+                                            require_once 'osc/helpers/hSecurity.php' ;
                                             $newPassword = osc_genRandomPassword(40) ;
 
                                             Admin::newInstance()->update(

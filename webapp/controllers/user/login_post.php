@@ -94,7 +94,7 @@
 		    if ( Params::getParam('remember') == 1 ) {
 
 			//this include contains de osc_genRandomPassword function
-			require_once osc_lib_path() . 'osc/helpers/hSecurity.php';
+			require_once 'osc/helpers/hSecurity.php';
 			$secret = osc_genRandomPassword() ;
 
 			User::newInstance()->update(

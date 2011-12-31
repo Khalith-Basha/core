@@ -84,7 +84,7 @@
                 $this->theme_path   = $this->path . $this->theme . '/' ;
             } else {
                 $this->theme_exists = false ;
-                $this->theme_path   = osc_lib_path() . 'osclass/gui/' ;
+                $this->theme_path   = osc_lib_path() . 'osc/gui/' ;
             }
         }
 

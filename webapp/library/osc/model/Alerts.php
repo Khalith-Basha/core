@@ -279,7 +279,7 @@
          * @param string $type
          * @return bool on success
          */
-        function createAlert($userid = 0, $email, $alert, $secret, $type = 'DAILY')
+        function createAlert($userid, $email, $alert, $secret, $type = 'DAILY')
         {
             $results = 0;
             $this->dao->select();
@@ -293,7 +293,7 @@
             }
             $results = $this->dao->get();
             
-            if($results->numRows() == 0) {
+	    if($results->numRows() == 0) {
                 return $this->dao->insert($this->getTableName(), array( 'fk_i_user_id' => $userid, 's_email' => $email, 's_search' => $alert, 'e_type' => $type, 's_secret' => $secret));
             }
             return false;

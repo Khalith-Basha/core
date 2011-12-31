@@ -239,10 +239,10 @@ function osc_sendMail($params) {
         }
     }
 
-    require_once osc_lib_path() . 'phpmailer/class.phpmailer.php' ;
+    require_once 'phpmailer/class.phpmailer.php' ;
 
     if( osc_mailserver_pop() ) {
-        require_once osc_lib_path() . 'phpmailer/class.pop3.php' ;
+        require_once 'phpmailer/class.pop3.php' ;
         $pop = new POP3() ;
         $pop->Authorise(
                 ( isset($params['host']) ) ? $params['host'] : osc_mailserver_host(),
@@ -755,7 +755,7 @@ function _zip_folder_pclzip($archive_folder, $archive_name) {
 
 function osc_check_recaptcha() {
 
-    require_once osc_lib_path() . 'recaptchalib.php';
+    require_once 'recaptchalib.php';
     if ( Params::getParam("recaptcha_challenge_field") != '') {
         $resp = recaptcha_check_answer (osc_recaptcha_private_key()
                                         ,$_SERVER["REMOTE_ADDR"]

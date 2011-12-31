@@ -34,7 +34,7 @@
                 <div class="inner">
                     <h1><?php _e('Recover your password', 'modern') ; ?></h1>
                     <form action="<?php echo osc_base_url(true) ; ?>" method="post" >
-                        <input type="hidden" name="page" value="login" />
+                        <input type="hidden" name="page" value="user" />
                         <input type="hidden" name="action" value="recover_post" />
                         <fieldset>
                             <label for="email"><?php _e('E-mail', 'modern') ; ?></label> <?php UserForm::email_text() ; ?><br />

@@ -99,7 +99,7 @@
      */
     function osc_show_recaptcha($section = '') {
         if( osc_recaptcha_public_key() ) {
-            require_once osc_lib_path() . 'recaptchalib.php' ;
+            require_once 'recaptchalib.php' ;
             switch($section) {
                 case('recover_password'):
                     $time  = Session::newInstance()->_get('recover_time');
