@@ -22,7 +22,7 @@
 
     define('IS_AJAX', true) ;
 
-    class CWebAjax extends BaseModel
+    class CWebAjax extends Controller
     {
         function __construct() {
             parent::__construct() ;
@@ -177,31 +177,6 @@
                     }
                     echo 'Missing parameters: alert, email';
                     return false;
-                    break;
-                    
-                case 'runhook': //Run hooks
-                    $hook = Params::getParam("hook");
-                    switch ($hook) {
-
-                        case 'item_form':
-                            $catId = Params::getParam("catId");
-                            if($catId!='') {
-                                osc_run_hook("item_form", $catId);
-                            } else {
-                                osc_run_hook("item_form");
-                            }
-                            break;
-                            
-                        case 'item_edit':
-                            $catId = Params::getParam("catId");
-                            $itemId = Params::getParam("itemId");
-                            osc_run_hook("item_edit", $catId, $itemId);
-                            break;
-                            
-                        default:
-                            if($hook=='') { return false; } else { osc_run_hook($hook); }
-                            break;
-                    }
                     break;
                     
                 case 'custom': // Execute via AJAX custom file

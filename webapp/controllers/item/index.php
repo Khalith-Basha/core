@@ -17,7 +17,7 @@
      * License along with this program. If not, see <http://www.gnu.org/licenses/>.
      */
 
-    class CWebItem extends BaseModel
+    class CWebItem extends Controller
     {
         private $itemManager;
         private $user;

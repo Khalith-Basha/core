@@ -1,4 +1,4 @@
-<?php if ( !defined('ABS_PATH') ) exit('ABS_PATH is not loaded. Direct access is not allowed.') ;
+<?php
 
     /**
      * OpenSourceClassifieds – software for creating and publishing online classified advertising platforms
@@ -17,7 +17,7 @@
      * License along with this program. If not, see <http://www.gnu.org/licenses/>.
      */
 
-    class CWebRegister extends BaseModel
+    class CWebRegister extends Controller
     {
         function __construct()
         {

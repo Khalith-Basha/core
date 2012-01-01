@@ -17,7 +17,7 @@
      * License along with this program. If not, see <http://www.gnu.org/licenses/>.
      */
 
-    class CWebLanguage extends BaseModel
+    class CWebLanguage extends Controller
     {
 
         function __construct() {

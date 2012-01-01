@@ -36,7 +36,7 @@
         
         if( Params::getParam('skipdb') == '' ){
             if(!$error_queries[0]) {
-                $skip_db_link = osc_base_url() . "library/osclass/upgrade-funcs.php?skipdb=true";
+                $skip_db_link = osc_base_url() . "library/osc/upgrade-funcs.php?skipdb=true";
                 $title    = __('OpenSourceClassifieds &raquo; Has some errors') ;
                 $message  = __('We encountered some problems updating the database structure. The following queries failed:');
                 $message .= "<br/><br/>" . implode("<br>", $error_queries[2]);

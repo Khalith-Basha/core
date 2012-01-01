@@ -78,7 +78,7 @@ require_once 'osc/core/Params.php';
 require_once 'osc/core/Cookie.php';
 require_once 'osc/core/Session.php';
 require_once 'osc/core/View.php';
-require_once 'osc/core/BaseModel.php';
+require_once 'osc/core/controller.php';
 require_once 'osc/core/SecBaseModel.php';
 require_once 'osc/core/WebSecBaseModel.php';
 require_once 'osc/core/AdminSecBaseModel.php';
@@ -206,6 +206,9 @@ $action = Params::getParam( 'action' );
 if( empty( $action ) )
 	$action = 'index';
 
+$req = new HttpRequest;
+$resp = new HttpResponse;
+
 $controllerPath = "controllers/$page/$action.php";
 if( file_exists( $controllerPath ) )
 {
@@ -215,7 +218,7 @@ if( file_exists( $controllerPath ) )
 	if ( class_exists( $className ) )
 	{
 		$classInstance = new $className;
-		$classInstance->doModel();
+		$classInstance->processRequest( $req, $resp );
 	}
 	else
 	{

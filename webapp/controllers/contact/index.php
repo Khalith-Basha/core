@@ -17,7 +17,7 @@
      * License along with this program. If not, see <http://www.gnu.org/licenses/>.
      */
 
-    class CWebContact extends BaseModel
+    class CWebContact extends Controller
     {
 
         function __construct() {

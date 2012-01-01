@@ -17,7 +17,7 @@
      * License along with this program. If not, see <http://www.gnu.org/licenses/>.
      */
 
-    class CWebLogin extends BaseModel
+    class CWebLogin extends Controller
     {
 
         function __construct() {

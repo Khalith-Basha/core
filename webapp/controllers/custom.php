@@ -17,7 +17,7 @@
      * License along with this program. If not, see <http://www.gnu.org/licenses/>.
      */
 
-    class CWebCustom extends BaseModel
+    class CWebCustom extends Controller
     {
 
         function __construct() {

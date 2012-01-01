@@ -21,12 +21,12 @@
 
     define( 'ABS_PATH', dirname(dirname(dirname(__FILE__))) . '/' );
 
-    require_once ABS_PATH . 'library/osclass/db.php';
-    require_once ABS_PATH . 'library/osclass/classes/DAO.php';
-    require_once ABS_PATH . 'library/osclass/model/Admin.php';
-    require_once ABS_PATH . 'library/osclass/helpers/hDatabaseInfo.php';
-    require_once ABS_PATH . 'library/osclass/core/Params.php';
-    require_once ABS_PATH . 'config.php';
+    require_once  ABS_PATH . '/config.php';
+    require_once 'osc/db.php';
+    require_once 'osc/classes/DAO.php';
+    require_once 'osc/model/Admin.php';
+    require_once 'osc/helpers/hDatabaseInfo.php';
+    require_once 'osc/core/Params.php';
 
     $old_passwd   = Params::getParam('old_password');
     $id_admin     = Params::getParam('id');

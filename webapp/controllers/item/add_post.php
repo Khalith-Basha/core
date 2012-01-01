@@ -17,7 +17,7 @@
      * License along with this program. If not, see <http://www.gnu.org/licenses/>.
      */
 
-    class CWebItem extends BaseModel
+    class CWebItem extends Controller
     {
         private $itemManager;
         private $user;
@@ -47,7 +47,6 @@
 	    }
 	    
 	    $mItems = new ItemActions(false);
-	    // prepare data for ADD ITEM
 	    $mItems->prepareData(true);
 	    // set all parameters into session
 	    foreach( $mItems->data as $key => $value ) {
@@ -69,7 +68,6 @@
 		    return false; // BREAK THE PROCESS, THE RECAPTCHA IS WRONG
 		}
 	    }
-	    // POST ITEM ( ADD ITEM )
 	    $success = $mItems->add();
 
 	    if($success!=1 && $success!=2) {

@@ -17,7 +17,7 @@
      * License along with this program. If not, see <http://www.gnu.org/licenses/>.
      */
 
-    class CWebSearch extends BaseModel
+    class CWebSearch extends Controller
     {
         var $mSearch ;
         

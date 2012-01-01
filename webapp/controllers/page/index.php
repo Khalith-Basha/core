@@ -17,7 +17,7 @@
      * License along with this program. If not, see <http://www.gnu.org/licenses/>.
      */
 
-    class CWebPage extends BaseModel
+    class CWebPage extends Controller
     {
         var $pageManager ;
 

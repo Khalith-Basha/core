@@ -20,38 +20,48 @@
      * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
      */
 
-    /**
-     * Description of BaseModel
-     *
-     * @author danielo
-     */
-    class SecBaseModel extends Controller
+    define('IS_AJAX', true) ;
+
+    class CWebAjax extends Controller
     {
-        function __construct()
-        {
-            parent::__construct () ;
-
-            //Checking granting...
-            if (!$this->isLogged()) {
-                //If we are not logged or we do not have permissions -> go to the login page
-                $this->logout();
-                $this->showAuthFailPage() ;
-            }
+        function __construct() {
+            parent::__construct() ;
+            $this->ajax = true ;
         }
 
-        //granting methods
-        function setGranting($grant) {
-            $this->grant = $grant ;
+        //Business Layer...
+        function doModel() {
+	    $hook = Params::getParam("hook");
+	    switch ($hook) {
+
+		case 'item_form':
+		    $catId = Params::getParam("catId");
+		    if($catId!='') {
+			osc_run_hook("item_form", $catId);
+		    } else {
+			osc_run_hook("item_form");
+		    }
+		    break;
+		    
+		case 'item_edit':
+		    $catId = Params::getParam("catId");
+		    $itemId = Params::getParam("itemId");
+		    osc_run_hook("item_edit", $catId, $itemId);
+		    break;
+		    
+		default:
+		    if($hook=='') { return false; } else { osc_run_hook($hook); }
+		    break;
+	    }
+	
+	    Session::newInstance()->_dropKeepForm();
+            Session::newInstance()->_clearVariables();
         }
-
-        //destroying current session
-        function logout() {
-            //destroying session
-            Session::newInstance()->session_destroy() ;
+        
+        function doView($file) {
+            osc_run_hook("before_html");
+            osc_current_web_theme_path($file) ;
+            osc_run_hook("after_html");
         }
-
-        function doModel() {}
-
-        function doView($file) {}
     }
 

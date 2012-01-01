@@ -20,13 +20,12 @@
     Class ItemActions
     {
         private $manager = null;
-        var $is_admin ;
-        var $data;
+        private $is_admin ;
+        private $data;
 
         function __construct($is_admin) {
             $this->is_admin = $is_admin ;
             $this->manager = Item::newInstance() ;
-            
         }
 
         /**
@@ -45,7 +44,7 @@
             $config = HTMLPurifier_Config::createDefault();
             $config->set('HTML.Allowed', 'b,strong,i,em,u,a[href|title],ul,ol,li,p[style],br,span[style]');
             $config->set('CSS.AllowedProperties', 'font,font-size,font-weight,font-style,font-family,text-decoration,padding-left,color,background-color,text-align');
-            $config->set('Cache.SerializerPath', ABS_PATH . 'components/uploads');
+            $config->set('Cache.SerializerPath', ABS_PATH . '/components/uploads');
             $purifier = new HTMLPurifier($config);
 
             // Requires email validation?
@@ -136,6 +135,8 @@
                     }
                 }
             };
+
+		$this->classifyItem( $aItem );
 
             // hook pre add or edit
             osc_run_hook('pre_item_post') ;
@@ -232,6 +233,13 @@
             }
             return $success;
         }
+
+	/**
+	 * Work in progress.
+	 */
+	protected function classifyItem( array $item )
+	{
+	}
 
         function edit() {
             $aItem       = $this->data;
