@@ -17,91 +17,90 @@
      * License along with this program. If not, see <http://www.gnu.org/licenses/>.
      */
 
-    class CWebContact extends Controller
-    {
+class CWebContact extends Controller
+{
+	public function doGet( HttpRequest $req, HttpResponse $resp )
+	{
+		require_once 'osc/services/cache/memcached.php';
+		$cacheKey = 'page-contact';
+		$cacheService = MemcachedCacheService::getInstance();
+		$viewContent = $cacheService->read( $cacheKey );
+		if( false === $viewContent )
+		{
+			osc_run_hook( 'before_html' );
+			$viewContent = osc_render_view( 'contact.php' );
+			Session::newInstance()->_clearVariables();
+			osc_run_hook( 'after_html' );
+			$cacheService->write( $cacheKey, $viewContent );
+		}
 
-        function __construct() {
-            parent::__construct() ;
-        }
+		echo $viewContent;
+	}
 
-        //Business Layer...
-        function doModel() {
-            switch($this->action) {
-                case('contact_post'):   //contact_post
-                                        $yourName = Params::getParam('yourName') ;
-                                        $yourEmail = Params::getParam('yourEmail') ;
-                                        $subject = Params::getParam('subject') ;
-                                        $message = Params::getParam('message') ;
+	public function doPost( HttpRequest $req, HttpResponse $resp )
+	{
+		$yourName = Params::getParam('yourName') ;
+		$yourEmail = Params::getParam('yourEmail') ;
+		$subject = Params::getParam('subject') ;
+		$message = Params::getParam('message') ;
 
-                                        if ((osc_recaptcha_private_key() != '') && Params::existParam("recaptcha_challenge_field")) {
-                                            if(!osc_check_recaptcha()) {
-                                                osc_add_flash_error_message( _m('The Recaptcha code is wrong')) ;
-                                                Session::newInstance()->_setForm("yourName",$yourName);
-                                                Session::newInstance()->_setForm("yourEmail",$yourEmail);
-                                                Session::newInstance()->_setForm("subject",$subject);
-                                                Session::newInstance()->_setForm("message_body",$message);
-                                                $this->redirectTo(osc_contact_url());
-                                                return false; // BREAK THE PROCESS, THE RECAPTCHA IS WRONG
-                                            }
-                                        }
+		if ((osc_recaptcha_private_key() != '') && Params::existParam("recaptcha_challenge_field")) {
+		    if(!osc_check_recaptcha()) {
+			osc_add_flash_error_message( _m('The Recaptcha code is wrong')) ;
+			Session::newInstance()->_setForm("yourName",$yourName);
+			Session::newInstance()->_setForm("yourEmail",$yourEmail);
+			Session::newInstance()->_setForm("subject",$subject);
+			Session::newInstance()->_setForm("message_body",$message);
+			$this->redirectTo(osc_contact_url());
+			return false; // BREAK THE PROCESS, THE RECAPTCHA IS WRONG
+		    }
+		}
 
-                                        if( !preg_match('|.*?@.{2,}\..{2,}|',$yourEmail) ) {
-                                            osc_add_flash_error_message( _m('You have to introduce a correct e-mail') ) ;
-                                            Session::newInstance()->_setForm("yourName",$yourName);
-                                            Session::newInstance()->_setForm("subject",$subject);
-                                            Session::newInstance()->_setForm("message_body",$message);
-                                            $this->redirectTo(osc_contact_url());
-                                        }
+		if( !preg_match('|.*?@.{2,}\..{2,}|',$yourEmail) ) {
+		    osc_add_flash_error_message( _m('You have to introduce a correct e-mail') ) ;
+		    Session::newInstance()->_setForm("yourName",$yourName);
+		    Session::newInstance()->_setForm("subject",$subject);
+		    Session::newInstance()->_setForm("message_body",$message);
+		    $this->redirectTo(osc_contact_url());
+		}
 
-                                        $params = array(
-                                            'from' => $yourEmail
-                                            ,'from_name' => $yourName
-                                            ,'subject' => '[' . osc_page_title() . '] ' . __('Contact form') . ': ' . $subject
-                                            ,'to' => osc_contact_email()
-                                            ,'to_name' => __('Administrator')
-                                            ,'body' => $message
-                                            ,'alt_body' => $message
-                                        );
+		$params = array(
+		    'from' => $yourEmail
+		    ,'from_name' => $yourName
+		    ,'subject' => '[' . osc_page_title() . '] ' . __('Contact form') . ': ' . $subject
+		    ,'to' => osc_contact_email()
+		    ,'to_name' => __('Administrator')
+		    ,'body' => $message
+		    ,'alt_body' => $message
+		);
 
-                                        if(osc_contact_attachment()) {
-                                            $attachment = Params::getFiles('attachment');
-                                            $resourceName = $attachment['name'] ;
-                                            $tmpName = $attachment['tmp_name'] ;
-                                            $resourceType = $attachment['type'] ;
+		if(osc_contact_attachment()) {
+		    $attachment = Params::getFiles('attachment');
+		    $resourceName = $attachment['name'] ;
+		    $tmpName = $attachment['tmp_name'] ;
+		    $resourceType = $attachment['type'] ;
 
-                                            $path = osc_content_path() . 'uploads/' . time() . '_' . $resourceName ;
+		    $path = osc_content_path() . 'uploads/' . time() . '_' . $resourceName ;
 
-                                            if(!is_writable(osc_content_path() . 'uploads/')) {
-                                                osc_add_flash_error_message( _m('There has been some errors sending the message')) ;
-                                                $this->redirectTo( osc_base_url() );
-                                            }
+		    if(!is_writable(osc_content_path() . 'uploads/')) {
+			osc_add_flash_error_message( _m('There has been some errors sending the message')) ;
+			$this->redirectTo( osc_base_url() );
+		    }
 
-                                            if(!move_uploaded_file($tmpName, $path)){
-                                                unset($path) ;
-                                            }
-                                        }
+		    if(!move_uploaded_file($tmpName, $path)){
+			unset($path) ;
+		    }
+		}
 
-                                        if(isset($path)) {
-                                            $params['attachment'] = $path ;
-                                        }
+		if(isset($path)) {
+		    $params['attachment'] = $path ;
+		}
 
-                                        osc_sendMail($params) ;
+		osc_sendMail($params) ;
 
-                                        osc_add_flash_ok_message( _m('Your e-mail has been sent properly. Thank your for contacting us!') ) ;
+		osc_add_flash_ok_message( _m('Your e-mail has been sent properly. Thank your for contacting us!') ) ;
 
-                                        $this->redirectTo( osc_base_url() ) ;
-                break;
-                default:                //contact
-                                        $this->doView('contact.php') ;
-            }
-        }
-
-        //hopefully generic...
-        function doView($file) {
-            osc_run_hook("before_html");
-            osc_current_web_theme_path($file) ;
-            Session::newInstance()->_clearVariables();
-            osc_run_hook("after_html");
-        }
-    }
+		$this->redirectTo( osc_base_url() ) ;
+	}
+}
 

@@ -28,7 +28,7 @@
      * @author OpenSourceClassifieds
      * @version 1.0
      */
-    class Cache {
+    class DiskCacheService implements CacheService {
 
         private $objectKey;
         private $expiration;
@@ -59,7 +59,7 @@
         /**
          * Stores the object passed as parameter in the cache backend (filesystem).
          */
-        public function store($object) {
+        public function write( $key, $content ) {
             $serialized = serialize($object);
             file_put_contents($this->preparePath(), $serialized);
         }
@@ -79,4 +79,36 @@
             return CACHE_PATH . $this->objectKey . '.cache';
         }
     }
+
+class MemcachedCacheService
+{
+	private static $singleton = null;
+
+	public static function getInstance()
+	{
+		if( is_null( self::$singleton ) )
+		{
+			self::$singleton = new self;
+		}
+		return self::$singleton;
+	}
+
+	private $service;
+
+	private function __construct()
+	{
+		$this->service = new Memcached;
+		$this->service->addServer( '127.0.0.1', 11211 );
+	}
+
+	public function read( $key )
+	{
+		return $this->service->get( $key );
+	}
+
+	public function write( $key, $content )
+	{
+		$this->service->set( $key, $content, 3600 );
+	}
+}
 

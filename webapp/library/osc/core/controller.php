@@ -81,8 +81,13 @@ class HttpResponse
 		}
 	}
 
-        protected abstract function doModel() ;
-        protected abstract function doView($file) ;
+	protected function doModel()
+	{
+	}
+
+	protected function doView( $file )
+	{
+	}
 
         public function do404()
         {

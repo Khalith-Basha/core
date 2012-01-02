@@ -195,29 +195,68 @@
         return WebThemes::newInstance()->getCurrentThemeUrl() . $file ;
     }
 
-    /**
-     * Gets the complete path of a given file using the theme path as a root
-     *
-     * @param string $file
-     * @return string
-     */
-    function osc_current_web_theme_path($file = '') {
-
-	    $filePath = WebThemes::newInstance()->getCurrentThemePath() . $file;
-        if( file_exists( $filePath ) ){
-            require $filePath;
-        } else {
+/**
+ * Gets the complete path of a given file using the theme path as a root
+ *
+ * @param string $file
+ * @return string
+ */
+function osc_current_web_theme_path( $file = '' )
+{
+	$webThemes = WebThemes::newInstance();
+	$filePath = $webThemes->getCurrentThemePath() . $file;
+	if( file_exists( $filePath ) )
+	{
+		require $filePath;
+	}
+	else
+	{
 		WebThemes::newInstance()->setGuiTheme();
-		$filePath = WebThemes::newInstance()->getCurrentThemePath() . DIRECTORY_SEPARATOR . $file;
-            if( file_exists( $filePath ) ) {
-                require $filePath;
-	    }
-	    else
-	    {
-		    trigger_error( 'File not found: ' . $filePath, E_USER_NOTICE );
-	    }
-        }
-    }
+		$filePath = $webThemes->getCurrentThemePath() . DIRECTORY_SEPARATOR . $file;
+		if( file_exists( $filePath ) )
+		{
+			require $filePath;
+		}
+		else
+		{
+			trigger_error( 'File not found: ' . $filePath, E_USER_NOTICE );
+		}
+	}
+}
+
+/**
+ * Gets the complete path of a given file using the theme path as a root
+ *
+ * @param string $file
+ * @return string
+ */
+function osc_render_view( $file )
+{
+	$viewContent = null;
+
+	$webThemes = WebThemes::newInstance();
+	$filePath = $webThemes->getCurrentThemePath() . $file;
+	if( !file_exists( $filePath ) )
+	{
+		$webThemes->setGuiTheme();
+		$filePath = $webThemes->getCurrentThemePath() . DIRECTORY_SEPARATOR . $file;
+	}
+
+	if( file_exists( $filePath ) )
+	{
+		ob_start();
+		require $filePath;
+		$viewContent = ob_get_contents();
+		ob_end_clean();
+	}
+	else
+	{
+		trigger_error( 'File not found: ' . $filePath, E_USER_NOTICE );
+	}
+
+	return $viewContent;
+}
+
 
     /**
      * Gets the complete path of a given styles file using the theme path as a root

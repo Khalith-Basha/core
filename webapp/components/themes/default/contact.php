@@ -29,6 +29,7 @@
         <script type="text/javascript" src="<?php echo osc_current_web_theme_js_url('jquery.validate.min.js') ; ?>"></script>
     </head>
     <body>
+<?php echo time(); ?>
         <div class="container">
             <?php osc_current_web_theme_path('header.php') ; ?>
             <div class="content user_forms">
