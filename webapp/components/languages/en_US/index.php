@@ -17,19 +17,8 @@
  *
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
-function locale_en_US_info() {
-    return array(
-         'name'            => 'English (US)'
-        ,'short_name'      => 'English'
-        ,'description'     => 'American english translation'
-        ,'version'         => 2.3
-        ,'author_name'     => 'OpenSourceClassifieds'
-        ,'author_url'      => 'http://opensourceclassifieds.org/'
-        ,'currency_format' => '{NUMBER} {CURRENCY}'
-        ,'date_format'     => 'm/d/Y'
-        ,'stop_words'      => 'i,a,about,an,are,as,at,be,by,com,for,from,how,in,is,it,of,on,or,that,the,this,to,was,what,when,where,who,will,with,the'
-    );
+*/
+function locale_en_US_info() 
+{
+	return array('name' => 'English (US)', 'short_name' => 'English', 'description' => 'American english translation', 'version' => 2.3, 'author_name' => 'OpenSourceClassifieds', 'author_url' => 'http://opensourceclassifieds.org/', 'currency_format' => '{NUMBER} {CURRENCY}', 'date_format' => 'm/d/Y', 'stop_words' => 'i,a,about,an,are,as,at,be,by,com,for,from,how,in,is,it,of,on,or,that,the,this,to,was,what,when,where,who,will,with,the');
 }
-

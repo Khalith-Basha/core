@@ -23,7 +23,8 @@
         </table>
         <div class="admin-user">
             A password will be automatically generated for you if you leave this blank.
-            <img src="<?php echo get_absolute_url() ?>installer/data/images/question.png" class="question-skip vtip" title="You can modify username and password if you like, only need change the inputs value." alt=""/>
+            <img src="<?php
+echo get_absolute_url() ?>installer/data/images/question.png" class="question-skip vtip" title="You can modify username and password if you like, only need change the inputs value." alt=""/>
         </div>
         <h2 class="title">Contact information</h2>
         <table class="contact-info">
@@ -51,7 +52,8 @@
 </form>
 <div id="lightbox" style="display:none;">
     <div class="center">
-        <img src="<?php echo get_absolute_url(); ?>installer/data/images/loading.gif" alt="" title=""/>
+        <img src="<?php
+echo get_absolute_url(); ?>installer/data/images/loading.gif" alt="" title=""/>
     </div>
 </div>
 

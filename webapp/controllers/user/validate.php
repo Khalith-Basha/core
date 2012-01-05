@@ -1,85 +1,72 @@
 <?php
-
-    /**
-     * OpenSourceClassifieds – software for creating and publishing online classified advertising platforms
-     *
-     * Copyright (C) 2011 OpenSourceClassifieds
-     *
-     * This program is free software: you can redistribute it and/or modify it under the terms
-     * of the GNU Affero General Public License as published by the Free Software Foundation,
-     * either version 3 of the License, or (at your option) any later version.
-     *
-     * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
-     * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-     * See the GNU Affero General Public License for more details.
-     *
-     * You should have received a copy of the GNU Affero General Public
-     * License along with this program. If not, see <http://www.gnu.org/licenses/>.
-     */
-
-    class CWebRegister extends Controller
-    {
-        function __construct()
-        {
-            parent::__construct() ;
-
-            if( !osc_users_enabled() ) {
-                osc_add_flash_error_message( _m('Users not enabled') ) ;
-                $this->redirectTo( osc_base_url(true) ) ;
-            }
-
-            if( !osc_user_registration_enabled() ) {
-                osc_add_flash_error_message( _m('User registration is not enabled') ) ;
-                $this->redirectTo( osc_base_url(true) ) ;
-            }
-        }
-
-        function doModel()
-        {
-		$id          = intval( Params::getParam('id') ) ;
-		$code        = Params::getParam('code') ;
-		$userManager = new User() ;
-		$user        = $userManager->findByIdSecret($id, $code) ;
-
-		if ( !$user ) {
-		    osc_add_flash_error_message( _m('The link is not valid anymore. Sorry for the inconvenience!') ) ;
-		    $this->redirectTo( osc_base_url() ) ;
+/**
+ * OpenSourceClassifieds – software for creating and publishing online classified advertising platforms
+ *
+ * Copyright (C) 2011 OpenSourceClassifieds
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of the GNU Affero General Public License as published by the Free Software Foundation,
+ * either version 3 of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public
+ * License along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+class CWebRegister extends Controller
+{
+	function __construct() 
+	{
+		parent::__construct();
+		if (!osc_users_enabled()) 
+		{
+			osc_add_flash_error_message(_m('Users not enabled'));
+			$this->redirectTo(osc_base_url(true));
 		}
-
-		if ( $user['b_active'] == 1 ) {
-		    osc_add_flash_error_message( _m('Your account has already been validated')) ;
-		    $this->redirectTo( osc_base_url() ) ;
+		if (!osc_user_registration_enabled()) 
+		{
+			osc_add_flash_error_message(_m('User registration is not enabled'));
+			$this->redirectTo(osc_base_url(true));
 		}
-
-		$userManager = new User() ;
-		$userManager->update(
-			 array('b_active' => '1')
-			,array('pk_i_id' => $id, 's_secret' => $code)
-		) ;
-
+	}
+	function doModel() 
+	{
+		$id = intval(Params::getParam('id'));
+		$code = Params::getParam('code');
+		$userManager = new User();
+		$user = $userManager->findByIdSecret($id, $code);
+		if (!$user) 
+		{
+			osc_add_flash_error_message(_m('The link is not valid anymore. Sorry for the inconvenience!'));
+			$this->redirectTo(osc_base_url());
+		}
+		if ($user['b_active'] == 1) 
+		{
+			osc_add_flash_error_message(_m('Your account has already been validated'));
+			$this->redirectTo(osc_base_url());
+		}
+		$userManager = new User();
+		$userManager->update(array('b_active' => '1'), array('pk_i_id' => $id, 's_secret' => $code));
 		osc_run_hook('hook_email_user_registration', $user);
-		osc_run_hook('validate_user', $user) ;
-
+		osc_run_hook('validate_user', $user);
 		// Auto-login
-		Session::newInstance()->_set('userId', $user['pk_i_id']) ;
-		Session::newInstance()->_set('userName', $user['s_name']) ;
-		Session::newInstance()->_set('userEmail', $user['s_email']) ;
+		Session::newInstance()->_set('userId', $user['pk_i_id']);
+		Session::newInstance()->_set('userName', $user['s_name']);
+		Session::newInstance()->_set('userEmail', $user['s_email']);
 		$phone = ($user['s_phone_mobile']) ? $user['s_phone_mobile'] : $user['s_phone_land'];
-		Session::newInstance()->_set('userPhone', $phone) ;
-
-		osc_add_flash_ok_message( _m('Your account has been validated')) ;
-		$this->redirectTo( osc_base_url() ) ;
-        }
-
-        function doView($file)
-        {
-            osc_run_hook( 'before_html' );
-            osc_current_web_theme_path( $file ) ;
-            Session::newInstance()->_clearVariables() ;
-            osc_run_hook( 'after_html' ) ;
-        }
-    }
-
-$do = new CWebRegister() ;
-$do->doModel() ;
-
+		Session::newInstance()->_set('userPhone', $phone);
+		osc_add_flash_ok_message(_m('Your account has been validated'));
+		$this->redirectTo(osc_base_url());
+	}
+	function doView($file) 
+	{
+		osc_run_hook('before_html');
+		osc_current_web_theme_path($file);
+		Session::newInstance()->_clearVariables();
+		osc_run_hook('after_html');
+	}
+}
+$do = new CWebRegister();
+$do->doModel();

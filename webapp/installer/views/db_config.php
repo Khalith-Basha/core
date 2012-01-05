@@ -26,7 +26,8 @@
                 </tr>
                 <tr>
                     <th align="left"><label for="tableprefix">Table prefix</label></th>
-		    <td><input type="text" id="tableprefix" name="tableprefix" value="<?php echo DEFAULT_TABLE_PREFIX; ?>" size="25" /></td>
+		    <td><input type="text" id="tableprefix" name="tableprefix" value="<?php
+echo DEFAULT_TABLE_PREFIX; ?>" size="25" /></td>
                     <td class="small">If you want to run multiple OpenSourceClassifieds installations in a single database, change this</td>
                 </tr>
             </tbody>

@@ -1,114 +1,104 @@
 <?php
-
-    /*
-     *      OpenSourceClassifieds – software for creating and publishing online classified
-     *                           advertising platforms
-     *
-     *                        Copyright (C) 2011 OpenSourceClassifieds
-     *
-     *       This program is free software: you can redistribute it and/or
-     *     modify it under the terms of the GNU Affero General Public License
-     *     as published by the Free Software Foundation, either version 3 of
-     *            the License, or (at your option) any later version.
-     *
-     *     This program is distributed in the hope that it will be useful, but
-     *         WITHOUT ANY WARRANTY; without even the implied warranty of
-     *        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-     *             GNU Affero General Public License for more details.
-     *
-     *      You should have received a copy of the GNU Affero General Public
-     * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
-     */
-
-    define('CACHE_PATH', CONTENT_PATH . 'uploads/');
-
-    /**
-     * This is the simplest cache service on earth.
-     *
-     * @author OpenSourceClassifieds
-     * @version 1.0
-     */
-    class DiskCacheService implements CacheService {
-
-        private $objectKey;
-        private $expiration;
-
-        public function __construct($objectKey, $expiration = 900 /* 15 minutes */) {
-            $this->objectKey = $objectKey;
-            $this->expiration = $expiration;
-        }
-
-        public function __destruct() {
-        }
-
-        /**
-         * @return true if the object is cached and has not expired, false otherwise.
-         */
-        public function check() {
-            $path = $this->preparePath();
-            if(!file_exists($path)) return false;
-
-            if(time() - filemtime($path) > $this->expiration) {
-                unlink($path);
-                return false;
-            }
-
-            return true;
-        }
-
-        /**
-         * Stores the object passed as parameter in the cache backend (filesystem).
-         */
-        public function write( $key, $content ) {
-            $serialized = serialize($object);
-            file_put_contents($this->preparePath(), $serialized);
-        }
-
-        /**
-         * Returns the data of the current cached object.
-         */
-        public function retrieve() {
-            $content = file_get_contents($this->preparePath());
-            return unserialize($content);
-        }
-
-        /**
-         * Constructs the path to object in filesystem.
-         */
-        private function preparePath() {
-            return CACHE_PATH . $this->objectKey . '.cache';
-        }
-    }
-
+/*
+ *      OpenSourceClassifieds – software for creating and publishing online classified
+ *                           advertising platforms
+ *
+ *                        Copyright (C) 2011 OpenSourceClassifieds
+ *
+ *       This program is free software: you can redistribute it and/or
+ *     modify it under the terms of the GNU Affero General Public License
+ *     as published by the Free Software Foundation, either version 3 of
+ *            the License, or (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful, but
+ *         WITHOUT ANY WARRANTY; without even the implied warranty of
+ *        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *             GNU Affero General Public License for more details.
+ *
+ *      You should have received a copy of the GNU Affero General Public
+ * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+define('CACHE_PATH', CONTENT_PATH . 'uploads/');
+/**
+ * This is the simplest cache service on earth.
+ *
+ * @author OpenSourceClassifieds
+ * @version 1.0
+ */
+class DiskCacheService implements CacheService
+{
+	private $objectKey;
+	private $expiration;
+	public function __construct($objectKey, $expiration = 900 /* 15 minutes */
+	) 
+	{
+		$this->objectKey = $objectKey;
+		$this->expiration = $expiration;
+	}
+	public function __destruct() 
+	{
+	}
+	/**
+	 * @return true if the object is cached and has not expired, false otherwise.
+	 */
+	public function check() 
+	{
+		$path = $this->preparePath();
+		if (!file_exists($path)) return false;
+		if (time() - filemtime($path) > $this->expiration) 
+		{
+			unlink($path);
+			return false;
+		}
+		return true;
+	}
+	/**
+	 * Stores the object passed as parameter in the cache backend (filesystem).
+	 */
+	public function write($key, $content) 
+	{
+		$serialized = serialize($object);
+		file_put_contents($this->preparePath(), $serialized);
+	}
+	/**
+	 * Returns the data of the current cached object.
+	 */
+	public function retrieve() 
+	{
+		$content = file_get_contents($this->preparePath());
+		return unserialize($content);
+	}
+	/**
+	 * Constructs the path to object in filesystem.
+	 */
+	private function preparePath() 
+	{
+		return CACHE_PATH . $this->objectKey . '.cache';
+	}
+}
 class MemcachedCacheService
 {
 	private static $singleton = null;
-
-	public static function getInstance()
+	public static function getInstance() 
 	{
-		if( is_null( self::$singleton ) )
+		if (is_null(self::$singleton)) 
 		{
 			self::$singleton = new self;
 		}
 		return self::$singleton;
 	}
-
 	private $service;
-
-	private function __construct()
+	private function __construct() 
 	{
 		$this->service = new Memcached;
-		$this->service->addServer( '127.0.0.1', 11211 );
+		$this->service->addServer('127.0.0.1', 11211);
 	}
-
-	public function read( $key )
+	public function read($key) 
 	{
-		return $this->service->get( $key );
+		return $this->service->get($key);
 	}
-
-	public function write( $key, $content )
+	public function write($key, $content) 
 	{
-		$this->service->set( $key, $content, 3600 );
+		$this->service->set($key, $content, 3600);
 	}
 }
-

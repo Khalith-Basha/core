@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Represents a pre or post processing filter on HTML Purifier's output
  *
@@ -18,29 +17,25 @@
  * @note Methods are not declared abstract as it is perfectly legitimate
  *       for an implementation not to want anything to happen on a step
  */
-
 class HTMLPurifier_Filter
 {
-
-    /**
-     * Name of the filter for identification purposes
-     */
-    public $name;
-
-    /**
-     * Pre-processor function, handles HTML before HTML Purifier
-     */
-    public function preFilter($html, $config, $context) {
-        return $html;
-    }
-
-    /**
-     * Post-processor function, handles HTML after HTML Purifier
-     */
-    public function postFilter($html, $config, $context) {
-        return $html;
-    }
-
+	/**
+	 * Name of the filter for identification purposes
+	 */
+	public $name;
+	/**
+	 * Pre-processor function, handles HTML before HTML Purifier
+	 */
+	public function preFilter($html, $config, $context) 
+	{
+		return $html;
+	}
+	/**
+	 * Post-processor function, handles HTML after HTML Purifier
+	 */
+	public function postFilter($html, $config, $context) 
+	{
+		return $html;
+	}
 }
-
 // vim: et sw=4 sts=4

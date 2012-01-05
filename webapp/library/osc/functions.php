@@ -17,24 +17,18 @@
  *
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
-
-
-
-function osc_meta_publish($catId = null) {
-    echo '<div class="row">';
-        FieldForm::meta_fields_input($catId);
-    echo '</div>';
+*/
+function osc_meta_publish($catId = null) 
+{
+	echo '<div class="row">';
+	FieldForm::meta_fields_input($catId);
+	echo '</div>';
 }
-
-function osc_meta_edit($catId = null, $item_id = null) {
-    echo '<div class="row">';
-        FieldForm::meta_fields_input($catId, $item_id);
-    echo '</div>';
+function osc_meta_edit($catId = null, $item_id = null) 
+{
+	echo '<div class="row">';
+	FieldForm::meta_fields_input($catId, $item_id);
+	echo '</div>';
 }
-
 osc_add_hook('item_form', 'osc_meta_publish');
 osc_add_hook('item_edit', 'osc_meta_edit');
-
-

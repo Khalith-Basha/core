@@ -1,9 +1,13 @@
 <div style="width: 100%; float:left; margin:20px 0 10px 60px">
     <div id="itemMap" style="width: 100%; height: 240px; width: 480px;"></div>
 </div>
-<?php if($item['d_coord_lat'] != '' && $item['d_coord_long'] != '') {?>
+<?php
+if ($item['d_coord_lat'] != '' && $item['d_coord_long'] != '') 
+{ ?>
     <script type="text/javascript">
-        var latlng = new google.maps.LatLng(<?php echo $item['d_coord_lat']; ?>, <?php echo $item['d_coord_long']; ?>);
+        var latlng = new google.maps.LatLng(<?php
+	echo $item['d_coord_lat']; ?>, <?php
+	echo $item['d_coord_long']; ?>);
         var myOptions = {
             zoom: 13,
             center: latlng,
@@ -17,7 +21,10 @@
             position: latlng
         });
     </script>
-<?php } else { ?>
+<?php
+}
+else
+{ ?>
     <script type="text/javascript"> 
         var map = null;
         var geocoder = null;
@@ -51,17 +58,33 @@
         }
 
         <?php
-            $addr = array();
-            if( ( $item['s_address'] != '' ) && ( $item['s_address'] != null ) ) { $addr[] = $item['s_address']; }
-            if( ( $item['s_city'] != '' ) && ( $item['s_city'] != null ) ) { $addr[] = $item['s_city']; }
-            if( ( $item['s_zip'] != '' ) && ( $item['s_zip'] != null ) ) { $addr[] = $item['s_zip']; }
-            if( ( $item['s_region'] != '' ) && ( $item['s_region'] != null ) ) { $addr[] = $item['s_region']; }
-            if( ( $item['s_country'] != '' ) && ( $item['s_country'] != null ) ) { $addr[] = $item['s_country']; }
-            $address = implode(", ", $addr);
-        ?>
+	$addr = array();
+	if (($item['s_address'] != '') && ($item['s_address'] != null)) 
+	{
+		$addr[] = $item['s_address'];
+	}
+	if (($item['s_city'] != '') && ($item['s_city'] != null)) 
+	{
+		$addr[] = $item['s_city'];
+	}
+	if (($item['s_zip'] != '') && ($item['s_zip'] != null)) 
+	{
+		$addr[] = $item['s_zip'];
+	}
+	if (($item['s_region'] != '') && ($item['s_region'] != null)) 
+	{
+		$addr[] = $item['s_region'];
+	}
+	if (($item['s_country'] != '') && ($item['s_country'] != null)) 
+	{
+		$addr[] = $item['s_country'];
+	}
+	$address = implode(", ", $addr);
+?>
 
         $(document).ready(function(){
-            showAddress('<?php echo $address; ?>');
+            showAddress('<?php
+	echo $address; ?>');
         });
 
     </script>

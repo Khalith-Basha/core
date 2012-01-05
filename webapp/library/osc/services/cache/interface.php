@@ -1,5 +1,4 @@
 <?php
-
 /**
  *      OpenSourceClassifieds – software for creating and publishing online classified
  *                           advertising platforms
@@ -19,10 +18,8 @@
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 interface CacheService
 {
-	public function read( $key );
-	public function write( $key, $content );
+	public function read($key);
+	public function write($key, $content);
 }
-
