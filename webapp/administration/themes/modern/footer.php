@@ -32,9 +32,5 @@ _e('Documentation'); ?></a> |
 _e('Forums'); ?>" href="http://forums.opensourceclassifieds.org" target="_blank"><?php
 _e('Forums'); ?></a>
     </div>
-    <div id="footer_right">
-        <?php
-_e('OpenSourceClassifieds'); ?> <?php
-echo OpenSourceClassifieds_VERSION; ?>
-    </div>
+    <div id="footer_right"><?php echo _e('OpenSourceClassifieds'); ?> <?php echo OSC_VERSION; ?></div>
 </div>

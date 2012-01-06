@@ -18,34 +18,59 @@
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-/**
- * LastestSearches DAO
- */
-class LatestSearches extends DAO
+
+require_once 'osc/core/model.php';
+
+class LatestSearches extends Model 
 {
-	/**
-	 *
-	 * @var type
-	 */
-	private static $instance;
-	public static function newInstance() 
+	protected static $singleton = null;
+
+	public static final function getInstance()
 	{
-		if (!self::$instance instanceof self) 
+		if( is_null( static::$singleton ) )
 		{
-			self::$instance = new self;
+			static::$singleton = new self;
 		}
-		return self::$instance;
+		return static::$singleton;
 	}
-	/**
-	 *
-	 */
-	function __construct() 
+
+	public function insert( $query )
 	{
-		parent::__construct();
-		$this->setTableName('t_latest_searches');
-		$array_fields = array('d_date', 's_search');
-		$this->setFields($array_fields);
+		$sql = <<<SQL
+INSERT INTO
+	/*TABLE_PREFIX*/latest_searches
+	( query )
+VALUES
+	( ? )
+SQL;
+
+		$stmt = $this->prepareStatement( $sql );
+		$stmt->bind_param( 's', $query );
+		$result = $stmt->execute();
+		$stmt->close();
+
+		return $result;
 	}
+
+	public function selectAll()
+	{
+		$sql = <<<SQL
+SELECT
+	query,
+	search_time
+FROM
+	/*TABLE_PREFIX*/latest_searches
+ORDER BY
+	search_time DESC
+SQL;
+
+		$stmt = $this->prepareStatement( $sql );
+		$results = $this->fetchAll( $stmt );
+		$stmt->close();
+
+		return $results;
+	}
+
 	/**
 	 * Get last searches, given a limit.
 	 *

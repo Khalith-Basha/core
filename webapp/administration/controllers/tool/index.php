@@ -34,11 +34,6 @@ class CAdminTools extends AdminSecBaseModel
 			break;
 
 		case 'import_post':
-			if (defined('DEMO')) 
-			{
-				osc_add_flash_warning_message(_m("This action cannot be done because is a demo site"), 'admin');
-				$this->redirectTo(osc_admin_base_url(true) . '?page=tools&action=import');
-			}
 			// calling
 			$sql = Params::getFiles('sql');
 			if (isset($sql['size']) && $sql['size'] != 0) 
@@ -68,11 +63,6 @@ class CAdminTools extends AdminSecBaseModel
 			break;
 
 		case 'images_post':
-			if (defined('DEMO')) 
-			{
-				osc_add_flash_warning_message(_m("This action cannot be done because is a demo site"), 'admin');
-				$this->redirectTo(osc_admin_base_url(true) . '?page=tools&action=images');
-			}
 			$preferences = Preference::newInstance()->toArray();
 			$wat = new Watermark();
 			$aResources = ItemResource::newInstance()->getAllResources();
@@ -163,11 +153,6 @@ class CAdminTools extends AdminSecBaseModel
 			break;
 
 		case 'backup-sql':
-			if (defined('DEMO')) 
-			{
-				osc_add_flash_warning_message(_m("This action cannot be done because is a demo site"), 'admin');
-				$this->redirectTo(osc_admin_base_url(true) . '?page=tools&action=backup');
-			}
 			//databasse dump...
 			if (Params::getParam('bck_dir') != '') 
 			{
@@ -213,11 +198,6 @@ class CAdminTools extends AdminSecBaseModel
 			break;
 
 		case 'backup-zip':
-			if (defined('DEMO')) 
-			{
-				osc_add_flash_warning_message(_m("This action cannot be done because is a demo site"), 'admin');
-				$this->redirectTo(osc_admin_base_url(true) . '?page=tools&action=backup');
-			}
 			//zip of the code just to back it up
 			if (Params::getParam('bck_dir') != '') 
 			{
@@ -251,12 +231,6 @@ class CAdminTools extends AdminSecBaseModel
 			break;
 
 		case 'maintenance':
-			if (defined('DEMO')) 
-			{
-				osc_add_flash_warning_message(_m("This action cannot be done because is a demo site"), 'admin');
-				$this->doView('tools/maintenance.php');
-				break;
-			}
 			$mode = Params::getParam('mode');
 			if ($mode == 'on') 
 			{

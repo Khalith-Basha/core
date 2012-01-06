@@ -17,14 +17,15 @@
  */
 class CWebSearch extends Controller
 {
-	var $mSearch;
-	function __construct() 
+	private $mSearch;
+
+	public function __construct() 
 	{
 		parent::__construct();
 		$this->mSearch = Search::newInstance();
 	}
-	//Business Layer...
-	function doModel() 
+
+	public function doModel() 
 	{
 		osc_run_hook('before_search');
 		$mCategories = new Category();
@@ -93,13 +94,11 @@ class CWebSearch extends Controller
 		}
 		$p_sPattern = strip_tags(Params::getParam('sPattern'));
 		$p_sUser = strip_tags(Params::getParam('sUser'));
-		// ADD TO THE LIST OF LAST SEARCHES
-		if (osc_save_latest_searches()) 
+
+		if ( osc_save_latest_searches() ) 
 		{
-			if (trim($p_sPattern) != '') 
-			{
-				LatestSearches::newInstance()->insert(array('s_search' => trim($p_sPattern), 'd_date' => date('Y-m-d H:i:s')));
-			}
+			require_once 'osc/model/LatestSearches.php';
+			LatestSearches::getInstance()->insert( $p_sPattern );
 		}
 		$p_bPic = Params::getParam('bPic');
 		($p_bPic == 1) ? $p_bPic = 1 : $p_bPic = 0;
@@ -278,8 +277,8 @@ class CWebSearch extends Controller
 			}
 		}
 	}
-	//hopefully generic...
-	function doView($file) 
+
+	public function doView($file) 
 	{
 		osc_run_hook("before_html");
 		osc_current_web_theme_path($file);

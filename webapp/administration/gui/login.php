@@ -38,22 +38,20 @@ echo osc_base_url(); ?>" title="OpenSourceClassifieds">
 osc_show_flash_message('admin'); ?>
             <form name="loginform" id="loginform" action="<?php
 echo osc_admin_base_url(true); ?>" method="post">
-                <input type="hidden" name="page" value="login" />
-                <input type="hidden" name="action" value="login_post" />
+                <input type="hidden" name="page" value="index" />
+                <input type="hidden" name="action" value="login" />
                 <p>
                     <label>
                         <?php
 _e('Username'); ?>
-                        <input type="text" name="user" id="user_login" class="input" value="<?php
-if (defined('DEMO')) echo 'admin'; ?>" size="20" tabindex="10" />
+                        <input type="text" name="user" id="user_login" class="input" size="20" tabindex="10" />
                     </label>
                 </p>
                 <p>
                     <label>
                         <?php
 _e('Password'); ?>
-                        <input type="password" name="password" id="user_pass" class="input" value="<?php
-if (defined('DEMO')) echo 'admin'; ?>" size="20" tabindex="20" />
+                        <input type="password" name="password" id="user_pass" class="input" size="20" tabindex="20" />
                     </label>
                 </p>
 

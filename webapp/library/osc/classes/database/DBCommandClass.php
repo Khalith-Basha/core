@@ -940,7 +940,9 @@ class DBCommandClass
 	 */
 	function _execute($sql) 
 	{
-		return $this->connId->query($sql);
+		$result = $this->connId->query($sql);
+		if( false === $result ) trigger_error( $this->connId->error );
+		return $result;
 	}
 	/**
 	 * Execute queries sql. We replace TABLE_PREFIX for the real prefix: DB_TABLE_PREFIX

@@ -40,7 +40,7 @@ _e('Recover your password', 'modern'); ?></h1>
                     <form action="<?php
 echo osc_base_url(true); ?>" method="post" >
                         <input type="hidden" name="page" value="user" />
-                        <input type="hidden" name="action" value="recover_post" />
+                        <input type="hidden" name="action" value="recover" />
                         <fieldset>
                             <label for="email"><?php
 _e('E-mail', 'modern'); ?></label> <?php

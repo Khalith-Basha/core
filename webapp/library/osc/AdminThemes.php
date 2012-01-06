@@ -37,29 +37,28 @@ class AdminThemes
 	{
 		$this->setCurrentTheme(osc_admin_theme());
 	}
-	/* PRIVATE */
 	private function setCurrentThemeUrl() 
 	{
 		if ($this->theme_exists) 
 		{
-			$this->theme_url = osc_admin_base_url() . 'themes/' . $this->theme . '/';
+			$this->theme_url = osc_admin_base_url() . '/themes/' . $this->theme;
 		}
 		else
 		{
-			$this->theme_url = osc_admin_base_url() . 'gui/';
+			$this->theme_url = osc_admin_base_url() . '/gui';
 		}
 	}
 	private function setCurrentThemePath() 
 	{
-		if (file_exists(osc_admin_base_path() . 'themes/' . $this->theme . '/')) 
+		if (file_exists(osc_admin_base_path() . '/themes/' . $this->theme ) ) 
 		{
 			$this->theme_exists = true;
-			$this->theme_path = osc_admin_base_path() . 'themes/' . $this->theme . '/';
+			$this->theme_path = osc_admin_base_path() . '/themes/' . $this->theme;
 		}
 		else
 		{
 			$this->theme_exists = false;
-			$this->theme_path = osc_admin_base_path() . 'gui/';
+			$this->theme_path = osc_admin_base_path() . '/gui';
 		}
 	}
 	/* PUBLIC */
@@ -83,10 +82,10 @@ class AdminThemes
 	}
 	public function getCurrentThemeStyles() 
 	{
-		return $this->theme_url . 'css/';
+		return $this->theme_url . '/css';
 	}
 	public function getCurrentThemeJs() 
 	{
-		return $this->theme_url . 'js/';
+		return $this->theme_url . '/js';
 	}
 }

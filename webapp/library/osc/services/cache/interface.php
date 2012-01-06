@@ -20,6 +20,6 @@
  */
 interface CacheService
 {
-	public function read($key);
-	public function write($key, $content);
+	public function read( $key );
+	public function write( $key, $content );
 }

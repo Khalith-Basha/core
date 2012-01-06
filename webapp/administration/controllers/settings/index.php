@@ -20,12 +20,7 @@
 */
 class CAdminSettings extends AdminSecBaseModel
 {
-	function __construct() 
-	{
-		parent::__construct();
-	}
-	//Business Layer...
-	function doModel() 
+	public function doModel() 
 	{
 		switch ($this->action) 
 		{
@@ -310,67 +305,6 @@ class CAdminSettings extends AdminSecBaseModel
 			$this->_exportVariableToView('aCountries', $aCountries);
 			$this->doView('settings/locations.php');
 			break;
-
-		case ('permalinks'): // calling the permalinks view
-			$htaccess = Params::getParam('htaccess_status');
-			$file = Params::getParam('file_status');
-			$this->_exportVariableToView('htaccess', $htaccess);
-			$this->_exportVariableToView('file', $file);
-			$this->doView('settings/permalinks.php');
-			break;
-
-		case ('permalinks_post'): // updating permalinks option
-			$htaccess_status = 0;
-			$file_status = 0;
-			$rewriteEnabled = Params::getParam('rewrite_enabled');
-			$rewriteEnabled = ($rewriteEnabled ? true : false);
-			if ($rewriteEnabled) 
-			{
-				Preference::newInstance()->update(array('s_value' => '1'), array('s_name' => 'rewriteEnabled'));
-				require_once ABS_PATH . 'generate_rules.php';
-				$htaccess = '
-    <IfModule mod_rewrite.c>
-        RewriteEngine On
-        RewriteBase ' . REL_WEB_URL . '
-        RewriteRule ^index\.php$ - [L]
-        RewriteCond %{REQUEST_FILENAME} !-f
-        RewriteCond %{REQUEST_FILENAME} !-d
-        RewriteRule . ' . REL_WEB_URL . 'index.php [L]
-    </IfModule>';
-				if (file_exists(osc_base_path() . '.htaccess')) 
-				{
-					$file_status = 1;
-				}
-				else if (file_put_contents(osc_base_path() . '.htaccess', $htaccess)) 
-				{
-					$file_status = 2;
-				}
-				else
-				{
-					$file_status = 3;
-				}
-				if (apache_mod_loaded('mod_rewrite')) 
-				{
-					$htaccess_status = 1;
-					Preference::newInstance()->update(array('s_value' => '1'), array('s_name' => 'mod_rewrite_loaded'));
-				}
-				else
-				{
-					$htaccess_status = 2;
-					Preference::newInstance()->update(array('s_value' => '0'), array('s_name' => 'mod_rewrite_loaded'));
-				}
-			}
-			else
-			{
-				$modRewrite = apache_mod_loaded('mod_rewrite');
-				Preference::newInstance()->update(array('s_value' => '0'), array('s_name' => 'rewriteEnabled'));
-				Preference::newInstance()->update(array('s_value' => '0'), array('s_name' => 'mod_rewrite_loaded'));
-			}
-			$redirectUrl = osc_admin_base_url(true) . '?page=settings&action=permalinks&htaccess_status=';
-			$redirectUrl.= $htaccess_status . '&file_status=' . $file_status;
-			$this->redirectTo($redirectUrl);
-			break;
-
 		case ('spamNbots'): // calling the spam and bots view
 			$this->doView('settings/spamNbots.php');
 			break;
@@ -528,11 +462,6 @@ class CAdminSettings extends AdminSecBaseModel
 			break;
 
 		case ('mailserver_post'):
-			if (defined('DEMO')) 
-			{
-				osc_add_flash_warning_message(_m("This action cannot be done because is a demo site"), 'admin');
-				$this->redirectTo(osc_admin_base_url(true) . '?page=settings&action=mailserver');
-			}
 			// updating mailserver
 			$iUpdated = 0;
 			$mailserverAuth = Params::getParam('mailserver_auth');
@@ -708,10 +637,7 @@ class CAdminSettings extends AdminSecBaseModel
 			$error = "";
 			$iUpdated+= Preference::newInstance()->update(array('s_value' => $sPageTitle), array('s_section' => 'osclass', 's_name' => 'pageTitle'));
 			$iUpdated+= Preference::newInstance()->update(array('s_value' => $sPageDesc), array('s_section' => 'osclass', 's_name' => 'pageDesc'));
-			if (!defined('DEMO')) 
-			{
-				$iUpdated+= Preference::newInstance()->update(array('s_value' => $sContactEmail), array('s_section' => 'osclass', 's_name' => 'contactEmail'));
-			}
+			$iUpdated+= Preference::newInstance()->update(array('s_value' => $sContactEmail), array('s_section' => 'osclass', 's_name' => 'contactEmail'));
 			$iUpdated+= Preference::newInstance()->update(array('s_value' => $sLanguage), array('s_section' => 'osclass', 's_name' => 'language'));
 			$iUpdated+= Preference::newInstance()->update(array('s_value' => $sDateFormat), array('s_section' => 'osclass', 's_name' => 'dateFormat'));
 			$iUpdated+= Preference::newInstance()->update(array('s_value' => $sCurrency), array('s_section' => 'osclass', 's_name' => 'currency'));
@@ -753,24 +679,6 @@ class CAdminSettings extends AdminSecBaseModel
 				osc_add_flash_error_message($error, 'admin');
 			}
 			$this->redirectTo(osc_admin_base_url(true) . '?page=settings');
-			break;
-
-		case ('latestsearches'): //calling the comments settings view
-			$this->doView('settings/searches.php');
-			break;
-
-		case ('latestsearches_post'): // updating comment
-			if (Params::getParam('save_latest_searches') == 'on') 
-			{
-				Preference::newInstance()->update(array('s_value' => 1), array('s_name' => 'save_latest_searches'));
-			}
-			else
-			{
-				Preference::newInstance()->update(array('s_value' => 0), array('s_name' => 'save_latest_searches'));
-			}
-			Preference::newInstance()->update(array('s_value' => Params::getParam('customPurge')), array('s_name' => 'purge_latest_searches'));
-			osc_add_flash_ok_message(_m('Settings have been updated'), 'admin');
-			$this->redirectTo(osc_admin_base_url(true) . '?page=settings&action=latestsearches');
 			break;
 
 		default: // calling the view

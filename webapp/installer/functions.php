@@ -514,7 +514,7 @@ function is_osclass_installed()
 		return false;
 	}
 	require_once DEFAULT_CONFIG_PATH;
-	$conn = new DBConnectionClass();
+	$conn = DBConnectionClass::newInstance();
 	$c_db = $conn->getOsclassDb();
 	$comm = new DBCommandClass($c_db);
 	$rs = $comm->query(sprintf("SELECT * FROM %st_preference WHERE s_name = 'osclass_installed'", DB_TABLE_PREFIX));

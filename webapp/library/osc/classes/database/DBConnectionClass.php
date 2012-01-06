@@ -285,6 +285,12 @@ class DBConnectionClass
 		}
 		return true;
 	}
+
+	public function getConnection()
+	{
+		return $this->db;
+	}
+
 	/**
 	 * Select OpenSourceClassifieds database in $db var
 	 *

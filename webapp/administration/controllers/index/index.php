@@ -18,30 +18,23 @@
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-/**
- * This functions retrieves a news list from http://opensourceclassifieds.org. It uses the Cache services to speed up the process.
- */
-function osc_listNews() 
+class CAdminIndex extends AdminSecBaseModel
 {
-	require_once 'osc/services/cache/disk.php';
-	$cache = new DiskCacheService('admin-blog_news', 900);
-	if ($cache->check()) 
+	public function doModel() 
 	{
-		return $cache->retrieve();
+		$this->_exportVariableToView("numUsers", User::newInstance()->count());
+		$this->_exportVariableToView("numAdmins", Admin::newInstance()->count());
+		$this->_exportVariableToView("numItems", Item::newInstance()->count());
+		$this->_exportVariableToView("numItemsPerCategory", osc_get_non_empty_categories());
+		$this->_exportVariableToView("newsList", osc_listNews());
+		$this->_exportVariableToView("comments", ItemComment::newInstance()->getLastComments(5));
+
+		$this->doView('main/index.php');
 	}
-	else
+
+	function doView($file) 
 	{
-		$list = array();
-		$content = osc_file_get_contents('http://opensourceclassifieds.org/feed/');
-		if ($content) 
-		{
-			$xml = simplexml_load_string($content);
-			foreach ($xml->channel->item as $item) 
-			{
-				$list[] = array('link' => strval($item->link), 'title' => strval($item->title), 'pubDate' => strval($item->pubDate));
-			}
-		}
-		$cache->store($list, null);
+		osc_current_admin_theme_path($file);
+		Session::newInstance()->_clearVariables();
 	}
-	return $list;
 }

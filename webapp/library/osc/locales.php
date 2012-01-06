@@ -21,7 +21,7 @@ function osc_listLocales()
 	$codes = osc_listLanguageCodes();
 	foreach ($codes as $code) 
 	{
-		$path = sprintf('%s%s/index.php', osc_translations_path(), $code);
+		$path = sprintf('%s/%s/index.php', osc_translations_path(), $code);
 		if (file_exists($path)) 
 		{
 			require $path;
@@ -49,11 +49,6 @@ function osc_checkLocales()
 			if (!$result) 
 			{
 				return false;
-			}
-			// if it's a demo, we don't import any sql
-			if (defined('DEMO')) 
-			{
-				return true;
 			}
 			// inserting e-mail translations
 			$path = sprintf('%s%s/mail.sql', osc_translations_path(), $locale['code']);

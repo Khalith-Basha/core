@@ -18,66 +18,57 @@
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-class CAdminLogin extends Controller
+class CAdminIndex extends Controller
 {
-	function __construct() 
+	public function doPost( HttpRequest $req, HttpResponse $res )
 	{
-		parent::__construct();
-	}
-	//Business Layer...
-	function doModel() 
-	{
-		switch ($this->action) 
+		$admin = Admin::newInstance()->findByUsername(Params::getParam('user'));
+		if ($admin) 
 		{
-		case ('login_post'): //post execution for the login
-			$admin = Admin::newInstance()->findByUsername(Params::getParam('user'));
-			if ($admin) 
+			if ($admin["s_password"] == sha1(Params::getParam('password'))) 
 			{
-				if ($admin["s_password"] == sha1(Params::getParam('password'))) 
+				if (Params::getParam('remember')) 
 				{
-					if (Params::getParam('remember')) 
-					{
-						//this include contains de osc_genRandomPassword function
-						require_once 'osc/helpers/hSecurity.php';
-						$secret = osc_genRandomPassword();
-						Admin::newInstance()->update(array('s_secret' => $secret), array('pk_i_id' => $admin['pk_i_id']));
-						Cookie::newInstance()->set_expires(osc_time_cookie());
-						Cookie::newInstance()->push('oc_adminId', $admin['pk_i_id']);
-						Cookie::newInstance()->push('oc_adminSecret', $secret);
-						Cookie::newInstance()->push('oc_adminLocale', Params::getParam('locale'));
-						Cookie::newInstance()->set();
-					}
-					//we are logged in... let's go!
-					Session::newInstance()->_set('adminId', $admin['pk_i_id']);
-					Session::newInstance()->_set('adminUserName', $admin['s_username']);
-					Session::newInstance()->_set('adminName', $admin['s_name']);
-					Session::newInstance()->_set('adminEmail', $admin['s_email']);
-					Session::newInstance()->_set('adminLocale', Params::getParam('locale'));
+					//this include contains de osc_genRandomPassword function
+					require_once 'osc/helpers/hSecurity.php';
+					$secret = osc_genRandomPassword();
+					Admin::newInstance()->update(array('s_secret' => $secret), array('pk_i_id' => $admin['pk_i_id']));
+					Cookie::newInstance()->set_expires(osc_time_cookie());
+					Cookie::newInstance()->push('oc_adminId', $admin['pk_i_id']);
+					Cookie::newInstance()->push('oc_adminSecret', $secret);
+					Cookie::newInstance()->push('oc_adminLocale', Params::getParam('locale'));
+					Cookie::newInstance()->set();
 				}
-				else
-				{
-					osc_add_flash_error_message(_m('The password is incorrect'), 'admin');
-				}
+				//we are logged in... let's go!
+				Session::newInstance()->_set('adminId', $admin['pk_i_id']);
+				Session::newInstance()->_set('adminUserName', $admin['s_username']);
+				Session::newInstance()->_set('adminName', $admin['s_name']);
+				Session::newInstance()->_set('adminEmail', $admin['s_email']);
+				Session::newInstance()->_set('adminLocale', Params::getParam('locale'));
 			}
 			else
 			{
-				osc_add_flash_error_message(_m('That username does not exist'), 'admin');
+				osc_add_flash_error_message(_m('The password is incorrect'), 'admin');
 			}
-			//returning logged in to the main page...
-			$this->redirectTo(osc_admin_base_url());
-			break;
+		}
+		else
+		{
+			osc_add_flash_error_message(_m('That username does not exist'), 'admin');
+		}
+		//returning logged in to the main page...
+		$this->redirectTo(osc_admin_base_url());
+	}
 
+	public function doModel() 
+	{
+		switch(123)
+	{
 		case ('recover'): //form to recover the password (in this case we have the form in /gui/)
 			//#dev.conquer: we cannot use the doView here and only here
 			$this->doView('gui/recover.php');
 			break;
 
 		case ('recover_post'):
-			if (defined('DEMO')) 
-			{
-				osc_add_flash_warning_message(_m("This action cannot be done because is a demo site"), 'admin');
-				$this->redirectTo(osc_admin_base_url());
-			}
 			//post execution to recover the password
 			$admin = Admin::newInstance()->findByEmail(Params::getParam('email'));
 			if ($admin) 
@@ -139,8 +130,8 @@ class CAdminLogin extends Controller
 			break;
 		}
 	}
-	//in this case, this function is prepared for the "recover your password" form
-	function doView($file) 
+
+	public function doView($file) 
 	{
 		require osc_admin_base_path() . $file;
 	}

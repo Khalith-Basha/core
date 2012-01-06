@@ -39,11 +39,6 @@ class CAdminAdmins extends AdminSecBaseModel
 			break;
 
 		case 'add_post':
-			if (defined('DEMO')) 
-			{
-				osc_add_flash_warning_message(_m("This action cannot be done because is a demo site"), 'admin');
-				$this->redirectTo(osc_admin_base_url(true) . '?page=admins');
-			}
 			// adding a new admin
 			$sPassword = Params::getParam('s_password');
 			$sName = Params::getParam('s_name');
@@ -125,11 +120,6 @@ class CAdminAdmins extends AdminSecBaseModel
 			break;
 
 		case 'edit_post':
-			if (defined('DEMO')) 
-			{
-				osc_add_flash_warning_message(_m("This action cannot be done because is a demo site"), 'admin');
-				$this->redirectTo(osc_admin_base_url(true) . '?page=admins');
-			}
 			// updating a new admin
 			$iUpdated = 0;
 			$adminId = Params::getParam('id');
@@ -224,11 +214,6 @@ class CAdminAdmins extends AdminSecBaseModel
 			break;
 
 		case 'delete':
-			if (defined('DEMO')) 
-			{
-				osc_add_flash_warning_message(_m("This action cannot be done because is a demo site"), 'admin');
-				$this->redirectTo(osc_admin_base_url(true) . '?page=admins');
-			}
 			// deleting and admin
 			$isDeleted = false;
 			$adminId = Params::getParam('id');

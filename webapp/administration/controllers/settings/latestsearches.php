@@ -18,30 +18,31 @@
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-/**
- * This functions retrieves a news list from http://opensourceclassifieds.org. It uses the Cache services to speed up the process.
- */
-function osc_listNews() 
+class CAdminSettings extends AdminSecBaseModel
 {
-	require_once 'osc/services/cache/disk.php';
-	$cache = new DiskCacheService('admin-blog_news', 900);
-	if ($cache->check()) 
+	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
-		return $cache->retrieve();
+		$this->doView('settings/searches.php');
 	}
-	else
+	
+	public function doPost( HttpRequest $req, HttpResponse $res )
 	{
-		$list = array();
-		$content = osc_file_get_contents('http://opensourceclassifieds.org/feed/');
-		if ($content) 
+		if (Params::getParam('save_latest_searches') == 'on') 
 		{
-			$xml = simplexml_load_string($content);
-			foreach ($xml->channel->item as $item) 
-			{
-				$list[] = array('link' => strval($item->link), 'title' => strval($item->title), 'pubDate' => strval($item->pubDate));
-			}
+			Preference::newInstance()->update(array('s_value' => 1), array('s_name' => 'save_latest_searches'));
 		}
-		$cache->store($list, null);
+		else
+		{
+			Preference::newInstance()->update(array('s_value' => 0), array('s_name' => 'save_latest_searches'));
+		}
+		Preference::newInstance()->update(array('s_value' => Params::getParam('customPurge')), array('s_name' => 'purge_latest_searches'));
+		osc_add_flash_ok_message(_m('Settings have been updated'), 'admin');
+		$this->redirectTo(osc_admin_base_url(true) . '?page=settings&action=latestsearches');
 	}
-	return $list;
+
+	public function doView($file) 
+	{
+		osc_current_admin_theme_path($file);
+		Session::newInstance()->_clearVariables();
+	}
 }

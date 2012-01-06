@@ -99,7 +99,7 @@ class Plugins
 			if (preg_match('/^[a-zA-Z0-9_]+$/', $file, $matches)) 
 			{
 				// This has to change in order to catch any .php file
-				$pluginPath = $pluginsPath . "$file/index.php";
+				$pluginPath = $pluginsPath . "/$file/index.php";
 				if (file_exists($pluginPath)) 
 				{
 					$plugins[] = $file . "/index.php";

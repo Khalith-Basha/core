@@ -33,11 +33,6 @@ class CAdminAppearance extends AdminSecBaseModel
 			break;
 
 		case 'add_post':
-			if (defined('DEMO')) 
-			{
-				osc_add_flash_warning_message(_m("This action cannot be done because is a demo site"), 'admin');
-				$this->redirectTo(osc_admin_base_url(true) . '?page=appearance');
-			}
 			$filePackage = Params::getFiles('package');
 			if (isset($filePackage['size']) && $filePackage['size'] != 0) 
 			{

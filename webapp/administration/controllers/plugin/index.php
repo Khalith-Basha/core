@@ -38,11 +38,6 @@ class CAdminPlugins extends AdminSecBaseModel
 			break;
 
 		case 'add_post':
-			if (defined('DEMO')) 
-			{
-				osc_add_flash_warning_message(_m("This action cannot be done because is a demo site"), 'admin');
-				$this->redirectTo(osc_admin_base_url(true) . '?page=plugins');
-			}
 			$package = Params::getFiles("package");
 			if (isset($package['size']) && $package['size'] != 0) 
 			{

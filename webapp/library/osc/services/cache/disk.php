@@ -18,7 +18,10 @@
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-define('CACHE_PATH', CONTENT_PATH . 'uploads/');
+define('CACHE_PATH', CONTENT_PATH . '/uploads');
+
+require 'osc/services/cache/interface.php';
+
 /**
  * This is the simplest cache service on earth.
  *
@@ -52,53 +55,35 @@ class DiskCacheService implements CacheService
 		}
 		return true;
 	}
+
+	public function store( $key, $content ) { $this->write( $key, $content ); }
+
 	/**
 	 * Stores the object passed as parameter in the cache backend (filesystem).
 	 */
 	public function write($key, $content) 
 	{
-		$serialized = serialize($object);
-		file_put_contents($this->preparePath(), $serialized);
+		$serialized = serialize( $object );
+		file_put_contents( $this->preparePath(), $serialized );
 	}
+
 	/**
 	 * Returns the data of the current cached object.
 	 */
-	public function retrieve() 
+	public function retrieve( $key = null ) { return $this->read(); }
+
+	public function read( $key = null )
 	{
-		$content = file_get_contents($this->preparePath());
-		return unserialize($content);
+		$content = file_get_contents( $this->preparePath() );
+		return unserialize( $content );
 	}
+
 	/**
 	 * Constructs the path to object in filesystem.
 	 */
 	private function preparePath() 
 	{
-		return CACHE_PATH . $this->objectKey . '.cache';
+		return CACHE_PATH . '/' . $this->objectKey . '.cache';
 	}
 }
-class MemcachedCacheService
-{
-	private static $singleton = null;
-	public static function getInstance() 
-	{
-		if (is_null(self::$singleton)) 
-		{
-			self::$singleton = new self;
-		}
-		return self::$singleton;
-	}
-	private $service;
-	private function __construct() 
-	{
-		$this->service = new Memcached;
-		$this->service->addServer('127.0.0.1', 11211);
-	}
-	public function read($key) 
-	{
-		return $this->service->get($key);
-	}
-	public function write($key, $content) 
-	{
-		$this->service->set($key, $content, 3600);
-	}
-}
+

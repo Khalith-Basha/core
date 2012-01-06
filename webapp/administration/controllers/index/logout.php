@@ -18,45 +18,19 @@
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-class CAdminMain extends AdminSecBaseModel
+class CAdminIndex extends AdminSecBaseModel
 {
-	function __construct() 
+	public function doModel() 
 	{
-		parent::__construct();
-	}
-	//Business Layer...
-	function doModel() 
-	{
-		switch ($this->action) 
-		{
-		case ('logout'): // unset only the required parameters in Session
-			Session::newInstance()->_drop('adminId');
-			Session::newInstance()->_drop('adminUserName');
-			Session::newInstance()->_drop('adminName');
-			Session::newInstance()->_drop('adminEmail');
-			Session::newInstance()->_drop('adminLocale');
-			Cookie::newInstance()->pop('oc_adminId');
-			Cookie::newInstance()->pop('oc_adminSecret');
-			Cookie::newInstance()->pop('oc_adminLocale');
-			Cookie::newInstance()->set();
-			$this->redirectTo(osc_admin_base_url(true));
-			break;
-
-		default: //default dashboard page (main page at administration)
-			$this->_exportVariableToView("numUsers", User::newInstance()->count());
-			$this->_exportVariableToView("numAdmins", Admin::newInstance()->count());
-			$this->_exportVariableToView("numItems", Item::newInstance()->count());
-			$this->_exportVariableToView("numItemsPerCategory", osc_get_non_empty_categories());
-			$this->_exportVariableToView("newsList", osc_listNews());
-			$this->_exportVariableToView("comments", ItemComment::newInstance()->getLastComments(5));
-			//calling the view...
-			$this->doView('main/index.php');
-		}
-	}
-	//hopefully generic...
-	function doView($file) 
-	{
-		osc_current_admin_theme_path($file);
-		Session::newInstance()->_clearVariables();
+		Session::newInstance()->_drop('adminId');
+		Session::newInstance()->_drop('adminUserName');
+		Session::newInstance()->_drop('adminName');
+		Session::newInstance()->_drop('adminEmail');
+		Session::newInstance()->_drop('adminLocale');
+		Cookie::newInstance()->pop('oc_adminId');
+		Cookie::newInstance()->pop('oc_adminSecret');
+		Cookie::newInstance()->pop('oc_adminLocale');
+		Cookie::newInstance()->set();
+		$this->redirectTo(osc_admin_base_url(true));
 	}
 }

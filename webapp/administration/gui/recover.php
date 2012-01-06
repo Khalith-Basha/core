@@ -47,7 +47,7 @@ _e('You will receive a new password via e-mail'); ?>.
             <form action="<?php
 echo osc_admin_base_url(true); ?>" method="post">
                 <input type="hidden" name="page" value="login" />
-                <input type="hidden" name="action" value="recover_post" />
+                <input type="hidden" name="action" value="recover" />
                 <p>
                     <label><?php
 _e('E-mail'); ?><br />

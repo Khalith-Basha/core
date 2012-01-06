@@ -18,7 +18,9 @@
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
 require_once 'osc/services/cache/interface.php';
+
 class MemcachedCacheService implements CacheService
 {
 	private static $singleton = null;
@@ -45,3 +47,4 @@ class MemcachedCacheService implements CacheService
 		$this->service->set($key, $content, 3600);
 	}
 }
+

@@ -20,15 +20,11 @@
 */
 class AdminSecBaseModel extends SecBaseModel
 {
-	function __construct() 
-	{
-		parent::__construct();
-	}
-	function isLogged() 
+	public function isLogged() 
 	{
 		return osc_is_admin_user_logged_in();
 	}
-	function logout() 
+	public function logout() 
 	{
 		//destroying session
 		Session::newInstance()->session_destroy();
@@ -42,9 +38,9 @@ class AdminSecBaseModel extends SecBaseModel
 		Cookie::newInstance()->pop('oc_adminLocale');
 		Cookie::newInstance()->set();
 	}
-	function showAuthFailPage() 
+	public function showAuthFailPage() 
 	{
-		require osc_admin_base_path() . 'gui/login.php';
+		require osc_admin_base_path() . '/gui/login.php';
 		exit;
 	}
 }

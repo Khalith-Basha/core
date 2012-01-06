@@ -18,16 +18,24 @@
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-define('ABS_PATH', dirname(dirname($_SERVER['SCRIPT_FILENAME'])) . '/');
-define('OC_ADMIN', 'true');
-define('CTRL_PATH', ABS_PATH . DIRECTORY_SEPARATOR . 'controllers');
-require_once CTRL_PATH . '/load.php';
+
+require '../loader.php';
+
+define( 'OC_ADMIN', 'true');
+
 if (file_exists(ABS_PATH . '.maintenance')) 
 {
 	define('__OSC_MAINTENANCE__', true);
 }
+
+$page = Params::getParam('page');
+if( empty( $page ) ) $page = 'index';
+
+$action = Params::getParam( 'action' );
+if( empty( $action ) ) $action = 'index';
+
 WebThemes::newInstance();
-switch (Params::getParam('page')) 
+switch ( "x$page" ) 
 {
 case ('items'):
 	require_once (osc_admin_base_path() . 'items.php');
@@ -130,9 +138,13 @@ case ('cfields'):
 	$do = new CAdminCFields();
 	$do->doModel();
 	break;
-
-default: //login of administration
-	require_once (osc_admin_base_path() . 'main.php');
-	$do = new CAdminMain();
-	$do->doModel();
 }
+
+$ctrlPath = osc_admin_base_path() . '/controllers/' . $page . '/' . $action . '.php';
+require $ctrlPath;
+
+$className = 'CAdmin' . ucfirst( $page );
+$ctrl = new $className;
+$ctrl->processRequest( new HttpRequest, new HttpResponse );
+
+

@@ -61,8 +61,8 @@ function osc_admin_base_url($with_index = false)
 	{
 		$path = WEB_PATH;
 	}
-	$path.= "/administration/";
-	if ($with_index) $path.= "index.php";
+	$path.= "/administration";
+	if ($with_index) $path.= "/index.php";
 	return ($path);
 }
 /**
@@ -81,7 +81,7 @@ function osc_base_path()
  */
 function osc_admin_base_path() 
 {
-	return (osc_base_path() . "/administration/");
+	return osc_base_path() . '/administration';
 }
 /**
  * Gets the librarieas path
@@ -145,7 +145,7 @@ function osc_current_admin_theme()
  */
 function osc_current_admin_theme_url($file = '') 
 {
-	return AdminThemes::newInstance()->getCurrentThemeUrl() . $file;
+	return AdminThemes::newInstance()->getCurrentThemeUrl() . '/' . $file;
 }
 /**
  * Gets the complete path of a given admin's file
@@ -155,7 +155,7 @@ function osc_current_admin_theme_url($file = '')
  */
 function osc_current_admin_theme_path($file = '') 
 {
-	require AdminThemes::newInstance()->getCurrentThemePath() . $file;
+	require AdminThemes::newInstance()->getCurrentThemePath() . '/' . $file;
 }
 /**
  * Gets the complete url of a given style's file
@@ -165,7 +165,7 @@ function osc_current_admin_theme_path($file = '')
  */
 function osc_current_admin_theme_styles_url($file = '') 
 {
-	return AdminThemes::newInstance()->getCurrentThemeStyles() . $file;
+	return AdminThemes::newInstance()->getCurrentThemeStyles() . '/' . $file;
 }
 /**
  * Gets the complete url of a given js's file
@@ -175,7 +175,7 @@ function osc_current_admin_theme_styles_url($file = '')
  */
 function osc_current_admin_theme_js_url($file = '') 
 {
-	return AdminThemes::newInstance()->getCurrentThemeJs() . $file;
+	return AdminThemes::newInstance()->getCurrentThemeJs() . '/' . $file;
 }
 /**
  * Gets the current theme for the public website
@@ -273,9 +273,6 @@ function osc_current_web_theme_js_url($file = '')
 {
 	return WebThemes::newInstance()->getCurrentThemeJs() . $file;
 }
-/////////////////////////////////////
-//functions for the public website //
-/////////////////////////////////////
 
 /**
  *  Create automatically the contact url
@@ -286,7 +283,7 @@ function osc_contact_url()
 {
 	if (osc_rewrite_enabled()) 
 	{
-		$path = osc_base_url() . 'contact/';
+		$path = osc_base_url() . '/contact';
 	}
 	else
 	{
@@ -305,7 +302,7 @@ function osc_item_post_url_in_category()
 	{
 		if (osc_rewrite_enabled()) 
 		{
-			$path = osc_base_url() . 'item/new/' . osc_category_id();
+			$path = osc_base_url() . '/item/new/' . osc_category_id();
 		}
 		else
 		{
@@ -327,7 +324,7 @@ function osc_item_post_url()
 {
 	if (osc_rewrite_enabled()) 
 	{
-		$path = osc_base_url() . 'item/new';
+		$path = osc_base_url() . '/item/new';
 	}
 	else
 	{
@@ -361,11 +358,11 @@ function osc_search_category_url($pattern = '')
 		{
 			if ($path == '') 
 			{
-				$path = osc_base_url() . 'search/' . $pattern;
+				$path = osc_base_url() . '/search/' . $pattern;
 			}
 			else
 			{
-				$path.= 'search/' . $pattern;
+				$path.= '/search/' . $pattern;
 			}
 		}
 	}
@@ -384,7 +381,7 @@ function osc_user_dashboard_url()
 {
 	if (osc_rewrite_enabled()) 
 	{
-		$path = osc_base_url() . 'user/dashboard';
+		$path = osc_base_url() . '/user/dashboard';
 	}
 	else
 	{
@@ -401,7 +398,7 @@ function osc_user_logout_url()
 {
 	if (osc_rewrite_enabled()) 
 	{
-		$path = osc_base_url() . 'user/logout';
+		$path = osc_base_url() . '&user/logout';
 	}
 	else
 	{
@@ -418,7 +415,7 @@ function osc_user_login_url()
 {
 	if (osc_rewrite_enabled()) 
 	{
-		$path = osc_base_url() . 'user/login';
+		$path = osc_base_url() . '/user/login';
 	}
 	else
 	{
@@ -435,7 +432,7 @@ function osc_register_account_url()
 {
 	if (osc_rewrite_enabled()) 
 	{
-		$path = osc_base_url() . 'user/register';
+		$path = osc_base_url() . '/user/register';
 	}
 	else
 	{
@@ -454,7 +451,7 @@ function osc_user_activate_url($id, $code)
 {
 	if (osc_rewrite_enabled()) 
 	{
-		return osc_base_url() . 'user/activate/' . $id . '/' . $code;
+		return osc_base_url() . '/user/activate/' . $id . '/' . $code;
 	}
 	else
 	{
@@ -500,7 +497,7 @@ function osc_item_url($locale = '')
 	if (osc_rewrite_enabled()) 
 	{
 		$sanitized_title = osc_sanitizeString(osc_item_title());
-		$sanitized_category = '';
+		$sanitized_category = '/';
 		$cat = Category::newInstance()->hierarchy(osc_item_category_id());
 		for ($i = (count($cat)); $i > 0; $i--) 
 		{
@@ -590,7 +587,7 @@ function osc_user_alerts_url()
 {
 	if (osc_rewrite_enabled()) 
 	{
-		return osc_base_url() . 'user/alerts';
+		return osc_base_url() . '/user/alerts';
 	}
 	else
 	{
@@ -627,7 +624,7 @@ function osc_user_activate_alert_url($secret, $email)
 {
 	if (osc_rewrite_enabled()) 
 	{
-		return osc_base_url() . 'user/activate_alert/' . $secret . '/' . urlencode($email);
+		return osc_base_url() . '/user/activate_alert/' . $secret . '/' . urlencode($email);
 	}
 	else
 	{
@@ -643,7 +640,7 @@ function osc_user_profile_url()
 {
 	if (osc_rewrite_enabled()) 
 	{
-		return osc_base_url() . 'user/profile';
+		return osc_base_url() . '/user/profile';
 	}
 	else
 	{
@@ -662,11 +659,11 @@ function osc_user_list_items_url($page = '')
 	{
 		if ($page == '') 
 		{
-			return osc_base_url() . 'user/items';
+			return osc_base_url() . '/user/items';
 		}
 		else
 		{
-			return osc_base_url() . 'user/items?iPage=' . $page;
+			return osc_base_url() . '/user/items?iPage=' . $page;
 		}
 	}
 	else
@@ -690,7 +687,7 @@ function osc_change_user_email_url()
 {
 	if (osc_rewrite_enabled()) 
 	{
-		return osc_base_url() . 'user/change_email';
+		return osc_base_url() . '/user/change_email';
 	}
 	else
 	{
@@ -708,7 +705,7 @@ function osc_change_user_email_confirm_url($userId, $code)
 {
 	if (osc_rewrite_enabled()) 
 	{
-		return osc_base_url() . 'user/change_email_confirm/' . $userId . '/' . $code;
+		return osc_base_url() . '/user/change_email_confirm/' . $userId . '/' . $code;
 	}
 	else
 	{
@@ -724,7 +721,7 @@ function osc_change_user_password_url()
 {
 	if (osc_rewrite_enabled()) 
 	{
-		return osc_base_url() . 'user/change_password';
+		return osc_base_url() . '/user/change_password';
 	}
 	else
 	{
@@ -740,7 +737,7 @@ function osc_recover_user_password_url()
 {
 	if (osc_rewrite_enabled()) 
 	{
-		return osc_base_url() . 'user/recover';
+		return osc_base_url() . '/user/recover';
 	}
 	else
 	{
@@ -758,7 +755,7 @@ function osc_forgot_user_password_confirm_url($userId, $code)
 {
 	if (osc_rewrite_enabled()) 
 	{
-		return osc_base_url() . 'user/forgot/' . $userId . '/' . $code;
+		return osc_base_url() . '/user/forgot/' . $userId . '/' . $code;
 	}
 	else
 	{
@@ -786,16 +783,13 @@ function osc_change_language_url($locale)
 {
 	if (osc_rewrite_enabled()) 
 	{
-		return osc_base_url() . 'language/' . $locale;
+		return osc_base_url() . '/language/' . $locale;
 	}
 	else
 	{
 		return osc_base_url(true) . '?page=language&locale=' . $locale;
 	}
 }
-/////////////////////////////////////
-//       functions for items       //
-/////////////////////////////////////
 
 /**
  * Gets url for editing an item
@@ -809,7 +803,7 @@ function osc_item_edit_url($secret = '', $id = '')
 	if ($id == '') $id = osc_item_id();
 	if (osc_rewrite_enabled()) 
 	{
-		return osc_base_url() . 'item/edit/' . $id . '/' . $secret;
+		return osc_base_url() . '/item/edit/' . $id . '/' . $secret;
 	}
 	else
 	{
@@ -828,7 +822,7 @@ function osc_item_delete_url($secret = '', $id = '')
 	if ($id == '') $id = osc_item_id();
 	if (osc_rewrite_enabled()) 
 	{
-		return osc_base_url() . 'item/delete/' . $id . '/' . $secret;
+		return osc_base_url() . '/item/delete/' . $id . '/' . $secret;
 	}
 	else
 	{
@@ -847,7 +841,7 @@ function osc_item_activate_url($secret = '', $id = '')
 	if ($id == '') $id = osc_item_id();
 	if (osc_rewrite_enabled()) 
 	{
-		return osc_base_url() . 'item/activate/' . $id . '/' . $secret;
+		return osc_base_url() . '/item/activate/' . $id . '/' . $secret;
 	}
 	else
 	{
@@ -867,7 +861,7 @@ function osc_item_resource_delete_url($id, $item, $code, $secret = '')
 {
 	if (osc_rewrite_enabled()) 
 	{
-		return osc_base_url() . 'item/resource/delete/' . $id . '/' . $item . '/' . $code . ($secret != '' ? '/' . $secret : '');
+		return osc_base_url() . '/item/resource/delete/' . $id . '/' . $item . '/' . $code . ($secret != '' ? '/' . $secret : '');
 	}
 	else
 	{
@@ -883,7 +877,7 @@ function osc_item_send_friend_url()
 {
 	if (osc_rewrite_enabled()) 
 	{
-		return osc_base_url() . 'item/send-friend/' . osc_item_id();
+		return osc_base_url() . '/item/send-friend/' . osc_item_id();
 	}
 	else
 	{
