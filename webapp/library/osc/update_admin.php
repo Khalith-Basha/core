@@ -23,7 +23,6 @@ require_once ABS_PATH . '/config.php';
 require_once 'osc/db.php';
 require_once 'osc/classes/DAO.php';
 require_once 'osc/model/Admin.php';
-require_once 'osc/helpers/hDatabaseInfo.php';
 require_once 'osc/core/Params.php';
 $old_passwd = Params::getParam('old_password');
 $id_admin = Params::getParam('id');

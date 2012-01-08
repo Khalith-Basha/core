@@ -1,9 +1,6 @@
 <?php
-/**
- * The base MySQL settings of OpenSourceClassifieds
- */
-define('MULTISITE', 0);
-/** MySQL database name for OpenSourceClassifieds */
+
+/** MySQL database name */
 define('DB_NAME', 'database_name');
 /** MySQL database username */
 define('DB_USER', 'username');

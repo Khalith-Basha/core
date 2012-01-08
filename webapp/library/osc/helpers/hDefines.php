@@ -32,15 +32,7 @@
  */
 function osc_base_url($with_index = false) 
 {
-	$path = '';
-	if (MULTISITE) 
-	{
-		$path = osc_multisite_url();
-	}
-	else
-	{
-		$path = WEB_PATH;
-	}
+	$path = WEB_PATH;
 	if ($with_index) $path.= "/index.php";
 	return ($path);
 }
@@ -52,15 +44,7 @@ function osc_base_url($with_index = false)
  */
 function osc_admin_base_url($with_index = false) 
 {
-	$path = '';
-	if (MULTISITE) 
-	{
-		$path = osc_multisite_url();
-	}
-	else
-	{
-		$path = WEB_PATH;
-	}
+	$path = WEB_PATH;
 	$path.= "/administration";
 	if ($with_index) $path.= "/index.php";
 	return ($path);
@@ -230,8 +214,10 @@ function osc_current_web_theme_path($file = '')
  * @param string $file
  * @return string
  */
-function osc_render_view($file) 
+function osc_render_view( $file, array $variables = array() ) 
 {
+	extract( $variables );
+
 	$viewContent = null;
 	$webThemes = WebThemes::newInstance();
 	$filePath = $webThemes->getCurrentThemePath() . $file;

@@ -2,6 +2,8 @@ SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL';
 
+CREATE SCHEMA IF NOT EXISTS /*TABLE_PREFIX*/DEFAULT CHARACTER SET utf8 ;
+USE /*TABLE_PREFIX*/;
 
 CREATE  TABLE IF NOT EXISTS /*TABLE_PREFIX*/t_admin (
   pk_i_id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT ,
@@ -176,10 +178,10 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
 
-CREATE  TABLE IF NOT EXISTS /*TABLE_PREFIX*/t_user (
+CREATE  TABLE IF NOT EXISTS /*TABLE_PREFIX*/user (
   pk_i_id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT ,
-  dt_reg_date DATETIME NOT NULL ,
-  dt_mod_date DATETIME NULL DEFAULT NULL ,
+  reg_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
+  mod_date TIMESTAMP NULL ,
   s_name VARCHAR(100) NOT NULL ,
   s_password VARCHAR(40) NOT NULL ,
   s_secret VARCHAR(40) NULL DEFAULT NULL ,
@@ -187,7 +189,7 @@ CREATE  TABLE IF NOT EXISTS /*TABLE_PREFIX*/t_user (
   s_website VARCHAR(100) NULL DEFAULT NULL ,
   s_phone_land VARCHAR(45) NULL DEFAULT NULL ,
   s_phone_mobile VARCHAR(45) NULL DEFAULT NULL ,
-  b_enabled TINYINT(1) NOT NULL DEFAULT '1' ,
+  b_enabled TINYINT(1)  NOT NULL DEFAULT TRUE ,
   b_active TINYINT(1) NOT NULL DEFAULT '0' ,
   s_pass_code VARCHAR(100) NULL DEFAULT NULL ,
   s_pass_date DATETIME NULL DEFAULT NULL ,
@@ -232,12 +234,12 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
 
-CREATE  TABLE IF NOT EXISTS /*TABLE_PREFIX*/t_item (
+CREATE  TABLE IF NOT EXISTS /*TABLE_PREFIX*/item (
   pk_i_id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT ,
   fk_i_user_id INT(10) UNSIGNED NULL DEFAULT NULL ,
   fk_i_category_id INT(10) UNSIGNED NOT NULL ,
-  dt_pub_date DATETIME NOT NULL ,
-  dt_mod_date DATETIME NULL DEFAULT NULL ,
+  pub_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
+  mod_date TIMESTAMP NULL ,
   f_price FLOAT NULL DEFAULT NULL ,
   i_price BIGINT(20) NULL DEFAULT NULL ,
   fk_c_currency_code CHAR(3) NULL DEFAULT NULL ,
@@ -249,13 +251,15 @@ CREATE  TABLE IF NOT EXISTS /*TABLE_PREFIX*/t_item (
   b_spam TINYINT(1) NOT NULL DEFAULT '0' ,
   s_secret VARCHAR(40) NULL DEFAULT NULL ,
   b_show_email TINYINT(1) NULL DEFAULT NULL ,
+  status ENUM('ACTIVE','INACTIVE','MODERATION') NULL ,
+  status_detail ENUM('ON_MODERATION','SPAM','STRONG_BAD_WORD','MEDIUM_BAD_WORD','OLD') NULL ,
   PRIMARY KEY (pk_i_id) ,
   INDEX fk_i_user_id (fk_i_user_id ASC) ,
   INDEX fk_i_category_id (fk_i_category_id ASC) ,
   INDEX fk_c_currency_code (fk_c_currency_code ASC) ,
   CONSTRAINT t_item_ibfk_1
     FOREIGN KEY (fk_i_user_id )
-    REFERENCES /*TABLE_PREFIX*/t_user (pk_i_id ),
+    REFERENCES /*TABLE_PREFIX*/user (pk_i_id ),
   CONSTRAINT t_item_ibfk_2
     FOREIGN KEY (fk_i_category_id )
     REFERENCES /*TABLE_PREFIX*/t_category (pk_i_id ),
@@ -285,10 +289,10 @@ CREATE  TABLE IF NOT EXISTS /*TABLE_PREFIX*/t_item_comment (
   INDEX fk_i_user_id (fk_i_user_id ASC) ,
   CONSTRAINT t_item_comment_ibfk_1
     FOREIGN KEY (fk_i_item_id )
-    REFERENCES /*TABLE_PREFIX*/t_item (pk_i_id ),
+    REFERENCES /*TABLE_PREFIX*/item (pk_i_id ),
   CONSTRAINT t_item_comment_ibfk_2
     FOREIGN KEY (fk_i_user_id )
-    REFERENCES /*TABLE_PREFIX*/t_user (pk_i_id ))
+    REFERENCES /*TABLE_PREFIX*/user (pk_i_id ))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
@@ -327,7 +331,7 @@ CREATE  TABLE IF NOT EXISTS /*TABLE_PREFIX*/t_item_location (
   INDEX fk_i_city_area_id (fk_i_city_area_id ASC) ,
   CONSTRAINT t_item_location_ibfk_1
     FOREIGN KEY (fk_i_item_id )
-    REFERENCES /*TABLE_PREFIX*/t_item (pk_i_id ),
+    REFERENCES /*TABLE_PREFIX*/item (pk_i_id ),
   CONSTRAINT t_item_location_ibfk_2
     FOREIGN KEY (fk_c_country_code )
     REFERENCES /*TABLE_PREFIX*/t_country (pk_c_code ),
@@ -364,7 +368,7 @@ CREATE  TABLE IF NOT EXISTS /*TABLE_PREFIX*/t_item_meta (
   INDEX fk_i_field_id (fk_i_field_id ASC) ,
   CONSTRAINT t_item_meta_ibfk_1
     FOREIGN KEY (fk_i_item_id )
-    REFERENCES /*TABLE_PREFIX*/t_item (pk_i_id ),
+    REFERENCES /*TABLE_PREFIX*/item (pk_i_id ),
   CONSTRAINT t_item_meta_ibfk_2
     FOREIGN KEY (fk_i_field_id )
     REFERENCES /*TABLE_PREFIX*/t_meta_fields (pk_i_id ))
@@ -383,7 +387,7 @@ CREATE  TABLE IF NOT EXISTS /*TABLE_PREFIX*/t_item_resource (
   INDEX fk_i_item_id (fk_i_item_id ASC) ,
   CONSTRAINT t_item_resource_ibfk_1
     FOREIGN KEY (fk_i_item_id )
-    REFERENCES /*TABLE_PREFIX*/t_item (pk_i_id ))
+    REFERENCES /*TABLE_PREFIX*/item (pk_i_id ))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
@@ -402,7 +406,7 @@ CREATE  TABLE IF NOT EXISTS /*TABLE_PREFIX*/t_item_stats (
   INDEX dt_date (dt_date ASC, fk_i_item_id ASC) ,
   CONSTRAINT t_item_stats_ibfk_1
     FOREIGN KEY (fk_i_item_id )
-    REFERENCES /*TABLE_PREFIX*/t_item (pk_i_id ))
+    REFERENCES /*TABLE_PREFIX*/item (pk_i_id ))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
@@ -526,7 +530,7 @@ CREATE  TABLE IF NOT EXISTS /*TABLE_PREFIX*/t_user_description (
   INDEX fk_c_locale_code (fk_c_locale_code ASC) ,
   CONSTRAINT t_user_description_ibfk_1
     FOREIGN KEY (fk_i_user_id )
-    REFERENCES /*TABLE_PREFIX*/t_user (pk_i_id ),
+    REFERENCES /*TABLE_PREFIX*/user (pk_i_id ),
   CONSTRAINT t_user_description_ibfk_2
     FOREIGN KEY (fk_c_locale_code )
     REFERENCES /*TABLE_PREFIX*/t_locale (pk_c_code ))
@@ -541,7 +545,7 @@ CREATE  TABLE IF NOT EXISTS /*TABLE_PREFIX*/t_user_email_tmp (
   PRIMARY KEY (fk_i_user_id) ,
   CONSTRAINT t_user_email_tmp_ibfk_1
     FOREIGN KEY (fk_i_user_id )
-    REFERENCES /*TABLE_PREFIX*/t_user (pk_i_id ))
+    REFERENCES /*TABLE_PREFIX*/user (pk_i_id ))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 

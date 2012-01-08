@@ -25,14 +25,12 @@ require $configPath;
 
 require_once 'osc/default-constants.php';
 require_once 'osc/db.php';
-require_once 'osc/Logger/LogDatabase.php';
 require_once 'osc/classes/database/DBConnectionClass.php';
 require_once 'osc/classes/database/DBCommandClass.php';
 require_once 'osc/classes/database/DBRecordsetClass.php';
 require_once 'osc/classes/database/DAO.php';
 require_once 'osc/model/Preference.php';
 require_once 'osc/helpers/hPreference.php';
-require_once 'osc/helpers/hDatabaseInfo.php';
 require_once 'osc/helpers/hDefines.php';
 require_once 'osc/helpers/hLocale.php';
 require_once 'osc/helpers/hMessages.php';
@@ -111,9 +109,8 @@ require_once 'osc/frm/SendFriend.form.class.php';
 require_once 'osc/frm/Alert.form.class.php';
 require_once 'osc/frm/Field.form.class.php';
 require_once 'osc/functions.php';
-define('__OSC_LOADED__', true);
+
 Plugins::init();
 Rewrite::newInstance()->init();
-// Moved from BaseModel, since we need some session magic on index.php ;)
 Session::newInstance()->session_start();
 

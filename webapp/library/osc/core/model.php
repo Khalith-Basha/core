@@ -11,7 +11,8 @@ class Model
 
 	public function __destruct()
 	{
-		$this->conn->close();
+		if( is_resource( $this->conn ) )
+			$this->conn->close();
 	}
 
 	public function getConnection()
@@ -29,31 +30,37 @@ class Model
 		return $this->conn->prepare( $this->replacePrefix( $sql ) ); 
 	}
 
-	public function fetchAll( mysqli_stmt $stmt )
-	{
-		$results = array();
+        public function fetchAll( mysqli_stmt $stmt )
+        {   
+                $results = array();
 
-		$stmt->execute();
-		$fields = $stmt->result_metadata()->fetch_fields();
-		$fieldNames = array();
-		$fieldValues = array();
-		foreach( $fields as $field )
-		{
-			$fieldName = $field->name;
-			$fieldNames[] = $fieldName;
-			$fieldValues[$fieldName] = &$fieldName;
-		}
-		call_user_func_array( array( $stmt, 'bind_result' ), $fieldValues);
+                if( false === $stmt->execute() )
+                        return false;
 
-		while( $stmt->fetch() )
-		{
-			$result = array();
-			foreach( array_keys( $fieldValues ) as $field => $fieldValue )
-				$result[$field] = $fieldValue;
-			$results[] = $result;
-		}
+                $numFields = $stmt->field_count;
+                $fieldNames = $fieldValues = array();
+    
+                $fields = $stmt->result_metadata()->fetch_fields();
+                foreach( $fields as $field )
+                {   
+                        $fieldNames[] = $field->name;
+                        $fieldValues[] = ''; 
+                }   
 
-		return $results;
-	}
+                for( $i = 0; $i < $numFields; $i++ )
+                        $fieldValues[$i] = &$fieldValues[$i];
+
+                call_user_func_array( array( $stmt, 'bind_result' ), $fieldValues );
+
+                while( $stmt->fetch() )
+                {   
+                        $result = array();
+                        for( $i = 0; $i < $numFields; $i++ )
+                                $result[ $fieldNames[ $i ] ] = $fieldValues[ $i ];
+                        $results[] = $result;
+                }   
+
+                return $results;
+        }   
 }
 

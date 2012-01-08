@@ -132,13 +132,7 @@ class DBCommandClass
 	 * @var array
 	 */
 	var $aWherein;
-	/* var $aAliasedTables ; */
-	/* var $aStoreArray ; */
-	/**
-	 *
-	 * @var LogDatabase
-	 */
-	var $log;
+
 	/**
 	 * Initializate variables
 	 *
@@ -165,7 +159,6 @@ class DBCommandClass
 		$this->aOrder = false;
 		$this->aOrderby = array();
 		$this->aWherein = array();
-		$this->log = LogDatabase::newInstance();
 	}
 	/**
 	 * Unset connection and result objects
@@ -884,19 +877,11 @@ class DBCommandClass
 		$this->errorReport();
 		if (false === $this->resultId) 
 		{
-			if (OSC_DEBUG_DB) 
-			{
-				$this->log->addMessage($sql, 0, $this->errorLevel, $this->errorDesc);
-			}
 			return false;
 		}
 		$timeEnd = list($em, $es) = explode(' ', microtime());
 		$this->queryTimes[] = ($em + $es) - ($sm + $ss);
 		$this->queryCount++;
-		if (OSC_DEBUG_DB) 
-		{
-			$this->log->addMessage($sql, ($em + $es) - ($sm + $ss), $this->errorLevel, $this->errorDesc);
-		}
 		if ($this->isWriteType($sql) === true) 
 		{
 			return true;
@@ -927,7 +912,6 @@ class DBCommandClass
 		{
 			return false;
 		}
-		$this->log->addExplainMessage($sql, $rs->result());
 		return true;
 	}
 	/**

@@ -21,11 +21,8 @@
 define('ABS_PATH', dirname(dirname(__FILE__)));
 define('CONTENT_PATH', ABS_PATH . '/components');
 define('TRANSLATIONS_PATH', CONTENT_PATH . '/languages');
-define('OSC_INSTALLING', 1);
 set_include_path(get_include_path() . PATH_SEPARATOR . ABS_PATH . '/library');
 require_once 'osc/Logger/Logger.php';
-require_once 'osc/Logger/LogDatabase.php';
-require_once 'osc/Logger/LogOsclass.php';
 require_once 'osc/classes/database/DBConnectionClass.php';
 require_once 'osc/classes/database/DBCommandClass.php';
 require_once 'osc/classes/database/DBRecordsetClass.php';
@@ -33,7 +30,6 @@ require_once 'osc/classes/database/DAO.php';
 require_once 'osc/core/Session.php';
 require_once 'osc/core/Params.php';
 require_once 'osc/model/Preference.php';
-require_once 'osc/helpers/hDatabaseInfo.php';
 require_once 'osc/helpers/hDefines.php';
 require_once 'osc/helpers/hErrors.php';
 require_once 'osc/helpers/hLocale.php';
@@ -60,14 +56,6 @@ case 1:
 	break;
 
 case 2:
-	if (Params::getParam('save_stats') == '1' || isset($_COOKIE['osclass_save_stats'])) 
-	{
-		setcookie('osclass_save_stats', 1, time() + (24 * 60 * 60));
-	}
-	else
-	{
-		setcookie('osclass_save_stats', 0, time() + (24 * 60 * 60));
-	}
 	if (Params::getParam('ping_engines') == '1' || isset($_COOKIE['osclass_ping_engines'])) 
 	{
 		setcookie('osclass_ping_engines', 1, time() + (24 * 60 * 60));
@@ -103,28 +91,31 @@ if ($step == 1)
 }
 elseif ($step == 2) 
 {
-	display_database_config();
+	require 'views/db_config.php';
 }
 elseif ($step == 3) 
 {
 	if (!isset($error["error"])) 
 	{
-		display_target();
+		require 'views/target.php';
 	}
 	else
 	{
-		display_database_error($error, ($step - 1));
+		require 'views/db_error.php';
 	}
 }
 elseif ($step == 4) 
 {
-	display_categories($error, $password);
+	require_once DEFAULT_CONFIG_PATH;
+	require_once 'osc/model/Category.php';
+	$categories = Category::newInstance()->toTreeAll();
+	$numCols = 3;
+	$catsPerCol = ceil(count($categories) / $numCols);
+	require 'views/categories.php';
 }
 elseif ($step == 5) 
 {
-	// ping engines
 	ping_search_engines($_COOKIE['osclass_ping_engines']);
-	setcookie('osclass_save_stats', '', time() - 3600);
 	setcookie('osclass_ping_engines', '', time() - 3600);
 	display_finish($password);
 }

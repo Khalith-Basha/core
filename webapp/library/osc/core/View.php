@@ -17,8 +17,9 @@
  *
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-class View
+ */
+
+class OldView
 {
 	private $aExported;
 	private $aCurrent;
@@ -120,3 +121,6 @@ class View
 		unset($this->aCurrent[$key]);
 	}
 }
+
+require 'osc/core/view.php';
+

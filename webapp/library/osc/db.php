@@ -79,13 +79,6 @@ class DB
 		$this->db = @new mysqli($this->dbHost, $this->dbUser, $this->dbPassword, $this->dbName);
 		if ($this->db->connect_error) 
 		{
-			if (!defined('OSC_INSTALLING')) 
-			{
-				require_once 'osc/helpers/hErrors.php';
-				$title = 'OpenSourceClassifieds &raquo; Error connecting to database';
-				$message = 'Cannot connect to database. Check your configuration in <code>config.php</code> file.';
-				osc_die($title, $message);
-			}
 			$this->debug('Error connecting to \'' . $this->dbName . '\' (' . $this->db->connect_errno . ': ' . $this->db->connect_error . ')', false);
 		}
 		$this->db_errno = $this->db->connect_errno;
@@ -548,10 +541,6 @@ class DB
 function getConnection($dbHost = null, $dbUser = null, $dbPassword = null, $dbName = null, $dbLogLevel = null) 
 {
 	static $instance;
-	if (defined('DB_HOST') && $dbHost == null) $dbHost = osc_db_host();
-	if (defined('DB_USER') && $dbUser == null) $dbUser = osc_db_user();
-	if (defined('DB_PASSWORD') && $dbPassword == null) $dbPassword = osc_db_password();
-	if (defined('DB_NAME') && $dbName == null) $dbName = osc_db_name();
 	if (!isset($instance[$dbName . "_" . $dbHost])) 
 	{
 		if (!isset($instance)) 

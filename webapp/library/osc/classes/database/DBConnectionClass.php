@@ -124,12 +124,8 @@ class DBConnectionClass
 	 * @param string $database Default database to be used when performing queries
 	 * @return DBConnectionClass
 	 */
-	public static function newInstance($server = '', $user = '', $password = '', $database = '') 
+	public static function newInstance($server, $user, $password, $database) 
 	{
-		$server = ($server == '') ? osc_db_host() : $server;
-		$user = ($user == '') ? osc_db_user() : $user;
-		$password = ($password == '') ? osc_db_password() : $password;
-		$database = ($database == '') ? osc_db_name() : $database;
 		if (!self::$instance instanceof self) 
 		{
 			self::$instance = new self($server, $user, $password, $database);
@@ -408,28 +404,6 @@ class DBConnectionClass
 	 */
 	function debug() 
 	{
-		$log = LogDatabase::newInstance();
-		if (OSC_DEBUG_DB_EXPLAIN) 
-		{
-			$log->writeExplainMessages();
-		}
-		if (!OSC_DEBUG_DB) 
-		{
-			return false;
-		}
-		if (defined('IS_AJAX') && !OSC_DEBUG_DB_LOG) 
-		{
-			return false;
-		}
-		if (OSC_DEBUG_DB_LOG) 
-		{
-			$log->writeMessages();
-		}
-		else
-		{
-			$log->printMessages();
-		}
-		unset($log);
 		return true;
 	}
 	/**

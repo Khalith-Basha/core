@@ -113,7 +113,7 @@ function get_relative_url()
 */
 function get_requirements() 
 {
-	$minimumPhpVersion = '5.2';
+	$minimumPhpVersion = '5.3';
 	$array = array('PHP version >= ' . $minimumPhpVersion => version_compare(PHP_VERSION, $minimumPhpVersion, '>='), 'Folder <code>components/uploads</code> exists' => file_exists(ABS_PATH . '/components/uploads/'), 'Folder <code>components/uploads</code> is writable' => is_writable(ABS_PATH . '/components/uploads/'), 'Folder <code>components/languages</code> exists' => file_exists(ABS_PATH . '/components/languages/'));
 	$php_extensions = array('mysqli', 'gd', 'curl', 'zip', 'memcached', 'mbstring');
 	foreach ($php_extensions as $php_ext) 
@@ -173,24 +173,7 @@ function check_requirements($array)
 	}
 	return false;
 }
-/**
- * Check if allowed to send stats to Osclass
- *
- * @return boolean Check if allowed to send stats to Osclass
- */
-function reportToOsclass() 
-{
-	return $_COOKIE['osclass_save_stats'];
-}
-/**
- * insert/update preference allow_report_osclass
- * @param boolean $bool
- */
-function set_allow_report_osclass($value) 
-{
-	$values = array('s_section' => 'osclass', 's_name' => 'allow_report_osclass', 's_value' => $value, 'e_type' => 'BOOLEAN');
-	Preference::newInstance()->insert($values);
-}
+
 /*
  * Install OpenSourceClassifieds database
  *
@@ -218,10 +201,6 @@ function oc_install()
 		$error_num = $master_conn->getErrorConnectionLevel();
 		if ($error_num > 0) 
 		{
-			if (reportToOsclass()) 
-			{
-				LogOsclassInstaller::instance()->error('Cannot connect to database. Error number: ' . $error_num, __FILE__ . "::" . __LINE__);
-			}
 			switch ($error_num) 
 			{
 			case 1049:
@@ -251,10 +230,6 @@ function oc_install()
 		$error_num = $comm->getErrorLevel();
 		if ($error_num > 0) 
 		{
-			if (reportToOsclass()) 
-			{
-				LogOsclassInstaller::instance()->error('Cannot create the database. Error number: ' . $error_num, __FILE__ . "::" . __LINE__);
-			}
 			if (in_array($error_num, array(1006, 1044, 1045))) 
 			{
 				return array('error' => 'Cannot create the database. Check if the admin username and password are correct.');
@@ -269,10 +244,6 @@ function oc_install()
 	$error_num = $conn->getErrorLevel();
 	if ($error_num > 0) 
 	{
-		if (reportToOsclass()) 
-		{
-			LogOsclassInstaller::instance()->error('Cannot connect to database. Error number: ' . $error_num, __FILE__ . "::" . __LINE__);
-		}
 		switch ($error_num) 
 		{
 		case 1049:
@@ -296,38 +267,12 @@ function oc_install()
 			break;
 		}
 	}
-	if (file_exists(DEFAULT_CONFIG_PATH)) 
+	if (!is_writable(DEFAULT_CONFIG_PATH)) 
 	{
-		if (!is_writable(DEFAULT_CONFIG_PATH)) 
-		{
-			if (reportToOsclass()) 
-			{
-				LogOsclassInstaller::instance()->error('Cannot write in ' . DEFAULT_CONFIG_PATH . ' file. Check if the file is writable.', __FILE__ . "::" . __LINE__);
-			}
-			return array('error' => 'Cannot write in ' . DEFAULT_CONFIG_PATH . ' file. Check if the file is writable.');
-		}
-		create_config_file($dbname, $username, $password, $dbhost, $tableprefix);
+		return array('error' => 'Cannot write in ' . DEFAULT_CONFIG_PATH . ' file. Check if the file is writable.');
 	}
-	else
-	{
-		if (!file_exists(SAMPLE_CONFIG_PATH)) 
-		{
-			if (reportToOsclass()) 
-			{
-				LogOsclassInstaller::instance()->error('It doesn\'t exist ' . SAMPLE_CONFIG_PATH . '. Check if you have everything well decompressed.', __FILE__ . "::" . __LINE__);
-			}
-			return array('error' => 'It doesn\'t exist ' . SAMPLE_CONFIG_PATH . '. Check if you have everything well decompressed.');
-		}
-		if (!is_writable(DEFAULT_CONFIG_FOLDER_PATH)) 
-		{
-			if (reportToOsclass()) 
-			{
-				LogOsclassInstaller::instance()->error('Can\'t copy ' . SAMPLE_CONFIG_PATH . '. Check if the configuration directory is writable.', __FILE__ . "::" . __LINE__);
-			}
-			return array('error' => 'Can\'t copy ' . SAMPLE_CONFIG_PATH . '. Check if the configuration directory is writable.');
-		}
-		copy_config_file($dbname, $username, $password, $dbhost, $tableprefix);
-	}
+	create_config_file($dbname, $username, $password, $dbhost, $tableprefix);
+
 	require_once DEFAULT_CONFIG_PATH;
 	$sql = file_get_contents(ABS_PATH . '/installer/data/struct.sql');
 	$c_db = $conn->getOsclassDb();
@@ -336,10 +281,6 @@ function oc_install()
 	$error_num = $comm->getErrorLevel();
 	if ($error_num > 0) 
 	{
-		if (reportToOsclass()) 
-		{
-			LogOsclassInstaller::instance()->error('Cannot create the database structure. Error number: ' . $error_num, __FILE__ . "::" . __LINE__);
-		}
 		switch ($error_num) 
 		{
 		case 1050:
@@ -370,10 +311,6 @@ function oc_install()
 	{
 		if (!file_exists(ABS_PATH . '/installer/data/' . $file)) 
 		{
-			if (reportToOsclass()) 
-			{
-				LogOsclassInstaller::instance()->error('the file ' . $file . ' doesn\'t exist in data folder', __FILE__ . "::" . __LINE__);
-			}
 			return array('error' => 'the file ' . $file . ' doesn\'t exist in data folder');
 		}
 		else
@@ -385,10 +322,6 @@ function oc_install()
 	$error_num = $comm->getErrorLevel();
 	if ($error_num > 0) 
 	{
-		if (reportToOsclass()) 
-		{
-			LogOsclassInstaller::instance()->error('Cannot insert basic configuration. Error number: ' . $error_num, __FILE__ . "::" . __LINE__);
-		}
 		switch ($error_num) 
 		{
 		case 1471:
@@ -399,14 +332,6 @@ function oc_install()
 			return array('error' => 'Cannot insert basic configuration. Error number: ' . $error_num . '.');
 			break;
 		}
-	}
-	if (reportToOsclass()) 
-	{
-		set_allow_report_osclass(true);
-	}
-	else
-	{
-		set_allow_report_osclass(false);
 	}
 	return false;
 }
@@ -428,12 +353,8 @@ function create_config_file($dbname, $username, $password, $dbhost, $tableprefix
 	$rel_url = get_relative_url();
 	$config_text = <<<CONFIG
 <?php
-/**
- * The base MySQL settings of OpenSourceClassifieds
- */
-define('MULTISITE', 0);
 
-/** MySQL database name for OpenSourceClassifieds */
+/** MySQL database name */
 define('DB_NAME', '$dbname');
 
 /** MySQL database username */
@@ -454,66 +375,17 @@ define('WEB_PATH', '$abs_url');
 
 CONFIG;
 	$ds = DIRECTORY_SEPARATOR;
-	file_put_contents(ABS_PATH . $ds . 'config' . $ds . 'default ' . $ds . 'general.php', $config_text);
-}
-/*
- * Create config from config-sample.php file
- *
- * @since 1.2
-*/
-function copy_config_file($dbname, $username, $password, $dbhost, $tableprefix) 
-{
-	$abs_url = get_absolute_url();
-	$rel_url = get_relative_url();
-	$config_sample = file(SAMPLE_CONFIG_PATH);
-	foreach ($config_sample as $line_num => $line) 
-	{
-		switch (substr($line, 0, 16)) 
-		{
-		case "define('DB_NAME'":
-			$config_sample[$line_num] = str_replace("database_name", $dbname, $line);
-			break;
-
-		case "define('DB_USER'":
-			$config_sample[$line_num] = str_replace("'username'", "'$username'", $line);
-			break;
-
-		case "define('DB_PASSW":
-			$config_sample[$line_num] = str_replace("'password'", "'$password'", $line);
-			break;
-
-		case "define('DB_HOST'":
-			$config_sample[$line_num] = str_replace("localhost", $dbhost, $line);
-			break;
-
-		case "define('DB_TABLE":
-			$config_sample[$line_num] = str_replace("''", "'$tableprefix'", $line);
-			break;
-
-		case "define('REL_WEB_":
-			$config_sample[$line_num] = str_replace('rel_here', $rel_url, $line);
-			break;
-
-		case "define('WEB_PATH":
-			$config_sample[$line_num] = str_replace('http://localhost', $abs_url, $line);
-			break;
-		}
-	}
-	$handle = fopen(DEFAULT_CONFIG_PATH, 'w');
-	foreach ($config_sample as $line) 
-	{
-		fwrite($handle, $line);
-	}
-	fclose($handle);
-	chmod(DEFAULT_CONFIG_PATH, 0666);
+	$configPath = ABS_PATH . $ds . 'config' . $ds . 'default' . $ds . 'general.php';
+	file_put_contents( $configPath, $config_text );
 }
 function is_osclass_installed() 
 {
-	if (!file_exists(DEFAULT_CONFIG_PATH)) 
+	if( !file_exists( DEFAULT_CONFIG_PATH ) ) 
 	{
 		return false;
 	}
 	require_once DEFAULT_CONFIG_PATH;
+	if( !defined( 'DB_HOST' ) ) return false;
 	$conn = DBConnectionClass::newInstance();
 	$c_db = $conn->getOsclassDb();
 	$comm = new DBCommandClass($c_db);
@@ -528,7 +400,28 @@ function is_osclass_installed()
 	}
 	return true;
 }
-function finish_installation($password) 
+function display_database_error($error, $step) 
+{
+}
+function ping_search_engines($bool) 
+{
+	$mPreference = Preference::newInstance();
+	if ($bool == 1) 
+	{
+		$mPreference->insert(array('s_section' => 'osclass', 's_name' => 'ping_search_engines', 's_value' => '1', 'e_type' => 'BOOLEAN'));
+		// GOOGLE
+		osc_doRequest('http://www.google.com/webmasters/sitemaps/ping?sitemap=' . urlencode(osc_search_url(array('sFeed' => 'rss'))), array());
+		// BING
+		osc_doRequest('http://www.bing.com/webmaster/ping.aspx?siteMap=' . urlencode(osc_search_url(array('sFeed' => 'rss'))), array());
+		// YAHOO!
+		osc_doRequest('http://search.yahooapis.com/SiteExplorerService/V1/ping?sitemap=' . urlencode(osc_search_url(array('sFeed' => 'rss'))), array());
+	}
+	else
+	{
+		$mPreference->insert(array('s_section' => 'osclass', 's_name' => 'ping_search_engines', 's_value' => '0', 'e_type' => 'BOOLEAN'));
+	}
+}
+function display_finish($password) 
 {
 	require_once 'osc/model/Admin.php';
 	require_once 'osc/model/Category.php';
@@ -561,49 +454,5 @@ function finish_installation($password)
 	$data['s_email'] = $admin['s_email'];
 	$data['admin_user'] = $admin['s_username'];
 	$data['password'] = $password;
-	return $data;
-}
-function display_database_config() 
-{
-	require 'views/db_config.php';
-}
-function display_target() 
-{
-	require 'views/target.php';
-}
-function display_database_error($error, $step) 
-{
-	require 'views/db_error.php';
-}
-function display_categories($error, $password) 
-{
-	require_once DEFAULT_CONFIG_PATH;
-	require_once 'osc/model/Category.php';
-	$categories = Category::newInstance()->toTreeAll();
-	$numCols = 3;
-	$catsPerCol = ceil(count($categories) / $numCols);
-	require 'views/categories.php';
-}
-function ping_search_engines($bool) 
-{
-	$mPreference = Preference::newInstance();
-	if ($bool == 1) 
-	{
-		$mPreference->insert(array('s_section' => 'osclass', 's_name' => 'ping_search_engines', 's_value' => '1', 'e_type' => 'BOOLEAN'));
-		// GOOGLE
-		osc_doRequest('http://www.google.com/webmasters/sitemaps/ping?sitemap=' . urlencode(osc_search_url(array('sFeed' => 'rss'))), array());
-		// BING
-		osc_doRequest('http://www.bing.com/webmaster/ping.aspx?siteMap=' . urlencode(osc_search_url(array('sFeed' => 'rss'))), array());
-		// YAHOO!
-		osc_doRequest('http://search.yahooapis.com/SiteExplorerService/V1/ping?sitemap=' . urlencode(osc_search_url(array('sFeed' => 'rss'))), array());
-	}
-	else
-	{
-		$mPreference->insert(array('s_section' => 'osclass', 's_name' => 'ping_search_engines', 's_value' => '0', 'e_type' => 'BOOLEAN'));
-	}
-}
-function display_finish($password) 
-{
-	$data = finish_installation($password);
 	require 'views/finish.php';
 }
