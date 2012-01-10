@@ -19,7 +19,6 @@ CREATE  TABLE IF NOT EXISTS `osc_db`.`t_admin` (
   UNIQUE INDEX `s_username` (`s_username` ASC) ,
   UNIQUE INDEX `s_email` (`s_email` ASC) )
 ENGINE = InnoDB
-AUTO_INCREMENT = 2
 DEFAULT CHARACTER SET = utf8;
 
 
@@ -54,7 +53,6 @@ CREATE  TABLE IF NOT EXISTS `osc_db`.`t_category` (
     FOREIGN KEY (`fk_i_parent_id` )
     REFERENCES `osc_db`.`t_category` (`pk_i_id` ))
 ENGINE = InnoDB
-AUTO_INCREMENT = 96
 DEFAULT CHARACTER SET = utf8;
 
 
@@ -185,17 +183,6 @@ CREATE  TABLE IF NOT EXISTS `osc_db`.`t_city_area` (
   CONSTRAINT `t_city_area_ibfk_1`
     FOREIGN KEY (`fk_i_city_id` )
     REFERENCES `osc_db`.`t_city` (`pk_i_id` ))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
-
-
--- -----------------------------------------------------
--- Table `osc_db`.`t_cron`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `osc_db`.`t_cron` (
-  `e_type` ENUM('INSTANT','HOURLY','DAILY','WEEKLY','CUSTOM') NOT NULL ,
-  `d_last_exec` DATETIME NOT NULL ,
-  `d_next_exec` DATETIME NOT NULL )
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
@@ -558,7 +545,6 @@ CREATE  TABLE IF NOT EXISTS `osc_db`.`t_pages` (
   `i_order` INT(3) NOT NULL DEFAULT '0' ,
   PRIMARY KEY (`pk_i_id`) )
 ENGINE = InnoDB
-AUTO_INCREMENT = 21
 DEFAULT CHARACTER SET = utf8;
 
 

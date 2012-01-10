@@ -17,11 +17,12 @@
  *
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-define('DEFAULT_TABLE_PREFIX', 'osc_');
-define('DEFAULT_CONFIG_FOLDER_PATH', implode(DIRECTORY_SEPARATOR, array(ABS_PATH, 'config', 'default')));
-define('DEFAULT_CONFIG_PATH', implode(DIRECTORY_SEPARATOR, array(DEFAULT_CONFIG_FOLDER_PATH, 'general.php')));
-define('SAMPLE_CONFIG_PATH', implode(DIRECTORY_SEPARATOR, array(ABS_PATH, 'installer', 'data', 'config-sample.php')));
+ */
+define( 'DEFAULT_TABLE_PREFIX', 'osc_');
+define( 'DEFAULT_CONFIG_FOLDER_PATH', implode(DIRECTORY_SEPARATOR, array(ABS_PATH, 'config', 'default')));
+define( 'DEFAULT_CONFIG_PATH', implode(DIRECTORY_SEPARATOR, array(DEFAULT_CONFIG_FOLDER_PATH, 'general.php')));
+define( 'SAMPLE_CONFIG_PATH', implode(DIRECTORY_SEPARATOR, array(ABS_PATH, 'installer', 'data', 'config-sample.php')));
+
 function basic_info() 
 {
 	require_once 'osc/model/Admin.php';
@@ -82,8 +83,6 @@ function basic_info()
 /*
  * The url of the site
  *
- * @since 1.2
- *
  * @return string The url of the site
 */
 function get_absolute_url() 
@@ -95,8 +94,6 @@ function get_absolute_url()
 /*
  * The relative url on the domain url
  *
- * @since 1.2
- *
  * @return string The relative url on the domain url
 */
 function get_relative_url() 
@@ -107,77 +104,89 @@ function get_relative_url()
 /*
  * Get the requirements to install OpenSourceClassifieds
  *
- * @since 1.2
- *
  * @return array Requirements
 */
 function get_requirements() 
 {
 	$minimumPhpVersion = '5.3';
-	$array = array('PHP version >= ' . $minimumPhpVersion => version_compare(PHP_VERSION, $minimumPhpVersion, '>='), 'Folder <code>components/uploads</code> exists' => file_exists(ABS_PATH . '/components/uploads/'), 'Folder <code>components/uploads</code> is writable' => is_writable(ABS_PATH . '/components/uploads/'), 'Folder <code>components/languages</code> exists' => file_exists(ABS_PATH . '/components/languages/'));
-	$php_extensions = array('mysqli', 'gd', 'curl', 'zip', 'memcached', 'mbstring');
+	$array = array(
+		'PHP version >= ' . $minimumPhpVersion => array(
+			'check' => version_compare( PHP_VERSION, $minimumPhpVersion, '>=' ),
+			'solution' => "PHP $minimumPhpVersion is required to run OpenSourceClassifieds. You may talk with your hosting to upgrade your PHP version."
+		),
+		'Folder <code>components/uploads</code> exists' => array(
+			'check' => file_exists( ABS_PATH . '/components/uploads' ),
+			'solution' => 'You have to create <code>uploads</code> folder, i.e.: <code>mkdir ' . ABS_PATH . '/components/uploads</code>'
+		),
+		'Folder <code>components/uploads</code> is writable' => array(
+			'check' => is_writable( ABS_PATH . '/components/uploads' ),
+			'solution' => 'Folder <code>uploads</code> has to be writable, i.e.: <code>chmod a+w ' . ABS_PATH . '/components/uploads</code>'
+		),
+		'Folder <code>components/languages</code> exists' => array(
+			'check' => file_exists( ABS_PATH . '/components/languages' ),
+			'solution' => 'You have to create <code>languages</code> folder, i.e.: <code>mkdir ' . ABS_PATH . '/components/languages/</code>'
+		)
+	);
+	$php_extensions = array( 'mysqli', 'gd', 'curl', 'zip', 'memcached', 'mbstring' );
 	foreach ($php_extensions as $php_ext) 
 	{
-		$array[$php_ext . ' extension for PHP'] = extension_loaded($php_ext);
+		$array[$php_ext . ' extension for PHP'] = array(
+			'check' => extension_loaded( $php_ext ),
+			'solution' => "Install and enable the PHP extension '$php_ext'."
+		);
 	}
 	$config_writable = false;
 	$root_writable = false;
 	$config_sample = false;
-	if (file_exists(DEFAULT_CONFIG_PATH)) 
+	if (file_exists( DEFAULT_CONFIG_PATH ) ) 
 	{
-		if (is_writable(DEFAULT_CONFIG_PATH)) 
+		if (is_writable( DEFAULT_CONFIG_PATH ) ) 
 		{
 			$config_writable = true;
 		}
-		$array['File <code>' . DEFAULT_CONFIG_PATH . '</code> is writable'] = $config_writable;
+		$array['File <code>' . DEFAULT_CONFIG_PATH . '</code> is writable'] = array(
+			'check' => $config_writable,
+			'solution' => 'File <code>' . DEFAULT_CONFIG_PATH . '</code> has to be writable, i.e.: <code>chmod a+w ' . DEFAULT_CONFIG_PATH . '</code>'
+		);
 	}
 	else
 	{
-		if (is_writable(DEFAULT_CONFIG_FOLDER_PATH)) 
+		if (is_writable( DEFAULT_CONFIG_FOLDER_PATH )) 
 		{
 			$root_writable = true;
 		}
-		$array['Config directory is writable'] = $root_writable;
-		if (file_exists(SAMPLE_CONFIG_PATH)) 
+		$array['Config directory is writable'] = array(
+			'check' => $root_writable,
+			'solution' => 'Config folder has to be writable, i.e.: <code>chmod a+w ' . DEFAULT_CONFIG_FOLDER_PATH . '</code>'
+		);
+		if (file_exists( SAMPLE_CONFIG_PATH )) 
 		{
 			$config_sample = true;
 		}
-		$array['File <code>' . SAMPLE_CONFIG_PATH . '</code> exists'] = $config_sample;
+		$array['File <code>' . SAMPLE_CONFIG_PATH . '</code> exists'] = array(
+			'check' => $config_sample,
+			'solution' => 'File <code>' . SAMPLE_CONFIG_PATH . '</code> is required, you should download OpenSourceClassifieds again.'
+		);
 	}
 	return $array;
 }
-/*
- * Get help of requirements to install OpenSourceClassifieds
- *
- * @since 2.1
- *
- * @return array Help of requirements
-*/
-function get_solution_requirements() 
-{
-	$array = array('PHP version >= 5.x' => 'PHP5 is required to run OpenSourceClassifieds. You may talk with your hosting to upgrade your PHP version.', 'MySQLi extension for PHP' => 'MySQLi extension is required. How to <a target="_blank" href="http://www.php.net/manual/en/mysqli.setup.php">install/configure</a>.', 'GD extension for PHP' => 'GD extension is required. How to <a target="_blank" href="http://www.php.net/manual/en/image.setup.php">install/configure</a>.', 'Folder <code>components/uploads</code> exists' => 'You have to create <code>uploads</code> folder, i.e.: <code>mkdir ' . ABS_PATH . '/components/uploads/</code>', 'Folder <code>components/uploads</code> is writable' => 'Folder <code>uploads</code> has to be writable, i.e.: <code>chmod a+w ' . ABS_PATH . '/components/uploads/</code>', 'Folder <code>components/languages</code> exists' => 'You have to create <code>languages</code> folder, i.e.: <code>mkdir ' . ABS_PATH . '/components/languages/</code>', 'Config directory is writable' => 'Config folder has to be writable, i.e.: <code>chmod a+w ' . DEFAULT_CONFIG_FOLDER_PATH . '</code>', 'File <code>' . DEFAULT_CONFIG_PATH . 'php</code> is writable' => 'File <code>' . DEFAULT_CONFIG_PATH . '</code> has to be writable, i.e.: <code>chmod a+w ' . DEFAULT_CONFIG_PATH . '</code>', 'File <code>' . SAMPLE_CONFIG_PATH . '</code> exists' => 'File <code>' . SAMPLE_CONFIG_PATH . '</code> is required, you should download OpenSourceClassifieds again.');
-	return $array;
-}
+
 /**
  * Check if some of the requirements to install OpenSourceClassifieds are correct or not
  *
- * @since 1.2
- *
  * @return boolean Check if all the requirements are correct
  */
-function check_requirements($array) 
+function check_requirements( array $requirements ) 
 {
-	foreach ($array as $k => $v) 
-	{
-		if (!$v) return true;
-	}
+	foreach( $requirements as $req )
+		if( false === $req['check'] )
+			return true;
+
 	return false;
 }
 
 /*
  * Install OpenSourceClassifieds database
- *
- * @since 1.2
  *
  * @return mixed Error messages of the installation
 */
@@ -273,7 +282,7 @@ function oc_install()
 	}
 	create_config_file($dbname, $username, $password, $dbhost, $tableprefix);
 
-	require_once DEFAULT_CONFIG_PATH;
+	require DEFAULT_CONFIG_PATH;
 	$sql = file_get_contents(ABS_PATH . '/installer/data/struct.sql');
 	$c_db = $conn->getOsclassDb();
 	$comm = new DBCommandClass($c_db);
@@ -338,8 +347,6 @@ function oc_install()
 /*
  * Create config file from scratch
  *
- * @since 1.2
- *
  * @param string $dbname Database name
  * @param string $username User of the database
  * @param string $password Password for user of the database
@@ -380,28 +387,17 @@ CONFIG;
 }
 function is_osclass_installed() 
 {
-	if( !file_exists( DEFAULT_CONFIG_PATH ) ) 
+	if( file_exists( DEFAULT_CONFIG_PATH ) ) 
 	{
-		return false;
+		require DEFAULT_CONFIG_PATH;
+		
+		if( !defined( 'DB_HOST' ) )
+			return false;
+
+		return true;
 	}
-	require_once DEFAULT_CONFIG_PATH;
-	if( !defined( 'DB_HOST' ) ) return false;
-	$conn = DBConnectionClass::newInstance();
-	$c_db = $conn->getOsclassDb();
-	$comm = new DBCommandClass($c_db);
-	$rs = $comm->query(sprintf("SELECT * FROM %st_preference WHERE s_name = 'osclass_installed'", DB_TABLE_PREFIX));
-	if ($rs == false) 
-	{
-		return false;
-	}
-	if ($rs->numRows() != 1) 
-	{
-		return false;
-	}
-	return true;
-}
-function display_database_error($error, $step) 
-{
+
+	return false;
 }
 function ping_search_engines($bool) 
 {
@@ -456,3 +452,4 @@ function display_finish($password)
 	$data['password'] = $password;
 	require 'views/finish.php';
 }
+

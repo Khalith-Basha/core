@@ -124,8 +124,13 @@ class DBConnectionClass
 	 * @param string $database Default database to be used when performing queries
 	 * @return DBConnectionClass
 	 */
-	public static function newInstance($server, $user, $password, $database) 
+	public static function newInstance($server = null, $user = null, $password = null, $database = null) 
 	{
+		if( empty( $server ) && defined( DB_HOST ) ) $server = DB_HOST;
+		if( empty( $user ) && defined( DB_USER ) ) $user = DB_USER;
+		if( empty( $password ) && defined( DB_PASSWORD ) ) $password = DB_PASSWORD;
+		if( empty( $database ) && defined( DB_NAME ) ) $database = DB_NAME;
+
 		if (!self::$instance instanceof self) 
 		{
 			self::$instance = new self($server, $user, $password, $database);

@@ -72,9 +72,9 @@ class DAO
 	/**
 	 * Init connection of the database and create DBCommandClass object
 	 */
-	function __construct() 
+	function __construct()
 	{
-		$conn = DBConnectionClass::newInstance();
+		$conn = DBConnectionClass::newInstance( DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 		$data = $conn->getOsclassDb();
 		$this->dao = new DBCommandClass($data);
 		$this->tablePrefix = DB_TABLE_PREFIX;

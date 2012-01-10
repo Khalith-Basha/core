@@ -43,7 +43,7 @@ if (!is_numeric($step))
 {
 	$step = '1';
 }
-if (is_osclass_installed()) 
+if (is_osclass_installed()&&false) 
 {
 	$message = 'You appear to have already installed OpenSourceClassifieds. To reinstall please clear your old database tables first.';
 	osc_die('OpenSourceClassifieds &raquo; Error', $message);
@@ -106,7 +106,6 @@ elseif ($step == 3)
 }
 elseif ($step == 4) 
 {
-	require_once DEFAULT_CONFIG_PATH;
 	require_once 'osc/model/Category.php';
 	$categories = Category::newInstance()->toTreeAll();
 	$numCols = 3;

@@ -1,15 +1,9 @@
-<?php
-if ($error) 
-{ ?>
-
+<?php if( !empty( $error ) ): ?>
     <h2 class="target">Error</h2>
     <p class="bottom space-left-10">
-        <?php
-	echo $error; ?>
+        <?php echo $error; ?>
     </p>
-
-<?php
-} ?>
+<?php endif; ?>
 <form id="category_form" action="index.php?step=5" method="POST">
     <input type="hidden" name="password" value="<?php
 echo $password; ?>"/>
