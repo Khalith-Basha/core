@@ -44,7 +44,7 @@ class Page extends DAO
 		parent::__construct();
 		$this->setTableName('t_pages');
 		$this->setPrimaryKey('pk_i_id');
-		$array_fields = array('pk_i_id', 's_internal_name', 'b_indelible', 'dt_pub_date', 'dt_mod_date', 'i_order');
+		$array_fields = array('pk_i_id', 's_internal_name', 'b_indelible', 'pub_date', 'dt_mod_date', 'i_order');
 		$this->setFields($array_fields);
 	}
 	/**
@@ -301,7 +301,7 @@ class Page extends DAO
 		{
 			$order = - 1;
 		}
-		$this->dao->insert($this->tableName, array('s_internal_name' => $aFields['s_internal_name'], 'b_indelible' => $aFields['b_indelible'], 'dt_pub_date' => date('Y-m-d H:i:s'), 'dt_mod_date' => date('Y-m-d H:i:s'), 'i_order' => ($order + 1)));
+		$this->dao->insert($this->tableName, array('s_internal_name' => $aFields['s_internal_name'], 'b_indelible' => $aFields['b_indelible'], 'pub_date' => date('Y-m-d H:i:s'), 'dt_mod_date' => date('Y-m-d H:i:s'), 'i_order' => ($order + 1)));
 		$id = $this->dao->insertedId();
 		if ($this->dao->affectedRows() == 0) 
 		{

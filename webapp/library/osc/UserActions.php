@@ -24,8 +24,8 @@ Class UserActions
 		$this->is_admin = $is_admin;
 		$this->manager = User::newInstance();
 	}
-	//add...
-	function add() 
+
+	public function add() 
 	{
 		if ((osc_recaptcha_private_key() != '') && !$this->is_admin) 
 		{

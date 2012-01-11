@@ -1093,7 +1093,7 @@ function osc_total_items()
 function osc_total_active_items_today() 
 {
 	$search = new Search(false);
-	$search->addConditions(sprintf('DATEDIFF(\'%s\', %st_item.dt_pub_date) < 1', date('Y-m-d H:i:s'), DB_TABLE_PREFIX));
+	$search->addConditions(sprintf('DATEDIFF(\'%s\', %sitem.pub_date) < 1', date('Y-m-d H:i:s'), DB_TABLE_PREFIX));
 	return $search->count();
 }
 /**
@@ -1104,6 +1104,6 @@ function osc_total_active_items_today()
 function osc_total_items_today() 
 {
 	$search = new Search(true);
-	$search->addConditions(sprintf('DATEDIFF(\'%s\', %st_item.dt_pub_date) < 1', date('Y-m-d H:i:s'), DB_TABLE_PREFIX));
+	$search->addConditions(sprintf('DATEDIFF(\'%s\', %sitem.pub_date) < 1', date('Y-m-d H:i:s'), DB_TABLE_PREFIX));
 	return $search->count();
 }

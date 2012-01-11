@@ -63,7 +63,7 @@ class Stats
 			$this->conn->select('DATE(dt_reg_date) as d_date, COUNT(pk_i_id) as num');
 			$this->conn->groupBy('DAY(dt_reg_date)');
 		}
-		$this->conn->from(DB_TABLE_PREFIX . 't_user');
+		$this->conn->from(DB_TABLE_PREFIX . 'user');
 		$this->conn->where("dt_reg_date > '$from_date'");
 		$this->conn->orderBy('dt_reg_date', 'DESC');
 		$result = $this->conn->get();
@@ -72,7 +72,7 @@ class Stats
 	public function users_by_country() 
 	{
 		$this->conn->select('s_country, COUNT(pk_i_id) as num');
-		$this->conn->from(DB_TABLE_PREFIX . 't_user');
+		$this->conn->from(DB_TABLE_PREFIX . 'user');
 		$this->conn->groupBy('s_country');
 		$result = $this->conn->get();
 		return $result->result();
@@ -80,7 +80,7 @@ class Stats
 	public function users_by_region() 
 	{
 		$this->conn->select('s_region, COUNT(pk_i_id) as num');
-		$this->conn->from(DB_TABLE_PREFIX . 't_user');
+		$this->conn->from(DB_TABLE_PREFIX . 'user');
 		$this->conn->groupBy('s_region');
 		$result = $this->conn->get();
 		return $result->result();
@@ -93,7 +93,7 @@ class Stats
 	public function latest_users() 
 	{
 		$this->conn->select();
-		$this->conn->from(DB_TABLE_PREFIX . 't_user');
+		$this->conn->from(DB_TABLE_PREFIX . 'user');
 		$this->conn->orderBy('dt_reg_date', 'DESC');
 		$this->conn->limit('5');
 		$result = $this->conn->get();
@@ -103,22 +103,22 @@ class Stats
 	{
 		if ($date == 'week') 
 		{
-			$this->conn->select('WEEK(dt_pub_date) as d_date, COUNT(pk_i_id) as num');
-			$this->conn->groupBy('WEEK(dt_pub_date)');
+			$this->conn->select('WEEK(pub_date) as d_date, COUNT(pk_i_id) as num');
+			$this->conn->groupBy('WEEK(pub_date)');
 		}
 		else if ($date == 'month') 
 		{
-			$this->conn->select('MONTHNAME(dt_pub_date) as d_date, COUNT(pk_i_id) as num');
-			$this->conn->groupBy('MONTH(dt_pub_date)');
+			$this->conn->select('MONTHNAME(pub_date) as d_date, COUNT(pk_i_id) as num');
+			$this->conn->groupBy('MONTH(pub_date)');
 		}
 		else
 		{
-			$this->conn->select('DATE(dt_pub_date) as d_date, COUNT(pk_i_id) as num');
-			$this->conn->groupBy('DAY(dt_pub_date)');
+			$this->conn->select('DATE(pub_date) as d_date, COUNT(pk_i_id) as num');
+			$this->conn->groupBy('DAY(pub_date)');
 		}
 		$this->conn->from(DB_TABLE_PREFIX . "t_item");
-		$this->conn->where("dt_pub_date > '$from_date'");
-		$this->conn->orderBy('dt_pub_date', 'DESC');
+		$this->conn->where("pub_date > '$from_date'");
+		$this->conn->orderBy('pub_date', 'DESC');
 		$result = $this->conn->get();
 		return $result->result();
 	}
@@ -128,7 +128,7 @@ class Stats
 		$this->conn->from(DB_TABLE_PREFIX . 't_item i, ' . DB_TABLE_PREFIX . 't_item_location l, ' . DB_TABLE_PREFIX . 't_item_description d');
 		$this->conn->where('l.fk_i_item_id = i.pk_i_id AND d.fk_i_item_id = i.pk_i_id');
 		$this->conn->groupBy('i.pk_i_id');
-		$this->conn->orderBy('dt_pub_date', 'DESC');
+		$this->conn->orderBy('pub_date', 'DESC');
 		$this->conn->limit('5');
 		$result = $this->conn->get();
 		return $result->result();
@@ -137,22 +137,22 @@ class Stats
 	{
 		if ($date == 'week') 
 		{
-			$this->conn->select('WEEK(dt_pub_date) as d_date, COUNT(pk_i_id) as num');
-			$this->conn->groupBy('WEEK(dt_pub_date)');
+			$this->conn->select('WEEK(pub_date) as d_date, COUNT(pk_i_id) as num');
+			$this->conn->groupBy('WEEK(pub_date)');
 		}
 		else if ($date == 'month') 
 		{
-			$this->conn->select('MONTH(dt_pub_date) as d_date, COUNT(pk_i_id) as num');
-			$this->conn->groupBy('MONTH(dt_pub_date)');
+			$this->conn->select('MONTH(pub_date) as d_date, COUNT(pk_i_id) as num');
+			$this->conn->groupBy('MONTH(pub_date)');
 		}
 		else
 		{
-			$this->conn->select('DAY(dt_pub_date) as d_date, COUNT(pk_i_id) as num');
-			$this->conn->groupBy('DAY(dt_pub_date)');
+			$this->conn->select('DAY(pub_date) as d_date, COUNT(pk_i_id) as num');
+			$this->conn->groupBy('DAY(pub_date)');
 		}
 		$this->conn->from(DB_TABLE_PREFIX . "t_item_comment");
-		$this->conn->where("dt_pub_date > '$from_date'");
-		$this->conn->orderBy('dt_pub_date', 'DESC');
+		$this->conn->where("pub_date > '$from_date'");
+		$this->conn->orderBy('pub_date', 'DESC');
 		$result = $this->conn->get();
 		return $result->result();
 	}
@@ -161,7 +161,7 @@ class Stats
 		$this->conn->select('i.*, c.*');
 		$this->conn->from(DB_TABLE_PREFIX . 't_item i, ' . DB_TABLE_PREFIX . 't_item_comment c');
 		$this->conn->where('c.fk_i_item_id = i.pk_i_id');
-		$this->conn->orderBy('c.dt_pub_date', 'DESC');
+		$this->conn->orderBy('c.pub_date', 'DESC');
 		$this->conn->limit('5');
 		$result = $this->conn->get();
 		return $result->result();

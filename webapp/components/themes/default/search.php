@@ -25,7 +25,7 @@
 echo str_replace('_', '-', osc_current_user_locale()); ?>">
     <head>
         <?php
-osc_current_web_theme_path('head.php'); ?>
+osc_current_web_theme_path( 'head.php', $view ); ?>
         <?php
 if (osc_count_items() == 0) 
 { ?>

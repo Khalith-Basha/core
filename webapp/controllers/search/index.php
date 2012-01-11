@@ -29,9 +29,7 @@ class CWebSearch extends Controller
 	{
 		osc_run_hook('before_search');
 		$mCategories = new Category();
-		////////////////////////////////
-		//GETTING AND FIXING SENT DATA//
-		////////////////////////////////
+
 		$p_sCategory = Params::getParam('sCategory');
 		if (!is_array($p_sCategory)) 
 		{
@@ -235,8 +233,19 @@ class CWebSearch extends Controller
 			$this->_exportVariableToView('search_show_as', $p_sShowAs);
 			$this->_exportVariableToView('search', $this->mSearch);
 			$this->_exportVariableToView('search_alert', base64_encode(serialize($this->mSearch)));
-			//calling the view...
-			$this->doView('search.php');
+
+			$view = new HtmlView;
+			$view->setName( 'search' );
+			if( 0 === $iTotalItems )
+			{
+				$view->setMetaRobots( array( 'noindex', 'nofollow' ) );
+			}
+			
+			osc_run_hook("before_html");
+			echo $view->render();
+			##osc_current_web_theme_path( 'search.php', array(), $view );
+			Session::newInstance()->_clearVariables();
+			osc_run_hook("after_html");
 		}
 		else
 		{
@@ -260,11 +269,11 @@ class CWebSearch extends Controller
 						if (osc_count_item_resources() > 0) 
 						{
 							osc_has_item_resources();
-							$feed->addItem(array('title' => osc_item_title(), 'link' => htmlentities(osc_item_url()), 'description' => osc_item_description(), 'dt_pub_date' => osc_item_pub_date(), 'image' => array('url' => htmlentities(osc_resource_thumbnail_url()), 'title' => osc_item_title(), 'link' => htmlentities(osc_item_url()))));
+							$feed->addItem(array('title' => osc_item_title(), 'link' => htmlentities(osc_item_url()), 'description' => osc_item_description(), 'pub_date' => osc_item_pub_date(), 'image' => array('url' => htmlentities(osc_resource_thumbnail_url()), 'title' => osc_item_title(), 'link' => htmlentities(osc_item_url()))));
 						}
 						else
 						{
-							$feed->addItem(array('title' => osc_item_title(), 'link' => htmlentities(osc_item_url()), 'description' => osc_item_description(), 'dt_pub_date' => osc_item_pub_date()));
+							$feed->addItem(array('title' => osc_item_title(), 'link' => htmlentities(osc_item_url()), 'description' => osc_item_description(), 'pub_date' => osc_item_pub_date()));
 						}
 					}
 				}
@@ -277,12 +286,6 @@ class CWebSearch extends Controller
 			}
 		}
 	}
-
-	public function doView($file) 
-	{
-		osc_run_hook("before_html");
-		osc_current_web_theme_path($file);
-		Session::newInstance()->_clearVariables();
-		osc_run_hook("after_html");
-	}
 }
+
+

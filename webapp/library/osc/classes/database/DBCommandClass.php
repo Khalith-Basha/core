@@ -655,9 +655,10 @@ class DBCommandClass
 	 * @param array $values
 	 * @return string
 	 */
-	function _insert($table, $keys, $values) 
+	function _insert( $table, array $keys, array $values ) 
 	{
-		return 'INSERT INTO ' . $table . ' (' . implode(', ', $keys) . ') VALUES (' . implode(', ', $values) . ')';
+		$sql = 'INSERT INTO ' . $table . ' (' . implode(', ', $keys) . ') VALUES (' . implode(', ', $values) . ')';
+		return $sql;
 	}
 	/**
 	 * Create the REPLACE INTO sql and perform the query
@@ -925,7 +926,11 @@ class DBCommandClass
 	function _execute($sql) 
 	{
 		$result = $this->connId->query($sql);
-		if( false === $result ) trigger_error( $this->connId->error );
+		if( false === $result )
+		{
+			trigger_error( $this->connId->error );
+			debug_print_backtrace();
+		}
 		return $result;
 	}
 	/**

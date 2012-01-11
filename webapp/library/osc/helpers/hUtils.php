@@ -133,7 +133,6 @@ function osc_show_recaptcha($section = '')
  */
 function osc_format_date($date) 
 {
-	//$date = strtotime($item['dt_pub_date']) ;
 	return date(osc_date_format(), strtotime($date));
 }
 /**

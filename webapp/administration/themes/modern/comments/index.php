@@ -126,7 +126,7 @@ foreach (__get('comments') as $c)
                                 ,"<?php
 	echo addcslashes(preg_replace('|\s+|', ' ', $c['s_body']), '"'); ?>"
                                 ,"<?php
-	echo $c['dt_pub_date']; ?>"
+	echo $c['pub_date']; ?>"
                             ] <?php
 	echo $last_id != $c['pk_i_id'] ? ',' : ''; ?>
                         <?php

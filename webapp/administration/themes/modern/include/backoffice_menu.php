@@ -285,18 +285,15 @@ _e('Users'); ?></a>
         </h3>
         <ul>
             <li>
-                <a href="<?php
-echo osc_admin_base_url(true); ?>?page=users">&raquo; <?php
+                <a href="<?php echo osc_admin_base_url(true); ?>?page=user">&raquo; <?php
 _e('Manage users'); ?></a>
             </li>
             <li>
-                <a href="<?php
-echo osc_admin_base_url(true); ?>?page=users&action=create">&raquo; <?php
+                <a href="<?php echo osc_admin_base_url(true); ?>?page=user&action=create">&raquo; <?php
 _e('Add new user'); ?></a>
             </li>
             <li>
-                <a href="<?php
-echo osc_admin_base_url(true); ?>?page=users&action=settings">&raquo; <?php
+                <a href="<?php echo osc_admin_base_url(true); ?>?page=user&action=settings">&raquo; <?php
 _e('Settings'); ?></a>
             </li>
         </ul>

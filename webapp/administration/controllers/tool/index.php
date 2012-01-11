@@ -152,51 +152,6 @@ class CAdminTools extends AdminSecBaseModel
 			$this->doView('tools/backup.php');
 			break;
 
-		case 'backup-sql':
-			//databasse dump...
-			if (Params::getParam('bck_dir') != '') 
-			{
-				$path = trim(Params::getParam('bck_dir'));
-				if (substr($path, -1, 1) != "/") 
-				{
-					$path.= '/';
-				}
-			}
-			else
-			{
-				$path = osc_base_path();
-			}
-			$filename = 'OpenSourceClassifieds_mysqlbackup.' . date('YmdHis') . '.sql';
-			switch (osc_dbdump($path, $filename)) 
-			{
-			case (-1):
-				$msg = _m('Path is empty');
-				osc_add_flash_error_message($msg, 'admin');
-				break;
-
-			case (-2):
-				$msg = sprintf(_m('Could not connect with the database. Error: %s'), mysql_error());
-				osc_add_flash_error_message($msg, 'admin');
-				break;
-
-			case (-3):
-				$msg = _m('There are no tables to back up');
-				osc_add_flash_error_message($msg, 'admin');
-				break;
-
-			case (-4):
-				$msg = _m('The folder is not writable');
-				osc_add_flash_error_message($msg, 'admin');
-				break;
-
-			default:
-				$msg = _m('Backup has been done properly');
-				osc_add_flash_ok_message($msg, 'admin');
-				break;
-			}
-			$this->redirectTo(osc_admin_base_url(true) . '?page=tools&action=backup');
-			break;
-
 		case 'backup-zip':
 			//zip of the code just to back it up
 			if (Params::getParam('bck_dir') != '') 

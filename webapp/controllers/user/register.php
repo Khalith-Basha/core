@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Affero General Public
  * License along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-class CWebRegister extends Controller
+class CWebUser extends Controller
 {
 	function __construct() 
 	{
@@ -33,15 +33,10 @@ class CWebRegister extends Controller
 	}
 	function doModel() 
 	{
-		$this->doView('user-register.php');
-	}
-	function doView($file) 
-	{
 		osc_run_hook('before_html');
-		osc_current_web_theme_path($file);
+		osc_current_web_theme_path( 'user-register.php' );
 		Session::newInstance()->_clearVariables();
 		osc_run_hook('after_html');
 	}
 }
-$do = new CWebRegister();
-$do->doModel();
+

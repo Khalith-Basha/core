@@ -43,7 +43,7 @@ class WebThemes
 			require_once $functions_path;
 		}
 	}
-	/* PRIVATE */
+
 	private function setCurrentThemePath() 
 	{
 		if (file_exists($this->path . $this->theme . '/')) 
@@ -54,7 +54,7 @@ class WebThemes
 		else
 		{
 			$this->theme_exists = false;
-			$this->theme_path = osc_lib_path() . 'osc/gui/';
+			$this->theme_path = osc_lib_path() . '/osc/gui';
 		}
 	}
 	private function setCurrentThemeUrl() 

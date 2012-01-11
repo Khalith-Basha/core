@@ -243,7 +243,7 @@ function osc_user_email()
  */
 function osc_user_regdate() 
 {
-	return (string)osc_user_field("dt_reg_date");
+	return (string)osc_user_field("reg_date");
 }
 /**
  * Gets id of current user

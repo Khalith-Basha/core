@@ -70,7 +70,7 @@ class RSSFeed
 			}
 			echo $item['description'], ']]>';
 			echo '</description>', PHP_EOL;
-			echo '<pubDate>', date('r', strtotime($item['dt_pub_date'])), '</pubDate>', PHP_EOL;
+			echo '<pubDate>', date('r', strtotime($item['pub_date'])), '</pubDate>', PHP_EOL;
 			echo '</item>', PHP_EOL;
 		}
 		echo '</channel>', PHP_EOL;

@@ -42,9 +42,9 @@ class User extends DAO
 	function __construct() 
 	{
 		parent::__construct();
-		$this->setTableName('t_user');
+		$this->setTableName('user');
 		$this->setPrimaryKey('pk_i_id');
-		$array_fields = array('pk_i_id', 'dt_reg_date', 'dt_mod_date', 's_name', 's_password', 's_secret', 's_email', 's_website', 's_phone_land', 's_phone_mobile', 'b_enabled', 'b_active', 's_pass_code', 's_pass_date', 's_pass_question', 's_pass_answer', 's_pass_ip', 'fk_c_country_code', 's_country', 's_address', 's_zip', 'fk_i_region_id', 's_region', 'fk_i_city_id', 's_city', 'fk_i_city_area_id', 's_city_area', 'd_coord_lat', 'd_coord_long', 'i_permissions', 'b_company', 'i_items', 'i_comments');
+		$array_fields = array('pk_i_id', 'reg_date', 'mod_date', 's_name', 's_password', 's_secret', 's_email', 's_website', 's_phone_land', 's_phone_mobile', 'b_enabled', 'b_active', 's_pass_code', 's_pass_date', 's_pass_question', 's_pass_answer', 's_pass_ip', 'fk_c_country_code', 's_country', 's_address', 's_zip', 'fk_i_region_id', 's_region', 'fk_i_city_id', 's_city', 'fk_i_city_area_id', 's_city_area', 'd_coord_lat', 'd_coord_long', 'i_permissions', 'b_company', 'i_items', 'i_comments');
 		$this->setFields($array_fields);
 	}
 	/**

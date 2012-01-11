@@ -89,7 +89,7 @@ class CWebItem extends Controller
 			$category = Category::newInstance()->findByPrimaryKey($item['fk_i_category_id']);
 			if ($category['i_expiration_days'] > 0) 
 			{
-				$item_date = strtotime($item['dt_pub_date']) + ($category['i_expiration_days'] * (24 * 3600));
+				$item_date = strtotime($item['pub_date']) + ($category['i_expiration_days'] * (24 * 3600));
 				$date = time();
 				if ($item_date < $date && $item['b_premium'] != 1) 
 				{

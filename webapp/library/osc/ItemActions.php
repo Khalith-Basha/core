@@ -119,7 +119,7 @@ Class ItemActions
 		}
 		else
 		{
-			$this->manager->insert(array('fk_i_user_id' => $aItem['userId'], 'dt_pub_date' => date('Y-m-d H:i:s'), 'fk_i_category_id' => $aItem['catId'], 'i_price' => $aItem['price'], 'fk_c_currency_code' => $aItem['currency'], 's_contact_name' => $contactName, 's_contact_email' => $contactEmail, 's_secret' => $code, 'b_active' => ($active == 'ACTIVE' ? 1 : 0), 'b_enabled' => 1, 'b_show_email' => $aItem['showEmail']));
+			$this->manager->insert(array('fk_i_user_id' => $aItem['userId'], 'pub_date' => date('Y-m-d H:i:s'), 'fk_i_category_id' => $aItem['catId'], 'i_price' => $aItem['price'], 'fk_c_currency_code' => $aItem['currency'], 's_contact_name' => $contactName, 's_contact_email' => $contactEmail, 's_secret' => $code, 'b_active' => ($active == 'ACTIVE' ? 1 : 0), 'b_enabled' => 1, 'b_show_email' => $aItem['showEmail']));
 			if (!$this->is_admin) 
 			{
 				// Track spam delay: Session
@@ -558,7 +558,7 @@ Class ItemActions
 			}
 		}
 		$mComments = ItemComment::newInstance();
-		$aComment = array('dt_pub_date' => date('Y-m-d H:i:s'), 'fk_i_item_id' => $itemId, 's_author_name' => $authorName, 's_author_email' => $authorEmail, 's_title' => $title, 's_body' => $body, 'b_active' => ($status == 'ACTIVE' ? 1 : 0), 'b_enabled' => 1, 'fk_i_user_id' => $userId);
+		$aComment = array('pub_date' => date('Y-m-d H:i:s'), 'fk_i_item_id' => $itemId, 's_author_name' => $authorName, 's_author_email' => $authorEmail, 's_title' => $title, 's_body' => $body, 'b_active' => ($status == 'ACTIVE' ? 1 : 0), 'b_enabled' => 1, 'fk_i_user_id' => $userId);
 		if ($mComments->insert($aComment)) 
 		{
 			$commentID = $mComments->dao->insertedId();

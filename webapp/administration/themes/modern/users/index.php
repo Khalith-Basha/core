@@ -126,12 +126,9 @@ foreach ($users as $u)
 	echo osc_admin_base_url(true); ?>?page=users&action=delete&amp;id[]=<?php
 	echo $u['pk_i_id']; ?>'><?php
 	_e('Delete'); ?></a></div>"
-						        ,"<?php
-	echo addcslashes($u['s_name'], '"'); ?>"
-						        ,"<?php
-	echo $u['dt_reg_date']; ?>"
-                                ,"<?php
-	echo $u['dt_mod_date']; ?>"
+						        ,"<?php echo addcslashes($u['s_name'], '"'); ?>"
+						        ,"<?php echo $u['reg_date']; ?>"
+                                ,"<?php echo $u['_mod_date']; ?>"
 					        ] <?php
 	echo $last_id != $u['pk_i_id'] ? ',' : ''; ?>
 				        <?php

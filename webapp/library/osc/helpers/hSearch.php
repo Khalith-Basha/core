@@ -49,7 +49,7 @@ function osc_search()
  */
 function osc_list_orders() 
 {
-	return array(__('Newly listed') => array('sOrder' => 'dt_pub_date', 'iOrderType' => 'desc'), __('Lower price first') => array('sOrder' => 'i_price', 'iOrderType' => 'asc'), __('Higher price first') => array('sOrder' => 'i_price', 'iOrderType' => 'desc'));
+	return array(__('Newly listed') => array('sOrder' => 'pub_date', 'iOrderType' => 'desc'), __('Lower price first') => array('sOrder' => 'i_price', 'iOrderType' => 'asc'), __('Higher price first') => array('sOrder' => 'i_price', 'iOrderType' => 'desc'));
 }
 /**
  * Gets current search page

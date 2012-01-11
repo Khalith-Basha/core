@@ -60,7 +60,7 @@ class ItemComment extends DAO
 		parent::__construct();
 		$this->setTableName('t_item_comment');
 		$this->setPrimaryKey('pk_i_id');
-		$array_fields = array('pk_i_id', 'fk_i_item_id', 'dt_pub_date', 's_title', 's_author_name', 's_author_email', 's_body', 'b_enabled', 'b_active', 'b_spam', 'fk_i_user_id');
+		$array_fields = array('pk_i_id', 'fk_i_item_id', 'pub_date', 's_title', 's_author_name', 's_author_email', 's_body', 'b_enabled', 'b_active', 'b_spam', 'fk_i_user_id');
 		$this->setFields($array_fields);
 	}
 	/**
@@ -209,7 +209,7 @@ class ItemComment extends DAO
 	{
 		$this->dao->select('c.*');
 		$this->dao->from($this->getTableName() . ' c');
-		$this->dao->from(DB_TABLE_PREFIX . 't_item i');
+		$this->dao->from(DB_TABLE_PREFIX . 'item i');
 		$conditions = array();
 		if (is_null($itemId)) 
 		{
@@ -220,7 +220,7 @@ class ItemComment extends DAO
 			$conditions = array('i.pk_i_id' => $itemId, 'c.fk_i_item_id' => $itemId);
 		}
 		$this->dao->where($conditions);
-		$this->dao->orderBy('c.dt_pub_date', 'DESC');
+		$this->dao->orderBy('c.pub_date', 'DESC');
 		$aux = $this->dao->get();
 		$comments = $aux->result();
 		return $this->extendData($comments);
@@ -239,7 +239,7 @@ class ItemComment extends DAO
 		$lang = osc_current_user_locale();
 		$this->dao->select('c.*,c.s_title as comment_title, d.s_title');
 		$this->dao->from($this->getTableName() . ' c');
-		$this->dao->join(DB_TABLE_PREFIX . 't_item i', 'i.pk_i_id = c.fk_i_item_id');
+		$this->dao->join(DB_TABLE_PREFIX . 'item i', 'i.pk_i_id = c.fk_i_item_id');
 		$this->dao->join(DB_TABLE_PREFIX . 't_item_description d', 'd.fk_i_item_id = c.fk_i_item_id');
 		$this->dao->orderBy('c.pk_i_id', 'DESC');
 		$this->dao->limit(0, $num);

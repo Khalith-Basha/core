@@ -186,17 +186,19 @@ function osc_current_web_theme_url($file = '')
  * @param string $file
  * @return string
  */
-function osc_current_web_theme_path($file = '') 
+function osc_current_web_theme_path( $file, View $view = null ) 
 {
+	if( is_null( $view ) )
+		$view = new HtmlView;
 	$webThemes = WebThemes::newInstance();
-	$filePath = $webThemes->getCurrentThemePath() . $file;
+	$filePath = $webThemes->getCurrentThemePath() . DIRECTORY_SEPARATOR . $file;
 	if (file_exists($filePath)) 
 	{
 		require $filePath;
 	}
 	else
 	{
-		WebThemes::newInstance()->setGuiTheme();
+		$webThemes->setGuiTheme();
 		$filePath = $webThemes->getCurrentThemePath() . DIRECTORY_SEPARATOR . $file;
 		if (file_exists($filePath)) 
 		{
@@ -214,7 +216,7 @@ function osc_current_web_theme_path($file = '')
  * @param string $file
  * @return string
  */
-function osc_render_view( $file, array $variables = array() ) 
+function osc_render_view( $file, array $variables = array(), View $view = null ) 
 {
 	extract( $variables );
 

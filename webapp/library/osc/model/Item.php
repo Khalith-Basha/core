@@ -58,9 +58,9 @@ class Item extends DAO
 	function __construct() 
 	{
 		parent::__construct();
-		$this->setTableName('t_item');
+		$this->setTableName('item');
 		$this->setPrimaryKey('pk_i_id');
-		$array_fields = array('pk_i_id', 'fk_i_user_id', 'fk_i_category_id', 'dt_pub_date', 'dt_mod_date', 'f_price', 'i_price', 'fk_c_currency_code', 's_contact_name', 's_contact_email', 'b_premium', 'b_enabled', 'b_active', 'b_spam', 's_secret', 'b_show_email');
+		$array_fields = array('pk_i_id', 'fk_i_user_id', 'fk_i_category_id', 'pub_date', 'dt_mod_date', 'f_price', 'i_price', 'fk_c_currency_code', 's_contact_name', 's_contact_email', 'b_premium', 'b_enabled', 'b_active', 'b_spam', 's_secret', 'b_show_email');
 		$this->setFields($array_fields);
 	}
 	/**
@@ -273,7 +273,7 @@ class Item extends DAO
 		$this->dao->where('b_active', $active);
 		if ($category['i_expiration_days'] != 0) 
 		{
-			$this->dao->where('( b_premium = 1 OR ( DATEDIFF(\'' . date('Y-m-d H:i:s') . '\', dt_pub_date) < ' . $category['i_expiration_days'] . ' ) )');
+			$this->dao->where('( b_premium = 1 OR ( DATEDIFF(\'' . date('Y-m-d H:i:s') . '\', pub_date) < ' . $category['i_expiration_days'] . ' ) )');
 		}
 		$result = $this->dao->get();
 		if ($result == false) 
@@ -291,7 +291,7 @@ class Item extends DAO
 	// BUT REMEMBER TO DELETE IN ANYTHING > 2.1.x THANKS
 	public function listLatest($limit = 10) 
 	{
-		return $this->listWhere(" b_active = 1 AND b_enabled = 1 ORDER BY dt_pub_date DESC LIMIT " . $limit);
+		return $this->listWhere(" b_active = 1 AND b_enabled = 1 ORDER BY pub_date DESC LIMIT " . $limit);
 	}
 	/**
 	 * Insert title, description and what for a given locale and item id.

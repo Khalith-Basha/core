@@ -239,7 +239,7 @@ class ItemResource extends DAO
 	 */
 	function getTableItemName() 
 	{
-		return $this->getTablePrefix() . 't_item';
+		return $this->getTablePrefix() . 'item';
 	}
 	/**
 	 * Return table description name
