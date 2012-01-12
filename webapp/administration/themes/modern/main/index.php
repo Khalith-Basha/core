@@ -161,7 +161,7 @@ if (!empty($numItemsPerCategory))
 	foreach ($numItemsPerCategory as $c) 
 	{ ?>
                                         <a href="<?php
-		echo osc_admin_base_url(true); ?>?page=items&catId=<?php
+		echo osc_admin_base_url(true); ?>?page=item&catId=<?php
 		echo $c['pk_i_id']; ?>"><?php
 		echo $c['s_name']; ?></a>
                                         <?php
@@ -173,7 +173,7 @@ if (!empty($numItemsPerCategory))
                                             <?php
 			echo "&nbsp;&nbsp;"; ?>
                                             <a href="<?php
-			echo osc_admin_base_url(true); ?>?page=items&catId=<?php
+			echo osc_admin_base_url(true); ?>?page=item&catId=<?php
 			echo $subc['pk_i_id']; ?>"><?php
 			echo $subc['s_name']; ?></a>
                                             <?php

@@ -600,8 +600,11 @@ function fn_email_item_validation_non_register_user($item)
 	osc_sendMail($emailParams);
 }
 osc_add_hook('hook_email_item_validation_non_register_user', 'fn_email_item_validation_non_register_user');
-function fn_email_admin_new_user($user) 
+function fn_email_admin_new_user( array $user )
 {
+	if( empty( $user ) )
+		throw new Exception( 'User is empty' );
+
 	$pageManager = new Page();
 	$locale = osc_current_user_locale();
 	$aPage = $pageManager->findByInternalName('email_admin_new_user');

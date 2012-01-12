@@ -29,7 +29,7 @@ class ItemsProcessingAjax
 	private $stat;
 	private $extraCols = 0;
 	private $sExtraCol = array();
-	private $column_names = array(0 => 'dt_pub_date', 1 => 's_title', 2 => 's_contact_name', 3 => 's_category_name', 4 => 's_country', 5 => 's_region', 6 => 's_city', 7 => 'dt_pub_date');
+	private $column_names = array(0 => 'pub_date', 1 => 's_title', 2 => 's_contact_name', 3 => 's_category_name', 4 => 's_country', 5 => 's_region', 6 => 's_city', 7 => 'pub_date');
 	private $tables_columns = array(0 => NULL, 1 => NULL, 2 => NULL, 3 => NULL, 4 => NULL, 5 => NULL, 6 => NULL, 7 => NULL);
 	private $tables_filters = array('fCol_userIdValue' => '%st_item.fk_i_user_id', 'fCol_countryId' => '%st_item_location.fk_c_country_code', 'fCol_regionId' => '%st_item_location.fk_i_region_id', 'fCol_cityId' => '%st_item_location.fk_i_city_id', 'fCol_country' => '%st_item_location.s_country', 'fCol_region' => '%st_item_location.s_region', 'fCol_city' => '%st_item_location.s_city', 'fCol_catId' => '%st_item.fk_i_category_id', 'fCol_bPremium' => '%st_item.b_premium', 'fCol_bActive' => '%st_item.b_active', 'fCol_bEnabled' => '%st_item.b_enabled', 'fCol_bSpam' => '%st_item.b_spam');
 	/* For Datatables */
@@ -274,9 +274,9 @@ class ItemsProcessingAjax
 				{
 					$this->sOutput.= ' | <a href=\'' . osc_admin_base_url(true) . '?page=items&action=status_spam&amp;id=' . $aRow['pk_i_id'] . '&amp;value=1\'>' . __('Mark as spam') . '</a>';
 				}
-				$this->sOutput.= ' | <a href=\'' . osc_admin_base_url(true) . '?page=items&action=item_edit&amp;id=' . $aRow['pk_i_id'] . '\'>' . __('Edit') . '</a>';
+				$this->sOutput.= ' | <a href=\'' . osc_admin_base_url(true) . '?page=item&action=edit&amp;id=' . $aRow['pk_i_id'] . '\'>' . __('Edit') . '</a>';
 				$var = 'onclick=\"javascript:return confirm(\'' . __('This action can not be undone. Are you sure you want to continue?') . '\')\"';
-				$this->sOutput.= ' | <a ' . $var . ' href=\'' . osc_admin_base_url(true) . '?page=items&action=delete&amp;id[]=' . $aRow['pk_i_id'] . '\'>' . __('Delete') . '</a>';
+				$this->sOutput.= ' | <a ' . $var . ' href=\'' . osc_admin_base_url(true) . '?page=item&action=delete&amp;id[]=' . $aRow['pk_i_id'] . '\'>' . __('Delete') . '</a>';
 				if ($this->stat) 
 				{
 					foreach ($this->stat as $key => $_stat) 
@@ -294,7 +294,7 @@ class ItemsProcessingAjax
 				$this->sOutput.= '"' . $aRow['s_country'] . '",';
 				$this->sOutput.= '"' . $aRow['s_region'] . '",';
 				$this->sOutput.= '"' . $aRow['s_city'] . '",';
-				$this->sOutput.= '"' . addslashes($aRow['dt_pub_date']) . '"';
+				$this->sOutput.= '"' . addslashes($aRow['pub_date']) . '"';
 				if ($this->extraCols > 0) $this->sOutput.= ',';
 				if (isset($aRow['i_num_spam'])) 
 				{

@@ -30,7 +30,30 @@ osc_current_admin_theme_path('header.php'); ?>
         <div id="update_version" style="display:none;"></div>
         <script type="text/javascript">
             document.write('<style type="text/css">.tabber{display:none;}<\/style>');
-            $(document).ready(function(){
+$(document).ready(function(){
+
+		$( 'a#lowercaseTitle' ).click( function( e )
+			{
+				$( 'input[id^="title"]' ).each( function()
+					{
+						this.value = this.value.toLowerCase();
+					}
+				);
+				e.preventDefault();
+			}
+		);
+		$( 'a#lowercaseDescription' ).click( function( e )
+			{
+				$( 'textarea[id^="description"]' ).each( function()
+					{
+						this.value = this.value.toLowerCase();
+					}
+				);
+				e.preventDefault();
+			}
+		);
+
+
                 $("#userId").change(function(){
                     if($(this).val()=='') {
                         $("#contact_info").show();
@@ -110,16 +133,16 @@ else
                     <ul id="error_list"></ul>
                     <form name="item" action="<?php
 echo osc_admin_base_url(true); ?>" method="post" enctype="multipart/form-data" >
-                        <input type="hidden" name="page" value="items" />
+                        <input type="hidden" name="page" value="item" />
                         <?php
 if ($new_item) 
 { ?>
-                            <input type="hidden" name="action" value="post_item" />
+                            <input type="hidden" name="action" value="post" />
                         <?php
 }
 else
 { ?>
-                            <input type="hidden" name="action" value="item_edit_post" />
+                            <input type="hidden" name="action" value="edit" />
                             <input type="hidden" name="id" value="<?php
 	echo osc_item_id(); ?>" />
                             <input type="hidden" name="secret" value="<?php

@@ -72,7 +72,7 @@ class ItemResource extends DAO
 	 */
 	function getAllResources($itemId = null) 
 	{
-		$this->dao->select('r.*, c.dt_pub_date');
+		$this->dao->select('r.*, c.pub_date');
 		$this->dao->from($this->getTableName() . ' r');
 		$this->dao->join($this->getTableItemName() . ' c', 'c.pk_i_id = r.fk_i_item_id');
 		if (!is_null($itemId)) 
@@ -203,7 +203,7 @@ class ItemResource extends DAO
 			// order type is incorrect
 			return array();
 		}
-		$this->dao->select('r.*, c.dt_pub_date');
+		$this->dao->select('r.*, c.pub_date');
 		$this->dao->from($this->getTableName() . ' r');
 		$this->dao->join($this->getTableItemName() . ' c', 'c.pk_i_id = r.fk_i_item_id');
 		if (!is_null($itemId) && is_numeric($itemId)) 

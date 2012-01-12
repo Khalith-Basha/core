@@ -39,12 +39,12 @@ _e('Items'); ?></a>
         <ul>
             <li>
                 <a href="<?php
-echo osc_admin_base_url(true); ?>?page=items">&raquo; <?php
+echo osc_admin_base_url(true); ?>?page=item">&raquo; <?php
 _e('Manage items'); ?></a>
             </li>
             <li>
                 <a href="<?php
-echo osc_admin_base_url(true); ?>?page=items&action=post">&raquo; <?php
+echo osc_admin_base_url(true); ?>?page=item&action=post">&raquo; <?php
 _e('Add new item'); ?></a>
             </li>
             <li>
@@ -59,7 +59,7 @@ _e('Manage media'); ?></a>
             </li>
             <li>
                 <a href="<?php
-echo osc_admin_base_url(true); ?>?page=items&action=settings">&raquo; <?php
+echo osc_admin_base_url(true); ?>?page=item&action=settings">&raquo; <?php
 _e('Settings'); ?></a>
             </li>
         </ul>

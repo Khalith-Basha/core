@@ -48,7 +48,7 @@ class CWebItem extends Controller
 		$mItems = new ItemActions(false);
 		$mItems->prepareData(true);
 		// set all parameters into session
-		foreach ($mItems->data as $key => $value) 
+		foreach ($mItems->getData() as $key => $value) 
 		{
 			Session::newInstance()->_setForm($key, $value);
 		}

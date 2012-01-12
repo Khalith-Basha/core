@@ -193,7 +193,10 @@ class ItemForm extends Form
 				echo '<h2>' . $locale['s_name'] . '</h2>';
 			};
 			echo '<div class="title">';
-			echo '<div><label for="title">' . __('Title') . ' *</label></div>';
+			echo '<div>';
+			echo '<label for="title">' . __('Title') . ' *';
+			echo '<br /><a id="lowercaseTitle" href="#">Lowercase</a>';
+			echo '</label></div>';
 			$title = (isset($item) && isset($item['locale'][$locale['pk_c_code']]) && isset($item['locale'][$locale['pk_c_code']]['s_title'])) ? $item['locale'][$locale['pk_c_code']]['s_title'] : '';
 			if (Session::newInstance()->_getForm('title') != "") 
 			{
@@ -206,7 +209,10 @@ class ItemForm extends Form
 			self::title_input('title', $locale['pk_c_code'], $title);
 			echo '</div>';
 			echo '<div class="description">';
-			echo '<div><label for="description">' . __('Description') . ' *</label></div>';
+			echo '<div>';
+			echo '<label for="description">' . __('Description') . ' *';
+			echo '<br /><a id="lowercaseDescription" href="#">Lowercase</a>';
+			echo '</label></div>';
 			$description = (isset($item) && isset($item['locale'][$locale['pk_c_code']]) && isset($item['locale'][$locale['pk_c_code']]['s_description'])) ? $item['locale'][$locale['pk_c_code']]['s_description'] : '';
 			if (Session::newInstance()->_getForm('description') != "") 
 			{

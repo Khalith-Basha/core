@@ -18,7 +18,7 @@
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-class CAdminItems extends AdminSecBaseModel
+class CAdminItem extends AdminSecBaseModel
 {
 	//specific for this class
 	private $itemManager;
@@ -417,64 +417,6 @@ class CAdminItems extends AdminSecBaseModel
 				osc_add_flash_error_message(_m('The item hasn\'t been unmarked as') . " $stat", 'admin');
 			}
 			$this->redirectTo(osc_admin_base_url(true) . "?page=items&stat=" . $stat);
-			break;
-
-		case 'item_edit': // edit item
-			$id = Params::getParam('id');
-			$item = Item::newInstance()->findByPrimaryKey($id);
-			if (count($item) <= 0) 
-			{
-				$this->redirectTo(osc_admin_base_url(true) . "?page=items");
-			}
-			$form = count(Session::newInstance()->_getForm());
-			$keepForm = count(Session::newInstance()->_getKeepForm());
-			if ($form == 0 || $form == $keepForm) 
-			{
-				Session::newInstance()->_dropKeepForm();
-			}
-			$this->_exportVariableToView("item", $item);
-			$this->_exportVariableToView("new_item", FALSE);
-			$this->doView('items/frm.php');
-			break;
-
-		case 'item_edit_post':
-			$mItems = new ItemActions(true);
-			$mItems->prepareData(false);
-			// set all parameters into session
-			foreach ($mItems->data as $key => $value) 
-			{
-				Session::newInstance()->_setForm($key, $value);
-			}
-			$meta = Params::getParam('meta');
-			if (is_array($meta)) 
-			{
-				foreach ($meta as $key => $value) 
-				{
-					Session::newInstance()->_setForm('meta_' . $key, $value);
-					Session::newInstance()->_keepForm('meta_' . $key);
-				}
-			}
-			$success = $mItems->edit();
-			if ($success == 1) 
-			{
-				$id = Params::getParam('userId');
-				if ($id != '') 
-				{
-					$user = User::newInstance()->findByPrimaryKey($id);
-					Item::newInstance()->update(array('fk_i_user_id' => $id, 's_contact_name' => $user['s_name'], 's_contact_email' => $user['s_email']), array('pk_i_id' => Params::getParam('id'), 's_secret' => Params::getParam('secret')));
-				}
-				else
-				{
-					Item::newInstance()->update(array('fk_i_user_id' => NULL, 's_contact_name' => Params::getParam('contactName'), 's_contact_email' => Params::getParam('contactEmail')), array('pk_i_id' => Params::getParam('id'), 's_secret' => Params::getParam('secret')));
-				}
-				osc_add_flash_ok_message(_m('Changes saved correctly'), 'admin');
-				$this->redirectTo(osc_admin_base_url(true) . "?page=items");
-			}
-			else
-			{
-				osc_add_flash_error_message($success, 'admin');
-				$this->redirectTo(osc_admin_base_url(true) . "?page=items&action=item_edit&id=" . Params::getParam('id'));
-			}
 			break;
 
 		case 'deleteResource': //delete resource

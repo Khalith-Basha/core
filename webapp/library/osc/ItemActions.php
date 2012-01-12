@@ -1035,4 +1035,9 @@ Class ItemActions
 			osc_run_hook('hook_email_admin_new_item', $item);
 		}
 	}
+
+	public function getData()
+	{
+		return $this->data;
+	}
 }
