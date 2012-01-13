@@ -17,7 +17,6 @@
  */
 ?>
 
-<!-- menu -->
 <div id="left_column"> 
     <div style="padding-top: 9px;">
         <div style="float: left; padding-left: 5px; padding-top: 5px;">
@@ -33,8 +32,7 @@ _e('Dashboard'); ?></a></div>
 
     <div id="menu">
         <h3>
-            <a href="#"><?php
-_e('Items'); ?></a>
+            <a href="#"><?php _e('Items'); ?></a>
         </h3>
         <ul>
             <li>
@@ -88,12 +86,12 @@ _e('Pages'); ?></a>
         <ul>
             <li>
                 <a href="<?php
-echo osc_admin_base_url(true); ?>?page=pages">&raquo; <?php
+echo osc_admin_base_url(true); ?>?page=page">&raquo; <?php
 _e('Manage pages'); ?></a>
             </li>
             <li>
                 <a href="<?php
-echo osc_admin_base_url(true); ?>?page=pages&action=add">&raquo; <?php
+echo osc_admin_base_url(true); ?>?page=page&action=add">&raquo; <?php
 _e('Create page'); ?></a>
             </li>
         </ul>
@@ -104,7 +102,7 @@ _e('Emails & Alerts'); ?></a>
         <ul>
             <li>
                 <a href="<?php
-echo osc_admin_base_url(true); ?>?page=emails">&raquo; <?php
+echo osc_admin_base_url(true); ?>?page=email">&raquo; <?php
 _e('Manage emails & alerts'); ?></a>
             </li>
         </ul>
@@ -151,30 +149,25 @@ _e('Plugins'); ?></a>
         <ul>
             <li>
                 <a href="<?php
-echo osc_admin_base_url(true); ?>?page=plugins">&raquo; <?php
+echo osc_admin_base_url(true); ?>?page=plugin">&raquo; <?php
 _e('Manage plugins'); ?></a>
             </li>
             <li>
                 <a href="<?php
-echo osc_admin_base_url(true); ?>?page=plugins&action=add">&raquo; <?php
+echo osc_admin_base_url(true); ?>?page=plugin&action=add">&raquo; <?php
 _e('Add new plugin'); ?></a>
             </li>
         </ul>
 
         <h3>
-            <a href="#"><?php
-_e('Languages'); ?></a>
+            <a href="#"><?php _e('Languages'); ?></a>
         </h3>
         <ul>
             <li>
-                <a href="<?php
-echo osc_admin_base_url(true); ?>?page=languages">&raquo; <?php
-_e('Manage languages'); ?></a>
+                <a href="<?php echo osc_admin_base_url(true); ?>?page=language">&raquo; <?php _e('Manage languages'); ?></a>
             </li>
             <li>
-                <a href="<?php
-echo osc_admin_base_url(true); ?>?page=languages&action=add">&raquo; <?php
-_e('Add a language'); ?></a>
+                <a href="<?php echo osc_admin_base_url(true); ?>?page=language&action=add">&raquo; <?php _e('Add a language'); ?></a>
             </li>
         </ul>
 
@@ -247,27 +240,17 @@ _e('Tools'); ?></a>
         <ul>
             <li>
                 <a href="<?php
-echo osc_admin_base_url(true); ?>?page=tools&action=import">&raquo; <?php
+echo osc_admin_base_url(true); ?>?page=tool&action=import">&raquo; <?php
 _e('Import data'); ?></a>
             </li>
             <li>
                 <a href="<?php
-echo osc_admin_base_url(true); ?>?page=tools&action=backup">&raquo; <?php
-_e('Backup data'); ?></a>
-            </li>
-            <li>
-                <a href="<?php
-echo osc_admin_base_url(true); ?>?page=tools&action=upgrade">&raquo; <?php
-_e('Upgrade OpenSourceClassifieds'); ?></a>
-            </li>
-            <li>
-                <a href="<?php
-echo osc_admin_base_url(true); ?>?page=tools&action=images">&raquo; <?php
+echo osc_admin_base_url(true); ?>?page=tool&action=images">&raquo; <?php
 _e('Regenerate thumbnails'); ?></a>
             </li>
             <li>
                 <a href="<?php
-echo osc_admin_base_url(true); ?>?page=tools&action=maintenance">&raquo; <?php
+echo osc_admin_base_url(true); ?>?page=tool&action=maintenance">&raquo; <?php
 _e('Maintenance mode'); ?></a>
             </li>
         </ul>

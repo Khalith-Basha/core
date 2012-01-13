@@ -18,7 +18,7 @@
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-class CAdminPlugins extends AdminSecBaseModel
+class CAdminPlugin extends AdminSecBaseModel
 {
 	function __construct() 
 	{
@@ -30,80 +30,14 @@ class CAdminPlugins extends AdminSecBaseModel
 	function doModel() 
 	{
 		parent::doModel();
-		//specific things for this class
 		switch ($this->action) 
 		{
-		case 'add':
-			$this->doView("plugins/add.php");
-			break;
-
-		case 'add_post':
-			$package = Params::getFiles("package");
-			if (isset($package['size']) && $package['size'] != 0) 
-			{
-				$path = osc_plugins_path();
-				(int)$status = osc_unzip_file($package['tmp_name'], $path);
-			}
-			else
-			{
-				$status = 3;
-			}
-			switch ($status) 
-			{
-			case (0):
-				$msg = _m('The plugin folder is not writable');
-				osc_add_flash_error_message($msg, 'admin');
-				break;
-
-			case (1):
-				$msg = _m('The plugin has been uploaded correctly');
-				osc_add_flash_ok_message($msg, 'admin');
-				break;
-
-			case (2):
-				$msg = _m('The zip file is not valid');
-				osc_add_flash_error_message($msg, 'admin');
-				break;
-
-			case (3):
-				$msg = _m('No file was uploaded');
-				osc_add_flash_error_message($msg, 'admin');
-				$this->redirectTo(osc_admin_base_url(true) . "?page=plugins&action=add");
-				break;
-
-			case (-1):
-			default:
-				$msg = _m('There was a problem adding the plugin');
-				osc_add_flash_error_message($msg, 'admin');
-				break;
-			}
-			$this->redirectTo(osc_admin_base_url(true) . "?page=plugins");
-			break;
-
-		case 'install':
-			$pn = Params::getParam("plugin");
-			// CATCH FATAL ERRORS
-			register_shutdown_function(array($this, 'errorHandler'), $pn, 'install');
-			$installed = Plugins::install($pn);
-			if ($installed) 
-			{
-				//run this after installing the plugin
-				Plugins::runHook('install_' . $pn);
-				osc_add_flash_ok_message(_m('Plugin installed'), 'admin');
-			}
-			else
-			{
-				osc_add_flash_error_message(_m('Error: Plugin already installed'), 'admin');
-			}
-			$this->redirectTo(osc_admin_base_url(true) . "?page=plugins");
-			break;
-
 		case 'uninstall':
 			$pn = Params::getParam("plugin");
 			Plugins::runHook($pn . '_uninstall');
 			Plugins::uninstall($pn);
 			osc_add_flash_ok_message(_m('Plugin uninstalled'), 'admin');
-			$this->redirectTo(osc_admin_base_url(true) . "?page=plugins");
+			$this->redirectTo(osc_admin_base_url(true) . "?page=plugin");
 			break;
 
 		case 'enable':
@@ -120,7 +54,7 @@ class CAdminPlugins extends AdminSecBaseModel
 			{
 				osc_add_flash_error_message(_m('Error: Plugin already enabled'), 'admin');
 			}
-			$this->redirectTo(osc_admin_base_url(true) . "?page=plugins");
+			$this->redirectTo(osc_admin_base_url(true) . "?page=plugin");
 			break;
 
 		case 'disable':
@@ -128,7 +62,7 @@ class CAdminPlugins extends AdminSecBaseModel
 			Plugins::runHook($pn . '_disable');
 			Plugins::deactivate($pn);
 			osc_add_flash_ok_message(_m('Plugin disabled'), 'admin');
-			$this->redirectTo(osc_admin_base_url(true) . "?page=plugins");
+			$this->redirectTo(osc_admin_base_url(true) . "?page=plugin");
 			break;
 
 		case 'admin':
@@ -208,7 +142,7 @@ class CAdminPlugins extends AdminSecBaseModel
 			}
 			else
 			{
-				$this->redirectTo(osc_admin_base_url(true) . "?page=plugins");
+				$this->redirectTo(osc_admin_base_url(true) . "?page=plugin");
 			}
 			break;
 
@@ -229,7 +163,7 @@ class CAdminPlugins extends AdminSecBaseModel
 				$this->doView("plugins/index.php");
 			}
 			osc_add_flash_ok_message(_m('Configuration was saved'), 'admin');
-			$this->redirectTo(osc_admin_base_url(true) . "?page=plugins");
+			$this->redirectTo(osc_admin_base_url(true) . "?page=plugin");
 			break;
 
 		default:
@@ -253,7 +187,7 @@ class CAdminPlugins extends AdminSecBaseModel
 				Plugins::uninstall($pn);
 			}
 			osc_add_flash_error_message(sprintf(_m('There was a fatal error and the plugin was not installed.<br />Error: "%s" Line: %s<br/>File: %s'), $aError['message'], $aError['line'], $aError['file']), 'admin');
-			$this->redirectTo(osc_admin_base_url(true) . "?page=plugins");
+			$this->redirectTo(osc_admin_base_url(true) . "?page=plugin");
 		}
 	}
 }

@@ -87,33 +87,6 @@ echo osc_current_admin_theme_js_url('jquery.dataTables.min.js'); ?>"></script>
     });
 </script>
 
-<?php
-$lastCheck = (int)osc_last_version_check();
-$hourInSecs = 24 * 3600;
-?>
-<?php
-if ((time() - $lastCheck) > $hourInSecs) 
-{ ?>
-    <script type="text/javascript">
-        $(function() {
-            var version = <?php
-	echo osc_version(); ?> ;
-
-            $.getJSON("http://opensourceclassifieds.org/latest_version.php?callback=?", function(data) {
-                var update = document.getElementById('update_version') ;
-                if(data.version > version) {
-                    var text = '<?php
-	printf(__('OpenSourceClassifieds %s is available!'), '\' + data.s_name + \''); ?> <a href="index.php?page=tools&action=upgrade"><?php
-	_e('Please upgrade now'); ?></a>' ;
-                    update.innerHTML = text ;
-                    update.setAttribute('style', '') ;
-                }
-            });
-        });
-    </script>
-<?php
-} ?>
-
 <script>
     var fileDefaultText = '<?php
 _e('No file selected', 'modern'); ?>';

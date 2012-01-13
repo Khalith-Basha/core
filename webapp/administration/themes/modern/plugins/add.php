@@ -63,8 +63,8 @@ if (is_writable(osc_plugins_path()))
                                 </p>
 
                                 <form action="<?php
-	echo osc_admin_base_url(true); ?>?page=plugins" method="post" enctype="multipart/form-data">
-                                    <input type="hidden" name="action" value="add_post" />
+	echo osc_admin_base_url(true); ?>?page=plugin" method="post" enctype="multipart/form-data">
+                                    <input type="hidden" name="action" value="add" />
                                     <p>
                                         <label for="package"><?php
 	_e('Plugin package'); ?> (.zip)</label>

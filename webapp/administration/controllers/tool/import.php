@@ -24,42 +24,37 @@ class CAdminTool extends AdminSecBaseModel
 	{
 		parent::__construct();
 	}
-	//Business Layer...
 	function doModel() 
 	{
 		switch ($this->action) 
 		{
-		case 'maintenance':
-			$mode = Params::getParam('mode');
-			if ($mode == 'on') 
+		case 'import':
+			$this->doView('tools/import.php');
+			break;
+
+		case 'import_post':
+			// calling
+			$sql = Params::getFiles('sql');
+			if (isset($sql['size']) && $sql['size'] != 0) 
 			{
-				$maintenance_file = ABS_PATH . '.maintenance';
-				$fileHandler = @fopen($maintenance_file, 'w');
-				if ($fileHandler) 
+				$content_file = file_get_contents($sql['tmp_name']);
+				$conn = DBConnectionClass::newInstance();
+				$c_db = $conn->getOsclassDb();
+				$comm = new DBCommandClass($c_db);
+				if ($comm->importSQL($content_file)) 
 				{
-					osc_add_flash_ok_message(_m('Maintenance mode is ON'), 'admin');
+					osc_add_flash_ok_message(_m('Import complete'), 'admin');
 				}
 				else
 				{
-					osc_add_flash_error_message(_m('There was an error creating .maintenance file, please create it manually at the root folder'), 'admin');
+					osc_add_flash_error_message(_m('There was a problem importing data to the database'), 'admin');
 				}
-				fclose($fileHandler);
-				$this->redirectTo(osc_admin_base_url(true) . '?page=tool&action=maintenance');
 			}
-			else if ($mode == 'off') 
+			else
 			{
-				$deleted = @unlink(ABS_PATH . '.maintenance');
-				if ($deleted) 
-				{
-					osc_add_flash_ok_message(_m('Maintenance mode is OFF'), 'admin');
-				}
-				else
-				{
-					osc_add_flash_error_message(_m('There was an error removing .maintenance file, please remove it manually from the root folder'), 'admin');
-				}
-				$this->redirectTo(osc_admin_base_url(true) . '?page=tool&action=maintenance');
+				osc_add_flash_error_message(_m('No file was uploaded'), 'admin');
 			}
-			$this->doView('tools/maintenance.php');
+			$this->redirectTo(osc_admin_base_url(true) . '?page=tool&action=import');
 			break;
 		}
 	}

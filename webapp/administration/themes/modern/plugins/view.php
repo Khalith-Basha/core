@@ -40,7 +40,7 @@ echo osc_current_admin_theme_url('images/plugins-icon.png'); ?>" title="" alt=""
 				        <div id="content_header_arrow">&raquo; <?php
 _e('Plugins'); ?></div>
 				        <a href="<?php
-echo osc_admin_base_url(true); ?>?page=plugins&action=add" id="button_open"><?php
+echo osc_admin_base_url(true); ?>?page=plugin&action=add" id="button_open"><?php
 _e('Add a new plugin'); ?></a>
 				        <div style="clear: both;"></div>
 			        </div>

@@ -497,26 +497,21 @@ function strip_slashes_extended($array)
  * @param string $to Full path where it is going to be unzipped
  * @return int
  */
-function osc_unzip_file($file, $to) 
+function osc_unzip_file( $file, $to ) 
 {
-	if (!file_exists($to)) 
+	if( !file_exists( $to ) )
 	{
-		if (!@mkdir($to, 0766)) 
+		if( !@mkdir( $to, 0777 ) )
 		{
-			return 0;
+			throw new Exception( 'Destination folder "' . $to . '" does not exist and could not be created.' );
 		}
 	}
-	@chmod($to, 0777);
-	if (!is_writable($to)) 
+	if( !is_writable( $to ) )
 	{
-		return 0;
+		throw new Exception( 'Destination folder "' . $to . '" is not writable.' );
 	}
-	if (class_exists('ZipArchive')) 
-	{
-		return _unzip_file_ziparchive($file, $to);
-	}
-	// if ZipArchive class doesn't exist, we use PclZip
-	return _unzip_file_pclzip($file, $to);
+
+	return _unzip_file_ziparchive( $file, $to );
 }
 /**
  * We assume that the $to path is correct and can be written. It unzips an archive using the PclZip library.
@@ -525,33 +520,29 @@ function osc_unzip_file($file, $to)
  * @param string $to Full path where it is going to be unzipped
  * @return int
  */
-function _unzip_file_ziparchive($file, $to) 
+function _unzip_file_ziparchive( $file, $to ) 
 {
 	$zip = new ZipArchive();
-	$zipopen = $zip->open($file, 4);
-	if ($zipopen !== true) 
+	$zipopen = $zip->open( $file, ZIPARCHIVE::CHECKCONS );
+	if( true !== $zipopen )
 	{
-		return 2;
+		throw new Exception( 'Unable to open ZIP file: ' . $file . ' - Code: ' . $zipopen );
 	}
-	// The zip is empty
-	if ($zip->numFiles == 0) 
+	if( 0 === $zip->numFiles )
 	{
-		return 2;
+		return true;
 	}
-	for ($i = 0; $i < $zip->numFiles; $i++) 
+	for( $i = 0; $i < $zip->numFiles; $i++ )
 	{
-		$file = $zip->statIndex($i);
+		$file = $zip->statIndex( $i );
 		if (!$file) 
 		{
 			return -1;
 		}
-		if (substr($file['name'], 0, 9) === '__MACOSX/') 
+		$filePath = $to . DIRECTORY_SEPARATOR . $file['name'];
+		if ( substr($file['name'], -1) == '/' && !file_exists( $filePath ) ) 
 		{
-			continue;
-		}
-		if (substr($file['name'], -1) == '/') 
-		{
-			@mkdir($to . $file['name'], 0777);
+			mkdir( $filePath, 0777);
 			continue;
 		}
 		$content = $zip->getFromIndex($i);
@@ -559,57 +550,19 @@ function _unzip_file_ziparchive($file, $to)
 		{
 			return -1;
 		}
-		$fp = @fopen($to . $file['name'], 'w');
-		if (!$fp) 
+		if( !is_dir( $filePath ) )
 		{
-			return -1;
+			$fp = fopen( $filePath, 'w');
+			if (!$fp) 
+			{
+				return -1;
+			}
+			fwrite($fp, $content);
+			fclose($fp);
 		}
-		@fwrite($fp, $content);
-		@fclose($fp);
 	}
 	$zip->close();
-	return 1;
-}
-/**
- * We assume that the $to path is correct and can be written. It unzips an archive using the PclZip library.
- *
- * @param string $zip_file Full path of the zip file
- * @param string $to Full path where it is going to be unzipped
- * @return int
- */
-function _unzip_file_pclzip($zip_file, $to) 
-{
-	$archive = new PclZip($zip_file);
-	if (($files = $archive->extract(PCLZIP_OPT_EXTRACT_AS_STRING)) == false) 
-	{
-		return 2;
-	}
-	// check if the zip is not empty
-	if (count($files) == 0) 
-	{
-		return 2;
-	}
-	// Extract the files from the zip
-	foreach ($files as $file) 
-	{
-		if (substr($file['filename'], 0, 9) === '__MACOSX/') 
-		{
-			continue;
-		}
-		if ($file['folder']) 
-		{
-			@mkdir($to . $file['filename'], 0777);
-			continue;
-		}
-		$fp = @fopen($to . $file['filename'], 'w');
-		if (!$fp) 
-		{
-			return -1;
-		}
-		@fwrite($fp, $file['content']);
-		@fclose($fp);
-	}
-	return 1;
+	return true;
 }
 /**
  * Common interface to zip a specified folder to a file using ziparchive or pclzip

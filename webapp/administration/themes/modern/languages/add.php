@@ -62,10 +62,9 @@ if (is_writable(osc_translations_path()))
 	printf(__('Download more languages at %s'), '<a href="https://sourceforge.net/projects/osclass/files/Languages/" target="_blank">Sourceforge</a>'); ?>
                         </p>
 
-                        <form action="<?php
-	echo osc_admin_base_url(true); ?>" method="POST" enctype="multipart/form-data">
-                            <input type="hidden" name="action" value="add_post" />
-                            <input type="hidden" name="page" value="languages" />
+                        <form action="<?php echo osc_admin_base_url(true); ?>" method="POST" enctype="multipart/form-data">
+                            <input type="hidden" name="action" value="add" />
+                            <input type="hidden" name="page" value="language" />
                             <p>
                                 <label for="package"><?php
 	_e('Language package'); ?> (.zip)</label>

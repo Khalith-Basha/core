@@ -148,7 +148,7 @@ if (osc_count_static_pages() > 0)
                                     "<?php
 		_e('View page'); ?></a> | " +
                                     "<a href='<?php
-		echo osc_admin_base_url(true); ?>?page=pages&action=edit&id=<?php
+		echo osc_admin_base_url(true); ?>?page=page&action=edit&id=<?php
 		echo osc_static_page_id(); ?>'>" +
                                     "<?php
 		_e('Edit'); ?></a><?php
@@ -158,7 +158,7 @@ if (osc_count_static_pages() > 0)
                                     "<?php
 			_e('This action can\\\\\'t be undone. Are you sure you want to continue?'); ?>')\"" +
                                     "href='<?php
-			echo osc_admin_base_url(true); ?>?page=pages&action=delete&id=<?php
+			echo osc_admin_base_url(true); ?>?page=page&action=delete&id=<?php
 			echo osc_static_page_id(); ?>'>" +
                                     "<?php
 			_e('Delete'); ?></a><?php
@@ -215,7 +215,7 @@ echo osc_current_admin_theme_url('images/pages-icon.png'); ?>" alt="" title=""/>
                     <div id="content_header_arrow">&raquo; <?php
 _e('Pages'); ?></div>
                     <a href="<?php
-echo osc_admin_base_url(true); ?>?page=pages&action=add" id="button_open"><?php
+echo osc_admin_base_url(true); ?>?page=page&action=add" id="button_open"><?php
 _e('Create page'); ?></a>
                     <div style="clear: both;"></div>
                 </div>
@@ -239,7 +239,7 @@ _e('Apply'); ?></button>
                 
 
                 <form id="datatablesForm" action="<?php
-echo osc_admin_base_url(true); ?>?page=pages" method="post">
+echo osc_admin_base_url(true); ?>?page=page" method="post">
                     <input type="hidden" name="action" value="delete" />
                     <div id="datatables_list_processing" class="dataTables_processing" style="display:none;z-index:3;"><?php
 _e('Processing'); ?>...</div>

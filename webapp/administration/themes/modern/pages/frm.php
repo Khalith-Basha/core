@@ -29,7 +29,7 @@ else
 	//adding...
 	$edit = false;
 	$title = __("Add page");
-	$action_frm = "add_post";
+	$action_frm = "add";
 	$btn_text = __('Add');
 }
 ?>
@@ -82,7 +82,7 @@ osc_show_flash_message('admin'); ?>
                 <!-- add new page form -->
                 <div id="settings_form">
                     <form name="pages_form" id="pages_form" action="<?php
-echo osc_admin_base_url(true); ?>?page=pages" method="post" onSubmit="return checkForm()">
+echo osc_admin_base_url(true); ?>?page=page" method="post" onSubmit="return checkForm()">
                         <input type="hidden" name="action" value="<?php
 echo $action_frm; ?>" />
                         <?php
@@ -106,7 +106,7 @@ PageForm::multilanguage_name_description($locales, $page);
                             <div class="FormElementName"></div>
                             <div class="FormElementInput">
                                 <button class="formButton" type="button" onclick="window.location='<?php
-echo osc_admin_base_url(true); ?>?page=pages';" ><?php
+echo osc_admin_base_url(true); ?>?page=page';" ><?php
 _e('Cancel'); ?></button>
                                 <button class="formButton" type="submit"><?php
 echo $btn_text; ?></button>

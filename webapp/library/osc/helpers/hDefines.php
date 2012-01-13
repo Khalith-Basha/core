@@ -340,7 +340,7 @@ function osc_search_category_url($pattern = '')
 			{
 				$sanitized_category.= $category[$i - 1]['s_slug'] . '/';
 			}
-			$path = osc_base_url() . $sanitized_category;
+			$path = osc_base_url() . '/' . $sanitized_category;
 		}
 		if ($pattern != '') 
 		{

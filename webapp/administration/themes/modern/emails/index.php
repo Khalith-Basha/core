@@ -48,7 +48,7 @@ foreach ($emails as $email)
 	echo $email['pk_i_id']; ?>",
                                 '<?php
 	echo $email['s_internal_name']; ?><div><a href="<?php
-	echo osc_admin_base_url(true); ?>?page=emails&action=edit&amp;id=<?php
+	echo osc_admin_base_url(true); ?>?page=email&action=edit&amp;id=<?php
 	echo $email["pk_i_id"]; ?>"><?php
 	_e("Edit"); ?></a></div>',
                                 "<?php

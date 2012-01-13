@@ -328,7 +328,7 @@ class Plugins
 	}
 	static function getInfo($plugin) 
 	{
-		$s_info = file_get_contents(osc_plugins_path() . $plugin);
+		$s_info = file_get_contents(osc_plugins_path() . DIRECTORY_SEPARATOR . $plugin);
 		$info = array();
 		if (preg_match('|Plugin Name:([^\\r\\t\\n]*)|i', $s_info, $match)) 
 		{

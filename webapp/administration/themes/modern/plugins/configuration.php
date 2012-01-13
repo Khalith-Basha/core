@@ -78,7 +78,7 @@ echo osc_current_admin_theme_url('images/plugins-icon.png'); ?>" title="" alt=""
                     <div id="content_header_arrow">&raquo; <?php
 _e('Plugins'); ?></div>
                     <a href="<?php
-echo osc_admin_base_url(true); ?>?page=plugins&action=add" id="button_open"><?php
+echo osc_admin_base_url(true); ?>?page=plugin&action=add" id="button_open"><?php
 _e('Add a new plugin'); ?></a>
                     <div style="clear: both;"></div>
                 </div>
@@ -90,7 +90,7 @@ osc_show_flash_message('admin'); ?>
 
                 <div>
                     <form id="frm3" action="<?php
-echo osc_admin_base_url(true); ?>?page=plugins" method="post">
+echo osc_admin_base_url(true); ?>?page=plugin" method="post">
                         <input type="hidden" name="action" value="configure_post" />
                         <input type="hidden" name="plugin" value="<?php
 echo $plugin_data['filename']; ?>" />

@@ -21,28 +21,18 @@
 
 require 'loader.php';
 
+// If the "installer" folder is still present, show a warning. 
+if( file_exists( ABS_PATH . '/installer' ) )
+{
+	trigger_error( __('The "installer" folder should be removed for security reasons.'), E_USER_WARNING );
+}
+
 if (osc_timezone() != '') 
 {
 	date_default_timezone_set(osc_timezone());
 }
-function osc_show_maintenance() 
-{
-	if (defined('__OSC_MAINTENANCE__')) 
-	{ ?>
-        <div id="maintenance" name="maintenance">
-             <?php
-		_e("The website is currently under maintenance mode"); ?>
-        </div>
-    <?php
-	}
-}
-function osc_meta_generator() 
-{
-	echo '<meta name="generator" content="OpenSourceClassifieds ' . OSC_VERSION . '" />';
-}
-osc_add_hook("header", "osc_show_maintenance");
-osc_add_hook("header", "osc_meta_generator");
-if (file_exists(ABS_PATH . '.maintenance')) 
+
+if( file_exists( ABS_PATH . '/.maintenance' ) ) 
 {
 	if (!osc_is_admin_user_logged_in()) 
 	{

@@ -57,7 +57,7 @@ _e("While in maintenance mode, users can not access your website. Useful if you 
 echo __("Maintenance mode is:") . " " . ($maintenance ? __('ON') : __('OFF')); ?>
                         </p>
                         <a href="<?php
-echo osc_admin_base_url(true); ?>?page=tools&action=maintenance&mode=<?php
+echo osc_admin_base_url(true); ?>?page=tool&action=maintenance&mode=<?php
 echo $maintenance ? 'off' : 'on'; ?>"><button><?php
 $maintenance ? _e('Disable maintenance mode') : _e('Enable maintenance mode'); ?></button></a>
                     </div>

@@ -15,14 +15,9 @@
  * You should have received a copy of the GNU Affero General Public
  * License along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-class CWebLanguage extends Controller
+class CWebIndex extends Controller
 {
-	function __construct() 
-	{
-		parent::__construct();
-	}
-	// business layer...
-	function doModel() 
+	public function doModel() 
 	{
 		$locale = Params::getParam('locale');
 		if (preg_match('/.{2}_.{2}/', $locale)) 
@@ -39,9 +34,5 @@ class CWebLanguage extends Controller
 			$redirect_url = osc_base_url(true);
 		}
 		$this->redirectTo($redirect_url);
-	}
-	// hopefully generic...
-	function doView($file) 
-	{
 	}
 }

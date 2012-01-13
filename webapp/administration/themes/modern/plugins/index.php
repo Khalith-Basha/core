@@ -64,7 +64,7 @@ foreach ($plugins as $p)
                                 "<?php
 	if (isset($active_plugins[$p . '_configure'])) 
 	{ ?><a href='<?php
-		echo osc_admin_base_url(true); ?>?page=plugins&action=admin&amp;plugin=<?php
+		echo osc_admin_base_url(true); ?>?page=plugin&action=admin&amp;plugin=<?php
 		echo $p_info['filename']; ?>'><?php
 		_e('Configure'); ?></a><?php
 	}; ?>",
@@ -73,13 +73,13 @@ foreach ($plugins as $p)
 	{
 		if ($enabled) 
 		{ ?><a href='<?php
-			echo osc_admin_base_url(true); ?>?page=plugins&action=disable&amp;plugin=<?php
+			echo osc_admin_base_url(true); ?>?page=plugin&action=disable&amp;plugin=<?php
 			echo $p_info['filename']; ?>'><?php
 			_e('Disable'); ?></a><?php
 		}
 		else
 		{ ?><a href='<?php
-			echo osc_admin_base_url(true); ?>?page=plugins&action=enable&amp;plugin=<?php
+			echo osc_admin_base_url(true); ?>?page=plugin&action=enable&amp;plugin=<?php
 			echo $p_info['filename']; ?>'><?php
 			_e('Enable'); ?></a><?php
 		};
@@ -88,13 +88,13 @@ foreach ($plugins as $p)
 	if ($installed) 
 	{ ?><a onclick=\"javascript:return confirm('<?php
 		_e('This action can not be undone. Uninstalling plugins may result in a permanent lost of data. Are you sure you want to continue?'); ?>')\" href='<?php
-		echo osc_admin_base_url(true); ?>?page=plugins&action=uninstall&amp;plugin=<?php
+		echo osc_admin_base_url(true); ?>?page=plugin&action=uninstall&amp;plugin=<?php
 		echo $p_info['filename']; ?>'><?php
 		_e('Uninstall'); ?></a><?php
 	}
 	else
 	{ ?><a href='<?php
-		echo osc_admin_base_url(true); ?>?page=plugins&action=install&amp;plugin=<?php
+		echo osc_admin_base_url(true); ?>?page=plugin&action=install&amp;plugin=<?php
 		echo $p_info['filename']; ?>'><?php
 		_e('Install'); ?></a><?php
 	}; ?>"
@@ -165,7 +165,7 @@ echo osc_current_admin_theme_url('images/plugins-icon.png'); ?>" title="" alt=""
                     <div id="content_header_arrow">&raquo; <?php
 _e('Plugins'); ?></div>
                     <a href="<?php
-echo osc_admin_base_url(true); ?>?page=plugins&action=add" id="button_open"><?php
+echo osc_admin_base_url(true); ?>?page=plugin&action=add" id="button_open"><?php
 _e('Add a new plugin'); ?></a>
                     <div style="clear: both;"></div>
                 </div>
