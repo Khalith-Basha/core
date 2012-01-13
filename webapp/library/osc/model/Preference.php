@@ -136,13 +136,13 @@ class Preference extends DAO
 	 * @param string $section
 	 * @return string
 	 */
-	public function get($key, $section = "osclass") 
+	public function get( $key, $section = 'osclass' ) 
 	{
-		if (!isset($this->pref[$section][$key])) 
+		if( !isset( $this->pref[ $section ][ $key ] ) ) 
 		{
-			return '';
+			return null;
 		}
-		return $this->pref[$section][$key];
+		return $this->pref[ $section ][ $key ];
 	}
 	/**
 	 * Set preference value, given a preference name and a section name.

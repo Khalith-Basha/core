@@ -33,18 +33,13 @@ echo osc_current_web_theme_js_url('jquery.validate.min.js'); ?>"></script>
     </head>
     <body>
         <div class="container">
-            <?php
-osc_current_web_theme_path('header.php'); ?>
+            <?php osc_current_web_theme_path('header.php'); ?>
             <div class="content error">
-                <h1><?php
-_e('Page not found', 'modern'); ?></h1>
-            </div>
-            <?php
-osc_current_web_theme_path('footer.php'); ?>
-        </div>
-        <?php
-osc_show_flash_message(); ?>
-        <?php
-osc_run_hook('footer'); ?>
-    </body>
+                <h1><?php _e('Page not found', 'modern'); ?></h1>
+	    </div>
+	    <?php osc_current_web_theme_path('footer.php'); ?>
+</div>
+<?php osc_show_flash_message(); ?>
+<?php osc_run_hook('footer'); ?>
+</body>
 </html>

@@ -50,22 +50,22 @@ class Stats
 	{
 		if ($date == 'week') 
 		{
-			$this->conn->select('WEEK(dt_reg_date) as d_date, COUNT(pk_i_id) as num');
-			$this->conn->groupBy('WEEK(dt_reg_date)');
+			$this->conn->select('WEEK(reg_date) as d_date, COUNT(pk_i_id) as num');
+			$this->conn->groupBy('WEEK(reg_date)');
 		}
 		else if ($date == 'month') 
 		{
-			$this->conn->select('MONTHNAME(dt_reg_date) as d_date, COUNT(pk_i_id) as num');
-			$this->conn->groupBy('MONTH(dt_reg_date)');
+			$this->conn->select('MONTHNAME(reg_date) as d_date, COUNT(pk_i_id) as num');
+			$this->conn->groupBy('MONTH(reg_date)');
 		}
 		else
 		{
-			$this->conn->select('DATE(dt_reg_date) as d_date, COUNT(pk_i_id) as num');
-			$this->conn->groupBy('DAY(dt_reg_date)');
+			$this->conn->select('DATE(reg_date) as d_date, COUNT(pk_i_id) as num');
+			$this->conn->groupBy('DAY(reg_date)');
 		}
 		$this->conn->from(DB_TABLE_PREFIX . 'user');
-		$this->conn->where("dt_reg_date > '$from_date'");
-		$this->conn->orderBy('dt_reg_date', 'DESC');
+		$this->conn->where("reg_date > '$from_date'");
+		$this->conn->orderBy('reg_date', 'DESC');
 		$result = $this->conn->get();
 		return $result->result();
 	}
@@ -87,14 +87,14 @@ class Stats
 	}
 	public function items_by_user() 
 	{
-		$result = $this->conn->query("SELECT AVG( num ) as avg FROM (SELECT COUNT( pk_i_id ) AS num FROM " . DB_TABLE_PREFIX . "t_item GROUP BY s_contact_email ) AS dummy_table");
+		$result = $this->conn->query("SELECT AVG( num ) as avg FROM (SELECT COUNT( pk_i_id ) AS num FROM " . DB_TABLE_PREFIX . "item GROUP BY s_contact_email ) AS dummy_table");
 		return $result->result();
 	}
 	public function latest_users() 
 	{
 		$this->conn->select();
 		$this->conn->from(DB_TABLE_PREFIX . 'user');
-		$this->conn->orderBy('dt_reg_date', 'DESC');
+		$this->conn->orderBy('reg_date', 'DESC');
 		$this->conn->limit('5');
 		$result = $this->conn->get();
 		return $result->result();
@@ -116,7 +116,7 @@ class Stats
 			$this->conn->select('DATE(pub_date) as d_date, COUNT(pk_i_id) as num');
 			$this->conn->groupBy('DAY(pub_date)');
 		}
-		$this->conn->from(DB_TABLE_PREFIX . "t_item");
+		$this->conn->from(DB_TABLE_PREFIX . "item");
 		$this->conn->where("pub_date > '$from_date'");
 		$this->conn->orderBy('pub_date', 'DESC');
 		$result = $this->conn->get();
@@ -125,7 +125,7 @@ class Stats
 	public function latest_items() 
 	{
 		$this->conn->select('l.*, i.*, d.*');
-		$this->conn->from(DB_TABLE_PREFIX . 't_item i, ' . DB_TABLE_PREFIX . 't_item_location l, ' . DB_TABLE_PREFIX . 't_item_description d');
+		$this->conn->from(DB_TABLE_PREFIX . 'item i, ' . DB_TABLE_PREFIX . 't_item_location l, ' . DB_TABLE_PREFIX . 't_item_description d');
 		$this->conn->where('l.fk_i_item_id = i.pk_i_id AND d.fk_i_item_id = i.pk_i_id');
 		$this->conn->groupBy('i.pk_i_id');
 		$this->conn->orderBy('pub_date', 'DESC');
@@ -159,7 +159,7 @@ class Stats
 	public function latest_comments() 
 	{
 		$this->conn->select('i.*, c.*');
-		$this->conn->from(DB_TABLE_PREFIX . 't_item i, ' . DB_TABLE_PREFIX . 't_item_comment c');
+		$this->conn->from(DB_TABLE_PREFIX . 'item i, ' . DB_TABLE_PREFIX . 't_item_comment c');
 		$this->conn->where('c.fk_i_item_id = i.pk_i_id');
 		$this->conn->orderBy('c.pub_date', 'DESC');
 		$this->conn->limit('5');

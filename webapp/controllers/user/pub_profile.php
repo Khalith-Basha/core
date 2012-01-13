@@ -20,53 +20,32 @@ class CWebUser extends Controller
 	function __construct() 
 	{
 		parent::__construct();
-		if (!osc_users_enabled()) 
+		if (!osc_users_enabled() && ($this->action != 'activate_alert' && $this->action != 'unsub_alert')) 
 		{
 			osc_add_flash_error_message(_m('Users not enabled'));
 			$this->redirectTo(osc_base_url(true));
 		}
 	}
-
-	public function doGet( HttpRequest $req, HttpResponse $res )
+	function doModel() 
 	{
-		$this->doView('user/recover.php');
-	}
-
-	public function doPost( HttpRequest $req, HttpResponse $res )
-	{
-		require_once 'osc/UserActions.php';
-		// e-mail is incorrect
-		if (!preg_match('|^[a-z0-9\.\_\+\-]+@[a-z0-9\.\-]+\.[a-z]{2,3}$|i', Params::getParam('s_email'))) 
+		$userID = Params::getParam('id');
+		$user = User::newInstance()->findByPrimaryKey($userID);
+		// user doesn't exist
+		if (!$user) 
 		{
-			osc_add_flash_error_message(_m('Invalid email address'));
-			$this->redirectTo(osc_recover_user_password_url());
-		}
-		$userActions = new UserActions(false);
-		$success = $userActions->recover_password();
-		switch ($success) 
-		{
-		case (0): // recover ok
-			osc_add_flash_ok_message(_m('We have sent you an email with the instructions to reset your password'));
 			$this->redirectTo(osc_base_url());
-			break;
-
-		case (1): // e-mail does not exist
-			osc_add_flash_error_message(_m('We were not able to identify you given the information provided'));
-			$this->redirectTo(osc_recover_user_password_url());
-			break;
-
-		case (2): // recaptcha wrong
-			osc_add_flash_error_message(_m('The recaptcha code is wrong'));
-			$this->redirectTo(osc_recover_user_password_url());
-			break;
 		}
+		View::newInstance()->_exportVariableToView('user', $user);
+		$items = Item::newInstance()->findByUserIDEnabled($user['pk_i_id'], 0, 3);
+		View::newInstance()->_exportVariableToView('items', $items);
+		$this->doView('user-public-profile.php');
 	}
-	//hopefully generic...
+
 	function doView($file) 
 	{
 		osc_run_hook("before_html");
 		osc_current_web_theme_path($file);
+		Session::newInstance()->_clearVariables();
 		osc_run_hook("after_html");
 	}
 }
-

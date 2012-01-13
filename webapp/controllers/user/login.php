@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Affero General Public
  * License along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-class CWebLogin extends Controller
+class CWebUser extends Controller
 {
 	function __construct() 
 	{
@@ -33,15 +33,9 @@ class CWebLogin extends Controller
 		{
 			$this->redirectTo(osc_user_dashboard_url());
 		}
-		$this->doView('user-login.php');
-	}
-	//hopefully generic...
-	function doView($file) 
-	{
 		osc_run_hook("before_html");
-		osc_current_web_theme_path($file);
+		osc_current_web_theme_path( 'user/login.php' );
 		osc_run_hook("after_html");
 	}
 }
-$do = new CWebLogin();
-$do->doModel();
+

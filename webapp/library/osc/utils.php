@@ -232,7 +232,7 @@ function osc_doRequest($url, $_data)
 		}
 	}
 }
-function osc_sendMail($params) 
+function osc_sendMail( array $params )
 {
 	if (key_exists('add_bcc', $params)) 
 	{
@@ -249,58 +249,43 @@ function osc_sendMail($params)
 		$pop->Authorise((isset($params['host'])) ? $params['host'] : osc_mailserver_host(), (isset($params['port'])) ? $params['port'] : osc_mailserver_port(), 30, (isset($params['username'])) ? $params['username'] : osc_mailserver_username(), (isset($params['username'])) ? $params['username'] : osc_mailserver_username(), 0);
 	}
 	$mail = new PHPMailer(true);
-	try
+	$mail->CharSet = "utf-8";
+	if (osc_mailserver_auth()) 
 	{
-		$mail->CharSet = "utf-8";
-		if (osc_mailserver_auth()) 
-		{
-			$mail->IsSMTP();
-			$mail->SMTPAuth = true;
-		}
-		else if (osc_mailserver_pop()) 
-		{
-			$mail->IsSMTP();
-		}
-		$mail->SMTPSecure = (isset($params['ssl'])) ? $params['ssl'] : osc_mailserver_ssl();
-		$mail->Username = (isset($params['username'])) ? $params['username'] : osc_mailserver_username();
-		$mail->Password = (isset($params['password'])) ? $params['password'] : osc_mailserver_password();
-		$mail->Host = (isset($params['host'])) ? $params['host'] : osc_mailserver_host();
-		$mail->Port = (isset($params['port'])) ? $params['port'] : osc_mailserver_port();
-		$mail->From = (isset($params['from'])) ? $params['from'] : osc_contact_email();
-		$mail->FromName = (isset($params['from_name'])) ? $params['from_name'] : osc_page_title();
-		$mail->Subject = (isset($params['subject'])) ? $params['subject'] : '';
-		$mail->Body = (isset($params['body'])) ? $params['body'] : '';
-		$mail->AltBody = (isset($params['alt_body'])) ? $params['alt_body'] : '';
-		$to = (isset($params['to'])) ? $params['to'] : '';
-		$to_name = (isset($params['to_name'])) ? $params['to_name'] : '';
-		if (key_exists('add_bcc', $params)) 
-		{
-			foreach ($params['add_bcc'] as $bcc) 
-			{
-				$mail->AddBCC($bcc);
-			}
-		}
-		if (isset($params['reply_to'])) $mail->AddReplyTo($params['reply_to']);
-		if (isset($params['attachment'])) 
-		{
-			$mail->AddAttachment($params['attachment']);
-		}
-		$mail->IsHTML(true);
-		$mail->AddAddress($to, $to_name);
-		$mail->Send();
-		return true;
+		$mail->IsSMTP();
+		$mail->SMTPAuth = true;
 	}
-	catch(phpmailerException $e) 
+	else if (osc_mailserver_pop()) 
 	{
-		error_log("osc_sendMail() cannot send email! " . $mail->ErrorInfo, 0);
-		return false;
+		$mail->IsSMTP();
 	}
-	catch(Exception $e) 
+	$mail->SMTPSecure = (isset($params['ssl'])) ? $params['ssl'] : osc_mailserver_ssl();
+	$mail->Username = (isset($params['username'])) ? $params['username'] : osc_mailserver_username();
+	$mail->Password = (isset($params['password'])) ? $params['password'] : osc_mailserver_password();
+	$mail->Host = (isset($params['host'])) ? $params['host'] : osc_mailserver_host();
+	$mail->Port = (isset($params['port'])) ? $params['port'] : osc_mailserver_port();
+	$mail->From = (isset($params['from'])) ? $params['from'] : osc_contact_email();
+	$mail->FromName = (isset($params['from_name'])) ? $params['from_name'] : osc_page_title();
+	$mail->Subject = (isset($params['subject'])) ? $params['subject'] : '';
+	$mail->Body = (isset($params['body'])) ? $params['body'] : '';
+	$mail->AltBody = (isset($params['alt_body'])) ? $params['alt_body'] : '';
+	$to = (isset($params['to'])) ? $params['to'] : '';
+	$to_name = (isset($params['to_name'])) ? $params['to_name'] : '';
+	if (key_exists('add_bcc', $params)) 
 	{
-		error_log("osc_sendMail() cannot send email! " . $mail->ErrorInfo, 0);
-		return false;
+		foreach ($params['add_bcc'] as $bcc) 
+		{
+			$mail->AddBCC($bcc);
+		}
 	}
-	return false;
+	if (isset($params['reply_to'])) $mail->AddReplyTo($params['reply_to']);
+	if (isset($params['attachment'])) 
+	{
+		$mail->AddAttachment($params['attachment']);
+	}
+	$mail->IsHTML(true);
+	$mail->AddAddress($to, $to_name);
+	$mail->Send();
 }
 function osc_mailBeauty($text, $params) 
 {

@@ -24,9 +24,24 @@
  * @subpackage Items
  * @author OpenSourceClassifieds
  */
-////////////////////////////////////////////////////////////////
-// FUNCTIONS THAT RETURNS OBJECT FROM THE STATIC CLASS (VIEW) //
-////////////////////////////////////////////////////////////////
+
+/**
+ * @param array $item
+ * @return boolean Whether the item is considered old.
+ */
+function osc_itemIsOld( array $item )
+{
+	$preference = Preference::newInstance();
+	$numDaysOld = $preference->get( 'item_num_days_old' );
+	if( is_null( $numDaysOld ) )
+		$numDaysOld = 1;
+
+	$format = 'Y-m-d H:i:s';
+	$pubDate = DateTime::createFromFormat( $format, $item['pub_date'] );
+	$currentDate = new DateTime;
+	$diff = $currentDate->diff( $pubDate, true );
+	return $diff->days >= $numDaysOld;
+}
 
 /**
  * Gets current item array from view
@@ -116,12 +131,6 @@ function osc_resource_field($field, $locale = '')
 {
 	return osc_field(osc_resource(), $field, $locale);
 }
-/////////////////////////////////////////////////
-// END FUNCTIONS THAT RETURNS OBJECT FROM VIEW //
-/////////////////////////////////////////////////
-///////////////////////
-// HELPERS FOR ITEMS //
-///////////////////////
 
 /**
  * Gets id from current item
@@ -500,23 +509,51 @@ function osc_item_is_spam()
 {
 	return (osc_item_field("b_spam") == 1);
 }
-/**
- * Gets link for mark as spam the current item
- *
- * @return string
- */
-function osc_item_link_spam() 
+
+class ItemUrls
 {
-	if (!osc_rewrite_enabled()) 
+	private static $singleton = null;
+
+	public static function getInstance()
 	{
-		$url = osc_base_url(true) . "?page=item&action=mark&as=spam&id=" . osc_item_id();
+		if( is_null( self::$singleton ) )
+			self::$singleton = new self;
+		return self::$singleton;
 	}
-	else
+
+	private $urls;
+
+	public function __construct()
 	{
-		$url = osc_base_url() . "item/mark/spam/" . osc_item_id();
+		$this->urls = array();
+
+		$this->urls['mark-spam'] = array(
+			'default' => osc_base_url( true ) . '?page=item&action=mark&as=spam&id=%d'
+		);
 	}
-	return (string)$url;
+
+	public function create( $name )
+	{
+		$arguments = func_get_args();
+		if( count( $arguments ) > 0 )
+		{
+			$name = $arguments[0];
+			$arguments = array_slice( $arguments, 1 );
+		}
+		$url = null;
+
+		if( !empty( $this->urls[ $name ]['friendly'] ) )
+			$url = $this->urls[ $name ]['friendly'];
+		if( !empty( $this->urls[ $name ]['default'] ) )
+			$url = $this->urls[ $name ]['default'];
+
+		if( is_null( $url ) )
+			throw new Exception( 'URL not found: ' . $name );
+
+		return vsprintf( $url, $arguments );
+	}
 }
+
 /**
  * Retrun link for mark as bad category the current item.
  *
@@ -524,15 +561,7 @@ function osc_item_link_spam()
  */
 function osc_item_link_bad_category() 
 {
-	if (!osc_rewrite_enabled()) 
-	{
-		$url = osc_base_url(true) . "?page=item&action=mark&as=badcat&id=" . osc_item_id();
-	}
-	else
-	{
-		$url = osc_base_url() . "item/mark/badcat/" . osc_item_id();
-	}
-	return (string)$url;
+	return osc_base_url( true ) . '?page=item&action=mark&as=badcat&id=' . osc_item_id();
 }
 /**
  * Gets link for mark as repeated the current item
@@ -541,15 +570,7 @@ function osc_item_link_bad_category()
  */
 function osc_item_link_repeated() 
 {
-	if (!osc_rewrite_enabled()) 
-	{
-		$url = osc_base_url(true) . "?page=item&action=mark&as=repeated&id=" . osc_item_id();
-	}
-	else
-	{
-		$url = osc_base_url() . "item/mark/repeated/" . osc_item_id();
-	}
-	return (string)$url;
+	return osc_base_url(true) . "?page=item&action=mark&as=repeated&id=" . osc_item_id();
 }
 /**
  * Gets link for mark as offensive the current item
@@ -558,15 +579,7 @@ function osc_item_link_repeated()
  */
 function osc_item_link_offensive() 
 {
-	if (!osc_rewrite_enabled()) 
-	{
-		$url = osc_base_url(true) . "?page=item&action=mark&as=offensive&id=" . osc_item_id();
-	}
-	else
-	{
-		$url = osc_base_url() . "item/mark/offensive/" . osc_item_id();
-	}
-	return (string)$url;
+	return osc_base_url(true) . "?page=item&action=mark&as=offensive&id=" . osc_item_id();
 }
 /**
  * Gets link for mark as expired the current item
@@ -575,15 +588,7 @@ function osc_item_link_offensive()
  */
 function osc_item_link_expired() 
 {
-	if (!osc_rewrite_enabled()) 
-	{
-		$url = osc_base_url(true) . "?page=item&action=mark&as=expired&id=" . osc_item_id();
-	}
-	else
-	{
-		$url = osc_base_url() . "item/mark/expired/" . osc_item_id();
-	}
-	return (string)$url;
+	return osc_base_url(true) . "?page=item&action=mark&as=expired&id=" . osc_item_id();
 }
 /**
  * Gets actual page for current pagination
@@ -635,12 +640,6 @@ function osc_item_comments_page()
 	}
 	return (int)$page;
 }
-///////////////////////
-// HELPERS FOR ITEMS //
-///////////////////////
-//////////////////////////
-// HELPERS FOR COMMENTS //
-//////////////////////////
 
 /**
  * Gets id of current comment

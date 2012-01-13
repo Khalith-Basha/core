@@ -117,7 +117,7 @@ if (osc_rewrite_enabled())
                                     <div style="float: left; width: 50%;">
                                         <?php
 	_e('Content of .htaccess file should look like this:'); ?>
-                                        <textarea rows="8" style="width: 90%;">
+                                        <textarea rows="8" style="width: 90%;" readonly="readonly" onclick="this.select();">
 <IfModule mod_rewrite.c>
     RewriteEngine On
     RewriteBase <?php
@@ -141,7 +141,7 @@ if (osc_rewrite_enabled())
 			_e('Current content of your .htaccess file:');
 ?>
                                         <br />
-                                        <textarea rows="8" style="width: 90%;"><?php
+                                        <textarea rows="8" style="width: 90%;" readonly="readonly"><?php
 			echo $htaccess_content; ?></textarea>
                                         <?php
 		}

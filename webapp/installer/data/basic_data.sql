@@ -75,5 +75,6 @@ INSERT INTO /*TABLE_PREFIX*/t_preference VALUES
     ,('osclass', 'watermark_text', '', 'STRING')
     ,('osclass', 'watermark_text_color', '', 'STRING')
     ,('osclass', 'watermark_place', 'centre', 'STRING')
-    ,('osclass', 'watermark_image', '', 'STRING');
+    ,('osclass', 'watermark_image', '', 'STRING'),
+	( 'osclass', 'item_num_days_old', 1, 'STRING' );
 
