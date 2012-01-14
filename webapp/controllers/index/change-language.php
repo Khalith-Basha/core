@@ -19,20 +19,17 @@ class CWebIndex extends Controller
 {
 	public function doModel() 
 	{
+
 		$locale = Params::getParam('locale');
 		if (preg_match('/.{2}_.{2}/', $locale)) 
 		{
 			Session::newinstance()->_set('userLocale', $locale);
 		}
-		$redirect_url = '';
-		if ($_SERVER['HTTP_REFERER'] != '') 
-		{
-			$redirect_url = $_SERVER['HTTP_REFERER'];
-		}
-		else
-		{
-			$redirect_url = osc_base_url(true);
-		}
-		$this->redirectTo($redirect_url);
+
+		$redirectUrl = $this->getServer()->hasHttpReferer() ?
+			$this->getServer()->getHttpReferer() :
+			osc_base_url( true );
+
+		$this->redirectTo( $redirectUrl );
 	}
 }

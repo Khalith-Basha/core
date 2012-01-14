@@ -17,7 +17,10 @@
  *
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
+
+require_once 'osc/classes/Server.php';
+
 class HttpRequest
 {
 	public function getMethod() 
@@ -36,12 +39,18 @@ abstract class Controller
 	protected $action;
 	protected $ajax;
 	protected $time;
+
+	private $server;
+
 	public function __construct() 
 	{
 		$this->action = Params::getParam('action');
 		$this->ajax = false;
 		$this->time = list($sm, $ss) = explode(' ', microtime());
+
+		$this->server = new Server;
 	}
+
 	public function __destruct() 
 	{
 		if (!$this->ajax && OSC_DEBUG) 
@@ -49,6 +58,12 @@ abstract class Controller
 			echo '<!-- ' . $this->getTime() . ' seg. -->';
 		}
 	}
+
+	protected function getServer()
+	{
+		return $this->server;
+	}
+
 	protected function _exportVariableToView($key, $value) 
 	{
 		View::newInstance()->_exportVariableToView($key, $value);

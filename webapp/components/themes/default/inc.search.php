@@ -18,59 +18,22 @@
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-$sQuery = __("ie. PHP Programmer", 'modern');
+$sQuery = __('Enter your search terms here', 'modern');
 ?>
 
 <script type="text/javascript">
-    var sQuery = '<?php
-echo $sQuery; ?>' ;
-
-    $(document).ready(function(){
-        if($('input[name=sPattern]').val() == sQuery) {
-            $('input[name=sPattern]').css('color', 'gray');
-        }
-        $('input[name=sPattern]').click(function(){
-            if($('input[name=sPattern]').val() == sQuery) {
-                $('input[name=sPattern]').val('');
-                $('input[name=sPattern]').css('color', '');
-            }
-        });
-        $('input[name=sPattern]').blur(function(){
-            if($('input[name=sPattern]').val() == '') {
-                $('input[name=sPattern]').val(sQuery);
-                $('input[name=sPattern]').css('color', 'gray');
-            }
-        });
-        $('input[name=sPattern]').keypress(function(){
-            $('input[name=sPattern]').css('background','');
-        })
-    });
-    function doSearch() {
-        if($('input[name=sPattern]').val() == sQuery){
-            return false;
-        }
-        if($('input[name=sPattern]').val().length < 3) {
-            $('input[name=sPattern]').css('background', '#FFC6C6');
-            return false;
-        }
-        return true;
-    }
+var sQuery = '<?php echo $sQuery; ?>' ;
 </script>
+<script type="text/javascript" src="/static/scripts/search.js"></script>
 
-<form action="<?php
-echo osc_base_url(true); ?>" method="get" class="search" onsubmit="javascript:return doSearch();">
+<form action="<?php echo osc_base_url(true); ?>" method="get" class="search" onsubmit="javascript:return doSearch();">
     <input type="hidden" name="page" value="search" />
     <fieldset class="main">
-        <input type="text" name="sPattern"  id="query" value="<?php
-echo (osc_search_pattern() != '') ? osc_search_pattern() : $sQuery; ?>" />
-        <?php
-if (osc_count_categories()) 
-{ ?>
-            <?php
-	osc_categories_select('sCategory', null, __('Select a category', 'modern')); ?>
-        <?php
-} ?>
-        <button type="submit"><?php
-_e('Search', 'modern'); ?></button>
+        <input type="text" name="sPattern"  id="query" value="<?php echo (osc_search_pattern() != '') ? osc_search_pattern() : $sQuery; ?>" />
+	<?php if (osc_count_categories()): ?>
+            <?php osc_categories_select('sCategory', null, __('Select a category', 'modern')); ?>
+	<?php endif; ?>
+        <button type="submit"><?php _e('Search', 'modern'); ?></button>
     </fieldset>
 </form>
+

@@ -26,9 +26,10 @@ class CWebLogin extends Controller
 			$this->redirectTo(osc_base_url(true));
 		}
 	}
-	//Business Layer...
 	function doModel() 
 	{
+		$httpReferer = $this->getServer()->getHttpReferer();
+
 		if (!osc_users_enabled()) 
 		{
 			osc_add_flash_error_message(_m('Users are not enabled'));
@@ -40,9 +41,9 @@ class CWebLogin extends Controller
 		$page_redirect = '';
 		if (osc_rewrite_enabled()) 
 		{
-			if (isset($_SERVER['HTTP_REFERER'])) 
+			if( !is_null( $httpReferer ) ) 
 			{
-				$request_uri = urldecode(preg_replace('@^' . osc_base_url() . '@', "", $_SERVER['HTTP_REFERER']));
+				$request_uri = urldecode(preg_replace('@^' . osc_base_url() . '@', "", $httpReferer ));
 				$tmp_ar = explode("?", $request_uri);
 				$request_uri = $tmp_ar[0];
 				$rules = Rewrite::newInstance()->listRules();
@@ -60,7 +61,7 @@ class CWebLogin extends Controller
 				}
 			}
 		}
-		else if (preg_match('|[\?&]page=([^&]+)|', $_SERVER['HTTP_REFERER'] . '&', $match)) 
+		else if (preg_match('|[\?&]page=([^&]+)|', $httpReferer . '&', $match)) 
 		{
 			$page_redirect = $match[1];
 		}
@@ -76,8 +77,8 @@ class CWebLogin extends Controller
 		}
 		else if ($page_redirect != '' && $page_redirect != 'login') 
 		{
-			Session::newInstance()->_setReferer($_SERVER['HTTP_REFERER']);
-			$url_redirect = $_SERVER['HTTP_REFERER'];
+			Session::newInstance()->_setReferer( $httpReferer );
+			$url_redirect = $httpReferer;
 		}
 		if (!$user) 
 		{
