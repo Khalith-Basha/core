@@ -26,7 +26,7 @@ class CWebUser extends WebSecBaseModel
 			$this->redirectTo(osc_base_url(true));
 		}
 	}
-	//Business Layer...
+
 	function doModel() 
 	{
 		$itemsPerPage = (Params::getParam('itemsPerPage') != '') ? Params::getParam('itemsPerPage') : 5;
@@ -41,7 +41,7 @@ class CWebUser extends WebSecBaseModel
 		$this->_exportVariableToView('list_page', $page);
 		$this->doView('user/items.php');
 	}
-	//hopefully generic...
+
 	function doView($file) 
 	{
 		osc_run_hook("before_html");

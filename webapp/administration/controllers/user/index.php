@@ -27,7 +27,7 @@ class CAdminUser extends AdminSecBaseModel
 		//specific things for this class
 		$this->userManager = User::newInstance();
 	}
-	//Business Layer...
+
 	function doModel() 
 	{
 		parent::doModel();
@@ -332,7 +332,7 @@ class CAdminUser extends AdminSecBaseModel
 			break;
 		}
 	}
-	//hopefully generic...
+
 	function doView($file) 
 	{
 		osc_current_admin_theme_path($file);

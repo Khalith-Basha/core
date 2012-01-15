@@ -15,26 +15,20 @@
  * You should have received a copy of the GNU Affero General Public
  * License along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-class CWebCustom extends Controller
+define('IS_AJAX', true);
+class CAdminAjax extends AdminSecBaseModel
 {
 	function __construct() 
 	{
 		parent::__construct();
-		//specific things for this class
-		
+		$this->ajax = true;
 	}
 
 	function doModel() 
 	{
-		$this->_exportVariableToView('file', Params::getParam('file'));
-		$this->doView('custom.php');
-	}
-
-	function doView($file) 
-	{
-		osc_run_hook("before_html");
-		osc_current_web_theme_path($file);
-		Session::newInstance()->_clearVariables();
-		osc_run_hook("after_html");
+		$this->_exportVariableToView('category', Category::newInstance()->findByPrimaryKey(Params::getParam("id")));
+		$this->_exportVariableToView('languages', OSCLocale::newInstance()->listAllEnabled());
+		osc_current_admin_theme_path("categories/iframe.php");
 	}
 }
+

@@ -240,7 +240,7 @@ class ItemsProcessingAjax
 					$this->sOutput.= ' class=\'odd\' ';
 				}
 				$this->sOutput.= ' style=\'position:absolute;\'>';
-				$this->sOutput.= '<a href=\'' . osc_admin_base_url(true) . '?page=comments&action=list&amp;id=' . $aRow['pk_i_id'] . '\'>' . __('View comments') . '</a>';
+				$this->sOutput.= '<a href=\'' . osc_admin_base_url(true) . '?page=comment&action=list&amp;id=' . $aRow['pk_i_id'] . '\'>' . __('View comments') . '</a>';
 				$this->sOutput.= ' | <a href=\'' . osc_admin_base_url(true) . '?page=media&action=list&amp;id=' . $aRow['pk_i_id'] . '\'>' . __('View media') . '</a>';
 				if (isset($aRow['b_active']) && ($aRow['b_active'] == 1)) 
 				{
@@ -274,9 +274,9 @@ class ItemsProcessingAjax
 				{
 					$this->sOutput.= ' | <a href=\'' . osc_admin_base_url(true) . '?page=items&action=status_spam&amp;id=' . $aRow['pk_i_id'] . '&amp;value=1\'>' . __('Mark as spam') . '</a>';
 				}
-				$this->sOutput.= ' | <a href=\'' . osc_admin_base_url(true) . '?page=item&action=edit&amp;id=' . $aRow['pk_i_id'] . '\'>' . __('Edit') . '</a>';
+				$this->sOutput.= ' | <a href=\'' . osc_admin_base_url(true) . '?page=items&action=item_edit&amp;id=' . $aRow['pk_i_id'] . '\'>' . __('Edit') . '</a>';
 				$var = 'onclick=\"javascript:return confirm(\'' . __('This action can not be undone. Are you sure you want to continue?') . '\')\"';
-				$this->sOutput.= ' | <a ' . $var . ' href=\'' . osc_admin_base_url(true) . '?page=item&action=delete&amp;id[]=' . $aRow['pk_i_id'] . '\'>' . __('Delete') . '</a>';
+				$this->sOutput.= ' | <a ' . $var . ' href=\'' . osc_admin_base_url(true) . '?page=items&action=delete&amp;id[]=' . $aRow['pk_i_id'] . '\'>' . __('Delete') . '</a>';
 				if ($this->stat) 
 				{
 					foreach ($this->stat as $key => $_stat) 

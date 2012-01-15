@@ -27,7 +27,7 @@ class CAdminItem extends AdminSecBaseModel
 		//specific things for this class
 		$this->itemManager = Item::newInstance();
 	}
-	//Business Layer...
+
 	function doModel() 
 	{
 		parent::doModel();

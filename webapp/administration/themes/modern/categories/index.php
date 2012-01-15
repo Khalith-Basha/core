@@ -298,7 +298,7 @@ _e('Drag&drop the categories to reorder them the way you like. Click on edit lin
                         <p style="padding-left: 20px;">
                             <strong class="publish_button">
                                 <a href="<?php
-echo osc_admin_base_url(true); ?>?page=categories&action=add_post_default">+ <?php
+echo osc_admin_base_url(true); ?>?page=category&action=add_post_default">+ <?php
 _e('Add new category'); ?></a>
                             </strong>
                         </p>

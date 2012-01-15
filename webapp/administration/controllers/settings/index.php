@@ -24,44 +24,6 @@ class CAdminSettings extends AdminSecBaseModel
 	{
 		switch ($this->action) 
 		{
-		case ('comments'): //calling the comments settings view
-			$this->doView('settings/comments.php');
-			break;
-
-		case ('comments_post'): // updating comment
-			$iUpdated = 0;
-			$enabledComments = Params::getParam('enabled_comments');
-			$enabledComments = (($enabledComments != '') ? true : false);
-			$moderateComments = Params::getParam('moderate_comments');
-			$moderateComments = (($moderateComments != '') ? true : false);
-			$numModerateComments = Params::getParam('num_moderate_comments');
-			$commentsPerPage = Params::getParam('comments_per_page');
-			$notifyNewComment = Params::getParam('notify_new_comment');
-			$notifyNewComment = (($notifyNewComment != '') ? true : false);
-			$notifyNewCommentUser = Params::getParam('notify_new_comment_user');
-			$notifyNewCommentUser = (($notifyNewCommentUser != '') ? true : false);
-			$regUserPostComments = Params::getParam('reg_user_post_comments');
-			$regUserPostComments = (($regUserPostComments != '') ? true : false);
-			$iUpdated+= Preference::newInstance()->update(array('s_value' => $enabledComments), array('s_name' => 'enabled_comments'));
-			if ($moderateComments) 
-			{
-				$iUpdated+= Preference::newInstance()->update(array('s_value' => $numModerateComments), array('s_name' => 'moderate_comments'));
-			}
-			else
-			{
-				$iUpdated+= Preference::newInstance()->update(array('s_value' => '-1'), array('s_name' => 'moderate_comments'));
-			}
-			$iUpdated+= Preference::newInstance()->update(array('s_value' => $notifyNewComment), array('s_name' => 'notify_new_comment'));
-			$iUpdated+= Preference::newInstance()->update(array('s_value' => $notifyNewCommentUser), array('s_name' => 'notify_new_comment_user'));
-			$iUpdated+= Preference::newInstance()->update(array('s_value' => $commentsPerPage), array('s_name' => 'comments_per_page'));
-			$iUpdated+= Preference::newInstance()->update(array('s_value' => $regUserPostComments), array('s_name' => 'reg_user_post_comments'));
-			if ($iUpdated > 0) 
-			{
-				osc_add_flash_ok_message(_m('Comments\' settings have been updated'), 'admin');
-			}
-			$this->redirectTo(osc_admin_base_url(true) . '?page=settings&action=comments');
-			break;
-
 		case ('locations'): // calling the locations settings view
 			$location_action = Params::getParam('type');
 			$mCountries = new Country();
@@ -305,27 +267,6 @@ class CAdminSettings extends AdminSecBaseModel
 			$this->_exportVariableToView('aCountries', $aCountries);
 			$this->doView('settings/locations.php');
 			break;
-		case ('spamNbots'): // calling the spam and bots view
-			$this->doView('settings/spamNbots.php');
-			break;
-
-		case ('spamNbots_post'): // updating spam and bots option
-			$iUpdated = 0;
-			$akismetKey = Params::getParam('akismetKey');
-			$akismetKey = trim($akismetKey);
-			$recaptchaPrivKey = Params::getParam('recaptchaPrivKey');
-			$recaptchaPrivKey = trim($recaptchaPrivKey);
-			$recaptchaPubKey = Params::getParam('recaptchaPubKey');
-			$recaptchaPubKey = trim($recaptchaPubKey);
-			$iUpdated+= Preference::newInstance()->update(array('s_value' => $akismetKey), array('s_name' => 'akismetKey'));
-			$iUpdated+= Preference::newInstance()->update(array('s_value' => $recaptchaPrivKey), array('s_name' => 'recaptchaPrivKey'));
-			$iUpdated+= Preference::newInstance()->update(array('s_value' => $recaptchaPubKey), array('s_name' => 'recaptchaPubKey'));
-			if ($iUpdated > 0) 
-			{
-				osc_add_flash_ok_message(_m('Akismet and reCAPTCHA have been updated'), 'admin');
-			}
-			$this->redirectTo(osc_admin_base_url(true) . '?page=settings&action=spamNbots');
-			break;
 
 		case ('currencies'): // currencies settings
 			$currencies_action = Params::getParam('type');
@@ -457,157 +398,6 @@ class CAdminSettings extends AdminSecBaseModel
 			}
 			break;
 
-		case ('mailserver'): // calling the mailserver view
-			$this->doView('settings/mailserver.php');
-			break;
-
-		case ('mailserver_post'):
-			// updating mailserver
-			$iUpdated = 0;
-			$mailserverAuth = Params::getParam('mailserver_auth');
-			$mailserverAuth = ($mailserverAuth != '' ? true : false);
-			$mailserverPop = Params::getParam('mailserver_pop');
-			$mailserverPop = ($mailserverPop != '' ? true : false);
-			$mailserverType = Params::getParam('mailserver_type');
-			$mailserverHost = Params::getParam('mailserver_host');
-			$mailserverPort = Params::getParam('mailserver_port');
-			$mailserverUsername = Params::getParam('mailserver_username');
-			$mailserverPassword = Params::getParam('mailserver_password');
-			$mailserverSsl = Params::getParam('mailserver_ssl');
-			if (!in_array($mailserverType, array('custom', 'gmail'))) 
-			{
-				osc_add_flash_error_message(_m('Mail server type is incorrect'), 'admin');
-				$this->redirectTo(osc_admin_base_url(true) . '?page=settings&action=mailserver');
-			}
-			$iUpdated+= Preference::newInstance()->update(array('s_value' => $mailserverAuth), array('s_name' => 'mailserver_auth'));
-			$iUpdated+= Preference::newInstance()->update(array('s_value' => $mailserverPop), array('s_name' => 'mailserver_pop'));
-			$iUpdated+= Preference::newInstance()->update(array('s_value' => $mailserverType), array('s_name' => 'mailserver_type'));
-			$iUpdated+= Preference::newInstance()->update(array('s_value' => $mailserverHost), array('s_name' => 'mailserver_host'));
-			$iUpdated+= Preference::newInstance()->update(array('s_value' => $mailserverPort), array('s_name' => 'mailserver_port'));
-			$iUpdated+= Preference::newInstance()->update(array('s_value' => $mailserverUsername), array('s_name' => 'mailserver_username'));
-			$iUpdated+= Preference::newInstance()->update(array('s_value' => $mailserverPassword), array('s_name' => 'mailserver_password'));
-			$iUpdated+= Preference::newInstance()->update(array('s_value' => $mailserverSsl), array('s_name' => 'mailserver_ssl'));
-			if ($iUpdated > 0) 
-			{
-				osc_add_flash_ok_message(_m('Mail server configuration has changed'), 'admin');
-			}
-			$this->redirectTo(osc_admin_base_url(true) . '?page=settings&action=mailserver');
-			break;
-
-		case ('media'): // calling the media view
-			$this->doView('settings/media.php');
-			break;
-
-		case ('media_post'): // updating the media config
-			$iUpdated = 0;
-			$maxSizeKb = Params::getParam('maxSizeKb');
-			$allowedExt = Params::getParam('allowedExt');
-			$dimThumbnail = Params::getParam('dimThumbnail');
-			$dimPreview = Params::getParam('dimPreview');
-			$dimNormal = Params::getParam('dimNormal');
-			$keepOriginalImage = Params::getParam('keep_original_image');
-			$use_imagick = Params::getParam('use_imagick');
-			$type_watermark = Params::getParam('watermark_type');
-			$watermark_color = Params::getParam('watermark_text_color');
-			$watermark_text = Params::getParam('watermark_text');
-			$watermark_image = Params::getParam('watermark_image');
-			switch ($type_watermark) 
-			{
-			case 'none':
-				$iUpdated+= Preference::newInstance()->update(array('s_value' => ''), array('s_name' => 'watermark_text_color'));
-				$iUpdated+= Preference::newInstance()->update(array('s_value' => ''), array('s_name' => 'watermark_text'));
-				$iUpdated+= Preference::newInstance()->update(array('s_value' => ''), array('s_name' => 'watermark_image'));
-				break;
-
-			case 'text':
-				$iUpdated+= Preference::newInstance()->update(array('s_value' => $watermark_color), array('s_name' => 'watermark_text_color'));
-				$iUpdated+= Preference::newInstance()->update(array('s_value' => $watermark_text), array('s_name' => 'watermark_text'));
-				$iUpdated+= Preference::newInstance()->update(array('s_value' => ''), array('s_name' => 'watermark_image'));
-				$iUpdated+= Preference::newInstance()->update(array('s_value' => Params::getParam('watermark_text_place')), array('s_name' => 'watermark_place'));
-				break;
-
-			case 'image':
-				// upload image & move to path
-				if ($_FILES['watermark_image']['error'] == UPLOAD_ERR_OK) 
-				{
-					$tmpName = $_FILES['watermark_image']['tmp_name'];
-					$path = osc_content_path() . 'uploads/watermark.png';
-					if (move_uploaded_file($tmpName, $path)) 
-					{
-						$iUpdated+= Preference::newInstance()->update(array('s_value' => $path), array('s_name' => 'watermark_image'));
-					}
-					else
-					{
-						$iUpdated+= Preference::newInstance()->update(array('s_value' => ''), array('s_name' => 'watermark_image'));
-					}
-				}
-				$iUpdated+= Preference::newInstance()->update(array('s_value' => ''), array('s_name' => 'watermark_text_color'));
-				$iUpdated+= Preference::newInstance()->update(array('s_value' => ''), array('s_name' => 'watermark_text'));
-				$iUpdated+= Preference::newInstance()->update(array('s_value' => Params::getParam('watermark_image_place')), array('s_name' => 'watermark_place'));
-				break;
-
-			default:
-				break;
-			}
-			// format parameters
-			$maxSizeKb = strip_tags($maxSizeKb);
-			$allowedExt = strip_tags($allowedExt);
-			$dimThumbnail = strip_tags($dimThumbnail);
-			$dimPreview = strip_tags($dimPreview);
-			$dimNormal = strip_tags($dimNormal);
-			$keepOriginalImage = ($keepOriginalImage != '' ? true : false);
-			$use_imagick = ($use_imagick != '' ? true : false);
-			if (!extension_loaded('imagick')) 
-			{
-				$use_imagick = false;
-			}
-			$iUpdated+= Preference::newInstance()->update(array('s_value' => $maxSizeKb), array('s_name' => 'maxSizeKb'));
-			$iUpdated+= Preference::newInstance()->update(array('s_value' => $allowedExt), array('s_name' => 'allowedExt'));
-			$iUpdated+= Preference::newInstance()->update(array('s_value' => $dimThumbnail), array('s_name' => 'dimThumbnail'));
-			$iUpdated+= Preference::newInstance()->update(array('s_value' => $dimPreview), array('s_name' => 'dimPreview'));
-			$iUpdated+= Preference::newInstance()->update(array('s_value' => $dimNormal), array('s_name' => 'dimNormal'));
-			$iUpdated+= Preference::newInstance()->update(array('s_value' => $keepOriginalImage), array('s_name' => 'keep_original_image'));
-			$iUpdated+= Preference::newInstance()->update(array('s_value' => $use_imagick), array('s_name' => 'use_imagick'));
-			if ($iUpdated > 0) 
-			{
-				osc_add_flash_ok_message(_m('Media config has been updated'), 'admin');
-			}
-			$this->redirectTo(osc_admin_base_url(true) . '?page=settings&action=media');
-			break;
-
-		case ('contact'): // calling the media view
-			$this->doView('settings/contact.php');
-			break;
-
-		case ('contact_post'): // updating the media config
-			$enabled_attachment = Params::getParam('enabled_attachment');
-			if ($enabled_attachment == '') $enabled_attachment = 0;
-			else $enabled_attachment = 1;
-			// format parameters
-			$iUpdated = Preference::newInstance()->update(array('s_value' => $enabled_attachment), array('s_name' => 'contact_attachment'));
-			if ($iUpdated > 0) 
-			{
-				osc_add_flash_ok_message(_m('Contact configuration has been updated'), 'admin');
-			}
-			$this->redirectTo(osc_admin_base_url(true) . '?page=settings&action=contact');
-			break;
-
-		case ('cron'): // viewing the cron view
-			$this->doView('settings/cron.php');
-			break;
-
-		case ('cron_post'): // updating cron config
-			$iUpdated = 0;
-			$bAutoCron = Params::getParam('auto_cron');
-			$bAutoCron = ($bAutoCron != '' ? true : false);
-			$iUpdated+= Preference::newInstance()->update(array('s_value' => $bAutoCron), array('s_name' => 'auto_cron'));
-			if ($iUpdated > 0) 
-			{
-				osc_add_flash_ok_message(_m('Cron config has been updated'), 'admin');
-			}
-			$this->redirectTo(osc_admin_base_url(true) . '?page=settings&action=cron');
-			break;
-
 		case ('update'): // update index view
 			$iUpdated = 0;
 			$sPageTitle = Params::getParam('pageTitle');
@@ -690,7 +480,7 @@ class CAdminSettings extends AdminSecBaseModel
 			break;
 		}
 	}
-	//hopefully generic...
+
 	function doView($file) 
 	{
 		osc_current_admin_theme_path($file);

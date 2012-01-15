@@ -47,7 +47,7 @@ _e('Add new item'); ?></a>
             </li>
             <li>
                 <a href="<?php
-echo osc_admin_base_url(true); ?>?page=comments">&raquo; <?php
+echo osc_admin_base_url(true); ?>?page=comment">&raquo; <?php
 _e('Comments'); ?></a>
             </li>
             <li>
@@ -69,12 +69,12 @@ _e('Categories'); ?></a>
         <ul>
             <li>
                 <a href="<?php
-echo osc_admin_base_url(true); ?>?page=categories">&raquo; <?php
+echo osc_admin_base_url(true); ?>?page=category">&raquo; <?php
 _e('Manage categories'); ?></a>
             </li>
             <li>
                 <a href="<?php
-echo osc_admin_base_url(true); ?>?page=categories&action=settings">&raquo; <?php
+echo osc_admin_base_url(true); ?>?page=category&action=settings">&raquo; <?php
 _e('Settings'); ?></a>
             </li>
         </ul>
@@ -113,7 +113,7 @@ _e('Custom Fields'); ?></a>
         <ul>
             <li>
                 <a href="<?php
-echo osc_admin_base_url(true); ?>?page=cfields">&raquo; <?php
+echo osc_admin_base_url(true); ?>?page=field">&raquo; <?php
 _e('Manage custom fields'); ?></a>
             </li>
         </ul>

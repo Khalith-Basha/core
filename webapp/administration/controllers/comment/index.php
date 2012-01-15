@@ -18,7 +18,7 @@
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-class CAdminItemComments extends AdminSecBaseModel
+class CAdminComment extends AdminSecBaseModel
 {
 	private $itemCommentManager;
 	function __construct() 
@@ -27,7 +27,7 @@ class CAdminItemComments extends AdminSecBaseModel
 		//specific things for this class
 		$this->itemCommentManager = ItemComment::newInstance();
 	}
-	//Business Layer...
+
 	function doModel() 
 	{
 		parent::doModel();
@@ -95,7 +95,7 @@ class CAdminItemComments extends AdminSecBaseModel
 					break;
 				}
 			}
-			$this->redirectTo(osc_admin_base_url(true) . "?page=comments");
+			$this->redirectTo(osc_admin_base_url(true) . "?page=comment");
 			break;
 
 		case 'status':
@@ -133,7 +133,7 @@ class CAdminItemComments extends AdminSecBaseModel
 				osc_add_hook("disable_comment", $id);
 				osc_add_flash_ok_message(_m('The comment has been disabled'), 'admin');
 			}
-			$this->redirectTo(osc_admin_base_url(true) . "?page=comments");
+			$this->redirectTo(osc_admin_base_url(true) . "?page=comment");
 			break;
 
 		case 'comment_edit':
@@ -147,14 +147,14 @@ class CAdminItemComments extends AdminSecBaseModel
 			$this->itemCommentManager->update(array('s_title' => Params::getParam('title'), 's_body' => Params::getParam('body'), 's_author_name' => Params::getParam('authorName'), 's_author_email' => Params::getParam('authorEmail')), array('pk_i_id' => Params::getParam('id')));
 			osc_run_hook('edit_comment', Params::getParam('id'));
 			osc_add_flash_ok_message(_m('Great! We just updated your comment'), 'admin');
-			$this->redirectTo(osc_admin_base_url(true) . "?page=comments");
+			$this->redirectTo(osc_admin_base_url(true) . "?page=comment");
 			break;
 
 		case 'delete':
 			$this->itemCommentManager->deleteByPrimaryKey(Params::getParam('id'));
 			osc_add_flash_ok_message(_m('The comment have been deleted'), 'admin');
 			osc_run_hook('delete_comment', Params::getParam('id'));
-			$this->redirectTo(osc_admin_base_url(true) . "?page=comments");
+			$this->redirectTo(osc_admin_base_url(true) . "?page=comment");
 			break;
 
 		default:
@@ -171,7 +171,7 @@ class CAdminItemComments extends AdminSecBaseModel
 			$this->doView('comments/index.php');
 		}
 	}
-	//hopefully generic...
+
 	function doView($file) 
 	{
 		osc_current_admin_theme_path($file);

@@ -23,7 +23,7 @@ class CAdminAjax extends AdminSecBaseModel
 		parent::__construct();
 		$this->ajax = true;
 	}
-	//Business Layer...
+
 	function doModel() 
 	{
 		//specific things for this class
@@ -161,12 +161,6 @@ class CAdminAjax extends AdminSecBaseModel
 			}
 			$result.= "}";
 			echo $result;
-			break;
-
-		case 'category_edit_iframe':
-			$this->_exportVariableToView('category', Category::newInstance()->findByPrimaryKey(Params::getParam("id")));
-			$this->_exportVariableToView('languages', OSCLocale::newInstance()->listAllEnabled());
-			$this->doView("categories/iframe.php");
 			break;
 
 		case 'field_categories_iframe':
@@ -308,35 +302,6 @@ class CAdminAjax extends AdminSecBaseModel
 			}
 			$result['affectedIds'] = array(array('id' => $id));
 			echo json_encode($result);
-			break;
-
-		case 'delete_category':
-			$id = Params::getParam("id");
-			$error = 0;
-			try
-			{
-				$categoryManager = Category::newInstance();
-				$categoryManager->deleteByPrimaryKey($id);
-				$message = __('The categories have been deleted');
-			}
-			catch(Exception $e) 
-			{
-				$error = 1;
-				$message = __('Error while deleting');
-			}
-			$result = "{";
-			if ($error) 
-			{
-				$result.= '"error" : "';
-				$result.= $message;
-				$result.= '"';
-			}
-			else
-			{
-				$result.= '"ok" : "Saved." ';
-			}
-			$result.= "}";
-			echo $result;
 			break;
 
 		case 'edit_category_post':
@@ -521,7 +486,7 @@ class CAdminAjax extends AdminSecBaseModel
 		Session::newInstance()->_dropKeepForm();
 		Session::newInstance()->_clearVariables();
 	}
-	//hopefully generic...
+
 	function doView($file) 
 	{
 		osc_current_admin_theme_path($file);

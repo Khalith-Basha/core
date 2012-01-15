@@ -18,51 +18,38 @@
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-class CAdminTool extends AdminSecBaseModel
+class CAdminCategory extends AdminSecBaseModel
 {
+	private $categoryManager;
 	function __construct() 
 	{
 		parent::__construct();
+		//specific things for this class
+		$this->categoryManager = Category::newInstance();
 	}
 
 	function doModel() 
 	{
-		switch ($this->action) 
+		parent::doModel();
+		$fields['fk_i_parent_id'] = NULL;
+		$fields['i_expiration_days'] = 0;
+		$fields['i_position'] = 0;
+		$fields['b_enabled'] = 1;
+		$default_locale = osc_language();
+		$aFieldsDescription[$default_locale]['s_name'] = "NEW CATEGORY, EDIT ME!";
+		$categoryId = $this->categoryManager->insert($fields, $aFieldsDescription);
+		// reorder parent categories. NEW category first
+		$rootCategories = $this->categoryManager->findRootCategories();
+		foreach ($rootCategories as $cat) 
 		{
-		case 'maintenance':
-			$mode = Params::getParam('mode');
-			if ($mode == 'on') 
-			{
-				$maintenance_file = ABS_PATH . '.maintenance';
-				$fileHandler = @fopen($maintenance_file, 'w');
-				if ($fileHandler) 
-				{
-					osc_add_flash_ok_message(_m('Maintenance mode is ON'), 'admin');
-				}
-				else
-				{
-					osc_add_flash_error_message(_m('There was an error creating .maintenance file, please create it manually at the root folder'), 'admin');
-				}
-				fclose($fileHandler);
-				$this->redirectTo(osc_admin_base_url(true) . '?page=tool&action=maintenance');
-			}
-			else if ($mode == 'off') 
-			{
-				$deleted = @unlink(ABS_PATH . '.maintenance');
-				if ($deleted) 
-				{
-					osc_add_flash_ok_message(_m('Maintenance mode is OFF'), 'admin');
-				}
-				else
-				{
-					osc_add_flash_error_message(_m('There was an error removing .maintenance file, please remove it manually from the root folder'), 'admin');
-				}
-				$this->redirectTo(osc_admin_base_url(true) . '?page=tool&action=maintenance');
-			}
-			$this->doView('tools/maintenance.php');
-			break;
+			$order = $cat['i_position'];
+			$order++;
+			$this->categoryManager->updateOrder($cat['pk_i_id'], $order);
 		}
+		$this->categoryManager->updateOrder($categoryId, '0');
+		$this->redirectTo(osc_admin_base_url(true) . '?page=category');
 	}
+
 	function doView($file) 
 	{
 		osc_current_admin_theme_path($file);

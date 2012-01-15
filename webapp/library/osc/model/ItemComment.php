@@ -220,7 +220,7 @@ class ItemComment extends DAO
 			$conditions = array('i.pk_i_id' => $itemId, 'c.fk_i_item_id' => $itemId);
 		}
 		$this->dao->where($conditions);
-		$this->dao->orderBy('c.pub_date', 'DESC');
+		$this->dao->orderBy('c.dt_pub_date', 'DESC');
 		$aux = $this->dao->get();
 		$comments = $aux->result();
 		return $this->extendData($comments);

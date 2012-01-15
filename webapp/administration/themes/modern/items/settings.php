@@ -62,8 +62,8 @@ osc_show_flash_message('admin'); ?>
                     <div style="padding: 20px;">
                         <form action="<?php
 echo osc_admin_base_url(true); ?>" method="post">
-                            <input type="hidden" name="page" value="items" />
-                            <input type="hidden" name="action" value="settings_post" />
+                            <input type="hidden" name="page" value="item" />
+                            <input type="hidden" name="action" value="settings" />
 
                             <div style="float: left; width: 50%;">
                                 <fieldset>

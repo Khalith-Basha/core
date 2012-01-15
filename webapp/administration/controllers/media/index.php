@@ -27,7 +27,7 @@ class CAdminMedia extends AdminSecBaseModel
 		//specific things for this class
 		$this->resourcesManager = ItemResource::newInstance();
 	}
-	//Business Layer...
+
 	function doModel() 
 	{
 		parent::doModel();
@@ -74,7 +74,7 @@ class CAdminMedia extends AdminSecBaseModel
 			$this->doView('media/index.php');
 		}
 	}
-	//hopefully generic...
+
 	function doView($file) 
 	{
 		osc_current_admin_theme_path($file);

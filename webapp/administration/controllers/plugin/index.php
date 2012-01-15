@@ -26,7 +26,7 @@ class CAdminPlugin extends AdminSecBaseModel
 		//specific things for this class
 		
 	}
-	//Business Layer...
+
 	function doModel() 
 	{
 		parent::doModel();
@@ -37,31 +37,6 @@ class CAdminPlugin extends AdminSecBaseModel
 			Plugins::runHook($pn . '_uninstall');
 			Plugins::uninstall($pn);
 			osc_add_flash_ok_message(_m('Plugin uninstalled'), 'admin');
-			$this->redirectTo(osc_admin_base_url(true) . "?page=plugin");
-			break;
-
-		case 'enable':
-			$pn = Params::getParam("plugin");
-			// CATCH FATAL ERRORS
-			register_shutdown_function(array($this, 'errorHandler'), $pn, 'enable');
-			$enabled = Plugins::activate($pn);
-			if ($enabled) 
-			{
-				Plugins::runHook($pn . '_enable');
-				osc_add_flash_ok_message(_m('Plugin enabled'), 'admin');
-			}
-			else
-			{
-				osc_add_flash_error_message(_m('Error: Plugin already enabled'), 'admin');
-			}
-			$this->redirectTo(osc_admin_base_url(true) . "?page=plugin");
-			break;
-
-		case 'disable':
-			$pn = Params::getParam("plugin");
-			Plugins::runHook($pn . '_disable');
-			Plugins::deactivate($pn);
-			osc_add_flash_ok_message(_m('Plugin disabled'), 'admin');
 			$this->redirectTo(osc_admin_base_url(true) . "?page=plugin");
 			break;
 
@@ -171,7 +146,7 @@ class CAdminPlugin extends AdminSecBaseModel
 			$this->doView("plugins/index.php");
 		}
 	}
-	//hopefully generic...
+
 	function doView($file) 
 	{
 		osc_current_admin_theme_path($file);

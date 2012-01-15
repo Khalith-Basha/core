@@ -26,7 +26,7 @@ class CAdminStats extends AdminSecBaseModel
 		//specific things for this class
 		
 	}
-	//Business Layer...
+
 	function doModel() 
 	{
 		parent::doModel();
@@ -73,7 +73,7 @@ class CAdminStats extends AdminSecBaseModel
 			$this->_exportVariableToView("max", $max);
 			$this->doView("stats/users.php");
 	}
-	//hopefully generic...
+
 	function doView($file) 
 	{
 		osc_current_admin_theme_path($file);

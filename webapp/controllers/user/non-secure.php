@@ -26,7 +26,7 @@ class CWebUserNonSecure extends Controller
 			$this->redirectTo(osc_base_url(true));
 		}
 	}
-	//Business Layer...
+
 	function doModel() 
 	{
 		switch ($this->action) 
@@ -101,7 +101,7 @@ class CWebUserNonSecure extends Controller
 			break;
 		}
 	}
-	//hopefully generic...
+
 	function doView($file) 
 	{
 		osc_run_hook("before_html");

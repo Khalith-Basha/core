@@ -24,7 +24,7 @@ class CAdminTool extends AdminSecBaseModel
 	{
 		parent::__construct();
 	}
-	//Business Layer...
+
 	function doModel() 
 	{
 		switch ($this->action) 

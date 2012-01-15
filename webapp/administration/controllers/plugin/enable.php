@@ -18,56 +18,36 @@
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-define('IS_AJAX', true);
-class CWebAjax extends Controller
+class CAdminPlugin extends AdminSecBaseModel
 {
-	function __construct() 
-	{
-		parent::__construct();
-		$this->ajax = true;
-	}
-
 	function doModel() 
 	{
-		$hook = Params::getParam("hook");
-		switch ($hook) 
+		$pn = Params::getParam("plugin");
+		// CATCH FATAL ERRORS
+		register_shutdown_function(array($this, 'errorHandler'), $pn, 'enable');
+		$enabled = Plugins::activate($pn);
+		if ($enabled) 
 		{
-		case 'item_form':
-			$catId = Params::getParam("catId");
-			if ($catId != '') 
-			{
-				osc_run_hook("item_form", $catId);
-			}
-			else
-			{
-				osc_run_hook("item_form");
-			}
-			break;
-
-		case 'item_edit':
-			$catId = Params::getParam("catId");
-			$itemId = Params::getParam("itemId");
-			osc_run_hook("item_edit", $catId, $itemId);
-			break;
-
-		default:
-			if ($hook == '') 
-			{
-				return false;
-			}
-			else
-			{
-				osc_run_hook($hook);
-			}
-			break;
+			Plugins::runHook($pn . '_enable');
+			osc_add_flash_ok_message(_m('Plugin enabled'), 'admin');
 		}
-		Session::newInstance()->_dropKeepForm();
-		Session::newInstance()->_clearVariables();
+		else
+		{
+			osc_add_flash_error_message(_m('Error: Plugin already enabled'), 'admin');
+		}
+		$this->redirectTo(osc_admin_base_url(true) . "?page=plugin");
 	}
-	function doView($file) 
+	function errorHandler($pn, $action) 
 	{
-		osc_run_hook("before_html");
-		osc_current_web_theme_path($file);
-		osc_run_hook("after_html");
+		if (false === is_null($aError = error_get_last())) 
+		{
+			Plugins::deactivate($pn);
+			if ($action == 'install') 
+			{
+				Plugins::uninstall($pn);
+			}
+			osc_add_flash_error_message(sprintf(_m('There was a fatal error and the plugin was not installed.<br />Error: "%s" Line: %s<br/>File: %s'), $aError['message'], $aError['line'], $aError['file']), 'admin');
+			$this->redirectTo(osc_admin_base_url(true) . "?page=plugin");
+		}
 	}
 }

@@ -21,7 +21,7 @@ class CAdminAppearance extends AdminSecBaseModel
 	{
 		parent::__construct();
 	}
-	//Business Layer...
+
 	function doModel() 
 	{
 		parent::doModel();
@@ -133,7 +133,7 @@ class CAdminAppearance extends AdminSecBaseModel
 			$this->doView('appearance/index.php');
 		}
 	}
-	//hopefully generic...
+
 	function doView($file) 
 	{
 		osc_current_admin_theme_path($file);

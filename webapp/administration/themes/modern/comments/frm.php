@@ -156,7 +156,7 @@ CommentForm::email_input_text($comment); ?>
                             <div class="FormElementName"><?php
 _e('Status'); ?>: <?php
 echo ($comment['b_active'] ? __('ACTIVE') : __('INACTIVE')); ?> ( <a href="<?php
-echo osc_admin_base_url(true); ?>?page=comments&action=status&id=<?php
+echo osc_admin_base_url(true); ?>?page=comment&action=status&id=<?php
 echo $comment['pk_i_id']; ?>&value=<?php
 echo (($comment['b_active'] == 1) ? 'INACTIVE' : 'ACTIVE'); ?>"><?php
 echo (($comment['b_active'] == 1) ? __('De-activate') : __('Activate')); ?></a> )
@@ -166,7 +166,7 @@ echo (($comment['b_active'] == 1) ? __('De-activate') : __('Activate')); ?></a> 
                             <div class="FormElementName"><?php
 _e('Status'); ?>: <?php
 echo ($comment['b_enabled'] ? __('ENABLED') : __('DISABLED')); ?> ( <a href="<?php
-echo osc_admin_base_url(true); ?>?page=comments&action=status&id=<?php
+echo osc_admin_base_url(true); ?>?page=comment&action=status&id=<?php
 echo $comment['pk_i_id']; ?>&value=<?php
 echo (($comment['b_enabled'] == 1) ? 'DISABLE' : 'ENABLE'); ?>"><?php
 echo (($comment['b_enabled'] == 1) ? __('Disable') : __('Enable')); ?></a> )
@@ -187,7 +187,7 @@ CommentForm::body_input_textarea($comment); ?>
                             <div class="FormElementName"></div>
                             <div class="FormElementInput">
                                 <button class="formButton" type="button" onclick="window.location='<?php
-echo osc_admin_base_url(true); ?>?page=comments';" ><?php
+echo osc_admin_base_url(true); ?>?page=comment';" ><?php
 _e('Cancel'); ?></button>
                                 <button class="formButton" type="submit"><?php
 echo $btn_text; ?></button>

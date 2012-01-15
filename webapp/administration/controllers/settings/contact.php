@@ -18,56 +18,30 @@
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-define('IS_AJAX', true);
-class CWebAjax extends Controller
+class CAdminSettings extends AdminSecBaseModel
 {
-	function __construct() 
+	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
-		parent::__construct();
-		$this->ajax = true;
+		$this->doView('settings/contact.php');
 	}
 
-	function doModel() 
+	public function doPost( HttpRequest $req, HttpResponse $res )
 	{
-		$hook = Params::getParam("hook");
-		switch ($hook) 
+		$enabled_attachment = Params::getParam('enabled_attachment');
+		if ($enabled_attachment == '') $enabled_attachment = 0;
+		else $enabled_attachment = 1;
+		// format parameters
+		$iUpdated = Preference::newInstance()->update(array('s_value' => $enabled_attachment), array('s_name' => 'contact_attachment'));
+		if ($iUpdated > 0) 
 		{
-		case 'item_form':
-			$catId = Params::getParam("catId");
-			if ($catId != '') 
-			{
-				osc_run_hook("item_form", $catId);
-			}
-			else
-			{
-				osc_run_hook("item_form");
-			}
-			break;
-
-		case 'item_edit':
-			$catId = Params::getParam("catId");
-			$itemId = Params::getParam("itemId");
-			osc_run_hook("item_edit", $catId, $itemId);
-			break;
-
-		default:
-			if ($hook == '') 
-			{
-				return false;
-			}
-			else
-			{
-				osc_run_hook($hook);
-			}
-			break;
+			osc_add_flash_ok_message(_m('Contact configuration has been updated'), 'admin');
 		}
-		Session::newInstance()->_dropKeepForm();
-		Session::newInstance()->_clearVariables();
+		$this->redirectTo(osc_admin_base_url(true) . '?page=settings&action=contact');
 	}
+
 	function doView($file) 
 	{
-		osc_run_hook("before_html");
-		osc_current_web_theme_path($file);
-		osc_run_hook("after_html");
+		osc_current_admin_theme_path($file);
+		Session::newInstance()->_clearVariables();
 	}
 }

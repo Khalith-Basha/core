@@ -26,7 +26,7 @@ class CWebAjax extends Controller
 		parent::__construct();
 		$this->ajax = true;
 	}
-	//Business Layer...
+
 	function doModel() 
 	{
 		//specific things for this class
@@ -204,7 +204,7 @@ class CWebAjax extends Controller
 		Session::newInstance()->_dropKeepForm();
 		Session::newInstance()->_clearVariables();
 	}
-	//hopefully generic...
+
 	function doView($file) 
 	{
 		osc_run_hook("before_html");

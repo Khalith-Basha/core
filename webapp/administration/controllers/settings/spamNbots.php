@@ -18,33 +18,32 @@
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-class CAdminField extends AdminSecBaseModel
+class CAdminSettings extends AdminSecBaseModel
 {
-	private $fieldManager;
-	function __construct() 
+	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
-		parent::__construct();
-		$this->fieldManager = Field::newInstance();
+		$this->doView('settings/spamNbots.php');
 	}
-	function doModel() 
-	{
-		parent::doModel();
 
-		$categories = Category::newInstance()->toTreeAll();
-		$selected = array();
-		foreach ($categories as $c) 
+	public function doPost( HttpRequest $req, HttpResponse $res )
+	{
+		$iUpdated = 0;
+		$akismetKey = Params::getParam('akismetKey');
+		$akismetKey = trim($akismetKey);
+		$recaptchaPrivKey = Params::getParam('recaptchaPrivKey');
+		$recaptchaPrivKey = trim($recaptchaPrivKey);
+		$recaptchaPubKey = Params::getParam('recaptchaPubKey');
+		$recaptchaPubKey = trim($recaptchaPubKey);
+		$iUpdated+= Preference::newInstance()->update(array('s_value' => $akismetKey), array('s_name' => 'akismetKey'));
+		$iUpdated+= Preference::newInstance()->update(array('s_value' => $recaptchaPrivKey), array('s_name' => 'recaptchaPrivKey'));
+		$iUpdated+= Preference::newInstance()->update(array('s_value' => $recaptchaPubKey), array('s_name' => 'recaptchaPubKey'));
+		if ($iUpdated > 0) 
 		{
-			$selected[] = $c['pk_i_id'];
-			foreach ($c['categories'] as $cc) 
-			{
-				$selected[] = $cc['pk_i_id'];
-			}
+			osc_add_flash_ok_message(_m('Akismet and reCAPTCHA have been updated'), 'admin');
 		}
-		$this->_exportVariableToView("categories", $categories);
-		$this->_exportVariableToView("default_selected", $selected);
-		$this->_exportVariableToView("fields", $this->fieldManager->listAll());
-		$this->doView("fields/index.php");
+		$this->redirectTo(osc_admin_base_url(true) . '?page=settings&action=spamNbots');
 	}
+
 	function doView($file) 
 	{
 		osc_current_admin_theme_path($file);

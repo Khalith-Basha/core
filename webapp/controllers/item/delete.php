@@ -36,7 +36,7 @@ class CWebItem extends Controller
 			$this->user = null;
 		}
 	}
-	//Business Layer...
+
 	function doModel() 
 	{
 		//calling the view...

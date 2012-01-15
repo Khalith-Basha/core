@@ -185,7 +185,7 @@ osc_show_flash_message('admin'); ?>
                     <div style="padding: 20px;">
                         <form id="new_field_form" action="<?php
 echo osc_admin_base_url(true); ?>" method="post">
-                            <input type="hidden" name="page" value="cfields" />
+                            <input type="hidden" name="page" value="field" />
                             <input type="hidden" name="action" value="add_post" />
                             <div style="float: left; width: 100%;">
                                 <fieldset>

@@ -18,56 +18,37 @@
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-define('IS_AJAX', true);
-class CWebAjax extends Controller
+class CAdminField extends AdminSecBaseModel
 {
+	private $fieldManager;
 	function __construct() 
 	{
 		parent::__construct();
-		$this->ajax = true;
+		//specific things for this class
+		$this->fieldManager = Field::newInstance();
 	}
 
 	function doModel() 
 	{
-		$hook = Params::getParam("hook");
-		switch ($hook) 
+		parent::doModel();
+		if (Params::getParam('field_name') != '') 
 		{
-		case 'item_form':
-			$catId = Params::getParam("catId");
-			if ($catId != '') 
+			$field = $this->fieldManager->findByName(Params::getParam('field_name'));
+			if (!isset($field['pk_i_id'])) 
 			{
-				osc_run_hook("item_form", $catId);
+				$slug = preg_replace('|([-]+)|', '-', preg_replace('|[^a-z0-9_-]|', '-', strtolower(Params::getParam("field_slug"))));
+				$this->fieldManager->insertField(Params::getParam("field_name"), Params::getParam("field_type_new"), $slug, Params::getParam("field_required") == "1" ? 1 : 0, Params::getParam('field_options'), Params::getParam('categories'));
+				osc_add_flash_ok_message(_m("New custom field added"), "admin");
 			}
 			else
 			{
-				osc_run_hook("item_form");
+				osc_add_flash_error_message(_m("Sorry, you already have one field with that name"), "admin");
 			}
-			break;
-
-		case 'item_edit':
-			$catId = Params::getParam("catId");
-			$itemId = Params::getParam("itemId");
-			osc_run_hook("item_edit", $catId, $itemId);
-			break;
-
-		default:
-			if ($hook == '') 
-			{
-				return false;
-			}
-			else
-			{
-				osc_run_hook($hook);
-			}
-			break;
 		}
-		Session::newInstance()->_dropKeepForm();
-		Session::newInstance()->_clearVariables();
-	}
-	function doView($file) 
-	{
-		osc_run_hook("before_html");
-		osc_current_web_theme_path($file);
-		osc_run_hook("after_html");
+		else
+		{
+			osc_add_flash_error_message(_m("Name can not be empty"), "admin");
+		}
+		$this->redirectTo(osc_admin_base_url(true) . "?page=field");
 	}
 }

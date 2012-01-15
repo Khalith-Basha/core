@@ -33,7 +33,7 @@ class CWebUser extends Controller
 		Cookie::newInstance()->set();
 		$this->redirectTo(osc_base_url());
 	}
-	//hopefully generic...
+
 	function doView($file) 
 	{
 		osc_run_hook("before_html");

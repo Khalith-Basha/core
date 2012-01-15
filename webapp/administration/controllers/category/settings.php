@@ -18,56 +18,31 @@
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-define('IS_AJAX', true);
-class CWebAjax extends Controller
+class CAdminCategory extends AdminSecBaseModel
 {
+	private $categoryManager;
 	function __construct() 
 	{
 		parent::__construct();
-		$this->ajax = true;
+		//specific things for this class
+		$this->categoryManager = Category::newInstance();
 	}
 
-	function doModel() 
+	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
-		$hook = Params::getParam("hook");
-		switch ($hook) 
-		{
-		case 'item_form':
-			$catId = Params::getParam("catId");
-			if ($catId != '') 
-			{
-				osc_run_hook("item_form", $catId);
-			}
-			else
-			{
-				osc_run_hook("item_form");
-			}
-			break;
-
-		case 'item_edit':
-			$catId = Params::getParam("catId");
-			$itemId = Params::getParam("itemId");
-			osc_run_hook("item_edit", $catId, $itemId);
-			break;
-
-		default:
-			if ($hook == '') 
-			{
-				return false;
-			}
-			else
-			{
-				osc_run_hook($hook);
-			}
-			break;
-		}
-		Session::newInstance()->_dropKeepForm();
+		osc_current_admin_theme_path( 'categories/settings.php' );
 		Session::newInstance()->_clearVariables();
 	}
-	function doView($file) 
+
+	public function doPost( HttpRequest $req, HttpResponse $res )
 	{
-		osc_run_hook("before_html");
-		osc_current_web_theme_path($file);
-		osc_run_hook("after_html");
+		$selectableParent = Params::getParam('selectable_parent_categories');
+		$updated = Preference::newInstance()->update(array('s_value' => $selectableParent), array('s_name' => 'selectable_parent_categories'));
+		if ($updated > 0) 
+		{
+			osc_add_flash_ok_message(_m('Categories\' settings have been updated'), 'admin');
+		}
+		$this->redirectTo(osc_admin_base_url(true) . '?page=category&action=settings');
 	}
 }
+

@@ -62,7 +62,7 @@ osc_show_flash_message('admin'); ?>
                         <form action="<?php
 echo osc_admin_base_url(true); ?>" method="post">
                             <input type="hidden" name="page" value="settings" />
-                            <input type="hidden" name="action" value="comments_post" />
+                            <input type="hidden" name="action" value="comments" />
                             
                             <div style="float: left; width: 50%;">
                                 <fieldset>

@@ -26,7 +26,7 @@ class CWebUser extends WebSecBaseModel
 			$this->redirectTo(osc_base_url(true));
 		}
 	}
-	//Business Layer...
+
 	function doModel() 
 	{
 		switch ($this->action) 
@@ -150,7 +150,7 @@ class CWebUser extends WebSecBaseModel
 			break;
 		}
 	}
-	//hopefully generic...
+
 	function doView($file) 
 	{
 		osc_run_hook("before_html");

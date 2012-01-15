@@ -61,7 +61,7 @@ class CWebUser extends Controller
 			break;
 		}
 	}
-	//hopefully generic...
+
 	function doView($file) 
 	{
 		osc_run_hook("before_html");

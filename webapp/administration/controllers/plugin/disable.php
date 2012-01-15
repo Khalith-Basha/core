@@ -18,56 +18,21 @@
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-define('IS_AJAX', true);
-class CWebAjax extends Controller
+class CAdminPlugin extends AdminSecBaseModel
 {
 	function __construct() 
 	{
 		parent::__construct();
-		$this->ajax = true;
+		//specific things for this class
+		
 	}
 
 	function doModel() 
 	{
-		$hook = Params::getParam("hook");
-		switch ($hook) 
-		{
-		case 'item_form':
-			$catId = Params::getParam("catId");
-			if ($catId != '') 
-			{
-				osc_run_hook("item_form", $catId);
-			}
-			else
-			{
-				osc_run_hook("item_form");
-			}
-			break;
-
-		case 'item_edit':
-			$catId = Params::getParam("catId");
-			$itemId = Params::getParam("itemId");
-			osc_run_hook("item_edit", $catId, $itemId);
-			break;
-
-		default:
-			if ($hook == '') 
-			{
-				return false;
-			}
-			else
-			{
-				osc_run_hook($hook);
-			}
-			break;
-		}
-		Session::newInstance()->_dropKeepForm();
-		Session::newInstance()->_clearVariables();
-	}
-	function doView($file) 
-	{
-		osc_run_hook("before_html");
-		osc_current_web_theme_path($file);
-		osc_run_hook("after_html");
+		$pn = Params::getParam("plugin");
+		Plugins::runHook($pn . '_disable');
+		Plugins::deactivate($pn);
+		osc_add_flash_ok_message(_m('Plugin disabled'), 'admin');
+		$this->redirectTo(osc_admin_base_url(true) . "?page=plugin");
 	}
 }

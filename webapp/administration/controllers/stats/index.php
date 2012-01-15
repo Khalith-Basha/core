@@ -26,7 +26,7 @@ class CAdminStats extends AdminSecBaseModel
 		//specific things for this class
 		
 	}
-	//Business Layer...
+
 	function doModel() 
 	{
 		parent::doModel();
@@ -218,7 +218,7 @@ class CAdminStats extends AdminSecBaseModel
 
 		}
 	}
-	//hopefully generic...
+
 	function doView($file) 
 	{
 		osc_current_admin_theme_path($file);

@@ -57,7 +57,7 @@ _e('Please set the preferred dimensions for all the images on the website. (form
                         <form action="<?php
 echo osc_admin_base_url(true); ?>" method="post" enctype="multipart/form-data">
                             <input type="hidden" name="page" value="settings" />
-                            <input type="hidden" name="action" value="media_post" />
+                            <input type="hidden" name="action" value="media" />
                             <fieldset>
                                 <legend><?php
 _e('Restrictions'); ?></legend>

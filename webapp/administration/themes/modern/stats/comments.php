@@ -97,19 +97,19 @@ if (count($latest_comments) > 0)
 	{ ?>
                         <tr>
                             <td><a href="<?php
-		echo osc_admin_base_url(true); ?>?page=comments&action=comment_edit&amp;id=<?php
+		echo osc_admin_base_url(true); ?>?page=comment&action=edit&amp;id=<?php
 		echo $c['pk_i_id']; ?>"><?php
 		echo $c['pk_i_id']; ?></a></td>
                             <td><a href="<?php
-		echo osc_admin_base_url(true); ?>?page=comments&action=comment_edit&amp;id=<?php
+		echo osc_admin_base_url(true); ?>?page=comment&action=edit&amp;id=<?php
 		echo $c['pk_i_id']; ?>"><?php
 		echo $c['s_title']; ?></a></td>
                             <td><a href="<?php
-		echo osc_admin_base_url(true); ?>?page=comments&action=comment_edit&amp;id=<?php
+		echo osc_admin_base_url(true); ?>?page=comment&action=edit&amp;id=<?php
 		echo $c['pk_i_id']; ?>"><?php
 		echo $c['s_author_name'] . " - " . $c['s_author_email']; ?></a></td>
                             <td><a href="<?php
-		echo osc_admin_base_url(true); ?>?page=comments&action=comment_edit&amp;id=<?php
+		echo osc_admin_base_url(true); ?>?page=comment&action=edit&amp;id=<?php
 		echo $c['pk_i_id']; ?>"><?php
 		echo $c['s_body']; ?></a></td>
                         </tr>

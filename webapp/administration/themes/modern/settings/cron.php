@@ -49,7 +49,7 @@ osc_show_flash_message('admin'); ?>
                         <form action="<?php
 echo osc_admin_base_url(true); ?>" method="post">
                             <input type="hidden" name="page" value="settings" />
-                            <input type="hidden" name="action" value="cron_post" />
+                            <input type="hidden" name="action" value="cron" />
                             <div style="float: left; width: 100%;">
                                 <fieldset>
                                     <legend><?php

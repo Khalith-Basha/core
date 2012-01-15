@@ -15,26 +15,45 @@
  * You should have received a copy of the GNU Affero General Public
  * License along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-class CWebCustom extends Controller
+define('IS_AJAX', true);
+class CAdminAjax extends AdminSecBaseModel
 {
 	function __construct() 
 	{
 		parent::__construct();
-		//specific things for this class
-		
+		$this->ajax = true;
 	}
 
 	function doModel() 
 	{
-		$this->_exportVariableToView('file', Params::getParam('file'));
-		$this->doView('custom.php');
-	}
-
-	function doView($file) 
-	{
-		osc_run_hook("before_html");
-		osc_current_web_theme_path($file);
+		$id = Params::getParam("id");
+		$error = 0;
+		try
+		{
+			$categoryManager = Category::newInstance();
+			$categoryManager->deleteByPrimaryKey($id);
+			$message = __('The categories have been deleted');
+		}
+		catch(Exception $e) 
+		{
+			$error = 1;
+			$message = __('Error while deleting');
+		}
+		$result = "{";
+		if ($error) 
+		{
+			$result.= '"error" : "';
+			$result.= $message;
+			$result.= '"';
+		}
+		else
+		{
+			$result.= '"ok" : "Saved." ';
+		}
+		$result.= "}";
+		echo $result;
+		Session::newInstance()->_dropKeepForm();
 		Session::newInstance()->_clearVariables();
-		osc_run_hook("after_html");
 	}
 }
+
