@@ -2,24 +2,10 @@
 osc_current_web_theme_path( 'htmlHeader.php' );
 $item = osc_item();
 ?>
-        <script type="text/javascript" src="<?php
-echo osc_current_web_theme_js_url('fancybox/jquery.fancybox-1.3.4.js'); ?>"></script>
-        <link href="<?php
-echo osc_current_web_theme_js_url('fancybox/jquery.fancybox-1.3.4.css'); ?>" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="<?php echo osc_current_web_theme_js_url('fancybox/jquery.fancybox-1.3.4.js'); ?>"></script>
+<link href="<?php echo osc_current_web_theme_js_url('fancybox/jquery.fancybox-1.3.4.css'); ?>" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="/static/scripts/item-details.js"></script>
         
-        <script type="text/javascript">
-            $(document).ready(function(){
-                $("a[rel=image_group]").fancybox({
-                    'transitionIn'		: 'none',
-                    'transitionOut'		: 'none',
-                    'titlePosition' 	: 'over',
-                    'titleFormat'       : function(title, currentArray, currentIndex) {
-                        return '<span id="fancybox-title-over"><?php
-_e('Image', 'modern'); ?>  ' +  (currentIndex + 1) + ' / ' + currentArray.length + ' ' + title + '</span>';
-                    }
-                });
-            });
-        </script>
         <?php
 if (osc_item_is_expired()) 
 { ?>
@@ -33,12 +19,10 @@ else
         <meta name="googlebot" content="index, follow" />
         <?php
 } ?>
-        <script type="text/javascript" src="<?php
-echo osc_current_web_theme_js_url('jquery.validate.min.js'); ?>"></script>
+        <script type="text/javascript" src="<?php echo osc_current_web_theme_js_url('jquery.validate.min.js'); ?>"></script>
     <body>
         <div class="container">
-            <?php
-osc_current_web_theme_path('header.php'); ?>
+            <?php osc_current_web_theme_path('header.php'); ?>
 	    <div class="content item">
 		<?php if( osc_itemIsOld( $item ) ): ?>
 			<p class="ItemOld"><?php echo _e( 'Beware the item is old and may not be available.' ); ?></p>
@@ -171,17 +155,12 @@ osc_run_hook('location'); ?>
                     </div>
                     <!-- plugins -->
                     <div id="useful_info">
-                        <h2><?php
-_e('Useful information', 'modern'); ?></h2>
+                        <h2><?php _e('Useful information', 'modern'); ?></h2>
                         <ul>
-                            <li><?php
-_e('Avoid scams by acting locally or paying with PayPal', 'modern'); ?></li>
-                            <li><?php
-_e('Never pay with Western Union, Moneygram or other anonymous payment services', 'modern'); ?></li>
-                            <li><?php
-_e('Don\'t buy or sell outside of your country. Don\'t accept cashier cheques from outside your country', 'modern'); ?></li>
-                            <li><?php
-_e('This site is never involved in any transaction, and does not handle payments, shipping, guarantee transactions, provide escrow services, or offer "buyer protection" or "seller certification"', 'modern'); ?></li>
+                            <li><?php _e('Avoid scams by acting locally or paying with PayPal', 'modern'); ?></li>
+                            <li><?php _e('Never pay with Western Union, Moneygram or other anonymous payment services', 'modern'); ?></li>
+                            <li><?php _e('Don\'t buy or sell outside of your country. Don\'t accept cashier cheques from outside your country', 'modern'); ?></li>
+                            <li><?php _e('This site is never involved in any transaction, and does not handle payments, shipping, guarantee transactions, provide escrow services, or offer "buyer protection" or "seller certification"', 'modern'); ?></li>
                         </ul>
                     </div>
                     <?php
@@ -310,11 +289,8 @@ if (osc_images_enabled_at_items())
                     <?php
 } ?>
                     <div id="contact">
-                        <h2><?php
-_e("Contact publisher", 'modern'); ?></h2>
-                        <?php
-if (osc_item_is_expired()) 
-{ ?>
+                        <h2><?php _e("Contact publisher", 'modern'); ?></h2>
+                        <?php if (osc_item_is_expired()) { ?>
                             <p>
                                 <?php
 	_e('The item is expired. You cannot contact the publisher.', 'modern'); ?>
@@ -336,11 +312,9 @@ else if (osc_reg_user_can_contact() && !osc_is_web_user_logged_in())
 	_e("You must login or register a new free account in order to contact the advertiser", 'modern'); ?>
                             </p>
                             <p class="contact_button">
-                                <strong><a href="<?php
-	echo osc_user_login_url(); ?>"><?php
+                                <strong><a href="<?php echo osc_user_login_url(); ?>"><?php
 	_e('Login', 'modern'); ?></a></strong>
-                                <strong><a href="<?php
-	echo osc_register_account_url(); ?>"><?php
+                                <strong><a href="<?php echo osc_register_account_url(); ?>"><?php
 	_e('Register for a free account', 'modern'); ?></a></strong>
                             </p>
                         <?php
@@ -358,30 +332,26 @@ else
 	}
 	else
 	{ ?>
-                                <p class="name"><?php
-		_e('Name', 'modern') ?>: <?php
+                                <p class="name"><?php _e('Name', 'modern') ?>: <?php
 		echo osc_item_contact_name(); ?></p>
                             <?php
 	} ?>
                             <?php
 	if (osc_item_show_email()) 
 	{ ?>
-                                <p class="email"><?php
-		_e('E-mail', 'modern'); ?>: <?php
+                                <p class="email"><?php _e('E-mail', 'modern'); ?>: <?php
 		echo osc_item_contact_email(); ?></p>
                             <?php
 	} ?>
                             <?php
 	if (osc_user_phone() != '') 
 	{ ?>
-                                <p class="phone"><?php
-		_e("Tel", 'modern'); ?>.: <?php
+                                <p class="phone"><?php _e("Tel", 'modern'); ?>.: <?php
 		echo osc_user_phone(); ?></p>
                             <?php
 	} ?>
                             <ul id="error_list"></ul>
-                            <?php
-	ContactForm::js_validation(); ?>
+                            <?php ContactForm::js_validation(); ?>
                             <form action="<?php
 	echo osc_base_url(true); ?>" method="post" name="contact_form" id="contact_form">
                                 <?php
@@ -400,7 +370,7 @@ else
                                     <label for="message"><?php
 	_e('Message', 'modern'); ?>:</label> <?php
 	ContactForm::your_message(); ?>
-                                    <input type="hidden" name="action" value="contact_post" />
+                                    <input type="hidden" name="action" value="contact" />
                                     <input type="hidden" name="page" value="item" />
                                     <input type="hidden" name="id" value="<?php
 	echo osc_item_id(); ?>" />

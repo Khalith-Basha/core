@@ -316,15 +316,6 @@ function osc_mailserver_pop()
 //OTHER FUNCTIONS TO GET INFORMATION OF PREFERENCES
 
 /**
- * Gets the rewrite rules (generated via generate_rules.php at root folder)
- *
- * @return string
- */
-function osc_rewrite_rules() 
-{
-	return (getPreference('rewrite_rules'));
-}
-/**
  * Gets max kb of uploads
  *
  * @return int

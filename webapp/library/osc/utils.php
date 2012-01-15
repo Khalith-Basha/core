@@ -700,7 +700,7 @@ function osc_check_dir_writable($dir = ABS_PATH)
 							};
 						}
 					}
-					else if (str_replace("//", "/", $dir) == (ABS_PATH . "components/languages")) 
+					else if (str_replace("//", "/", $dir) == (ABS_PATH . "/components/languages")) 
 					{
 						if ($file == "en_US" || $file == "index.php") 
 						{
@@ -777,7 +777,7 @@ function osc_change_permissions($dir = ABS_PATH)
 							};
 						}
 					}
-					else if (str_replace("//", "/", $dir) == (ABS_PATH . "components/languages")) 
+					else if (str_replace("//", "/", $dir) == (ABS_PATH . "/components/languages")) 
 					{
 						if ($file == "en_US" || $file == "index.php") 
 						{

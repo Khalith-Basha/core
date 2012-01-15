@@ -36,82 +36,80 @@ class CWebItem extends Controller
 			$this->user = null;
 		}
 	}
-	function doModel() 
+
+	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
 		$locales = OSCLocale::newInstance()->listAllEnabled();
 		$this->_exportVariableToView('locales', $locales);
-		switch ($this->action) 
+		$item = $this->itemManager->findByPrimaryKey(Params::getParam('id'));
+		if (empty($item)) 
 		{
-		case 'contact':
-			$item = $this->itemManager->findByPrimaryKey(Params::getParam('id'));
-			if (empty($item)) 
-			{
-				osc_add_flash_error_message(_m('This item doesn\'t exist'));
-				$this->redirectTo(osc_base_url(true));
-			}
-			else
-			{
-				$this->_exportVariableToView('item', $item);
-				if (osc_item_is_expired()) 
-				{
-					osc_add_flash_error_message(_m('We\'re sorry, but the item has expired. You can\'t contact the seller'));
-					$this->redirectTo(osc_item_url());
-				}
-				if (osc_reg_user_can_contact() && osc_is_web_user_logged_in() || !osc_reg_user_can_contact()) 
-				{
-					$this->doView('item-contact.php');
-				}
-				else
-				{
-					osc_add_flash_error_message(_m('You can\'t contact the seller, only registered users can'));
-					$this->redirectTo(osc_item_url());
-				}
-			}
-			break;
-
-		case 'contact_post':
-			$item = $this->itemManager->findByPrimaryKey(Params::getParam('id'));
+			osc_add_flash_error_message(_m('This item doesn\'t exist'));
+			$this->redirectTo(osc_base_url(true));
+		}
+		else
+		{
 			$this->_exportVariableToView('item', $item);
-			if ((osc_recaptcha_private_key() != '') && Params::existParam("recaptcha_challenge_field")) 
+			if (osc_item_is_expired()) 
 			{
-				if (!osc_check_recaptcha()) 
-				{
-					osc_add_flash_error_message(_m('The Recaptcha code is wrong'));
-					Session::newInstance()->_setForm("yourEmail", Params::getParam('yourEmail'));
-					Session::newInstance()->_setForm("yourName", Params::getParam('yourName'));
-					Session::newInstance()->_setForm("phoneNumber", Params::getParam('phoneNumber'));
-					Session::newInstance()->_setForm("message_body", Params::getParam('message'));
-					$this->redirectTo(osc_item_url());
-					return false; // BREAK THE PROCESS, THE RECAPTCHA IS WRONG
-					
-				}
+				osc_add_flash_error_message(_m('We\'re sorry, but the item has expired. You can\'t contact the seller'));
+				$this->redirectTo(osc_item_url());
 			}
-			$category = Category::newInstance()->findByPrimaryKey($item['fk_i_category_id']);
-			if ($category['i_expiration_days'] > 0) 
+			if (osc_reg_user_can_contact() && osc_is_web_user_logged_in() || !osc_reg_user_can_contact()) 
 			{
-				$item_date = strtotime($item['pub_date']) + ($category['i_expiration_days'] * (24 * 3600));
-				$date = time();
-				if ($item_date < $date && $item['b_premium'] != 1) 
-				{
-					// The item is expired, we can not contact the seller
-					osc_add_flash_error_message(_m('We\'re sorry, but the item has expired. You can\'t contact the seller'));
-					$this->redirectTo(osc_item_url());
-				}
-			}
-			$mItem = new ItemActions(false);
-			$result = $mItem->contact();
-			if (is_string($result)) 
-			{
-				osc_add_flash_error_message($result);
+				$this->doView('item-contact.php');
 			}
 			else
 			{
-				osc_add_flash_ok_message(_m('We\'ve just sent an e-mail to the seller'));
+				osc_add_flash_error_message(_m('You can\'t contact the seller, only registered users can'));
+				$this->redirectTo(osc_item_url());
 			}
-			$this->redirectTo(osc_item_url());
-			break;
 		}
 	}
+
+	public function doPost( HttpRequest $req, HttpResponse $res )
+	{
+		$item = $this->itemManager->findByPrimaryKey(Params::getParam('id'));
+		$this->_exportVariableToView('item', $item);
+		if ((osc_recaptcha_private_key() != '') && Params::existParam("recaptcha_challenge_field")) 
+		{
+			if (!osc_check_recaptcha()) 
+			{
+				osc_add_flash_error_message(_m('The Recaptcha code is wrong'));
+				Session::newInstance()->_setForm("yourEmail", Params::getParam('yourEmail'));
+				Session::newInstance()->_setForm("yourName", Params::getParam('yourName'));
+				Session::newInstance()->_setForm("phoneNumber", Params::getParam('phoneNumber'));
+				Session::newInstance()->_setForm("message_body", Params::getParam('message'));
+				$this->redirectTo(osc_item_url());
+				return false; // BREAK THE PROCESS, THE RECAPTCHA IS WRONG
+				
+			}
+		}
+		$category = Category::newInstance()->findByPrimaryKey($item['fk_i_category_id']);
+		if ($category['i_expiration_days'] > 0) 
+		{
+			$item_date = strtotime($item['pub_date']) + ($category['i_expiration_days'] * (24 * 3600));
+			$date = time();
+			if ($item_date < $date && $item['b_premium'] != 1) 
+			{
+				// The item is expired, we can not contact the seller
+				osc_add_flash_error_message(_m('We\'re sorry, but the item has expired. You can\'t contact the seller'));
+				$this->redirectTo(osc_item_url());
+			}
+		}
+		$mItem = new ItemActions(false);
+		$result = $mItem->contact();
+		if (is_string($result)) 
+		{
+			osc_add_flash_error_message($result);
+		}
+		else
+		{
+			osc_add_flash_ok_message(_m('We\'ve just sent an e-mail to the seller'));
+		}
+		$this->redirectTo(osc_item_url());
+	}
+
 	function doView($file) 
 	{
 		osc_run_hook("before_html");

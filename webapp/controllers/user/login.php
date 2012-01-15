@@ -17,7 +17,7 @@
  */
 class CWebUser extends Controller
 {
-	function __construct() 
+	public function __construct() 
 	{
 		parent::__construct();
 		if (!osc_users_enabled()) 
@@ -26,8 +26,8 @@ class CWebUser extends Controller
 			$this->redirectTo(osc_base_url(true));
 		}
 	}
-	//Business Layer...
-	function doModel() 
+
+	public function doModel() 
 	{
 		if (osc_logged_user_id() != '') 
 		{

@@ -17,25 +17,27 @@
  *
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
+
+class RewriteRule
+{
+	public $reDomain;
+	public $rePath;
+
+	public $request;
+
+	public function __construct( $request, $rePath, $reDomain = null )
+	{
+		$this->request = $request;
+		$this->rePath = $rePath;
+		$this->reDomain = $reDomain;
+	}
+}
+
 class Rewrite
 {
 	private static $instance;
-	private $rules;
-	private $request_uri;
-	private $uri;
-	private $location;
-	private $section;
-	public function __construct() 
-	{
-		$this->rules = $this->getRules();
-		$this->request_uri = '';
-		$this->uri = '';
-		$this->location = '';
-		$this->section = '';
-		//parent::__construct() ;
-		
-	}
+
 	public static function newInstance() 
 	{
 		if (!self::$instance instanceof self) 
@@ -44,92 +46,65 @@ class Rewrite
 		}
 		return self::$instance;
 	}
-	public function getTableName() 
+
+	private $rules;
+	private $location;
+	private $section;
+
+	public function __construct() 
 	{
+		$this->rules = array();
+		$this->location = null;
+		$this->section = null;
 	}
 	public function getRules() 
 	{
-		return unserialize(osc_rewrite_rules());
-	}
-	public function setRules() 
-	{
-		Preference::newInstance()->update(array('s_value' => serialize($this->rules)), array('s_name' => 'rewrite_rules'));
-	}
-	public function listRules() 
-	{
 		return $this->rules;
 	}
-	public function addRules($rules) 
+	public function addRule( $rePath, $request, $reDomain = null )
 	{
-		if (is_array($rules)) 
-		{
-			foreach ($rules as $rule) 
-			{
-				if (is_array($rule) && count($rule) > 1) 
-				{
-					$this->addRule($rule[0], $rule[1]);
-				}
-			}
-		}
-	}
-	public function addRule($regexp, $uri) 
-	{
-		$regexp = trim($regexp);
-		$uri = trim($uri);
-		if ($regexp != '' && $uri != '') 
-		{
-			if (!in_array($regexp, $this->rules)) 
-			{
-				$this->rules[$regexp] = $uri;
-			}
-		}
+		$rule = new RewriteRule( $request, $rePath, $reDomain );
+		$this->rules[] = $rule;
 	}
 	public function init() 
 	{
-		// $_SERVER is not supported by Params Class... we should fix that
-		if (isset($_SERVER['REQUEST_URI'])) 
+		if( empty( $_SERVER['REQUEST_URI'] ) )
+			return;
+
+		$serverName = $_SERVER['SERVER_NAME'];
+		$request_uri = urldecode( preg_replace( '@^' . REL_WEB_URL . '@', '', $_SERVER['REQUEST_URI'] ) );
+		if( osc_rewrite_enabled() )
 		{
-			$request_uri = urldecode(preg_replace('@^' . REL_WEB_URL . '@', "", $_SERVER['REQUEST_URI']));
-			if (osc_rewrite_enabled()) 
+			$this->extractParams( $request_uri );
+			$tmp_ar = explode( '?', $request_uri );
+			$request_uri = $tmp_ar[0];
+			foreach( $this->rules as $rule )
 			{
-				$this->extractParams($request_uri);
-				$tmp_ar = explode("?", $request_uri);
-				$request_uri = $tmp_ar[0];
-				foreach ($this->rules as $match => $uri) 
+				$match = $rule->rePath;
+				$uri = $rule->request;
+				if(
+					preg_match( '#' . $match . '#', $request_uri, $m ) &&
+					(
+						is_null( $rule->reDomain ) ||
+						preg_match( $rule->reDomain, $serverName )
+					)
+				)
 				{
-					// UNCOMMENT TO DEBUG
-					//echo 'Request URI: '.$request_uri." # Match : ".$match." # URI to go : ".$uri." <br />";
-					if (preg_match('#' . $match . '#', $request_uri, $m)) 
-					{
-						$request_uri = preg_replace('#' . $match . '#', $uri, $request_uri);
-						break;
-					}
+					$request_uri = preg_replace('#' . $match . '#', $uri, $request_uri);
+					break;
 				}
 			}
-			$this->extractParams($request_uri);
-			$this->request_uri = $request_uri;
-			if (Params::getParam('page') != '') 
-			{
-				$this->location = Params::getParam('page');
-			};
-			if (Params::getParam('action') != '') 
-			{
-				$this->section = Params::getParam('action');
-			};
 		}
+		$this->extractParams($request_uri);
+
+		$page = Params::getParam( 'page' );
+		if( !empty( $page ) )
+			$this->location = $page;
+		$action = Params::getParam( 'action' );
+		if( !empty( $action ) )
+			$this->section = $action;
 	}
-	public function extractURL($uri = '') 
-	{
-		$uri_array = explode('?', str_replace('index.php', '', $uri));
-		if (substr($uri_array[0], 0, 1) == "/") 
-		{
-			return substr($uri_array[0], 1);
-		}
-		else
-		{
-			return $uri_array[0];
-		}
-	}
+
 	public function extractParams($uri = '') 
 	{
 		$uri_array = explode('?', $uri);
@@ -147,18 +122,9 @@ class Rewrite
 			}
 		}
 	}
-	public function removeRule($regexp) 
-	{
-		unset($this->rules[$regexp]);
-	}
 	public function clearRules() 
 	{
-		unset($this->rules);
 		$this->rules = array();
-	}
-	public function get_request_uri() 
-	{
-		return $this->request_uri;
 	}
 	public function set_location($location) 
 	{

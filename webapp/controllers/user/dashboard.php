@@ -37,16 +37,7 @@ class CWebUser extends WebSecBaseModel
 			//calling the view...
 			$this->_exportVariableToView('items', $aItems);
 			$this->_exportVariableToView('max_items', $max_items);
-			$this->doView('user-dashboard.php');
-			break;
-
-		case ('profile_post'): //profile post...
-			$userId = Session::newInstance()->_get('userId');
-			require_once 'osc/UserActions.php';
-			$userActions = new UserActions(false);
-			$success = $userActions->edit($userId);
-			osc_add_flash_ok_message(_m('Your profile has been updated successfully'));
-			$this->redirectTo(osc_user_profile_url());
+			$this->doView('user/index.php');
 			break;
 
 		case ('change_email'): //change email

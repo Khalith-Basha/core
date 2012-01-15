@@ -31,20 +31,16 @@ osc_current_web_theme_path('head.php'); ?>
     </head>
     <body>
         <div class="container">
-            <?php
-osc_current_web_theme_path('header.php'); ?>
+            <?php osc_current_web_theme_path('header.php'); ?>
             <div class="content user_forms">
                 <div class="inner">
                     <h1><?php
 _e('Recover your password', 'modern'); ?></h1>
-                    <form action="<?php
-echo osc_base_url(true); ?>" method="post" >
+                    <form action="<?php echo osc_base_url(true); ?>" method="post" >
                         <input type="hidden" name="page" value="user" />
-                        <input type="hidden" name="action" value="forgot_post" />
-                        <input type="hidden" name="userId" value="<?php
-echo Params::getParam('userId'); ?>" />
-                        <input type="hidden" name="code" value="<?php
-echo Params::getParam('code'); ?>" />
+                        <input type="hidden" name="action" value="forgot" />
+                        <input type="hidden" name="userId" value="<?php echo Params::getParam('userId'); ?>" />
+                        <input type="hidden" name="code" value="<?php echo Params::getParam('code'); ?>" />
                         <fieldset>
                             <p>
                                 <label for="new_email"><?php

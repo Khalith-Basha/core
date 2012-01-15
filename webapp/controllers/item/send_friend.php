@@ -45,7 +45,7 @@ class CWebItem extends Controller
 		case 'send_friend':
 			$item = $this->itemManager->findByPrimaryKey(Params::getParam('id'));
 			$this->_exportVariableToView('item', $item);
-			$this->doView('item-send-friend.php');
+			$this->doView('item/send-friend.php');
 			break;
 
 		case 'send_friend_post':

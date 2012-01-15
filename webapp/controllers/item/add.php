@@ -87,7 +87,7 @@ class CWebItem extends Controller
 		}
 		$this->_exportVariableToView('user', $this->user);
 		osc_run_hook('post_item');
-		$this->doView('item-post.php');
+		$this->doView('item/post.php');
 	}
 	function doView($file) 
 	{

@@ -191,7 +191,7 @@ function fn_email_new_item_non_register_user($item)
 	osc_sendMail($emailParams);
 }
 osc_add_hook('hook_email_new_item_non_register_user', 'fn_email_new_item_non_register_user');
-function fn_email_user_forgot_password($user, $password_url) 
+function fn_email_user_forgot_password( $user, $password_url ) 
 {
 	$aPage = Page::newInstance()->findByInternalName('email_user_forgot_password');
 	$content = array();
@@ -204,7 +204,7 @@ function fn_email_user_forgot_password($user, $password_url)
 	{
 		$content = current($aPage['locale']);
 	}
-	if (!is_null($content)) 
+	if( !is_null($content) )
 	{
 		$words = array();
 		$words[] = array('{USER_NAME}', '{USER_EMAIL}', '{WEB_URL}', '{WEB_TITLE}', '{IP_ADDRESS}', '{PASSWORD_LINK}', '{PASSWORD_URL}', '{DATE_TIME}');
@@ -212,7 +212,7 @@ function fn_email_user_forgot_password($user, $password_url)
 		$title = osc_mailBeauty(osc_apply_filter('email_title', osc_apply_filter('email_user_forgot_pass_word_title', $content['s_title'])), $words);
 		$body = osc_mailBeauty(osc_apply_filter('email_description', osc_apply_filter('email_user_forgot_password_description', $content['s_text'])), $words);
 		$emailParams = array('subject' => $title, 'to' => $user['s_email'], 'to_name' => $user['s_name'], 'body' => $body, 'alt_body' => $body);
-		osc_sendMail($emailParams);
+		osc_sendMail( $emailParams );
 	}
 }
 osc_add_hook('hook_email_user_forgot_password', 'fn_email_user_forgot_password');

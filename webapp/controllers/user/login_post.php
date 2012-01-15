@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Affero General Public
  * License along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-class CWebLogin extends Controller
+class CWebUser extends Controller
 {
 	function __construct() 
 	{
@@ -46,7 +46,7 @@ class CWebLogin extends Controller
 				$request_uri = urldecode(preg_replace('@^' . osc_base_url() . '@', "", $httpReferer ));
 				$tmp_ar = explode("?", $request_uri);
 				$request_uri = $tmp_ar[0];
-				$rules = Rewrite::newInstance()->listRules();
+				$rules = Rewrite::newInstance()->getRules();
 				foreach ($rules as $match => $uri) 
 				{
 					if (preg_match('#' . $match . '#', $request_uri, $m)) 
@@ -137,5 +137,4 @@ class CWebLogin extends Controller
 		osc_run_hook("after_html");
 	}
 }
-$do = new CWebLogin();
-$do->doModel();
+

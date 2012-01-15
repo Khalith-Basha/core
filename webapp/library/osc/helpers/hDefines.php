@@ -386,7 +386,7 @@ function osc_user_logout_url()
 {
 	if (osc_rewrite_enabled()) 
 	{
-		$path = osc_base_url() . '&user/logout';
+		$path = osc_base_url() . '/user/logout';
 	}
 	else
 	{

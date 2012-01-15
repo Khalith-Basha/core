@@ -111,6 +111,9 @@ require_once 'osc/frm/Field.form.class.php';
 require_once 'osc/functions.php';
 
 Plugins::init();
+
+require 'osc/url_rules.php';
 Rewrite::newInstance()->init();
+
 Session::newInstance()->session_start();
 

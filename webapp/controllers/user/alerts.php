@@ -26,8 +26,7 @@ class CWebUser extends WebSecBaseModel
 			$this->redirectTo(osc_base_url(true));
 		}
 	}
-	//Business Layer...
-	function doModel() 
+	public function doModel() 
 	{
 		$aAlerts = Alerts::newInstance()->findByUser(Session::newInstance()->_get('userId'));
 		$user = User::newInstance()->findByPrimaryKey(Session::newInstance()->_get('userId'));
@@ -40,10 +39,9 @@ class CWebUser extends WebSecBaseModel
 		$this->_exportVariableToView('alerts', $aAlerts);
 		View::newInstance()->_reset('alerts');
 		$this->_exportVariableToView('user', $user);
-		$this->doView('user-alerts.php');
+		$this->doView('user/alerts.php');
 	}
-	//hopefully generic...
-	function doView($file) 
+	public function doView($file) 
 	{
 		osc_run_hook("before_html");
 		osc_current_web_theme_path($file);

@@ -123,16 +123,12 @@ class ContactForm extends Form
             },
             messages: {
                 yourEmail: {
-                    required: "<?php
-		_e("Email: this field is required"); ?>.",
-                    email: "<?php
-		_e("Invalid email address"); ?>."
+                    required: "<?php _e("Email: this field is required"); ?>.",
+                    email: "<?php _e("Invalid email address"); ?>."
                 },
                 message: {
-                    required: "<?php
-		_e("Message: this field is required"); ?>.",
-                    minlength: "<?php
-		_e("Message: this field is required"); ?>."
+                    required: "<?php _e("Message: this field is required"); ?>.",
+                    minlength: "<?php _e("Message: this field is required"); ?>."
                 }
             },
             errorLabelContainer: "#error_list",

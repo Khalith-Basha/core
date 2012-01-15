@@ -15,7 +15,25 @@
  * You should have received a copy of the GNU Affero General Public
  * License along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-Class ItemActions
+
+
+function getForbiddenWordsList()
+{
+	return array(
+		'foobar' => 'DELETE',
+		'scotttiger' => 'MODERATE',
+		'area51' => 'IGNORE',
+		'qwrr' => 'IGNORE'
+	);
+}
+
+function textHasWord( $text, $word )
+{
+	return preg_match( "/\b$word\b/i", $text );
+}
+
+
+class ItemActions
 {
 	private $manager = null;
 	private $is_admin;
@@ -185,9 +203,27 @@ Class ItemActions
 	/**
 	 * Work in progress.
 	 */
-	protected function classifyItem(array $item) 
+	protected function classifyItem( array $item )
 	{
+		$fwList = getForbiddenWordsList();
+
+		$item['status'] = 'ACTIVE';
+
+		foreach( $fwList as $fw => $status )
+		{
+			foreach( $item['title'] as $title )
+			{
+				if( textHasWord( $title, $fw ) )
+				{
+					$item['STATUS'] = $status;
+					break;
+				}
+			}
+		}
+		var_dump( $item );
+		die;
 	}
+
 	function edit() 
 	{
 		$aItem = $this->data;

@@ -39,7 +39,7 @@ class CWebUser extends WebSecBaseModel
 		$this->_exportVariableToView('list_total_items', $total_items);
 		$this->_exportVariableToView('items_per_page', $itemsPerPage);
 		$this->_exportVariableToView('list_page', $page);
-		$this->doView('user-items.php');
+		$this->doView('user/items.php');
 	}
 	//hopefully generic...
 	function doView($file) 

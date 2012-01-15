@@ -122,34 +122,28 @@ _e('Your search', 'modern'); ?></strong></h3>
                                     <input type="text" name="sPattern"  id="query" value="<?php
 echo osc_search_pattern(); ?>" />
                                 </div>
-                                <h3><strong><?php
-_e('Location', 'modern'); ?></strong></h3>
+                                <h3><strong><?php _e('Location', 'modern'); ?></strong></h3>
                                 <div class="row one_input">
-                                    <h6><?php
-_e('City', 'modern'); ?></h6>
-                                    <input type="text" id="sCity" name="sCity" value="<?php
-echo osc_search_city(); ?>" />
+                                    <h6><?php _e('Region', 'modern'); ?></h6>
+                                    <input type="text" id="sRegion" name="sRegion" value="<?php echo osc_search_region(); ?>" />
+                                    <h6><?php _e('City', 'modern'); ?></h6>
+                                    <input type="text" id="sCity" name="sCity" value="<?php echo osc_search_city(); ?>" />
                                 </div>
                             </fieldset>
 
                             <fieldset class="box show_only">
-                                <?php
-if (osc_images_enabled_at_items()) 
-{ ?>
+                                <?php if (osc_images_enabled_at_items()): ?>
                                 <h3><strong><?php
 	_e('Show only', 'modern'); ?></strong></h3>
                                 <div class="row checkboxes">
                                     <ul>
                                         <li>
-                                            <input type="checkbox" name="bPic" id="withPicture" value="1" <?php
-	echo (osc_search_has_pic() ? 'checked' : ''); ?> />
-                                            <label for="withPicture"><?php
-	_e('Show only items with pictures', 'modern'); ?></label>
+                                            <input type="checkbox" name="bPic" id="withPicture" value="1" <?php echo (osc_search_has_pic() ? 'checked' : ''); ?> />
+                                            <label for="withPicture"><?php _e('Show only items with pictures', 'modern'); ?></label>
                                         </li>
                                     </ul>
                                 </div>
-                                <?php
-} ?>
+				<?php endif; ?>
                                 <?php
 if (osc_price_enabled_at_items()) 
 { ?>

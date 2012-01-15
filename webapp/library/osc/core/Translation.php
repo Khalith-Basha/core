@@ -45,10 +45,10 @@ class Translation
 			$locale = osc_current_user_locale();
 		}
 		// load core
-		$core_file = osc_translations_path() . $locale . '/core.mo';
+		$core_file = osc_translations_path() . DIRECTORY_SEPARATOR . $locale . '/core.mo';
 		$this->_load($core_file, 'core');
 		// load messages
-		$messages_file = osc_themes_path() . osc_theme() . '/languages/' . $locale . '/messages.mo';
+		$messages_file = osc_themes_path() . DIRECTORY_SEPARATOR . osc_theme() . '/languages/' . $locale . '/messages.mo';
 		if (!file_exists($messages_file)) 
 		{
 			$messages_file = osc_translations_path() . $locale . '/messages.mo';
@@ -56,7 +56,7 @@ class Translation
 		$this->_load($messages_file, 'messages');
 		// load theme
 		$domain = osc_theme();
-		$theme_file = osc_themes_path() . $domain . '/languages/' . $locale . '/theme.mo';
+		$theme_file = osc_themes_path() . DIRECTORY_SEPARATOR . $domain . '/languages/' . $locale . '/theme.mo';
 		if (!file_exists($theme_file)) 
 		{
 			if (!file_exists(osc_themes_path() . $domain)) 
@@ -71,7 +71,7 @@ class Translation
 		foreach ($aPlugins as $plugin) 
 		{
 			$domain = preg_replace('|/.*|', '', $plugin);
-			$plugin_file = osc_plugins_path() . $domain . '/languages/' . $locale . '/messages.mo';
+			$plugin_file = osc_plugins_path() . DIRECTORY_SEPARATOR . $domain . '/languages/' . $locale . '/messages.mo';
 			if (file_exists($plugin_file)) 
 			{
 				$this->_load($plugin_file, $domain);

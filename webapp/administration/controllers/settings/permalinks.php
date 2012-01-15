@@ -38,7 +38,6 @@ class CAdminSettings extends AdminSecBaseModel
 			if ($rewriteEnabled) 
 			{
 				Preference::newInstance()->update(array('s_value' => '1'), array('s_name' => 'rewriteEnabled'));
-				require_once ABS_PATH . '/controllers/generate_rules.php';
 				$htaccess = '
     <IfModule mod_rewrite.c>
         RewriteEngine On
