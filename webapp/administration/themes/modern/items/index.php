@@ -214,8 +214,8 @@ _e('Manage items'); ?></div>
                 <?php
 osc_show_flash_message('admin'); ?>
                 <div>
-                    <form id="datatablesForm" action="<?php
-echo osc_admin_base_url(true); ?>?page=items" method="post">
+                    <form id="datatablesForm" action="<?php echo osc_admin_base_url(true); ?>" method="post">
+                        <input type="hidden" name="page" value="item" />
                         <input type="hidden" name="action" value="bulk_actions" />
                         <div style="clear:both;"></div>
                         <div id="show_filter" style="color:#555555; cursor: pointer;margin-top:10px;border-bottom:1px #444444 solid;" onclick="show_filters();"> <strong>+ <?php
@@ -365,7 +365,7 @@ _e('ON'); ?></option>
                                 <div style="float:left;width:70px;padding-top:10px;"><button type="button" onclick="oTable.applyFilters();"><?php
 _e('Apply'); ?></button></div>
                                 <div style="float:left;width:140px;padding-top:10px;padding-left:10px;"><button type="button" onclick="window.location.href='<?php
-echo osc_admin_base_url(true); ?>?page=items'"><?php
+echo osc_admin_base_url(true); ?>?page=item'"><?php
 _e('Reset filters'); ?></button></div>
                             </div>
                             <div style="padding-top:10px;border-bottom:1px gray solid;clear:both;"></div>

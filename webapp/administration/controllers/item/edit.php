@@ -20,7 +20,6 @@
 */
 class CAdminItem extends AdminSecBaseModel
 {
-	//specific for this class
 	private $itemManager;
 	function __construct() 
 	{

@@ -167,9 +167,9 @@ class DAO
 	 * @param array $values
 	 * @return boolean
 	 */
-	function insert($values) 
+	function insert( array $values ) 
 	{
-		if (!$this->checkFieldKeys(array_keys($values))) 
+		if( !$this->checkFieldKeys( array_keys( $values ) ) ) 
 		{
 			return false;
 		}
@@ -297,15 +297,17 @@ class DAO
 	 * @param array $aKey
 	 * @return boolean
 	 */
-	function checkFieldKeys($aKey) 
+	function checkFieldKeys( array $aKey)
 	{
-		foreach ($aKey as $key) 
+		$modelKeys = $this->getFields();
+		foreach( $aKey as $key ) 
 		{
-			if (!in_array($key, $this->getFields())) 
+			if( !in_array( $key, $modelKeys ) ) 
 			{
-				return false;
+				throw new Exception( 'Field is not defined: ' . $key );
 			}
 		}
+
 		return true;
 	}
 	/**

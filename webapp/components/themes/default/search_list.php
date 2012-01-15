@@ -85,37 +85,29 @@ if (osc_count_premiums() > 0)
     <tbody>
         <?php
 $class = "even"; ?>
-        <?php
-while (osc_has_items()) 
-{ ?>
+<?php while( osc_has_items() ): ?>
+	<?php
+	$item = osc_item();
+	$itemUrl = ItemUrls::getInstance()->getDetailsUrl( $item, osc_current_user_locale() )
+	?>
             <tr class="<?php
 	echo $class; ?>">
                 <?php
 	if (osc_images_enabled_at_items()) 
 	{ ?>
                  <td class="photo">
-                     <?php
-		if (osc_count_item_resources()) 
-		{ ?>
-                        <a href="<?php
-			echo osc_item_url(); ?>"><img src="<?php
-			echo osc_resource_thumbnail_url(); ?>" width="75px" height="56px" title="" alt="" /></a>
-                    <?php
-		}
-		else
-		{ ?>
+		     <?php if( osc_count_item_resources() ): ?>
+                        <a href="<?php echo $itemUrl; ?>"><img src="<?php echo osc_resource_thumbnail_url(); ?>" width="75px" height="56px" title="" alt="" /></a>
+		    <?php else: ?>
                         <img src="<?php
 			echo osc_current_web_theme_url('images/no_photo.gif'); ?>" title="" alt="" />
-                    <?php
-		} ?>
+		    <?php endif; ?>
                  </td>
                  <?php
 	} ?>
                  <td class="text">
                      <h3>
-                         <a href="<?php
-	echo osc_item_url(); ?>"><?php
-	echo osc_item_title(); ?></a>
+			 <a href="<?php echo $itemUrl; ?>"><?php echo osc_item_title(); ?></a>
                      </h3>
                      <p>
                          <strong><?php
@@ -133,7 +125,6 @@ while (osc_has_items())
              </tr>
             <?php
 	$class = ($class == 'even') ? 'odd' : 'even'; ?>
-        <?php
-} ?>
+<?php endwhile; ?>
     </tbody>
 </table>

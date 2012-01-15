@@ -60,7 +60,7 @@ class Item extends DAO
 		parent::__construct();
 		$this->setTableName('item');
 		$this->setPrimaryKey('pk_i_id');
-		$array_fields = array('pk_i_id', 'fk_i_user_id', 'fk_i_category_id', 'pub_date', 'dt_mod_date', 'f_price', 'i_price', 'fk_c_currency_code', 's_contact_name', 's_contact_email', 'b_premium', 'b_enabled', 'b_active', 'b_spam', 's_secret', 'b_show_email');
+		$array_fields = array( 'pk_i_id', 'fk_i_user_id', 'fk_i_category_id', 'pub_date', 'dt_mod_date', 'f_price', 'i_price', 'fk_c_currency_code', 's_contact_name', 's_contact_email', 'b_premium', 'b_enabled', 'b_active', 'b_spam', 's_secret', 'b_show_email', 'status' );
 		$this->setFields($array_fields);
 	}
 	/**

@@ -131,7 +131,7 @@ function osc_user_public_profile_url($id = null)
 	{
 		if (osc_rewrite_enabled()) 
 		{
-			$path = osc_base_url() . 'user/profile/' . $id;
+			$path = osc_base_url() . '/user/profile/' . $id;
 		}
 		else
 		{

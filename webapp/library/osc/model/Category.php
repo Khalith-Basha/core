@@ -568,7 +568,7 @@ class Category extends DAO
 	 * @param array $fields
 	 * @param array $aFieldsDescriptions
 	 */
-	public function insert($fields, $aFieldsDescription = null) 
+	public function insert( array $fields, $aFieldsDescription = null) 
 	{
 		$this->dao->insert($this->getTableName(), $fields);
 		$category_id = $this->dao->insertedId();

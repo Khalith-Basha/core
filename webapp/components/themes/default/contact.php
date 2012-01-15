@@ -45,7 +45,7 @@ _e('Contact us', 'modern'); ?></h1>
                     <form action="<?php
 echo osc_base_url(true); ?>" method="post" name="contact" id="contact">
                         <input type="hidden" name="page" value="contact" />
-                        <input type="hidden" name="action" value="contact_post" />
+                        <input type="hidden" name="action" value="contact" />
                         <fieldset>
                             <label for="subject"><?php
 _e('Subject', 'modern'); ?> (<?php

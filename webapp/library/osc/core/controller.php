@@ -30,7 +30,45 @@ class HttpRequest
 }
 class HttpResponse
 {
-	public function sendRedirect() 
+	private $headers;
+
+	public function __construct()
+	{
+		$this->headers = array();
+	}
+
+	public function addHeader( $name, $value = null )
+	{
+		$this->headers[ $name ] = $value;
+	}
+
+	public function sendHeaders()
+	{
+		foreach( $this->headers as $headerName => $headerValue )
+		{
+			$header = $headerName;
+			if( !is_null( $headerValue ) )
+				$header .= ': ' . $headerValue;
+			header( $header );
+		}
+	}
+
+	public function sendRedirection( $url = null, $permanent = false ) 
+	{
+		if( $permanent )
+			addHeader( 'HTTP/1.1 301 Moved Permanently' );
+		$this->addHeader( 'Location', $url );
+		$this->sendHeaders();
+		exit;
+	}
+
+	public function sendRedirectToReferer( $permanent = false )
+	{
+		$referer = empty( $_SERVER['HTTP_REFERER'] ) ? '/' : $_SERVER['HTTP_REFERER'];
+		$this->sendRedirect( $referer, $permanent );
+	}
+
+	public function sendStatus()
 	{
 	}
 }
@@ -38,7 +76,6 @@ abstract class Controller
 {
 	protected $action;
 	protected $ajax;
-	protected $time;
 
 	private $server;
 
@@ -46,17 +83,12 @@ abstract class Controller
 	{
 		$this->action = Params::getParam('action');
 		$this->ajax = false;
-		$this->time = list($sm, $ss) = explode(' ', microtime());
 
 		$this->server = new Server;
 	}
 
 	public function __destruct() 
 	{
-		if (!$this->ajax && OSC_DEBUG) 
-		{
-			echo '<!-- ' . $this->getTime() . ' seg. -->';
-		}
 	}
 
 	protected function getServer()
@@ -103,11 +135,6 @@ abstract class Controller
 	{
 		header('Location: ' . $url);
 		exit;
-	}
-	public function getTime() 
-	{
-		$timeEnd = list($em, $es) = explode(' ', microtime());
-		return ($timeEnd[0] + $timeEnd[1]) - ($this->time[0] + $this->time[1]);
 	}
 }
 abstract class BaseModel extends Controller

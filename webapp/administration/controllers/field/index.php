@@ -20,7 +20,6 @@
 */
 class CAdminCFields extends AdminSecBaseModel
 {
-	//specific for this class
 	private $fieldManager;
 	function __construct() 
 	{

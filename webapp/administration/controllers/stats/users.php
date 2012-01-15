@@ -20,7 +20,6 @@
 */
 class CAdminStats extends AdminSecBaseModel
 {
-	//specific for this class
 	function __construct() 
 	{
 		parent::__construct();

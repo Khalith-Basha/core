@@ -4,7 +4,7 @@ class Model
 {
 	protected $conn;
 
-	protected function __construct()
+	public function __construct()
 	{
 		$this->conn = DBConnectionClass::newInstance()->getConnection();
 	}
@@ -62,5 +62,23 @@ class Model
 
                 return $results;
         }   
+
+        public function fetchAllColumns( mysqli_stmt $stmt )
+        {   
+                $results = array();
+
+                if( false === $stmt->execute() )
+                        return false;
+
+		$stmt->bind_result( $result );
+
+                while( $stmt->fetch() )
+                {   
+                        $results[] = $result;
+                }   
+
+                return $results;
+        }   
+
 }
 

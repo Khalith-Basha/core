@@ -17,21 +17,8 @@
  */
 
 
-function getForbiddenWordsList()
-{
-	return array(
-		'foobar' => 'DELETE',
-		'scotttiger' => 'MODERATE',
-		'area51' => 'IGNORE',
-		'qwrr' => 'IGNORE'
-	);
-}
-
-function textHasWord( $text, $word )
-{
-	return preg_match( "/\b$word\b/i", $text );
-}
-
+require_once 'osc/filtering.php';
+require_once 'osc/utilities/string.php';
 
 class ItemActions
 {
@@ -127,7 +114,7 @@ class ItemActions
 				}
 			}
 		};
-		$this->classifyItem($aItem);
+		$this->updateItemStatus($aItem);
 		// hook pre add or edit
 		osc_run_hook('pre_item_post');
 		// Handle error
@@ -137,7 +124,21 @@ class ItemActions
 		}
 		else
 		{
-			$this->manager->insert(array('fk_i_user_id' => $aItem['userId'], 'pub_date' => date('Y-m-d H:i:s'), 'fk_i_category_id' => $aItem['catId'], 'i_price' => $aItem['price'], 'fk_c_currency_code' => $aItem['currency'], 's_contact_name' => $contactName, 's_contact_email' => $contactEmail, 's_secret' => $code, 'b_active' => ($active == 'ACTIVE' ? 1 : 0), 'b_enabled' => 1, 'b_show_email' => $aItem['showEmail']));
+			$this->manager->insert(
+				array(
+					'fk_i_user_id' => $aItem['userId'],
+					'fk_i_category_id' => $aItem['catId'],
+					'i_price' => $aItem['price'],
+					'fk_c_currency_code' => $aItem['currency'],
+					's_contact_name' => $contactName,
+					's_contact_email' => $contactEmail,
+					's_secret' => $code,
+					'b_active' => $aItem['b_active'],
+					'b_enabled' => $aItem['b_enabled'],
+					'b_show_email' => $aItem['showEmail'],
+					'status' => $aItem['status']
+				)
+			);
 			if (!$this->is_admin) 
 			{
 				// Track spam delay: Session
@@ -200,28 +201,34 @@ class ItemActions
 		}
 		return $success;
 	}
+
 	/**
-	 * Work in progress.
+	 * Set the item status based on words and other filters.
 	 */
-	protected function classifyItem( array $item )
+	protected function updateItemStatus( array &$item )
 	{
-		$fwList = getForbiddenWordsList();
+		$conn = DBConnectionClass::newInstance()->getConnection();
 
-		$item['status'] = 'ACTIVE';
+		$bwList = getBadWordsList( $conn );
 
-		foreach( $fwList as $fw => $status )
+		$item['status'] = null;
+
+		foreach( $bwList as $bwStatus => $badWords )
 		{
-			foreach( $item['title'] as $title )
+			foreach( $badWords as $badWord )
 			{
-				if( textHasWord( $title, $fw ) )
+				foreach( $item['title'] as $title )
 				{
-					$item['STATUS'] = $status;
-					break;
+					if( textHasWord( $title, $badWord ) )
+					{
+						$item['status'] = $bwStatus;
+						break;
+					}
 				}
 			}
 		}
-		var_dump( $item );
-		die;
+
+		$item['b_active'] = $item['b_enabled'] = is_null( $item['status'] );
 	}
 
 	function edit() 
@@ -1044,7 +1051,7 @@ class ItemActions
 			unset($itemResourceManager);
 		}
 	}
-	public function sendEmails($aItem) 
+	public function sendEmails( array $aItem )
 	{
 		$item = $aItem['item'];
 		View::newInstance()->_exportVariableToView('item', $item);

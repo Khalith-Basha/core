@@ -50,19 +50,19 @@ function osc_itemIsOld( array $item )
  */
 function osc_item() 
 {
-	if (View::newInstance()->_exists('items')) 
+	$item = null;
+
+	$view = View::newInstance();
+	if( $view->_exists('items') )
 	{
-		$item = View::newInstance()->_current('items');
+		$item = $view->_current('items');
 	}
-	else if (View::newInstance()->_exists('item')) 
+	elseif( $view->_exists('item') )
 	{
-		$item = View::newInstance()->_get('item');
+		$item = $view->_get('item');
 	}
-	else
-	{
-		$item = null;
-	}
-	return ($item);
+
+	return $item;
 }
 /**
  * Gets comment array form view
@@ -508,50 +508,6 @@ function osc_item_is_inactive()
 function osc_item_is_spam() 
 {
 	return (osc_item_field("b_spam") == 1);
-}
-
-class ItemUrls
-{
-	private static $singleton = null;
-
-	public static function getInstance()
-	{
-		if( is_null( self::$singleton ) )
-			self::$singleton = new self;
-		return self::$singleton;
-	}
-
-	private $urls;
-
-	public function __construct()
-	{
-		$this->urls = array();
-
-		$this->urls['mark-spam'] = array(
-			'default' => osc_base_url( true ) . '?page=item&action=mark&as=spam&id=%d'
-		);
-	}
-
-	public function create( $name )
-	{
-		$arguments = func_get_args();
-		if( count( $arguments ) > 0 )
-		{
-			$name = $arguments[0];
-			$arguments = array_slice( $arguments, 1 );
-		}
-		$url = null;
-
-		if( !empty( $this->urls[ $name ]['friendly'] ) )
-			$url = $this->urls[ $name ]['friendly'];
-		if( !empty( $this->urls[ $name ]['default'] ) )
-			$url = $this->urls[ $name ]['default'];
-
-		if( is_null( $url ) )
-			throw new Exception( 'URL not found: ' . $name );
-
-		return vsprintf( $url, $arguments );
-	}
 }
 
 /**

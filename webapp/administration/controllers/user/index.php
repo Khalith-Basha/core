@@ -20,7 +20,6 @@
 */
 class CAdminUser extends AdminSecBaseModel
 {
-	//specific for this class
 	private $userManager;
 	function __construct() 
 	{

@@ -32,7 +32,7 @@ class ContactForm extends Form
 	}
 	static public function action_hidden() 
 	{
-		parent::generic_input_hidden("action", 'contact_post');
+		parent::generic_input_hidden("action", 'contact');
 		return true;
 	}
 	static public function your_name() 

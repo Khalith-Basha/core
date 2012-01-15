@@ -505,7 +505,8 @@ function fn_email_admin_new_item($item)
 	{
 		$content = current($aPage['locale']);
 	}
-	$item_url = osc_item_url();
+
+	$item_url = ItemUrls::getInstance()->getDetailsUrl( $item );
 	$item_url = '<a href="' . $item_url . '" >' . $item_url . '</a>';
 	$all = '';
 	if (isset($item['locale'])) 

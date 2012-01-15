@@ -182,14 +182,11 @@ if (osc_logged_user_id() != osc_user_id())
                         <ul id="error_list"></ul>
                         <?php
 		ContactForm::js_validation(); ?>
-                        <form action="<?php
-		echo osc_base_url(true); ?>" method="post" name="contact_form" id="contact_form">
-                            <input type="hidden" name="action" value="contact_post" />
+                        <form action="<?php echo osc_base_url(true); ?>" method="post" name="contact_form" id="contact_form">
+                            <input type="hidden" name="action" value="contact" />
                             <input type="hidden" name="page" value="user" />
-                            <input type="hidden" name="id" value="<?php
-		echo osc_user_id(); ?>" />
-                            <?php
-		osc_prepare_user_info(); ?>
+                            <input type="hidden" name="id" value="<?php echo osc_user_id(); ?>" />
+                            <?php osc_prepare_user_info(); ?>
                             <fieldset>
                                 <label for="yourName"><?php
 		_e('Your name', 'modern'); ?>:</label> <?php

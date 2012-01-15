@@ -290,7 +290,7 @@ class Page extends DAO
 	 * @param array $aFieldsDescription An array with the titles and descriptions in every language.
 	 * @return bool True if the insert has been done well and false if not.
 	 */
-	public function insert($aFields, $aFieldsDescription = null) 
+	public function insert( array $aFields, $aFieldsDescription = null) 
 	{
 		$this->dao->select("MAX(i_order) as o");
 		$this->dao->from($this->tableName);

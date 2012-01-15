@@ -96,11 +96,4 @@ class CWebItem extends Controller
 			$this->redirectTo(osc_search_category_url());
 		}
 	}
-	function doView($file) 
-	{
-		osc_run_hook("before_html");
-		osc_current_web_theme_path($file);
-		Session::newInstance()->_clearVariables();
-		osc_run_hook("after_html");
-	}
 }

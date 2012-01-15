@@ -110,6 +110,8 @@ require_once 'osc/frm/Alert.form.class.php';
 require_once 'osc/frm/Field.form.class.php';
 require_once 'osc/functions.php';
 
+require 'osc/urls/item.php';
+
 Plugins::init();
 
 require 'osc/url_rules.php';

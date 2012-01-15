@@ -36,9 +36,6 @@ $rewrite->addRule('^search/(.*)$', 'index.php?page=search&sPattern=$1');
 $rewrite->addRule('^s/(.*)$', 'index.php?page=search&sPattern=$1');
 
 // Item rules
-$rewrite->addRule( 'http://california.inetgiant.com/hawthorneca/addetails/1997-ford-f150/(\d+)$', 'index.php?page=item&id=$1' );
-$rewrite->addRule( '^[^/]+/addetails/[^/]+/(\d+)$', 'index.php?page=item&id=$1', '@^(?!www)[^.]+.inetgiant.dev$@' );
-
 $rewrite->addRule('^item/mark/(.*?)/([0-9]+)$', 'index.php?page=item&action=mark&as=$1&id=$2');
 $rewrite->addRule('^item/send-friend/([0-9]+)$', 'index.php?page=item&action=send_friend&id=$1');
 $rewrite->addRule('^item/contact/([0-9]+)$', 'index.php?page=item&action=contact&id=$1');

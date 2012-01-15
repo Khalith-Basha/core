@@ -26,7 +26,8 @@ class CWebUser extends Controller
 			$this->redirectTo(osc_base_url(true));
 		}
 	}
-	function doModel() 
+
+	public function doPost( HttpRequest $req, HttpResponse $res )
 	{
 		$httpReferer = $this->getServer()->getHttpReferer();
 
@@ -47,8 +48,10 @@ class CWebUser extends Controller
 				$tmp_ar = explode("?", $request_uri);
 				$request_uri = $tmp_ar[0];
 				$rules = Rewrite::newInstance()->getRules();
-				foreach ($rules as $match => $uri) 
+				foreach ($rules as $rule) 
 				{
+					$match = $rule->rePath;
+					$uri = $rule->request;
 					if (preg_match('#' . $match . '#', $request_uri, $m)) 
 					{
 						$request_uri = preg_replace('#' . $match . '#', $uri, $request_uri);
@@ -83,12 +86,14 @@ class CWebUser extends Controller
 		if (!$user) 
 		{
 			osc_add_flash_error_message(_m('The username doesn\'t exist'));
-			$this->redirectTo(osc_user_login_url());
+
+			$res->sendRedirection( osc_user_login_url() );
 		}
 		if ($user["s_password"] != sha1(Params::getParam('password'))) 
 		{
 			osc_add_flash_error_message(_m('The password is incorrect'));
-			$this->redirectTo(osc_user_login_url());
+
+			$res->sendRedirection( osc_user_login_url() );
 		}
 		$uActions = new UserActions(false);
 		$logged = $uActions->bootstrap_login($user['pk_i_id']);
@@ -117,24 +122,15 @@ class CWebUser extends Controller
 				Cookie::newInstance()->push('oc_userSecret', $secret);
 				Cookie::newInstance()->set();
 			}
-			$this->redirectTo($url_redirect);
+
+			$res->sendRedirection( $url_redirect );
 		}
 		else
 		{
 			osc_add_flash_error_message(_m('This should never happens'));
 		}
-		if (!$user['b_enabled']) 
-		{
-			$this->redirectTo(osc_user_login_url());
-		}
-		$this->redirectTo(osc_user_login_url());
-	}
-	//hopefully generic...
-	function doView($file) 
-	{
-		osc_run_hook("before_html");
-		osc_current_web_theme_path($file);
-		osc_run_hook("after_html");
+
+		$res->sendRedirection( osc_user_login_url() );
 	}
 }
 

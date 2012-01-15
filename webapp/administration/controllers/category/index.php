@@ -20,7 +20,6 @@
 */
 class CAdminCategory extends AdminSecBaseModel
 {
-	//specific for this class
 	private $categoryManager;
 	function __construct() 
 	{

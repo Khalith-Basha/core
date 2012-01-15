@@ -279,16 +279,13 @@ else
 {
 	_e('Update');
 } ?></button>
-                            <button type="button" onclick="window.location='<?php
-echo osc_admin_base_url(true); ?>?page=items';" ><?php
-_e('Cancel'); ?></button>
+                            <button type="button" onclick="window.location='<?php echo osc_admin_base_url(true); ?>?page=item';" ><?php _e('Cancel'); ?></button>
                         </div>
                     </form>
                 </div>
             </div>
 
         </div>
-        <?php
-osc_current_admin_theme_path('footer.php'); ?>
+        <?php osc_current_admin_theme_path('footer.php'); ?>
     </body>
 </html>
