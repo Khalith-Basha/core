@@ -25,7 +25,7 @@ class CAdminLanguage extends AdminSecBaseModel
 	{
 		parent::__construct();
 		//specific things for this class
-		$this->localeManager = OSCLocale::newInstance();
+		$this->localeManager = Locale::newInstance();
 	}
 	function doModel() 
 	{
@@ -250,7 +250,7 @@ class CAdminLanguage extends AdminSecBaseModel
 			break;
 
 		default:
-			$locales = OSCLocale::newInstance()->listAll();
+			$locales = Locale::newInstance()->listAll();
 			$this->_exportVariableToView("locales", $locales);
 			$this->doView('languages/index.php');
 			break;

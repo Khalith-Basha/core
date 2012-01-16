@@ -38,7 +38,7 @@ class CWebItem extends Controller
 	}
 	function doModel() 
 	{
-		$locales = OSCLocale::newInstance()->listAllEnabled();
+		$locales = Locale::newInstance()->listAllEnabled();
 		$this->_exportVariableToView('locales', $locales);
 		$secret = Params::getParam('secret');
 		$id = Params::getParam('id');

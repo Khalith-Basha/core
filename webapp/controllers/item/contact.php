@@ -39,7 +39,7 @@ class CWebItem extends Controller
 
 	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
-		$locales = OSCLocale::newInstance()->listAllEnabled();
+		$locales = Locale::newInstance()->listAllEnabled();
 		$this->_exportVariableToView('locales', $locales);
 		$item = $this->itemManager->findByPrimaryKey(Params::getParam('id'));
 		if (empty($item)) 

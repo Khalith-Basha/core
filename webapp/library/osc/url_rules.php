@@ -19,11 +19,8 @@
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-$rewrite = Rewrite::newInstance();
 $rewrite->clearRules();
-/*****************************
- ********* Add rules *********
- *****************************/
+
 // Contact rules
 $rewrite->addRule('^contact/?$', 'index.php?page=contact');
 // Feed rules

@@ -66,8 +66,8 @@ class Translation
 			$theme_file = osc_translations_path() . $locale . '/theme.mo';
 		}
 		$this->_load($theme_file, $domain);
-		// load plugins
-		$aPlugins = Plugins::listInstalled();
+
+		$aPlugins = ClassLoader::getInstance()->getClassInstance( 'PluginManager' )->listInstalled();
 		foreach ($aPlugins as $plugin) 
 		{
 			$domain = preg_replace('|/.*|', '', $plugin);

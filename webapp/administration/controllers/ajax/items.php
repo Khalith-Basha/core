@@ -165,7 +165,7 @@ class CAdminAjax extends AdminSecBaseModel
 
 		case 'category_edit_iframe':
 			$this->_exportVariableToView('category', Category::newInstance()->findByPrimaryKey(Params::getParam("id")));
-			$this->_exportVariableToView('languages', OSCLocale::newInstance()->listAllEnabled());
+			$this->_exportVariableToView('languages', Locale::newInstance()->listAllEnabled());
 			$this->doView("categories/iframe.php");
 			break;
 

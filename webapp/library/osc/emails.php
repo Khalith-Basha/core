@@ -456,7 +456,7 @@ function fn_email_item_validation($item)
 	{
 		foreach ($item['locale'] as $locale => $data) 
 		{
-			$locale_name = OSCLocale::newInstance()->findByCode($locale);
+			$locale_name = Locale::newInstance()->findByCode($locale);
 			$all.= '<br/>';
 			if (isset($locale_name[0]) && isset($locale_name[0]['s_name'])) 
 			{
@@ -513,7 +513,7 @@ function fn_email_admin_new_item($item)
 	{
 		foreach ($item['locale'] as $locale => $data) 
 		{
-			$locale_name = OSCLocale::newInstance()->findByCode($locale);
+			$locale_name = Locale::newInstance()->findByCode($locale);
 			$all.= '<br/>';
 			if (isset($locale_name[0]) && isset($locale_name[0]['s_name'])) 
 			{
@@ -570,7 +570,7 @@ function fn_email_item_validation_non_register_user($item)
 	{
 		foreach ($item['locale'] as $locale => $data) 
 		{
-			$locale_name = OSCLocale::newInstance()->findByCode($locale);
+			$locale_name = Locale::newInstance()->findByCode($locale);
 			$all.= '<br/>';
 			if (isset($locale_name[0]) && isset($locale_name[0]['s_name'])) 
 			{

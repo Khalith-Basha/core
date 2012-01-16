@@ -472,7 +472,7 @@ class CAdminSettings extends AdminSecBaseModel
 			break;
 
 		default: // calling the view
-			$aLanguages = OSCLocale::newInstance()->listAllEnabled();
+			$aLanguages = Locale::newInstance()->listAllEnabled();
 			$aCurrencies = Currency::newInstance()->listAll();
 			$this->_exportVariableToView('aLanguages', $aLanguages);
 			$this->_exportVariableToView('aCurrencies', $aCurrencies);

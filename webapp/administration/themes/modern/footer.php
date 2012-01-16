@@ -19,18 +19,11 @@
         
 <div style="clear: both;"></div>
 <div id="footer">
-    <?php
-osc_run_hook('admin_footer'); ?>
+    <?php osc_run_hook('admin_footer'); ?>
     <div id="footer_left">
-        <?php
-_e('Thank you for using'); ?> <a href="http://opensourceclassifieds.org/" target="_blank"><?php
-_e('OpenSourceClassifieds'); ?></a> |
-        <a title="<?php
-_e('Documentation'); ?>" href="http://wiki.opensourceclassifieds.org/" target="_blank"><?php
-_e('Documentation'); ?></a> |
-        <a title="<?php
-_e('Forums'); ?>" href="http://forums.opensourceclassifieds.org" target="_blank"><?php
-_e('Forums'); ?></a>
+        <?php _e('Thank you for using'); ?> <a href="http://opensourceclassifieds.org/" target="_blank"><?php _e('OpenSourceClassifieds'); ?></a> |
+        <a title="<?php _e('Documentation'); ?>" href="http://wiki.opensourceclassifieds.org/" target="_blank"><?php _e('Documentation'); ?></a> |
+        <a title="<?php _e('Forums'); ?>" href="http://forums.opensourceclassifieds.org" target="_blank"><?php _e('Forums'); ?></a>
     </div>
-    <div id="footer_right"><?php echo _e('OpenSourceClassifieds'); ?> <?php echo OSC_VERSION; ?></div>
+    <div id="footer_right"><?php echo _e('OpenSourceClassifieds'); ?> <?php echo APP_VERSION; ?></div>
 </div>

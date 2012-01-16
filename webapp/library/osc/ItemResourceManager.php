@@ -25,37 +25,12 @@
  * @subpackage Model
  * @since unknown
  */
-class ItemResource extends DAO
+class ItemResourceManager extends DAO
 {
-	/**
-	 * It references to self object: ItemResource.
-	 * It is used as a singleton
-	 *
-	 * @access private
-	 * @since unknown
-	 * @var ItemResource
-	 */
-	private static $instance;
-	/**
-	 * It creates a new ItemResource object class ir if it has been created
-	 * before, it return the previous object
-	 *
-	 * @access public
-	 * @since unknown
-	 * @return ItemResource
-	 */
-	public static function newInstance() 
-	{
-		if (!self::$instance instanceof self) 
-		{
-			self::$instance = new self;
-		}
-		return self::$instance;
-	}
 	/**
 	 * Set data related to t_item_resource table
 	 */
-	function __construct() 
+	public function __construct() 
 	{
 		parent::__construct();
 		$this->setTableName('t_item_resource');

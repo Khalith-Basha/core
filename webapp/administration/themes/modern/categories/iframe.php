@@ -41,7 +41,7 @@ CategoryForm::expiration_days_input_text($category); ?>
             <div class="clear20"></div>
 
             <?php
-$locales = OSCLocale::newInstance()->listAllEnabled();
+$locales = Locale::newInstance()->listAllEnabled();
 CategoryForm::multilanguage_name_description($locales, $category);
 ?>
 

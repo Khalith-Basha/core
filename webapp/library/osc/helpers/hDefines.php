@@ -95,15 +95,6 @@ function osc_themes_path()
 	return (THEMES_PATH);
 }
 /**
- * Gets the plugins path
- *
- * @return string
- */
-function osc_plugins_path() 
-{
-	return (PLUGINS_PATH);
-}
-/**
  * Gets the translations path
  *
  * @return string

@@ -803,7 +803,8 @@ function osc_count_item_resources()
 {
 	if (!View::newInstance()->_exists('resources')) 
 	{
-		View::newInstance()->_exportVariableToView('resources', ItemResource::newInstance()->getAllResources(osc_item_id()));
+		$itemResourceManager = ClassLoader::getInstance()->getClassInstance( 'ItemResourceManager' );
+		View::newInstance()->_exportVariableToView('resources', $itemResourceManager->getAllResources(osc_item_id()));
 	}
 	return osc_priv_count_item_resources();
 }
@@ -816,7 +817,8 @@ function osc_has_item_resources()
 {
 	if (!View::newInstance()->_exists('resources')) 
 	{
-		View::newInstance()->_exportVariableToView('resources', ItemResource::newInstance()->getAllResources(osc_item_id()));
+		$itemResourceManager = ClassLoader::getInstance()->getClassInstance( 'ItemResourceManager' );
+		View::newInstance()->_exportVariableToView('resources', $itemResourceManager->getAllResources(osc_item_id()));
 	}
 	return View::newInstance()->_next('resources');
 }
@@ -829,7 +831,8 @@ function osc_get_item_resources()
 {
 	if (!View::newInstance()->_exists('resources')) 
 	{
-		View::newInstance()->_exportVariableToView('resources', ItemResource::newInstance()->getAllResources(osc_item_id()));
+		$itemResourceManager = ClassLoader::getInstance()->getClassInstance( 'ItemResourceManager' );
+		View::newInstance()->_exportVariableToView('resources', $itemResourceManager->getAllResources(osc_item_id()));
 	}
 	return View::newInstance()->_get('resources');
 }
@@ -859,9 +862,6 @@ function osc_has_item_comments()
 	}
 	return View::newInstance()->_next('comments');
 }
-//////////
-// HOME //
-//////////
 
 /**
  * Gets next item of last items
@@ -893,9 +893,6 @@ function osc_count_latest_items()
 	}
 	return osc_priv_count_items();
 }
-//////////////
-// END HOME //
-//////////////
 
 /**
  * Formats the price using the appropiate currency.
@@ -933,9 +930,7 @@ function osc_priv_count_item_resources()
 {
 	return (int)View::newInstance()->_count('resources');
 }
-/***************
- * META FIELDS *
- ***************/
+
 /**
  * Gets number of item meta field
  *

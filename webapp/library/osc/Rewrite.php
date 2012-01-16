@@ -139,3 +139,4 @@ class Rewrite
 		return $this->section;
 	}
 }
+

@@ -121,9 +121,10 @@ else
                                  <tbody>
                                     <?php
 	$class = "even"; ?>
-                                    <?php
-	while (osc_has_latest_items()) 
-	{ ?>
+				    <?php while (osc_has_latest_items()): ?>
+<?php
+$item = osc_item();
+?>
                                      <tr class="<?php
 		echo $class . (osc_item_is_premium() ? " premium" : ""); ?>">
                                             <?php
@@ -133,10 +134,8 @@ else
                                                 <?php
 			if (osc_count_item_resources()) 
 			{ ?>
-                                                    <a href="<?php
-				echo osc_item_url(); ?>">
-                                                        <img src="<?php
-				echo osc_resource_thumbnail_url(); ?>" width="75px" height="56px" title="" alt="" />
+                                                    <a href="<?php echo osc_item_url(); ?>">
+                                                        <img src="<?php echo osc_resource_thumbnail_url(); ?>" width="75px" height="56px" title="" alt="" />
                                                     </a>
                                                 <?php
 			}
@@ -150,8 +149,7 @@ else
                                             <?php
 		} ?>
                                              <td class="text">
-                                                 <h3><a href="<?php
-		echo osc_item_url(); ?>"><?php
+                                                 <h3><a href="<?php echo ItemUrls::getInstance()->getDetailsUrl( $item ); ?>"><?php
 		echo osc_item_title(); ?></a></h3>
                                                  <p><strong><?php
 		if (osc_price_enabled_at_items()) 
@@ -167,8 +165,7 @@ else
                                          </tr>
                                         <?php
 		$class = ($class == 'even') ? 'odd' : 'even'; ?>
-                                    <?php
-	} ?>
+				    <?php endwhile; ?>
                                 </tbody>
                             </table>
                             <?php

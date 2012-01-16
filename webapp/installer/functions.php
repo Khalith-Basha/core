@@ -302,8 +302,8 @@ function oc_install()
 		}
 	}
 	require_once 'osc/locales.php';
-	require_once 'osc/model/OSCLocale.php';
-	$localeManager = OSCLocale::newInstance();
+	require_once 'osc/model/Locale.php';
+	$localeManager = Locale::newInstance();
 	$locales = osc_listLocales();
 	foreach ($locales as $locale) 
 	{

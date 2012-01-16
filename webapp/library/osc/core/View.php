@@ -122,5 +122,4 @@ class OldView
 	}
 }
 
-require 'osc/core/view.php';
 

@@ -19,9 +19,9 @@
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 /**
- * OSCLocale DAO
+ * Locale DAO
  */
-class OSCLocale extends DAO
+class Locale extends DAO
 {
 	/**
 	 *

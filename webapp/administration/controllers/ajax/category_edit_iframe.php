@@ -27,7 +27,7 @@ class CAdminAjax extends AdminSecBaseModel
 	function doModel() 
 	{
 		$this->_exportVariableToView('category', Category::newInstance()->findByPrimaryKey(Params::getParam("id")));
-		$this->_exportVariableToView('languages', OSCLocale::newInstance()->listAllEnabled());
+		$this->_exportVariableToView('languages', Locale::newInstance()->listAllEnabled());
 		osc_current_admin_theme_path("categories/iframe.php");
 	}
 }

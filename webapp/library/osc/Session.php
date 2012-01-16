@@ -18,26 +18,21 @@
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
 class Session
 {
-	//attributes
+	public static function newInstance()
+	{
+		return $GLOBALS['classLoader']->getClassInstance( 'Session' );
+	}
+
 	private $session;
-	private static $instance;
-	public static function newInstance() 
+
+	public function start() 
 	{
-		if (!self::$instance instanceof self) 
-		{
-			self::$instance = new self;
-		}
-		return self::$instance;
-	}
-	public function __construct() 
-	{
-	}
-	function session_start() 
-	{
-		session_name('osclass');
+		session_name( APP_NAME );
 		session_start();
+
 		$this->session = $_SESSION;
 		if ($this->_get('messages') == '') 
 		{
@@ -52,15 +47,18 @@ class Session
 			$this->_set('form', array());
 		}
 	}
-	function session_destroy() 
+
+	public function destroy() 
 	{
 		session_destroy();
 	}
+
 	function _set($key, $value) 
 	{
 		$_SESSION[$key] = $value;
 		$this->session[$key] = $value;
 	}
+
 	function _get($key) 
 	{
 		if (!isset($this->session[$key])) 
@@ -69,11 +67,13 @@ class Session
 		}
 		return ($this->session[$key]);
 	}
+
 	function _drop($key) 
 	{
 		unset($_SESSION[$key]);
 		unset($this->session[$key]);
 	}
+
 	function _setReferer($value) 
 	{
 		$_SESSION['osc_http_referer'] = $value;
@@ -81,6 +81,7 @@ class Session
 		$_SESSION['osc_http_referer_state'] = 0;
 		$this->session['osc_http_referer_state'] = 0;
 	}
+
 	function _getReferer() 
 	{
 		if (isset($this->session['osc_http_referer'])) 
@@ -92,6 +93,7 @@ class Session
 			return '';
 		}
 	}
+
 	function _dropReferer() 
 	{
 		unset($_SESSION['osc_http_referer']);
@@ -99,12 +101,14 @@ class Session
 		unset($_SESSION['osc_http_referer_state']);
 		unset($this->session['osc_http_referer_state']);
 	}
+
 	function _view() 
 	{
 		print_r($this->session);
 		//            echo "\n" ;
 		
 	}
+
 	function _setMessage($key, $value, $type) 
 	{
 		$messages = $this->_get('messages');
@@ -112,6 +116,7 @@ class Session
 		$messages[$key]['type'] = $type;
 		$this->_set('messages', $messages);
 	}
+
 	function _getMessage($key) 
 	{
 		$messages = $this->_get('messages');
@@ -124,18 +129,21 @@ class Session
 			return ('');
 		}
 	}
+
 	function _dropMessage($key) 
 	{
 		$messages = $this->_get('messages');
 		unset($messages[$key]);
 		$this->_set('messages', $messages);
 	}
+
 	function _keepForm($key) 
 	{
 		$aKeep = $this->_get('keepForm');
 		$aKeep[$key] = 1;
 		$this->_set('keepForm', $aKeep);
 	}
+
 	function _dropKeepForm($key = '') 
 	{
 		$aKeep = $this->_get('keepForm');
@@ -149,12 +157,14 @@ class Session
 			$this->_set('keepForm', array());
 		}
 	}
+
 	function _setForm($key, $value) 
 	{
 		$form = $this->_get('form');
 		$form[$key] = $value;
 		$this->_set('form', $form);
 	}
+
 	function _getForm($key = '') 
 	{
 		$form = $this->_get('form');

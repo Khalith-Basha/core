@@ -868,10 +868,6 @@ class DBCommandClass
 		{
 			return false;
 		}
-		if (OSC_DEBUG_DB_EXPLAIN && $this->isSelectType($sql)) 
-		{
-			$this->query_debug($sql);
-		}
 		$this->queries[] = $sql;
 		$timeStart = list($sm, $ss) = explode(' ', microtime());
 		$this->resultId = $this->_execute($sql);

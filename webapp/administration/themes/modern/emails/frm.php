@@ -98,7 +98,7 @@ PageForm::internal_name_input_text($email); ?>
                         </div>
                         <div class="clear50"></div>
                         <?php
-$locales = OSCLocale::newInstance()->listAllEnabled();
+$locales = Locale::newInstance()->listAllEnabled();
 PageForm::multilanguage_name_description($locales, $email);
 ?>
                         <div class="FormElement">

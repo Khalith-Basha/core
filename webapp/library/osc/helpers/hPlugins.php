@@ -32,8 +32,9 @@
  */
 function osc_run_hook($hook) 
 {
+	global $pluginManager;
 	$args = func_get_args();
-	call_user_func_array(array('Plugins', 'runHook'), $args);
+	call_user_func_array(array( $pluginManager, 'runHook'), $args);
 }
 /**
  * Apply a filter to a text
@@ -44,7 +45,8 @@ function osc_run_hook($hook)
  */
 function osc_apply_filter($hook, $content) 
 {
-	return Plugins::applyFilter($hook, $content);
+	global $pluginManager;
+	return $pluginManager->applyFilter($hook, $content);
 }
 /**
  * Add a hook
@@ -56,7 +58,8 @@ function osc_apply_filter($hook, $content)
  */
 function osc_add_hook($hook, $function, $priority = 5) 
 {
-	Plugins::addHook($hook, $function, $priority);
+	global $pluginManager;
+	$pluginManager->addHook($hook, $function, $priority);
 }
 /**
  * Add a filter
@@ -68,7 +71,8 @@ function osc_add_hook($hook, $function, $priority = 5)
  */
 function osc_add_filter($hook, $function, $priority = 5) 
 {
-	Plugins::addHook($hook, $function, $priority);
+	global $pluginManager;
+	$pluginManager->addHook($hook, $function, $priority);
 }
 /**
  * Remove a hook's function
@@ -79,7 +83,8 @@ function osc_add_filter($hook, $function, $priority = 5)
  */
 function osc_remove_hook($hook, $function) 
 {
-	Plugins::removeHook($hook, $function);
+	global $pluginManager;
+	$pluginManager->removeHook($hook, $function);
 }
 /**
  * Remove a filter's function
@@ -90,7 +95,8 @@ function osc_remove_hook($hook, $function)
  */
 function osc_remove_filter($hook, $function) 
 {
-	Plugins::removeHook($hook, $function);
+	global $pluginManager;
+	$pluginManager->removeHook($hook, $function);
 }
 /**
  * If the plugin is attached to the category
@@ -101,7 +107,8 @@ function osc_remove_filter($hook, $function)
  */
 function osc_is_this_category($name, $id) 
 {
-	return Plugins::isThisCategory($name, $id);
+	global $pluginManager;
+	return $pluginManager->isThisCategory($name, $id);
 }
 /**
  * Returns plugin's information
@@ -111,7 +118,8 @@ function osc_is_this_category($name, $id)
  */
 function osc_plugin_get_info($plugin) 
 {
-	return Plugins::getInfo($plugin);
+	global $pluginManager;
+	return $pluginManager->getInfo($plugin);
 }
 /**
  * Check if there's a new version of the plugin
@@ -121,7 +129,8 @@ function osc_plugin_get_info($plugin)
  */
 function osc_plugin_check_update($plugin) 
 {
-	return Plugins::checkUpdate($plugin);
+	global $pluginManager;
+	return $pluginManager->checkUpdate($plugin);
 }
 /**
  * Register a plugin file to be loaded
@@ -132,7 +141,8 @@ function osc_plugin_check_update($plugin)
  */
 function osc_register_plugin($path, $function) 
 {
-	Plugins::register($path, $function);
+	global $pluginManager;
+	$pluginManager->register($path, $function);
 }
 /**
  * Get list of the plugins
@@ -141,7 +151,8 @@ function osc_register_plugin($path, $function)
  */
 function osc_get_plugins() 
 {
-	return Plugins::getActive();
+	global $pluginManager;
+	return $pluginManager->getActive();
 }
 /**
  * Gets if a plugin is installed or not
@@ -151,7 +162,8 @@ function osc_get_plugins()
  */
 function osc_plugin_is_installed($plugin) 
 {
-	return Plugins::isInstalled($plugin);
+	global $pluginManager;
+	return $pluginManager->isInstalled($plugin);
 }
 /**
  * Gets if a plugin is enabled or not
@@ -161,7 +173,8 @@ function osc_plugin_is_installed($plugin)
  */
 function osc_plugin_is_enabled($plugin) 
 {
-	return Plugins::isEnabled($plugin);
+	global $pluginManager;
+	return $pluginManager->isEnabled($plugin);
 }
 /**
  * Show the default configure view for plugins (attach them to categories)
@@ -171,7 +184,8 @@ function osc_plugin_is_enabled($plugin)
  */
 function osc_plugin_configure_view($plugin) 
 {
-	return Plugins::configureView($plugin);
+	global $pluginManager;
+	return $pluginManager->configureView($plugin);
 }
 /**
  * Gets the path to a plugin's resource
@@ -181,7 +195,8 @@ function osc_plugin_configure_view($plugin)
  */
 function osc_plugin_resource($file) 
 {
-	return Plugins::resource($file);
+	global $pluginManager;
+	return $pluginManager->resource($file);
 }
 /**
  * Gets plugin's configure url

@@ -65,7 +65,7 @@ function osc_get_locales()
 {
 	if (!View::newInstance()->_exists('locales')) 
 	{
-		$locale = OSCLocale::newInstance()->listAllEnabled();
+		$locale = Locale::newInstance()->listAllEnabled();
 		View::newInstance()->_exportVariableToView("locales", $locale);
 	}
 	else
@@ -101,7 +101,7 @@ function osc_count_web_enabled_locales()
 {
 	if (!View::newInstance()->_exists('locales')) 
 	{
-		View::newInstance()->_exportVariableToView('locales', OSCLocale::newInstance()->listAllEnabled());
+		View::newInstance()->_exportVariableToView('locales', Locale::newInstance()->listAllEnabled());
 	}
 	return osc_priv_count_locales();
 }
@@ -114,7 +114,7 @@ function osc_has_web_enabled_locales()
 {
 	if (!View::newInstance()->_exists('locales')) 
 	{
-		View::newInstance()->_exportVariableToView('locales', OSCLocale::newInstance()->listAllEnabled());
+		View::newInstance()->_exportVariableToView('locales', Locale::newInstance()->listAllEnabled());
 	}
 	return View::newInstance()->_next('locales');
 }
@@ -219,7 +219,7 @@ function osc_locale_num_dec()
  */
 function osc_all_enabled_locales_for_admin($indexed_by_pk = false) 
 {
-	return (OSCLocale::newInstance()->listAllEnabled(true, $indexed_by_pk));
+	return (Locale::newInstance()->listAllEnabled(true, $indexed_by_pk));
 }
 /**
  * Gets current locale object
@@ -228,7 +228,7 @@ function osc_all_enabled_locales_for_admin($indexed_by_pk = false)
  */
 function osc_get_current_user_locale() 
 {
-	View::newInstance()->_exportVariableToView('locale', OSCLocale::newInstance()->findByPrimaryKey(osc_current_user_locale()));
+	View::newInstance()->_exportVariableToView('locale', Locale::newInstance()->findByPrimaryKey(osc_current_user_locale()));
 }
 /**
  * Get the actual locale of the user.
@@ -252,7 +252,7 @@ function osc_current_user_locale()
  * You get the right locale code. If an admin is using the website in another language different of the default one, or
  * the admin uses the default one, you'll get it.
  *
- * @return string OSCLocale Code
+ * @return string Locale Code
  */
 function osc_current_admin_locale() 
 {

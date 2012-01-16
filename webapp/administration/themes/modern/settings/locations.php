@@ -179,7 +179,7 @@ _e('Country code'); ?>: </label><br/>
                     <div><small id="c_code_error" style="color: red; display: none;"><?php
 _e('Country code should have two characters'); ?></small></div>
                     <?php
-$locales = OSCLocale::newInstance()->listAllEnabled();
+$locales = Locale::newInstance()->listAllEnabled();
 if (count($locales) > 1) 
 { ?>
                     <div class="tabber">
@@ -235,12 +235,12 @@ echo osc_admin_base_url(true); ?>" method="POST" accept-charset="utf-8">
                     <input type="hidden" name="type" value="edit_country" />
                     <input type="hidden" name="country_code" value="" />
                     <?php
-$locales = OSCLocale::newInstance()->listAllEnabled();
+$locales = Locale::newInstance()->listAllEnabled();
 if (count($locales) > 1) 
 { ?>
                     <div class="tabber">
                         <?php
-	$locales = OSCLocale::newInstance()->listAllEnabled(); ?>
+	$locales = Locale::newInstance()->listAllEnabled(); ?>
                         <?php
 	foreach ($locales as $locale) 
 	{ ?>
