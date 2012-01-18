@@ -26,6 +26,35 @@ class CAdminPlugin extends AdminSecBaseModel
 		parent::doModel();
 		switch ($this->action) 
 		{
+		case 'renderplugin':
+			global $active_plugins;
+			$file = Params::getParam("file");
+			if ($file != "") 
+			{
+				// We pass the GET variables (in case we have somes)
+				if (preg_match('|(.+?)\?(.*)|', $file, $match)) 
+				{
+					$file = $match[1];
+					if (preg_match_all('|&([^=]+)=([^&]*)|', urldecode('&' . $match[2] . '&'), $get_vars)) 
+					{
+						for ($var_k = 0; $var_k < count($get_vars[1]); $var_k++) 
+						{
+							//$_GET[$get_vars[1][$var_k]] = $get_vars[2][$var_k];
+							//$_REQUEST[$get_vars[1][$var_k]] = $get_vars[2][$var_k];
+							Params::setParam($get_vars[1][$var_k], $get_vars[2][$var_k]);
+						}
+					}
+				}
+				else
+				{
+					$file = $_REQUEST['file'];
+				};
+				$this->_exportVariableToView("file", osc_plugins_path() . DIRECTORY_SEPARATOR . $file);
+				//osc_renderPluginView($file);
+				$this->doView("plugins/view.php");
+			}
+			break;
+
 		case 'render':
 			$file = Params::getParam("file");
 			if ($file != "") 
@@ -46,54 +75,10 @@ class CAdminPlugin extends AdminSecBaseModel
 				{
 					$file = $_REQUEST['file'];
 				};
-				$this->_exportVariableToView("file", ABS_PATH . $file);
+				$this->_exportVariableToView("file", ABS_PATH . DIRECTORY_SEPARATOR . $file);
 				$this->doView("theme/view.php");
 			}
 			break;
-
-		case 'configure':
-			$plugin = Params::getParam("plugin");
-			if ($plugin != '') 
-			{
-				$plugin_data = $pluginManager->getInfo($plugin);
-				$this->_exportVariableToView("categories", Category::newInstance()->toTreeAll());
-				$this->_exportVariableToView("selected", PluginCategory::newInstance()->listSelected($plugin_data['short_name']));
-				$this->_exportVariableToView("plugin_data", $plugin_data);
-				$this->doView("plugins/configuration.php");
-			}
-			else
-			{
-				$this->redirectTo(osc_admin_base_url(true) . "?page=plugin");
-			}
-			break;
-
-		case 'configure_post':
-			$plugin_short_name = Params::getParam("plugin_short_name");
-			$categories = Params::getParam("categories");
-			if ($plugin_short_name != "") 
-			{
-				$pluginManager->cleanCategoryFromPlugin($plugin_short_name);
-				if (isset($categories)) 
-				{
-					$pluginManager->addToCategoryPlugin($categories, $plugin_short_name);
-				}
-			}
-			else
-			{
-				osc_add_flash_error_message(_m('No plugin selected'), 'admin');
-				$this->doView("plugins/index.php");
-			}
-			osc_add_flash_ok_message(_m('Configuration was saved'), 'admin');
-			$this->redirectTo(osc_admin_base_url(true) . "?page=plugin");
-			break;
-
-		default:
-			require_once 'osc/helpers/hPlugins.php';
-			require_once 'osc/helpers/hDefines.php';
-			require_once 'osc/utils.php';
-
-			$this->_exportVariableToView("plugins", $pluginManager->listAll());
-			$this->doView("plugins/index.php");
 		}
 	}
 

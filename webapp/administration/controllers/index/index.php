@@ -18,10 +18,16 @@
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
 class CAdminIndex extends AdminSecBaseModel
 {
 	public function doModel() 
 	{
+		require 'osc/model/User.php';
+		require 'osc/model/ItemComment.php';
+		require 'osc/feeds.php';
+		require 'osc/utils.php';
+
 		$this->_exportVariableToView("numUsers", User::newInstance()->count());
 		$this->_exportVariableToView("numAdmins", Admin::newInstance()->count());
 		$this->_exportVariableToView("numItems", Item::newInstance()->count());
@@ -32,9 +38,10 @@ class CAdminIndex extends AdminSecBaseModel
 		$this->doView('main/index.php');
 	}
 
-	function doView($file) 
+	public function doView($file) 
 	{
 		osc_current_admin_theme_path($file);
 		Session::newInstance()->_clearVariables();
 	}
 }
+

@@ -20,19 +20,14 @@
 */
 class WebSecBaseModel extends SecBaseModel
 {
-	function __construct() 
-	{
-		parent::__construct();
-	}
-	function isLogged() 
+	public function isLogged() 
 	{
 		return osc_is_web_user_logged_in();
 	}
-	//destroying current session
-	function logout() 
+
+	public function logout() 
 	{
-		//destroying session
-		Session::newInstance()->session_destroy();
+		Session::newInstance()->destroy();
 		Session::newInstance()->_drop('userId');
 		Session::newInstance()->_drop('userName');
 		Session::newInstance()->_drop('userEmail');
@@ -41,8 +36,10 @@ class WebSecBaseModel extends SecBaseModel
 		Cookie::newInstance()->pop('oc_userSecret');
 		Cookie::newInstance()->set();
 	}
-	function showAuthFailPage() 
+	
+	public function showAuthFailPage() 
 	{
-		$this->redirectTo(osc_user_login_url());
+		$this->redirectTo( osc_user_login_url() );
 	}
 }
+

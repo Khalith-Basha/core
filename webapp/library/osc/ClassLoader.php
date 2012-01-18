@@ -33,7 +33,7 @@ class ClassLoader
 	{
 		foreach( $this->searchPaths as $searchPath )
 		{
-			$requirePath = $searchPath['searchPath'] . DIRECTORY_SEPARATOR . $filePath . '.php';
+			$requirePath = $searchPath['searchPath'] . DIRECTORY_SEPARATOR . str_replace( '_', DIRECTORY_SEPARATOR, $filePath ) . '.php';
 			if( file_exists( $requirePath ) )
 			{
 				require $requirePath;

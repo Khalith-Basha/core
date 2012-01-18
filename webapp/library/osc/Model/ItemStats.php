@@ -25,7 +25,7 @@
  * @subpackage Model
  * @since unknown
  */
-class ItemStats extends DAO
+class Model_ItemStats extends DAO
 {
 	/**
 	 * It references to self object: ItemStats.

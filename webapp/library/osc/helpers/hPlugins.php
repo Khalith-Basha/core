@@ -206,7 +206,7 @@ function osc_plugin_resource($file)
  */
 function osc_plugin_configure_url($plugin) 
 {
-	return osc_admin_base_url(true) . '?page=plugins&action=configure&plugin=' . $plugin;
+	return osc_admin_base_url(true) . '?page=plugin&action=configure&plugin=' . $plugin;
 }
 /**
  * Gets the path for ajax
@@ -232,7 +232,7 @@ function osc_admin_configure_plugin_url($file = '')
 	$file = preg_replace('|/+|', '/', str_replace('\\', '/', $file));
 	$plugin_path = str_replace('\\', '/', osc_plugins_path());
 	$file = str_replace($plugin_path, '', $file);
-	return osc_admin_base_url(true) . '?page=plugins&action=configure&plugin=' . $file;
+	return osc_admin_base_url(true) . '?page=plugin&action=configure&plugin=' . $file;
 }
 /**
  * Gets urls for custom plugin administrations options
@@ -245,7 +245,7 @@ function osc_admin_render_plugin_url($file = '')
 	$file = preg_replace('|/+|', '/', str_replace('\\', '/', $file));
 	$plugin_path = str_replace('\\', '/', osc_plugins_path());
 	$file = str_replace($plugin_path, '', $file);
-	return osc_admin_base_url(true) . '?page=plugins&action=renderplugin&file=' . $file;
+	return osc_admin_base_url(true) . '?page=plugin&action=renderplugin&file=' . $file;
 }
 /**
  * Show custom plugin administrationfile

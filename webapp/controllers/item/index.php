@@ -74,7 +74,7 @@ class CWebItem extends Controller
 				osc_add_flash_error_message(_m('The item has been suspended'));
 				$this->redirectTo(osc_base_url(true));
 			}
-			$mStats = new ItemStats();
+			$mStats = ClassLoader::getInstance()->getClassInstance( 'Model_ItemStats' );
 			$mStats->increase('i_num_views', $item['pk_i_id']);
 			foreach ($item['locale'] as $k => $v) 
 			{

@@ -190,13 +190,15 @@ class DAO
 	 */
 	function update($values, $where) 
 	{
-		if (!$this->checkFieldKeys(array_keys($values))) 
+		$valuesKeys = array_keys( $values );
+		if( !$this->checkFieldKeys( $valuesKeys ) )
 		{
-			return false;
+			throw new Exception( 'Invalid "set" columns: ' . implode( ', ', $valuesKeys ) );
 		}
-		if (!$this->checkFieldKeys(array_keys($where))) 
+		$whereKeys = array_keys( $where );
+		if( !$this->checkFieldKeys( $whereKeys ) )
 		{
-			return false;
+			throw new Exception( 'Invalid "where" columns: ' . implode( ', ', $whereKeys ) );
 		}
 		$this->dao->from($this->getTableName());
 		$this->dao->set($values);

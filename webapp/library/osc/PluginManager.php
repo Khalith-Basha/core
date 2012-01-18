@@ -130,8 +130,8 @@ class PluginManager
 		{
 			foreach ($plugins_list as $plugin_name) 
 			{
-				$pluginPath = osc_plugins_path() . $plugin_name;
-				if (file_exists($pluginPath)) 
+				$pluginPath = osc_plugins_path() . DIRECTORY_SEPARATOR . $plugin_name;
+				if( file_exists( $pluginPath ) ) 
 				{
 					//This should include the file and adds the hooks
 					include_once $pluginPath;
@@ -330,7 +330,7 @@ class PluginManager
 				Preference::newInstance()->update($data, $condition);
 				unset($condition);
 				unset($data);
-				$plugin = Plugins::getInfo($path);
+				$plugin = $this->getInfo($path);
 				$this->cleanCategoryFromPlugin($plugin['short_name']);
 			}
 		}
@@ -417,12 +417,13 @@ class PluginManager
 		return $info;
 	}
 
-	public function checkUpdate($plugin) 
+	public function checkUpdate( $plugin )
 	{
-		$info = $this->getInfo($plugin);
-		if ($info['plugin_update_uri'] != "") 
+		$info = $this->getInfo( $plugin );
+		if( !empty( $info['plugin_update_uri'] ) )
 		{
-			if (false === ($str = @osc_file_get_contents($info['plugin_update_uri']))) 
+			$str = osc_file_get_contents( $info['plugin_update_uri'] );
+			if( false === $str ) 
 			{
 				return false;
 			}
@@ -465,7 +466,7 @@ class PluginManager
 	}
 	static function cleanCategoryFromPlugin($plugin) 
 	{
-		$dao_pluginCategory = new PluginCategory();
+		$dao_pluginCategory = ClassLoader::getInstance()->getClassInstance( 'PluginCategory' );
 		$dao_pluginCategory->delete(array('s_plugin_name' => $plugin));
 		unset($dao_pluginCategory);
 	}
@@ -492,7 +493,7 @@ class PluginManager
 						{
 							$cats[] = $sub['pk_i_id'];
 						}
-						Plugins::addToCategoryPlugin($cats, $plugin);
+						$this->addToCategoryPlugin($cats, $plugin);
 					}
 				}
 			}

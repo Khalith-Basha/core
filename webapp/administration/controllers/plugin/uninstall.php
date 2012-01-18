@@ -18,29 +18,17 @@
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-class AdminSecBaseModel extends SecBaseModel
+class CAdminPlugin extends AdminSecBaseModel
 {
-	public function isLogged() 
+	public function doModel() 
 	{
-		return osc_is_admin_user_logged_in();
-	}
-	public function logout() 
-	{
-		Session::newInstance()->destroy();
-		Session::newInstance()->_drop('adminId');
-		Session::newInstance()->_drop('adminUserName');
-		Session::newInstance()->_drop('adminName');
-		Session::newInstance()->_drop('adminEmail');
-		Session::newInstance()->_drop('adminLocale');
-		Cookie::newInstance()->pop('oc_adminId');
-		Cookie::newInstance()->pop('oc_adminSecret');
-		Cookie::newInstance()->pop('oc_adminLocale');
-		Cookie::newInstance()->set();
-	}
-	public function showAuthFailPage() 
-	{
-		require osc_admin_base_path() . '/gui/login.php';
-		exit;
+		parent::doModel();
+		$pluginManager = ClassLoader::getInstance()->getClassInstance( 'PluginManager' );
+		$pn = Params::getParam("plugin");
+		$pluginManager->runHook($pn . '_uninstall');
+		$pluginManager->uninstall($pn);
+		osc_add_flash_ok_message(_m('Plugin uninstalled'), 'admin');
+		$this->redirectTo(osc_admin_base_url(true) . "?page=plugin");
 	}
 }
 

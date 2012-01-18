@@ -20,16 +20,23 @@
 */
 class CAdminPlugin extends AdminSecBaseModel
 {
-	function doModel() 
+	public function __construct()
+	{
+		parent::__construct();
+
+		$this->pluginManager = ClassLoader::getInstance()->getClassInstance( 'PluginManager' );
+	}
+
+	public function doModel() 
 	{
 		$pn = Params::getParam("plugin");
 		// CATCH FATAL ERRORS
 		register_shutdown_function(array($this, 'errorHandler'), $pn, 'install');
-		$installed = Plugins::install($pn);
+		$installed = $this->pluginManager->install($pn);
 		if ($installed) 
 		{
 			//run this after installing the plugin
-			Plugins::runHook('install_' . $pn);
+			$this->pluginManager->runHook('install_' . $pn);
 			osc_add_flash_ok_message(_m('Plugin installed'), 'admin');
 		}
 		else
@@ -38,17 +45,19 @@ class CAdminPlugin extends AdminSecBaseModel
 		}
 		$this->redirectTo(osc_admin_base_url(true) . "?page=plugin");
 	}
-	function errorHandler($pn, $action) 
+
+	public function errorHandler($pn, $action) 
 	{
 		if (false === is_null($aError = error_get_last())) 
 		{
-			Plugins::deactivate($pn);
+			$this->pluginManager->deactivate($pn);
 			if ($action == 'install') 
 			{
-				Plugins::uninstall($pn);
+				$this->pluginManager->uninstall($pn);
 			}
 			osc_add_flash_error_message(sprintf(_m('There was a fatal error and the plugin was not installed.<br />Error: "%s" Line: %s<br/>File: %s'), $aError['message'], $aError['line'], $aError['file']), 'admin');
 			$this->redirectTo(osc_admin_base_url(true) . "?page=plugin");
 		}
 	}
 }
+

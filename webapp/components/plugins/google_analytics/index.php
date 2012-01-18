@@ -37,7 +37,7 @@ function google_analytics_footer()
 	if (osc_google_analytics_id() != '') 
 	{
 		$id = osc_google_analytics_id();
-		require osc_plugins_path() . 'google_analytics/footer.php';
+		require osc_plugins_path() . '/google_analytics/footer.php';
 	}
 }
 // This is needed in order to be able to activate the plugin

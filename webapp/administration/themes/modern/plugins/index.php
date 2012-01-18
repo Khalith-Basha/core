@@ -38,27 +38,20 @@ _e('Search'); ?>...";
                 oTable = $('#datatables_list').dataTable({
                     "bAutoWidth": false,
                     "aaData": [
-                        <?php
-foreach ($plugins as $p) 
+                        <?php foreach ($plugins as $p)
 { ?>
-                        <?php
-	$p_info = osc_plugin_get_info($p); ?>
-                        <?php
-	osc_plugin_is_installed($p) ? $installed = 1 : $installed = 0; ?>
-                        <?php
-	osc_plugin_is_enabled($p) ? $enabled = 1 : $enabled = 0; ?>
+                        <?php $p_info = osc_plugin_get_info($p); ?>
+                        <?php osc_plugin_is_installed($p) ? $installed = 1 : $installed = 0; ?>
+                        <?php osc_plugin_is_enabled($p) ? $enabled = 1 : $enabled = 0; ?>
                             [
                                 "<input type='hidden' name='installed' value='<?php
 	echo $installed ?>' enabled='<?php
 	echo $enabled ?>' />" +
                                 "<?php
-	echo addcslashes($p_info['plugin_name'], '"'); ?>&nbsp;<div id='datatables_quick_edit'><?php
-	if (osc_plugin_check_update($p_info['filename'])) 
-	{ ?><a href='<?php
+	echo addcslashes($p_info['plugin_name'], '"'); ?>&nbsp;<div id='datatables_quick_edit'><?php if (osc_plugin_check_update($p_info['filename'])): ?><a href='<?php
 		echo osc_admin_base_url(true); ?>?page=upgrade-plugin&plugin=<?php
 		echo $p_info['filename']; ?>'><?php
-		_e('There\'s a new version. You should update!'); ?></a><?php
-	}; ?></div>",
+		_e('There\'s a new version. You should update!'); ?></a><?php endif; ?></div>",
                                 "<?php
 	echo addcslashes($p_info['description'], '"'); ?>",
                                 "<?php

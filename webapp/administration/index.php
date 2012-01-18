@@ -28,6 +28,11 @@ if (file_exists(ABS_PATH . '.maintenance'))
 	define('__OSC_MAINTENANCE__', true);
 }
 
+require 'osc/core/SecBaseModel.php';
+require 'osc/core/AdminSecBaseModel.php';
+require 'osc/model/Admin.php';
+require 'osc/AdminThemes.php';
+
 $page = Params::getParam('page');
 if( empty( $page ) ) $page = 'index';
 

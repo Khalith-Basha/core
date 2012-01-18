@@ -17,15 +17,11 @@
  *
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-/**
- * Description of BaseModel
- *
- * @author danielo
  */
+
 class SecBaseModel extends Controller
 {
-	function __construct() 
+	public function __construct() 
 	{
 		parent::__construct();
 		//Checking granting...
@@ -36,21 +32,18 @@ class SecBaseModel extends Controller
 			$this->showAuthFailPage();
 		}
 	}
-	//granting methods
-	function setGranting($grant) 
+	public function setGranting($grant) 
 	{
 		$this->grant = $grant;
 	}
-	//destroying current session
-	function logout() 
+	public function logout() 
 	{
-		//destroying session
-		Session::newInstance()->session_destroy();
+		Session::newInstance()->destroy();
 	}
-	function doModel() 
+	public function doModel() 
 	{
 	}
-	function doView($file) 
+	public function doView($file) 
 	{
 	}
 }

@@ -52,6 +52,7 @@ require_once 'osc/helpers/hSearch.php';
 require_once 'osc/helpers/hPage.php';
 require_once 'osc/helpers/hUsers.php';
 require_once 'osc/helpers/hMessages.php';
+require_once 'osc/utils.php';
 
 $classLoader->loadFile( 'plugins' );
 $classLoader->loadFile( 'core/View' );
