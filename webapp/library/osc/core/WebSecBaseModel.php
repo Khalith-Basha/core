@@ -27,14 +27,14 @@ class WebSecBaseModel extends SecBaseModel
 
 	public function logout() 
 	{
-		Session::newInstance()->destroy();
-		Session::newInstance()->_drop('userId');
-		Session::newInstance()->_drop('userName');
-		Session::newInstance()->_drop('userEmail');
-		Session::newInstance()->_drop('userPhone');
-		Cookie::newInstance()->pop('oc_userId');
-		Cookie::newInstance()->pop('oc_userSecret');
-		Cookie::newInstance()->set();
+		$this->getSession()->destroy();
+		$this->getSession()->_drop('userId');
+		$this->getSession()->_drop('userName');
+		$this->getSession()->_drop('userEmail');
+		$this->getSession()->_drop('userPhone');
+		$this->getCookie()->pop('oc_userId');
+		$this->getCookie()->pop('oc_userSecret');
+		$this->getCookie()->set();
 	}
 	
 	public function showAuthFailPage() 

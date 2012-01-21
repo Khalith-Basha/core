@@ -24,13 +24,13 @@ class CAdminField extends AdminSecBaseModel
 	function __construct() 
 	{
 		parent::__construct();
-		$this->fieldManager = Field::newInstance();
+		$this->fieldManager = $this->getClassLoader()->getClassInstance( 'Model_Field' );
 	}
 	function doModel() 
 	{
 		parent::doModel();
 
-		$categories = Category::newInstance()->toTreeAll();
+		$categories = ClassLoader::getInstance()->getClassInstance( 'Model_Category' )->toTreeAll();
 		$selected = array();
 		foreach ($categories as $c) 
 		{
@@ -48,6 +48,6 @@ class CAdminField extends AdminSecBaseModel
 	function doView($file) 
 	{
 		osc_current_admin_theme_path($file);
-		Session::newInstance()->_clearVariables();
+	$this->getSession()->_clearVariables();
 	}
 }

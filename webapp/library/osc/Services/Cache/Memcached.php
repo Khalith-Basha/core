@@ -19,12 +19,12 @@
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-require_once 'osc/services/cache/interface.php';
+require_once 'osc/Services/Cache/Interface.php';
 
-class MemcachedCacheService implements CacheService
+class Services_Cache_Memcached implements CacheService
 {
 	private $service;
-	private function __construct() 
+	public function __construct() 
 	{
 		$this->service = new Memcached;
 		$this->service->addServer('127.0.0.1', 11211);

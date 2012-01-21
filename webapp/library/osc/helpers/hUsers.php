@@ -14,13 +14,15 @@
  */
 function osc_user_field($field, $locale = "") 
 {
-	if (View::newInstance()->_exists('users')) 
+	$classLoader = ClassLoader::getInstance();
+	$view = $classLoader->getClassInstance( 'View' );
+	if ($view->_exists('users')) 
 	{
-		$user = View::newInstance()->_current('users');
+		$user = $view->_current('users');
 	}
 	else
 	{
-		$user = View::newInstance()->_get('user');
+		$user = $view->_get('user');
 	}
 	return osc_field($user, $field, $locale);
 }
@@ -31,13 +33,15 @@ function osc_user_field($field, $locale = "")
  */
 function osc_user() 
 {
-	if (View::newInstance()->_exists('users')) 
+	$classLoader = ClassLoader::getInstance();
+	$view = $classLoader->getClassInstance( 'View' );
+	if ($view->_exists('users')) 
 	{
-		$user = View::newInstance()->_current('users');
+		$user = $view->_current('users');
 	}
 	else
 	{
-		$user = View::newInstance()->_get('user');
+		$user = $view->_get('user');
 	}
 	return ($user);
 }
@@ -51,7 +55,7 @@ function osc_is_web_user_logged_in()
 	$session = ClassLoader::getInstance()->getClassInstance( 'Session' );
 	if ( $session->_get("userId") != '') 
 	{
-		$user = User::newInstance()->findByPrimaryKey( $session->_get("userId"));
+		$user = $classLoader->getClassInstance( 'Model_User' )->findByPrimaryKey( $session->_get("userId"));
 		if (isset($user['b_enabled']) && $user['b_enabled'] == 1) 
 		{
 			return true;
@@ -66,7 +70,7 @@ function osc_is_web_user_logged_in()
 	$cookie = ClassLoader::getInstance()->getClassInstance( 'Cookie' );
 	if ($cookie->get_value('oc_userId') != '' && $cookie->get_value('oc_userSecret') != '') 
 	{
-		$user = User::newInstance()->findByIdSecret($cookie->get_value('oc_userId'), $cookie->get_value('oc_userSecret'));
+		$user = $classLoader->getClassInstance( 'Model_User' )->findByIdSecret($cookie->get_value('oc_userId'), $cookie->get_value('oc_userSecret'));
 		if (isset($user['b_enabled']) && $user['b_enabled'] == 1) 
 		{
 			$session->_set('userId', $user['pk_i_id']);
@@ -158,10 +162,11 @@ function osc_user_public_profile_url($id = null)
  */
 function osc_is_admin_user_logged_in() 
 {
-	$session = ClassLoader::getInstance()->getClassInstance( 'Session' );
+	$classLoader = ClassLoader::getInstance();
+	$session = $classLoader->getClassInstance( 'Session' );
 	if ($session->_get("adminId") != '') 
 	{
-		$admin = Admin::newInstance()->findByPrimaryKey($session->_get("adminId"));
+		$admin = $classLoader->getClassInstance( 'Model_Admin' )->findByPrimaryKey($session->_get("adminId"));
 		if (isset($admin['pk_i_id'])) 
 		{
 			return true;
@@ -172,10 +177,10 @@ function osc_is_admin_user_logged_in()
 		}
 	}
 	//can already be a logged user or not, we'll take a look into the cookie
-	$cookie = ClassLoader::getInstance()->getClassInstance( 'Cookie' );
+	$cookie = $classLoader->getClassInstance( 'Cookie' );
 	if ($cookie->get_value('oc_adminId') != '' && $cookie->get_value('oc_adminSecret') != '') 
 	{
-		$admin = Admin::newInstance()->findByIdSecret($cookie->get_value('oc_adminId'), $cookie->get_value('oc_adminSecret'));
+		$admin = $classLoader->getClassInstance( 'Model_Admin' )->findByIdSecret($cookie->get_value('oc_adminId'), $cookie->get_value('oc_adminSecret'));
 		if (isset($admin['pk_i_id'])) 
 		{
 			$session->_set('adminId', $admin['pk_i_id']);
@@ -422,7 +427,9 @@ function osc_user_comments_validated()
  */
 function osc_alert_field($field) 
 {
-	return osc_field(View::newInstance()->_current('alerts'), $field, '');
+	$classLoader = ClassLoader::getInstance();
+	$view = $classLoader->getClassInstance( 'View' );
+	return osc_field($view->_current('alerts'), $field, '');
 }
 /**
  * Gets next alert if there is, else return null
@@ -431,9 +438,11 @@ function osc_alert_field($field)
  */
 function osc_has_alerts() 
 {
-	$result = View::newInstance()->_next('alerts');
+	$classLoader = ClassLoader::getInstance();
+	$view = $classLoader->getClassInstance( 'View' );
+	$result = $view->_next('alerts');
 	$alert = osc_alert();
-	View::newInstance()->_exportVariableToView("items", isset($alert['items']) ? $alert['items'] : array());
+	$view->_exportVariableToView("items", isset($alert['items']) ? $alert['items'] : array());
 	return $result;
 }
 /**
@@ -442,7 +451,9 @@ function osc_has_alerts()
  */
 function osc_count_alerts() 
 {
-	return (int)View::newInstance()->_count('alerts');
+	$classLoader = ClassLoader::getInstance();
+	$view = $classLoader->getClassInstance( 'View' );
+	return (int)$view->_count('alerts');
 }
 /**
  * Gets current alert fomr view
@@ -451,7 +462,9 @@ function osc_count_alerts()
  */
 function osc_alert() 
 {
-	return View::newInstance()->_current('alerts');
+	$classLoader = ClassLoader::getInstance();
+	$view = $classLoader->getClassInstance( 'View' );
+	return $view->_current('alerts');
 }
 /**
  * Gets search field of current alert
@@ -486,9 +499,11 @@ function osc_alert_search_object()
  */
 function osc_prepare_user_info() 
 {
-	if (!View::newInstance()->_exists('users')) 
+	$classLoader = ClassLoader::getInstance();
+	$view = $classLoader->getClassInstance( 'View' );
+	if (!$view->_exists('users')) 
 	{
-		View::newInstance()->_exportVariableToView('users', array(User::newInstance()->findByPrimaryKey(osc_item_user_id())));
+		$view->_exportVariableToView('users', array($classLoader->getClassInstance( 'Model_User' )->findByPrimaryKey(osc_item_user_id())));
 	}
-	return View::newInstance()->_next('users');
+	return $view->_next('users');
 }

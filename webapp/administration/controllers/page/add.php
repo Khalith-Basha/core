@@ -39,7 +39,7 @@ class CAdminPage extends AdminSecBaseModel
 		// setForm just in case the form fails
 		foreach (Params::getParamsAsArray() as $k => $v) 
 		{
-			Session::newInstance()->_setForm($k, $v);
+		$this->getSession()->_setForm($k, $v);
 		}
 		$s_internal_name = Params::getParam("s_internal_name");
 		if ($s_internal_name == '') 
@@ -89,6 +89,6 @@ class CAdminPage extends AdminSecBaseModel
 	function doView($file) 
 	{
 		osc_current_admin_theme_path($file);
-		Session::newInstance()->_clearVariables();
+	$this->getSession()->_clearVariables();
 	}
 }

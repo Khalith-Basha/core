@@ -105,9 +105,9 @@ class CAdminAdmins extends AdminSecBaseModel
 			{
 				$adminEdit = $this->adminManager->findByPrimaryKey((int)$adminId);
 			}
-			elseif (Session::newInstance()->_get('adminId') != '') 
+			elseif (->getSession()->_get('adminId') != '') 
 			{
-				$adminEdit = $this->adminManager->findByPrimaryKey(Session::newInstance()->_get('adminId'));
+				$adminEdit = $this->adminManager->findByPrimaryKey(->getSession()->_get('adminId'));
 			}
 			if (count($adminEdit) == 0) 
 			{
@@ -222,7 +222,7 @@ class CAdminAdmins extends AdminSecBaseModel
 				$this->redirectTo(osc_admin_base_url(true) . '?page=admins');
 			}
 			// Verification to avoid an administrator trying to remove to itself
-			if (in_array(Session::newInstance()->_get('adminId'), $adminId)) 
+			if (in_array(->getSession()->_get('adminId'), $adminId)) 
 			{
 				osc_add_flash_error_message(_m('The operation hasn\'t been completed. You\'re trying to remove yourself!'), 'admin');
 				$this->redirectTo(osc_admin_base_url(true) . '?page=admins');
@@ -250,6 +250,6 @@ class CAdminAdmins extends AdminSecBaseModel
 	function doView($file) 
 	{
 		osc_current_admin_theme_path($file);
-		Session::newInstance()->_clearVariables();
+	$this->getSession()->_clearVariables();
 	}
 }

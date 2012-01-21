@@ -52,8 +52,8 @@ class CAdminAjax extends AdminSecBaseModel
 		}
 		$result.= "}";
 		echo $result;
-		Session::newInstance()->_dropKeepForm();
-		Session::newInstance()->_clearVariables();
+	$this->getSession()->_dropKeepForm();
+	$this->getSession()->_clearVariables();
 	}
 }
 

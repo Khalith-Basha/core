@@ -518,8 +518,8 @@ class CAdminAjax extends AdminSecBaseModel
 			}
 			break;
 				}
-		Session::newInstance()->_dropKeepForm();
-		Session::newInstance()->_clearVariables();
+	$this->getSession()->_dropKeepForm();
+	$this->getSession()->_clearVariables();
 	}
 
 	function doView($file) 

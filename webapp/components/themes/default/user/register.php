@@ -17,7 +17,8 @@
  *
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
+$userForm = $classLoader->getClassInstance( 'Form_User' );
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -34,7 +35,7 @@ echo osc_current_web_theme_js_url('jquery.validate.min.js'); ?>"></script>
     <body>
         <div class="container">
             <?php
-UserForm::js_validation(); ?>
+$userForm->js_validation(); ?>
             <?php
 osc_current_web_theme_path('header.php'); ?>
             <div class="content user_forms">
@@ -49,21 +50,17 @@ echo osc_base_url(true); ?>" method="post" >
                         
                         <fieldset>
                             <label for="name"><?php
-_e('Name', 'modern'); ?></label> <?php
-UserForm::name_text(); ?><br />
+_e('Name', 'modern'); ?></label> <?php $userForm->name_text(); ?><br />
                             <label for="password"><?php
-_e('Password', 'modern'); ?></label> <?php
-UserForm::password_text(); ?><br />
+_e('Password', 'modern'); ?></label> <?php $userForm->password_text(); ?><br />
                             <label for="password"><?php
-_e('Re-type password', 'modern'); ?></label> <?php
-UserForm::check_password_text(); ?><br />
+_e('Re-type password', 'modern'); ?></label> <?php $userForm->check_password_text(); ?><br />
                             <p id="password-error" style="display:none;">
                                 <?php
 _e('Passwords don\'t match', 'modern'); ?>.
                             </p>
                             <label for="email"><?php
-_e('E-mail', 'modern'); ?></label> <?php
-UserForm::email_text(); ?><br />
+_e('E-mail', 'modern'); ?></label> <?php $userForm->email_text(); ?><br />
                             <?php
 osc_run_hook('user_register_form'); ?>
                             <?php

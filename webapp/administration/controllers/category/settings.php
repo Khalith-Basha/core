@@ -31,7 +31,7 @@ class CAdminCategory extends AdminSecBaseModel
 	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
 		osc_current_admin_theme_path( 'categories/settings.php' );
-		Session::newInstance()->_clearVariables();
+	$this->getSession()->_clearVariables();
 	}
 
 	public function doPost( HttpRequest $req, HttpResponse $res )

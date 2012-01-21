@@ -26,16 +26,16 @@ class AdminSecBaseModel extends SecBaseModel
 	}
 	public function logout() 
 	{
-		Session::newInstance()->destroy();
-		Session::newInstance()->_drop('adminId');
-		Session::newInstance()->_drop('adminUserName');
-		Session::newInstance()->_drop('adminName');
-		Session::newInstance()->_drop('adminEmail');
-		Session::newInstance()->_drop('adminLocale');
-		Cookie::newInstance()->pop('oc_adminId');
-		Cookie::newInstance()->pop('oc_adminSecret');
-		Cookie::newInstance()->pop('oc_adminLocale');
-		Cookie::newInstance()->set();
+		$this->getSession()->destroy();
+		$this->getSession()->_drop('adminId');
+		$this->getSession()->_drop('adminUserName');
+		$this->getSession()->_drop('adminName');
+		$this->getSession()->_drop('adminEmail');
+		$this->getSession()->_drop('adminLocale');
+		$this->getCookie()->pop('oc_adminId');
+		$this->getCookie()->pop('oc_adminSecret');
+		$this->getCookie()->pop('oc_adminLocale');
+		$this->getCookie()->set();
 	}
 	public function showAuthFailPage() 
 	{

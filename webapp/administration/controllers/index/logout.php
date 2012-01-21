@@ -22,11 +22,11 @@ class CAdminIndex extends AdminSecBaseModel
 {
 	public function doModel() 
 	{
-		Session::newInstance()->_drop('adminId');
-		Session::newInstance()->_drop('adminUserName');
-		Session::newInstance()->_drop('adminName');
-		Session::newInstance()->_drop('adminEmail');
-		Session::newInstance()->_drop('adminLocale');
+	$this->getSession()->_drop('adminId');
+	$this->getSession()->_drop('adminUserName');
+	$this->getSession()->_drop('adminName');
+	$this->getSession()->_drop('adminEmail');
+	$this->getSession()->_drop('adminLocale');
 		Cookie::newInstance()->pop('oc_adminId');
 		Cookie::newInstance()->pop('oc_adminSecret');
 		Cookie::newInstance()->pop('oc_adminLocale');

@@ -23,12 +23,11 @@ class CWebItem extends Controller
 	function __construct() 
 	{
 		parent::__construct();
-		$this->itemManager = Item::newInstance();
-		// here allways userId == ''
+		$this->itemManager = $this->getClassLoader()->getClassInstance( 'Model_Item' );
 		if (osc_is_web_user_logged_in()) 
 		{
 			$this->userId = osc_logged_user_id();
-			$this->user = User::newInstance()->findByPrimaryKey($this->userId);
+			$this->user = $this->getClassLoader()->getClassInstance( 'Model_User' )->findByPrimaryKey($this->userId);
 		}
 		else
 		{
@@ -38,22 +37,22 @@ class CWebItem extends Controller
 	}
 	function doModel() 
 	{
-		$locales = Locale::newInstance()->listAllEnabled();
-		$this->_exportVariableToView('locales', $locales);
+		$locales = $this->getClassLoader()->getClassInstance( 'Model_Locale' )->listAllEnabled();
+		$this->getView()->_exportVariableToView('locales', $locales);
 		if (osc_reg_user_post() && $this->user == null) 
 		{
 			osc_add_flash_warning_message(_m('Only registered users are allowed to post items'));
 			$this->redirectTo(osc_user_login_url());
 		}
-		$countries = Country::newInstance()->listAll();
+		$countries = $this->getClassLoader()->getClassInstance( 'Model_Country' )->listAll();
 		$regions = array();
 		if (isset($this->user['fk_c_country_code']) && $this->user['fk_c_country_code'] != '') 
 		{
-			$regions = Region::newInstance()->findByCountry($this->user['fk_c_country_code']);
+			$regions = $this->getClassLoader()->getClassInstance( 'Model_Region' )->findByCountry($this->user['fk_c_country_code']);
 		}
 		else if (count($countries) > 0) 
 		{
-			$regions = Region::newInstance()->findByCountry($countries[0]['pk_c_code']);
+			$regions = $this->getClassLoader()->getClassInstance( 'Model_Region' )->findByCountry($countries[0]['pk_c_code']);
 		}
 		$cities = array();
 		if (isset($this->user['fk_i_region_id']) && $this->user['fk_i_region_id'] != '') 
@@ -64,28 +63,28 @@ class CWebItem extends Controller
 		{
 			$cities = City::newInstance()->findByRegion($regions[0]['pk_i_id']);
 		}
-		$this->_exportVariableToView('countries', $countries);
-		$this->_exportVariableToView('regions', $regions);
-		$this->_exportVariableToView('cities', $cities);
-		$form = count(Session::newInstance()->_getForm());
-		$keepForm = count(Session::newInstance()->_getKeepForm());
+		$this->getView()->_exportVariableToView('countries', $countries);
+		$this->getView()->_exportVariableToView('regions', $regions);
+		$this->getView()->_exportVariableToView('cities', $cities);
+		$form = count($this->getSession()->_getForm());
+		$keepForm = count($this->getSession()->_getKeepForm());
 		if ($form == 0 || $form == $keepForm) 
 		{
-			Session::newInstance()->_dropKeepForm();
+			$this->getSession()->_dropKeepForm();
 		}
-		if (Session::newInstance()->_getForm('countryId') != "") 
+		if ($this->getSession()->_getForm('countryId') != "") 
 		{
-			$countryId = Session::newInstance()->_getForm('countryId');
-			$regions = Region::newInstance()->findByCountry($countryId);
-			$this->_exportVariableToView('regions', $regions);
-			if (Session::newInstance()->_getForm('regionId') != "") 
+			$countryId = $this->getSession()->_getForm('countryId');
+			$regions = $this->getClassLoader()->getClassInstance( 'Model_Region' )->findByCountry($countryId);
+			$this->getView()->_exportVariableToView('regions', $regions);
+			if ($this->getSession()->_getForm('regionId') != "") 
 			{
-				$regionId = Session::newInstance()->_getForm('regionId');
+				$regionId = $this->getSession()->_getForm('regionId');
 				$cities = City::newInstance()->findByRegion($regionId);
-				$this->_exportVariableToView('cities', $cities);
+				$this->getView()->_exportVariableToView('cities', $cities);
 			}
 		}
-		$this->_exportVariableToView('user', $this->user);
+		$this->getView()->_exportVariableToView('user', $this->user);
 		osc_run_hook('post_item');
 		$this->doView('item/post.php');
 	}
@@ -93,7 +92,7 @@ class CWebItem extends Controller
 	{
 		osc_run_hook("before_html");
 		osc_current_web_theme_path($file);
-		Session::newInstance()->_clearVariables();
+		$this->getSession()->_clearVariables();
 		osc_run_hook("after_html");
 	}
 }

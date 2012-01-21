@@ -34,7 +34,6 @@ $classLoader->addSearchPath( LIBRARY_PATH . '/osc' );
 
 $classLoader->loadFile( 'plugins' );
 $classLoader->loadFile( 'helpers/hCategories' );
-$classLoader->loadFile( 'core/View' );
 $classLoader->loadFile( 'urls/item' );
 $classLoader->loadFile( 'formatting' );
 $classLoader->loadFile( 'Form/Form' );
@@ -63,7 +62,7 @@ $pluginManager = $classLoader->getClassInstance( 'PluginManager' );
 $pluginManager->init();
 
 $rewrite = $classLoader->getClassInstance( 'Rewrite' );
-require 'osc/url_rules.php';
+$rewrite->loadRules();
 $rewrite->init();
 
 $session = $classLoader->getClassInstance( 'Session' );

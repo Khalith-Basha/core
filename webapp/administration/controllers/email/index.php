@@ -32,6 +32,6 @@ class CAdminEmail extends AdminSecBaseModel
 		$this->_exportVariableToView("prefLocale", osc_current_admin_locale());
 		$this->_exportVariableToView("emails", $this->emailManager->listAll(1));
 		osc_current_admin_theme_path( "emails/index.php" );
-		Session::newInstance()->_clearVariables();
+	$this->getSession()->_clearVariables();
 	}
 }

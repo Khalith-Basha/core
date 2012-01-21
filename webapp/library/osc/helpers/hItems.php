@@ -31,7 +31,8 @@
  */
 function osc_itemIsOld( array $item )
 {
-	$preference = Preference::newInstance();
+	$classLoader = ClassLoader::getInstance();
+	$preference = $classLoader->getClassInstance( 'Model_Preference' );
 	$numDaysOld = $preference->get( 'item_num_days_old' );
 	if( is_null( $numDaysOld ) )
 		$numDaysOld = 1;
@@ -216,11 +217,13 @@ function osc_item_title($locale = "")
  */
 function osc_item_category($locale = "") 
 {
-	$view = ClassLoader::getInstance()->getClassInstance( 'View' );
-	if ($locale == "") $locale = osc_current_user_locale();
+	$classLoader = ClassLoader::getInstance();
+	$view = $classLoader->getClassInstance( 'View' );
+	if ($locale == "")
+		$locale = osc_current_user_locale();
 	if (!$view->_exists('item_category')) 
 	{
-		$view->_exportVariableToView('item_category', Category::newInstance()->findByPrimaryKey(osc_item_category_id()));
+		$view->_exportVariableToView('item_category', $classLoader->getClassInstance( 'Model_Category' )->findByPrimaryKey(osc_item_category_id()));
 	}
 	$category = $view->_get('item_category');
 	return (string)osc_field($category, "s_name", $locale);
@@ -233,11 +236,13 @@ function osc_item_category($locale = "")
  */
 function osc_item_category_description($locale = "") 
 {
-	$view = ClassLoader::getInstance()->getClassInstance( 'View' );
-	if ($locale == "") $locale = osc_current_user_locale();
+	$classLoader = ClassLoader::getInstance();
+	$view = $classLoader->getClassInstance( 'View' );
+	if ($locale == "")
+		$locale = osc_current_user_locale();
 	if (!$view->_exists('item_category')) 
 	{
-		$view->_exportVariableToView('item_category', Category::newInstance()->findByPrimaryKey(osc_item_category_id()));
+		$view->_exportVariableToView('item_category', $classLoader->getClassInstance( 'Model_Category' )->findByPrimaryKey(osc_item_category_id()));
 	}
 	$category = $view->_get('item_category');
 	return osc_field($category, "s_description", $locale);
@@ -429,7 +434,8 @@ function osc_item_views()
 	}
 	else
 	{
-		return ItemStats::newInstance()->getViews(osc_item_id());
+		$classLoader = ClassLoader::getInstance();
+		return $classLoader->getClassInstance( 'Model_ItemStats' )->getViews(osc_item_id());
 	}
 }
 /**
@@ -445,7 +451,8 @@ function osc_item_is_expired()
 	}
 	else
 	{
-		$category = Category::newInstance()->findByPrimaryKey(osc_item_category_id());
+		$classLoader = ClassLoader::getInstance();
+		$category = $classLoader->getClassInstance( 'Model_Category' )->findByPrimaryKey(osc_item_category_id());
 		$expiration = $category['i_expiration_days'];
 		if ($expiration == 0) 
 		{
@@ -587,7 +594,8 @@ function osc_list_items_per_page()
  */
 function osc_item_total_comments() 
 {
-	return ItemComment::newInstance()->totalComments(osc_item_id());
+	$classLoader = ClassLoader::getInstance();
+	return $classLoader->getClassInstance( 'Model_ItemComment' )->totalComments(osc_item_id());
 }
 /**
  * Gets page of comments in current pagination
@@ -855,10 +863,11 @@ function osc_get_item_resources()
  */
 function osc_count_item_comments() 
 {
-	$view = ClassLoader::getInstance()->getClassInstance( 'View' );
+	$classLoader = ClassLoader::getInstance();
+	$view = $classLoader->getClassInstance( 'View' );
 	if (!$view->_exists('comments')) 
 	{
-		$view->_exportVariableToView('comments', ItemComment::newInstance()->findByItemID(osc_item_id(), osc_item_comments_page(), osc_comments_per_page()));
+		$view->_exportVariableToView('comments', $classLoader->getClassInstance( 'Model_ItemComment' )->findByItemID(osc_item_id(), osc_item_comments_page(), osc_comments_per_page()));
 	}
 	return $view->_count('comments');
 }
@@ -869,10 +878,11 @@ function osc_count_item_comments()
  */
 function osc_has_item_comments() 
 {
-	$view = ClassLoader::getInstance()->getClassInstance( 'View' );
+	$classLoader = ClassLoader::getInstance();
+	$view = $classLoader->getClassInstance( 'View' );
 	if (!$view->_exists('comments')) 
 	{
-		$view->_exportVariableToView('comments', ItemComment::newInstance()->findByItemID(osc_item_id(), osc_item_comments_page(), osc_comments_per_page()));
+		$view->_exportVariableToView('comments', $classLoader->getClassInstance( 'Model_ItemComment' )->findByItemID(osc_item_id(), osc_item_comments_page(), osc_comments_per_page()));
 	}
 	return $view->_next('comments');
 }
@@ -957,10 +967,11 @@ function osc_priv_count_item_resources()
  */
 function osc_count_item_meta() 
 {
-	$view = ClassLoader::getInstance()->getClassInstance( 'View' );
+	$classLoader = ClassLoader::getInstance();
+	$view = $classLoader->getClassInstance( 'View' );
 	if (!$view->_exists('metafields')) 
 	{
-		$view->_exportVariableToView('metafields', Item::newInstance()->metaFields(osc_item_id()));
+		$view->_exportVariableToView('metafields', $classLoader->getClassInstance( 'Model_Item' )->metaFields(osc_item_id()));
 	}
 	return $view->_count('metafields');
 }
@@ -971,10 +982,11 @@ function osc_count_item_meta()
  */
 function osc_has_item_meta() 
 {
-	$view = ClassLoader::getInstance()->getClassInstance( 'View' );
+	$classLoader = ClassLoader::getInstance();
+	$view = $classLoader->getClassInstance( 'View' );
 	if (!$view->_exists('metafields')) 
 	{
-		$view->_exportVariableToView('metafields', Item::newInstance()->metaFields(osc_item_id()));
+		$view->_exportVariableToView('metafields', $classLoader->getClassInstance( 'Model_Item' )->metaFields(osc_item_id()));
 	}
 	return $view->_next('metafields');
 }
@@ -985,10 +997,11 @@ function osc_has_item_meta()
  */
 function osc_get_item_meta() 
 {
-	$view = ClassLoader::getInstance()->getClassInstance( 'View' );
+	$classLoader = ClassLoader::getInstance();
+	$view = $classLoader->getClassInstance( 'View' );
 	if (!$view->_exists('metafields')) 
 	{
-		$view->_exportVariableToView('metafields', Item::newInstance()->metaFields(osc_item_id()));
+		$view->_exportVariableToView('metafields', $classLoader->getClassInstance( 'Model_Item' )->metaFields(osc_item_id()));
 	}
 	return $view->_get('metafields');
 }

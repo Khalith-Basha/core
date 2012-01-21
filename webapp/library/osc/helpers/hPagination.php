@@ -31,8 +31,9 @@
  */
 function osc_search_pagination() 
 {
-	$pagination = new Pagination();
-	return $pagination->doPagination();
+	return ClassLoader::getInstance()
+		->getClassInstance( 'Pagination' )
+		->doPagination();
 }
 /**
  * Gets the pagination links of comments pagination
@@ -48,8 +49,9 @@ function osc_comments_pagination()
 	else
 	{
 		$params = array('total' => ceil(osc_item_total_comments() / osc_comments_per_page()), 'selected' => osc_item_comments_page(), 'url' => osc_item_comments_url('{PAGE}'));
-		$pagination = new Pagination($params);
-		return $pagination->doPagination();
+		return ClassLoader::getInstance()
+			->getClassInstance( 'Pagination', true, array( $params ) )
+			->doPagination();
 	}
 }
 /**
@@ -77,6 +79,8 @@ function osc_comments_pagination()
  */
 function osc_pagination($params = null) 
 {
-	$pagination = new Pagination($params);
-	return $pagination->doPagination();
+	return ClassLoader::getInstance()
+		->getClassInstance( 'Pagination', true, array( $params ) )
+		->doPagination();
 }
+

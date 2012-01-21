@@ -560,10 +560,10 @@ class Model_Search extends DAO
 		{
 			$category = preg_replace('|/$|', '', $category);
 			$aCategory = explode('/', $category);
-			$category = Category::newInstance()->findBySlug($aCategory[count($aCategory) - 1]);
+			$category = ClassLoader::getInstance()->getClassInstance( 'Model_Category' )->findBySlug($aCategory[count($aCategory) - 1]);
 			$category = $category['pk_i_id'];
 		}
-		$tree = Category::newInstance()->toSubTree($category);
+		$tree = ClassLoader::getInstance()->getClassInstance( 'Model_Category' )->toSubTree($category);
 		if (!in_array($category, $this->categories)) 
 		{
 			$this->categories[] = sprintf("%sitem.fk_i_category_id = %d ", DB_TABLE_PREFIX, $category);
@@ -702,7 +702,7 @@ class Model_Search extends DAO
 		}
 		if ($extended) 
 		{
-			return Item::newInstance()->extendData($items);
+			return ClassLoader::getInstance()->getClassInstance( 'Model_Item' )->extendData($items);
 		}
 		else
 		{
@@ -726,12 +726,12 @@ class Model_Search extends DAO
 		$this->addConditions(sprintf('%st_item_stats.fk_i_item_id = %sitem.pk_i_id', DB_TABLE_PREFIX, DB_TABLE_PREFIX));
 		$this->addConditions(sprintf("%sitem.b_premium = 1", DB_TABLE_PREFIX));
 		$items = $this->doSearch(false);
-		$mStat = ItemStats::newInstance();
+		$mStat = ClassLoader::getInstance()->getClassInstance( 'Model_ItemStats' );
 		foreach ($items as $item) 
 		{
 			$mStat->increase('i_num_premium_views', $item['pk_i_id']);
 		}
-		return Item::newInstance()->extendData($items);
+		return ClassLoader::getInstance()->getClassInstance( 'Model_Item' )->extendData($items);
 	}
 	public function getLatestItems() 
 	{

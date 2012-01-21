@@ -1,6 +1,9 @@
 <?php
 osc_current_web_theme_path( 'htmlHeader.php' );
 $item = osc_item();
+$itemUrls = $classLoader->getClassInstance( 'Url_Item' );
+$commentForm = $classLoader->getClassInstance( 'Form_Comment' );
+$contactForm = $classLoader->getClassInstance( 'Form_Contact' );
 ?>
 <script type="text/javascript" src="<?php echo osc_current_web_theme_js_url('fancybox/jquery.fancybox-1.3.4.js'); ?>"></script>
 <link href="<?php echo osc_current_web_theme_js_url('fancybox/jquery.fancybox-1.3.4.css'); ?>" rel="stylesheet" type="text/css" />
@@ -33,13 +36,12 @@ else
 if (osc_price_enabled_at_items()) 
 { ?><span class="price"><?php
 	echo osc_item_formated_price(); ?></span> <?php
-} ?><strong><?php
-echo osc_item_title(); ?></strong></h1>
+} ?><strong><?php echo osc_item_title(); ?></strong></h1>
                         <p id="report">
                             <strong><?php
 _e('Mark as', 'modern'); ?></strong>
                             <span>
-                                <a id="item_spam" href="<?php echo ItemUrls::getInstance()->create( 'mark-spam', $item['pk_i_id'] ); ?>" rel="nofollow"><?php
+                                <a id="item_spam" href="<?php echo $itemUrls->create( 'mark-spam', $item['pk_i_id'] ); ?>" rel="nofollow"><?php
 _e('spam', 'modern'); ?></a>
                                 <a id="item_bad_category" href="<?php
 echo osc_item_link_bad_category(); ?>" rel="nofollow"><?php
@@ -174,7 +176,7 @@ if (osc_comments_enabled())
 		_e('Comments', 'modern'); ?></h2>
                             <ul id="comment_error_list"></ul>
                             <?php
-		CommentForm::js_validation(); ?>
+		$commentForm->js_validation(); ?>
                             <?php
 		if (osc_count_item_comments() >= 1) 
 		{ ?>
@@ -231,19 +233,15 @@ if (osc_comments_enabled())
 		else
 		{ ?>
                                         <label for="authorName"><?php
-			_e('Your name', 'modern'); ?>:</label> <?php
-			CommentForm::author_input_text(); ?><br />
+			_e('Your name', 'modern'); ?>:</label> <?php $commentForm->author_input_text(); ?><br />
                                         <label for="authorEmail"><?php
-			_e('Your e-mail', 'modern'); ?>:</label> <?php
-			CommentForm::email_input_text(); ?><br />
+			_e('Your e-mail', 'modern'); ?>:</label> <?php $commentForm->email_input_text(); ?><br />
                                     <?php
 		}; ?>
                                     <label for="title"><?php
-		_e('Title', 'modern'); ?>:</label><?php
-		CommentForm::title_input_text(); ?><br />
+		_e('Title', 'modern'); ?>:</label><?php	$commentForm->title_input_text(); ?><br />
                                     <label for="body"><?php
-		_e('Comment', 'modern'); ?>:</label><?php
-		CommentForm::body_input_textarea(); ?><br />
+		_e('Comment', 'modern'); ?>:</label><?php $commentForm->body_input_textarea(); ?><br />
                                     <button type="submit"><?php
 		_e('Send', 'modern'); ?></button>
                                 </fieldset>
@@ -351,25 +349,18 @@ else
                             <?php
 	} ?>
                             <ul id="error_list"></ul>
-                            <?php ContactForm::js_validation(); ?>
+                            <?php $contactForm->js_validation(); ?>
                             <form action="<?php
 	echo osc_base_url(true); ?>" method="post" name="contact_form" id="contact_form">
-                                <?php
-	osc_prepare_user_info(); ?>
+                                <?php osc_prepare_user_info(); ?>
                                 <fieldset>
                                     <label for="yourName"><?php
-	_e('Your name', 'modern'); ?>:</label> <?php
-	ContactForm::your_name(); ?>
+	_e('Your name', 'modern'); ?>:</label> <?php $contactForm->your_name(); ?>
                                     <label for="yourEmail"><?php
-	_e('Your e-mail address', 'modern'); ?>:</label> <?php
-	ContactForm::your_email(); ?>
+	_e('Your e-mail address', 'modern'); ?>:</label> <?php $contactForm->your_email(); ?>
                                     <label for="phoneNumber"><?php
-	_e('Phone number', 'modern'); ?> (<?php
-	_e('optional', 'modern'); ?>):</label> <?php
-	ContactForm::your_phone_number(); ?>
-                                    <label for="message"><?php
-	_e('Message', 'modern'); ?>:</label> <?php
-	ContactForm::your_message(); ?>
+	_e('Phone number', 'modern'); ?> (<?php _e('optional', 'modern'); ?>):</label> <?php $contactForm->your_phone_number(); ?>
+                                    <label for="message"><?php _e('Message', 'modern'); ?>:</label> <?php $contactForm->your_message(); ?>
                                     <input type="hidden" name="action" value="contact" />
                                     <input type="hidden" name="page" value="item" />
                                     <input type="hidden" name="id" value="<?php

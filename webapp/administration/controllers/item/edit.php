@@ -41,16 +41,16 @@ class CAdminItem extends AdminSecBaseModel
 		{
 			$this->redirectTo(osc_admin_base_url(true) . "?page=item");
 		}
-		$form = count(Session::newInstance()->_getForm());
-		$keepForm = count(Session::newInstance()->_getKeepForm());
+		$form = count(->getSession()->_getForm());
+		$keepForm = count(->getSession()->_getKeepForm());
 		if ($form == 0 || $form == $keepForm) 
 		{
-			Session::newInstance()->_dropKeepForm();
+		$this->getSession()->_dropKeepForm();
 		}
 		$this->_exportVariableToView("item", $item);
 		$this->_exportVariableToView("new_item", FALSE);
 		osc_current_admin_theme_path( 'items/frm.php' );
-		Session::newInstance()->_clearVariables();
+	$this->getSession()->_clearVariables();
 	}
 
 	public function doPost( HttpRequest $req, HttpResponse $res )
@@ -60,15 +60,15 @@ class CAdminItem extends AdminSecBaseModel
 		// set all parameters into session
 		foreach ($mItems->getData() as $key => $value) 
 		{
-			Session::newInstance()->_setForm($key, $value);
+		$this->getSession()->_setForm($key, $value);
 		}
 		$meta = Params::getParam('meta');
 		if (is_array($meta)) 
 		{
 			foreach ($meta as $key => $value) 
 			{
-				Session::newInstance()->_setForm('meta_' . $key, $value);
-				Session::newInstance()->_keepForm('meta_' . $key);
+			$this->getSession()->_setForm('meta_' . $key, $value);
+			$this->getSession()->_keepForm('meta_' . $key);
 			}
 		}
 		$success = $mItems->edit();

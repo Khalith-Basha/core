@@ -1,6 +1,6 @@
 <?php
 
-class ItemUrls
+class Url_Item
 {
 	private $urls;
 
@@ -50,7 +50,7 @@ class ItemUrls
 		{
 			$sanitized_title = osc_sanitizeString( osc_item_title() );
 			$sanitized_category = '/';
-			$cat = Category::newInstance()->hierarchy( osc_item_category_id() );
+			$cat = ClassLoader::getInstance()->getClassInstance( 'Model_Category' )->hierarchy( osc_item_category_id() );
 			for( $i = count( $cat ); $i > 0; $i-- )
 			{
 				$sanitized_category .= $cat[$i - 1]['s_slug'] . '/';

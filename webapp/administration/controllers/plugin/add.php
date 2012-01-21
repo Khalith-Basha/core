@@ -30,7 +30,7 @@ class CAdminPlugin extends AdminSecBaseModel
 		parent::doModel();
 
 		osc_current_admin_theme_path( 'plugins/add.php' );
-		Session::newInstance()->_clearVariables();
+	$this->getSession()->_clearVariables();
 	}
 	
 	public function doPost( HttpRequest $req, HttpResponse $res )

@@ -22,13 +22,15 @@ class CWebSearch extends Controller
 	public function __construct() 
 	{
 		parent::__construct();
-		$this->mSearch = Search::newInstance();
+		$this->mSearch = $this->getClassLoader()->getClassInstance( 'Model_Search' );
 	}
 
 	public function doModel() 
 	{
+		require 'osc/helpers/hPremium.php';
+		require 'osc/helpers/hPagination.php';
 		osc_run_hook('before_search');
-		$mCategories = new Category();
+		$mCategories = $this->getClassLoader()->getClassInstance( 'Model_Category' );
 
 		$p_sCategory = Params::getParam('sCategory');
 		if (!is_array($p_sCategory)) 
@@ -102,15 +104,15 @@ class CWebSearch extends Controller
 		($p_bPic == 1) ? $p_bPic = 1 : $p_bPic = 0;
 		$p_sPriceMin = Params::getParam('sPriceMin');
 		$p_sPriceMax = Params::getParam('sPriceMax');
-		//WE CAN ONLY USE THE FIELDS RETURNED BY Search::getAllowedColumnsForSorting()
+		//WE CAN ONLY USE THE FIELDS RETURNED BY $this->mSearch->getAllowedColumnsForSorting()
 		$p_sOrder = Params::getParam('sOrder');
-		if (!in_array($p_sOrder, Search::getAllowedColumnsForSorting())) 
+		if (!in_array($p_sOrder, $this->mSearch->getAllowedColumnsForSorting())) 
 		{
 			$p_sOrder = osc_default_order_field_at_search();
 		}
 		//ONLY 0 ( => 'asc' ), 1 ( => 'desc' ) AS ALLOWED VALUES
 		$p_iOrderType = Params::getParam('iOrderType');
-		$allowedTypesForSorting = Search::getAllowedTypesForSorting();
+		$allowedTypesForSorting = $this->mSearch->getAllowedTypesForSorting();
 		$orderType = osc_default_order_type_at_search();
 		foreach ($allowedTypesForSorting as $k => $v) 
 		{
@@ -213,28 +215,28 @@ class CWebSearch extends Controller
 			$iNumPages = ceil($iTotalItems / $p_iPageSize);
 			osc_run_hook('search', $this->mSearch);
 			//preparing variables...
-			//$this->_exportVariableToView('non_empty_categories', $aCategories) ;
-			$this->_exportVariableToView('search_start', $iStart);
-			$this->_exportVariableToView('search_end', $iEnd);
-			$this->_exportVariableToView('search_category', $p_sCategory);
-			$this->_exportVariableToView('search_order_type', $p_iOrderType);
-			$this->_exportVariableToView('search_order', $p_sOrder);
-			$this->_exportVariableToView('search_pattern', $p_sPattern);
-			$this->_exportVariableToView('search_from_user', $p_sUser);
-			$this->_exportVariableToView('search_total_pages', $iNumPages);
-			$this->_exportVariableToView('search_page', $p_iPage);
-			$this->_exportVariableToView('search_has_pic', $p_bPic);
-			$this->_exportVariableToView('search_region', $p_sRegion);
-			$this->_exportVariableToView('search_city', $p_sCity);
-			$this->_exportVariableToView('search_price_min', $p_sPriceMin);
-			$this->_exportVariableToView('search_price_max', $p_sPriceMax);
-			$this->_exportVariableToView('search_total_items', $iTotalItems);
-			$this->_exportVariableToView('items', $aItems);
-			$this->_exportVariableToView('search_show_as', $p_sShowAs);
-			$this->_exportVariableToView('search', $this->mSearch);
-			$this->_exportVariableToView('search_alert', base64_encode(serialize($this->mSearch)));
+			//$this->getView()->_exportVariableToView('non_empty_categories', $aCategories) ;
+			$this->getView()->_exportVariableToView('search_start', $iStart);
+			$this->getView()->_exportVariableToView('search_end', $iEnd);
+			$this->getView()->_exportVariableToView('search_category', $p_sCategory);
+			$this->getView()->_exportVariableToView('search_order_type', $p_iOrderType);
+			$this->getView()->_exportVariableToView('search_order', $p_sOrder);
+			$this->getView()->_exportVariableToView('search_pattern', $p_sPattern);
+			$this->getView()->_exportVariableToView('search_from_user', $p_sUser);
+			$this->getView()->_exportVariableToView('search_total_pages', $iNumPages);
+			$this->getView()->_exportVariableToView('search_page', $p_iPage);
+			$this->getView()->_exportVariableToView('search_has_pic', $p_bPic);
+			$this->getView()->_exportVariableToView('search_region', $p_sRegion);
+			$this->getView()->_exportVariableToView('search_city', $p_sCity);
+			$this->getView()->_exportVariableToView('search_price_min', $p_sPriceMin);
+			$this->getView()->_exportVariableToView('search_price_max', $p_sPriceMax);
+			$this->getView()->_exportVariableToView('search_total_items', $iTotalItems);
+			$this->getView()->_exportVariableToView('items', $aItems);
+			$this->getView()->_exportVariableToView('search_show_as', $p_sShowAs);
+			$this->getView()->_exportVariableToView('search', $this->mSearch);
+			$this->getView()->_exportVariableToView('search_alert', base64_encode(serialize($this->mSearch)));
 
-			$view = new HtmlView;
+			$view = $this->getClassLoader()->getClassInstance( 'HtmlView' );
 			$view->setName( 'search' );
 			if( 0 === $iTotalItems )
 			{
@@ -244,7 +246,7 @@ class CWebSearch extends Controller
 			osc_run_hook("before_html");
 			echo $view->render();
 			##osc_current_web_theme_path( 'search.php', array(), $view );
-			Session::newInstance()->_clearVariables();
+			$this->getSession()->_clearVariables();
 			osc_run_hook("after_html");
 		}
 		else
@@ -253,7 +255,7 @@ class CWebSearch extends Controller
 			// RETRIEVE ITEMS AND TOTAL
 			$iTotalItems = $this->mSearch->count();
 			$aItems = $this->mSearch->doSearch();
-			$this->_exportVariableToView('items', $aItems);
+			$this->getView()->_exportVariableToView('items', $aItems);
 			if ($p_sFeed == '' || $p_sFeed == 'rss') 
 			{
 				// FEED REQUESTED!

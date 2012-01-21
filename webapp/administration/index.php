@@ -30,7 +30,6 @@ if (file_exists(ABS_PATH . '.maintenance'))
 
 require 'osc/core/SecBaseModel.php';
 require 'osc/core/AdminSecBaseModel.php';
-require 'osc/model/Admin.php';
 require 'osc/AdminThemes.php';
 
 $page = Params::getParam('page');
@@ -39,7 +38,7 @@ if( empty( $page ) ) $page = 'index';
 $action = Params::getParam( 'action' );
 if( empty( $action ) ) $action = 'index';
 
-WebThemes::newInstance();
+$classLoader->getClassInstance( 'WebThemes' );
 
 $ctrlPath = osc_admin_base_path() . '/controllers/' . $page . '/' . $action . '.php';
 require $ctrlPath;

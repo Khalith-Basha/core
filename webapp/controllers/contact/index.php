@@ -19,15 +19,14 @@ class CWebContact extends Controller
 {
 	public function doGet(HttpRequest $req, HttpResponse $resp) 
 	{
-		require_once 'osc/services/cache/memcached.php';
 		$cacheKey = 'page-contact';
-		$cacheService = MemcachedCacheService::getInstance();
+		$cacheService = $this->getClassLoader()->getClassInstance( 'Services_Cache_Memcached' );
 		$viewContent = $cacheService->read($cacheKey);
 		if (false === $viewContent) 
 		{
 			osc_run_hook('before_html');
 			$viewContent = osc_render_view('contact.php');
-			Session::newInstance()->_clearVariables();
+			$this->getSession()->_clearVariables();
 			osc_run_hook('after_html');
 			$cacheService->write($cacheKey, $viewContent);
 		}
@@ -44,10 +43,10 @@ class CWebContact extends Controller
 			if (!osc_check_recaptcha()) 
 			{
 				osc_add_flash_error_message(_m('The Recaptcha code is wrong'));
-				Session::newInstance()->_setForm("yourName", $yourName);
-				Session::newInstance()->_setForm("yourEmail", $yourEmail);
-				Session::newInstance()->_setForm("subject", $subject);
-				Session::newInstance()->_setForm("message_body", $message);
+				$this->getSession()->_setForm("yourName", $yourName);
+				$this->getSession()->_setForm("yourEmail", $yourEmail);
+				$this->getSession()->_setForm("subject", $subject);
+				$this->getSession()->_setForm("message_body", $message);
 				$this->redirectTo(osc_contact_url());
 				return false; // BREAK THE PROCESS, THE RECAPTCHA IS WRONG
 				
@@ -56,9 +55,9 @@ class CWebContact extends Controller
 		if (!preg_match('|.*?@.{2,}\..{2,}|', $yourEmail)) 
 		{
 			osc_add_flash_error_message(_m('You have to introduce a correct e-mail'));
-			Session::newInstance()->_setForm("yourName", $yourName);
-			Session::newInstance()->_setForm("subject", $subject);
-			Session::newInstance()->_setForm("message_body", $message);
+			$this->getSession()->_setForm("yourName", $yourName);
+			$this->getSession()->_setForm("subject", $subject);
+			$this->getSession()->_setForm("message_body", $message);
 			$this->redirectTo(osc_contact_url());
 		}
 		$params = array('from' => $yourEmail, 'from_name' => $yourName, 'subject' => '[' . osc_page_title() . '] ' . __('Contact form') . ': ' . $subject, 'to' => osc_contact_email(), 'to_name' => __('Administrator'), 'body' => $message, 'alt_body' => $message);

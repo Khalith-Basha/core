@@ -25,7 +25,7 @@ class CAdminItem extends AdminSecBaseModel
 	{
 		parent::__construct();
 		//specific things for this class
-		$this->itemManager = Item::newInstance();
+		$this->itemManager = $this->getClassLoader()->getClassInstance( 'Model_Item' );
 	}
 	function doModel() 
 	{
@@ -76,10 +76,10 @@ class CAdminItem extends AdminSecBaseModel
 						CategoryStats::newInstance()->increaseNumItems($item['fk_i_category_id']);
 						if ($item['fk_i_user_id'] != null) 
 						{
-							$user = User::newInstance()->findByPrimaryKey($item['fk_i_user_id']);
+							$user = $this->getClassLoader()->getClassInstance( 'Model_User' )->findByPrimaryKey($item['fk_i_user_id']);
 							if ($user) 
 							{
-								User::newInstance()->update(array('i_items' => $user['i_items'] + 1), array('pk_i_id' => $user['pk_i_id']));
+								$this->getClassLoader()->getClassInstance( 'Model_User' )->update(array('i_items' => $user['i_items'] + 1), array('pk_i_id' => $user['pk_i_id']));
 							}
 						}
 					}
@@ -93,10 +93,10 @@ class CAdminItem extends AdminSecBaseModel
 						CategoryStats::newInstance()->decreaseNumItems($item['fk_i_category_id']);
 						if ($item['fk_i_user_id'] != null) 
 						{
-							$user = User::newInstance()->findByPrimaryKey($item['fk_i_user_id']);
+							$user = $this->getClassLoader()->getClassInstance( 'Model_User' )->findByPrimaryKey($item['fk_i_user_id']);
 							if ($user) 
 							{
-								User::newInstance()->update(array('i_items' => $user['i_items'] - 1), array('pk_i_id' => $user['pk_i_id']));
+								$this->getClassLoader()->getClassInstance( 'Model_User' )->update(array('i_items' => $user['i_items'] - 1), array('pk_i_id' => $user['pk_i_id']));
 							}
 						}
 					}
@@ -110,10 +110,10 @@ class CAdminItem extends AdminSecBaseModel
 						CategoryStats::newInstance()->increaseNumItems($item['fk_i_category_id']);
 						if ($item['fk_i_user_id'] != null) 
 						{
-							$user = User::newInstance()->findByPrimaryKey($item['fk_i_user_id']);
+							$user = $this->getClassLoader()->getClassInstance( 'Model_User' )->findByPrimaryKey($item['fk_i_user_id']);
 							if ($user) 
 							{
-								User::newInstance()->update(array('i_items' => $user['i_items'] + 1), array('pk_i_id' => $user['pk_i_id']));
+								$this->getClassLoader()->getClassInstance( 'Model_User' )->update(array('i_items' => $user['i_items'] + 1), array('pk_i_id' => $user['pk_i_id']));
 							}
 						}
 					}
@@ -127,10 +127,10 @@ class CAdminItem extends AdminSecBaseModel
 						CategoryStats::newInstance()->decreaseNumItems($item['fk_i_category_id']);
 						if ($item['fk_i_user_id'] != null) 
 						{
-							$user = User::newInstance()->findByPrimaryKey($item['fk_i_user_id']);
+							$user = $this->getClassLoader()->getClassInstance( 'Model_User' )->findByPrimaryKey($item['fk_i_user_id']);
 							if ($user) 
 							{
-								User::newInstance()->update(array('i_items' => $user['i_items'] - 1), array('pk_i_id' => $user['pk_i_id']));
+								$this->getClassLoader()->getClassInstance( 'Model_User' )->update(array('i_items' => $user['i_items'] - 1), array('pk_i_id' => $user['pk_i_id']));
 							}
 						}
 					}
@@ -218,13 +218,13 @@ class CAdminItem extends AdminSecBaseModel
 			break;
 
 		case 'post': // add item
-			$form = count(Session::newInstance()->_getForm());
-			$keepForm = count(Session::newInstance()->_getKeepForm());
+			$form = count($this->getSession()->_getForm());
+			$keepForm = count($this->getSession()->_getKeepForm());
 			if ($form == 0 || $form == $keepForm) 
 			{
-				Session::newInstance()->_dropKeepForm();
+				$this->getSession()->_dropKeepForm();
 			}
-			$this->_exportVariableToView("new_item", TRUE);
+			$this->getView()->_exportVariableToView("new_item", TRUE);
 			$this->doView('items/frm.php');
 			break;
 
@@ -234,15 +234,15 @@ class CAdminItem extends AdminSecBaseModel
 			// set all parameters into session
 			foreach ($mItem->data as $key => $value) 
 			{
-				Session::newInstance()->_setForm($key, $value);
+				$this->getSession()->_setForm($key, $value);
 			}
 			$meta = Params::getParam('meta');
 			if (is_array($meta)) 
 			{
 				foreach ($meta as $key => $value) 
 				{
-					Session::newInstance()->_setForm('meta_' . $key, $value);
-					Session::newInstance()->_keepForm('meta_' . $key);
+					$this->getSession()->_setForm('meta_' . $key, $value);
+					$this->getSession()->_keepForm('meta_' . $key);
 				}
 			}
 			$success = $mItem->add();
@@ -260,7 +260,7 @@ class CAdminItem extends AdminSecBaseModel
 
 		default: //default
 			$catId = Params::getParam('catId');
-			$countries = Country::newInstance()->listAll();
+			$countries = $this->getClassLoader()->getClassInstance( 'Model_Country' )->listAll();
 			$regions = array();
 			if (count($countries) > 0) 
 			{
@@ -272,12 +272,12 @@ class CAdminItem extends AdminSecBaseModel
 				$cities = City::newInstance()->findByRegion($regions[0]['pk_i_id']);
 			}
 			//preparing variables for the view
-			$this->_exportVariableToView("users", User::newInstance()->listAll());
-			$this->_exportVariableToView("catId", $catId);
-			$this->_exportVariableToView("stat", Params::getParam('stat'));
-			$this->_exportVariableToView("countries", $countries);
-			$this->_exportVariableToView("regions", $regions);
-			$this->_exportVariableToView("cities", $cities);
+			$this->getView()->_exportVariableToView("users", $this->getClassLoader()->getClassInstance( 'Model_User' )->listAll());
+			$this->getView()->_exportVariableToView("catId", $catId);
+			$this->getView()->_exportVariableToView("stat", Params::getParam('stat'));
+			$this->getView()->_exportVariableToView("countries", $countries);
+			$this->getView()->_exportVariableToView("regions", $regions);
+			$this->getView()->_exportVariableToView("cities", $cities);
 			//calling the view...
 			$this->doView('items/index.php');
 		}
@@ -285,6 +285,6 @@ class CAdminItem extends AdminSecBaseModel
 	function doView($file) 
 	{
 		osc_current_admin_theme_path($file);
-		Session::newInstance()->_clearVariables();
+		$this->getSession()->_clearVariables();
 	}
 }

@@ -17,7 +17,9 @@
  *
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
+$itemUrls = $classLoader->getClassInstance( 'Url_Item' );
+$contactForm = $classLoader->getClassInstance( 'Form_Contact' );
 $address = '';
 if (osc_user_address() != '') 
 {
@@ -96,9 +98,8 @@ _e('Latest items'); ?></h2>
                             <tbody>
                                 <?php
 $class = "even"; ?>
-                                <?php
-while (osc_has_items()) 
-{ ?>
+                                <?php while (osc_has_items()) { ?>
+					<?php $item = osc_item(); ?>
                                     <tr class="<?php
 	echo $class; ?>">
                                         <?php
@@ -109,7 +110,7 @@ while (osc_has_items())
 		if (osc_count_item_resources()) 
 		{ ?>
                                                 <a href="<?php
-			echo osc_item_url(); ?>"><img src="<?php
+			echo $itemUrls->getDetailsUrl( $item ); ?>"><img src="<?php
 			echo osc_resource_thumbnail_url(); ?>" width="75px" height="56px" title="" alt="" /></a>
                                             <?php
 		}
@@ -125,7 +126,7 @@ while (osc_has_items())
                                          <td class="text">
                                              <h3>
                                                  <a href="<?php
-	echo osc_item_url(); ?>"><?php
+	echo $itemUrls->getDetailsUrl( $item ); ?>"><?php
 	echo osc_item_title(); ?></a>
                                              </h3>
                                              <p>
@@ -181,7 +182,7 @@ if (osc_logged_user_id() != osc_user_id())
 		} ?>
                         <ul id="error_list"></ul>
                         <?php
-		ContactForm::js_validation(); ?>
+		$contactForm->js_validation(); ?>
                         <form action="<?php echo osc_base_url(true); ?>" method="post" name="contact_form" id="contact_form">
                             <input type="hidden" name="action" value="contact" />
                             <input type="hidden" name="page" value="user" />
@@ -190,17 +191,17 @@ if (osc_logged_user_id() != osc_user_id())
                             <fieldset>
                                 <label for="yourName"><?php
 		_e('Your name', 'modern'); ?>:</label> <?php
-		ContactForm::your_name(); ?>
+		$contactForm->your_name(); ?>
                                 <label for="yourEmail"><?php
 		_e('Your e-mail address', 'modern'); ?>:</label> <?php
-		ContactForm::your_email(); ?>
+		$contactForm->your_email(); ?>
                                 <label for="phoneNumber"><?php
 		_e('Phone number', 'modern'); ?> (<?php
 		_e('optional', 'modern'); ?>):</label> <?php
-		ContactForm::your_phone_number(); ?>
+		$contactForm->your_phone_number(); ?>
                                 <label for="message"><?php
 		_e('Message', 'modern'); ?>:</label> <?php
-		ContactForm::your_message(); ?>
+		$contactForm->your_message(); ?>
                                 <?php
 		if (osc_recaptcha_public_key()) 
 		{ ?>

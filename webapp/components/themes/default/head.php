@@ -16,6 +16,6 @@ var fileDefaultText = '<?php _e('No file selected', 'modern'); ?>';
 var fileBtnText     = '<?php _e('Choose File', 'modern'); ?>';
 </script>
 
-<script type="text/javascript" src="<?php
-echo osc_current_web_theme_url('combine.php?type=js&files=js/jquery.js,js/jquery-ui.js,js/jquery.uniform.js,js/global.js,js/tabber-minimized.js'); ?>"></script>
+<script type="text/javascript" src="/static/scripts/jquery.js"></script>
+<script type="text/javascript" src="<?php echo osc_current_web_theme_url('combine.php?type=js&files=js/jquery-ui.js,js/jquery.uniform.js,js/global.js,js/tabber-minimized.js'); ?>"></script>
 

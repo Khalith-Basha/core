@@ -22,14 +22,15 @@ class Form_Comment extends Form
 {
 	static public function primary_input_hidden($comment = null) 
 	{
+		$session = ClassLoader::getInstance()->getClassInstance( 'Session' );
 		$commentId = null;
 		if (isset($comment['pk_i_id'])) 
 		{
 			$commentId = $comment['pk_i_id'];
 		}
-		if (Session::newInstance()->_getForm('commentId') != '') 
+		if ($session->_getForm('commentId') != '') 
 		{
-			$commentId = Session::newInstance()->_getForm('commentId');
+			$commentId = $session->_getForm('commentId');
 		}
 		if (!is_null($commentId)) 
 		{
@@ -43,9 +44,10 @@ class Form_Comment extends Form
 		{
 			$commentTitle = $comment['s_title'];
 		}
-		if (Session::newInstance()->_getForm('commentTitle') != '') 
+		$session = ClassLoader::getInstance()->getClassInstance( 'Session' );
+		if ($session->_getForm('commentTitle') != '') 
 		{
-			$commentTitle = Session::newInstance()->_getForm('commentTitle');
+			$commentTitle = $session->_getForm('commentTitle');
 		}
 		parent::generic_input_text("title", $commentTitle, null, false);
 	}
@@ -56,9 +58,10 @@ class Form_Comment extends Form
 		{
 			$commentAuthorName = $comment['s_author_name'];
 		}
-		if (Session::newInstance()->_getForm('commentAuthorName') != '') 
+		$session = ClassLoader::getInstance()->getClassInstance( 'Session' );
+		if ($session->_getForm('commentAuthorName') != '') 
 		{
-			$commentAuthorName = Session::newInstance()->_getForm('commentAuthorName');
+			$commentAuthorName = $session->_getForm('commentAuthorName');
 		}
 		parent::generic_input_text("authorName", $commentAuthorName, null, false);
 	}
@@ -69,9 +72,10 @@ class Form_Comment extends Form
 		{
 			$commentAuthorEmail = $comment['s_author_email'];
 		}
-		if (Session::newInstance()->_getForm('commentAuthorEmail') != '') 
+		$session = ClassLoader::getInstance()->getClassInstance( 'Session' );
+		if ($session->_getForm('commentAuthorEmail') != '') 
 		{
-			$commentAuthorEmail = Session::newInstance()->_getForm('commentAuthorEmail');
+			$commentAuthorEmail = $session->_getForm('commentAuthorEmail');
 		}
 		parent::generic_input_text("authorEmail", $commentAuthorEmail, null, false);
 	}
@@ -82,9 +86,10 @@ class Form_Comment extends Form
 		{
 			$commentBody = $comment['s_body'];
 		}
-		if (Session::newInstance()->_getForm('commentBody') != '') 
+		$session = ClassLoader::getInstance()->getClassInstance( 'Session' );
+		if ($session->_getForm('commentBody') != '') 
 		{
-			$commentBody = Session::newInstance()->_getForm('commentBody');
+			$commentBody = $session->_getForm('commentBody');
 		}
 		parent::generic_textarea("body", $commentBody);
 	}

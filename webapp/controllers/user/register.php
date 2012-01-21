@@ -35,7 +35,7 @@ class CWebUser extends Controller
 	{
 		osc_run_hook('before_html');
 		osc_current_web_theme_path( 'user/register.php' );
-		Session::newInstance()->_clearVariables();
+		$this->getSession()->_clearVariables();
 		osc_run_hook('after_html');
 	}
 }

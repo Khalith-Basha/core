@@ -22,7 +22,7 @@ class CAdminIndex extends Controller
 {
 	public function doPost( HttpRequest $req, HttpResponse $res )
 	{
-		$admin = Admin::newInstance()->findByUsername(Params::getParam('user'));
+		$admin = $this->getClassLoader()->getClassInstance( 'Model_Admin' )->findByUsername(Params::getParam('user'));
 		if ($admin) 
 		{
 			if ($admin["s_password"] == sha1(Params::getParam('password'))) 
@@ -32,19 +32,19 @@ class CAdminIndex extends Controller
 					//this include contains de osc_genRandomPassword function
 					require_once 'osc/helpers/hSecurity.php';
 					$secret = osc_genRandomPassword();
-					Admin::newInstance()->update(array('s_secret' => $secret), array('pk_i_id' => $admin['pk_i_id']));
-					Cookie::newInstance()->set_expires(osc_time_cookie());
-					Cookie::newInstance()->push('oc_adminId', $admin['pk_i_id']);
-					Cookie::newInstance()->push('oc_adminSecret', $secret);
-					Cookie::newInstance()->push('oc_adminLocale', Params::getParam('locale'));
-					Cookie::newInstance()->set();
+					$this->getClassLoader()->getClassInstance( 'Model_Admin' )->update(array('s_secret' => $secret), array('pk_i_id' => $admin['pk_i_id']));
+					$this->getCookie()->set_expires(osc_time_cookie());
+					$this->getCookie()->push('oc_adminId', $admin['pk_i_id']);
+					$this->getCookie()->push('oc_adminSecret', $secret);
+					$this->getCookie()->push('oc_adminLocale', Params::getParam('locale'));
+					$this->getCookie()->set();
 				}
 				//we are logged in... let's go!
-				Session::newInstance()->_set('adminId', $admin['pk_i_id']);
-				Session::newInstance()->_set('adminUserName', $admin['s_username']);
-				Session::newInstance()->_set('adminName', $admin['s_name']);
-				Session::newInstance()->_set('adminEmail', $admin['s_email']);
-				Session::newInstance()->_set('adminLocale', Params::getParam('locale'));
+				$this->getSession()->_set('adminId', $admin['pk_i_id']);
+				$this->getSession()->_set('adminUserName', $admin['s_username']);
+				$this->getSession()->_set('adminName', $admin['s_name']);
+				$this->getSession()->_set('adminEmail', $admin['s_email']);
+				$this->getSession()->_set('adminLocale', Params::getParam('locale'));
 			}
 			else
 			{
@@ -70,7 +70,7 @@ class CAdminIndex extends Controller
 
 		case ('recover_post'):
 			//post execution to recover the password
-			$admin = Admin::newInstance()->findByEmail(Params::getParam('email'));
+			$admin = $this->getClassLoader()->getClassInstance( 'Model_Admin' )->findByEmail(Params::getParam('email'));
 			if ($admin) 
 			{
 				if ((osc_recaptcha_private_key() != '') && Params::existParam("recaptcha_challenge_field")) 
@@ -85,7 +85,7 @@ class CAdminIndex extends Controller
 				}
 				require_once 'osc/helpers/hSecurity.php';
 				$newPassword = osc_genRandomPassword(40);
-				Admin::newInstance()->update(array('s_secret' => $newPassword), array('pk_i_id' => $admin['pk_i_id']));
+				$this->getClassLoader()->getClassInstance( 'Model_Admin' )->update(array('s_secret' => $newPassword), array('pk_i_id' => $admin['pk_i_id']));
 				$password_url = osc_forgot_admin_password_confirm_url($admin['pk_i_id'], $newPassword);
 				osc_run_hook('hook_email_user_forgot_password', $admin, $password_url);
 			}
@@ -94,7 +94,7 @@ class CAdminIndex extends Controller
 			break;
 
 		case ('forgot'): //form to recover the password (in this case we have the form in /gui/)
-			$admin = Admin::newInstance()->findByIdSecret(Params::getParam('adminId'), Params::getParam('code'));
+			$admin = $this->getClassLoader()->getClassInstance( 'Model_Admin' )->findByIdSecret(Params::getParam('adminId'), Params::getParam('code'));
 			if ($admin) 
 			{
 				$this->doView('gui/forgot_password.php');
@@ -107,12 +107,12 @@ class CAdminIndex extends Controller
 			break;
 
 		case ('forgot_post'):
-			$admin = Admin::newInstance()->findByIdSecret(Params::getParam('adminId'), Params::getParam('code'));
+			$admin = $this->getClassLoader()->getClassInstance( 'Model_Admin' )->findByIdSecret(Params::getParam('adminId'), Params::getParam('code'));
 			if ($admin) 
 			{
 				if (Params::getParam('new_password') == Params::getParam('new_password2')) 
 				{
-					Admin::newInstance()->update(array('s_secret' => osc_genRandomPassword(), 's_password' => sha1(Params::getParam('new_password'))), array('pk_i_id' => $admin['pk_i_id']));
+					$this->getClassLoader()->getClassInstance( 'Model_Admin' )->update(array('s_secret' => osc_genRandomPassword(), 's_password' => sha1(Params::getParam('new_password'))), array('pk_i_id' => $admin['pk_i_id']));
 					osc_add_flash_ok_message(_m('The password has been changed'), 'admin');
 					$this->redirectTo(osc_admin_base_url());
 				}

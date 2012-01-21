@@ -17,14 +17,14 @@
  */
 class CWebItem extends Controller
 {
-	private $itemManager;
+	private $itemModel;
 	private $user;
 	private $userId;
 	function __construct() 
 	{
 		parent::__construct();
-		$this->itemManager = Item::newInstance();
-		// here allways userId == ''
+		$this->itemModel = $this->getClassLoader()->getClassInstance( 'Model_Item' );
+
 		if (osc_is_web_user_logged_in()) 
 		{
 			$this->userId = osc_logged_user_id();
@@ -36,19 +36,20 @@ class CWebItem extends Controller
 			$this->user = null;
 		}
 	}
+
 	function doModel() 
 	{
-		$locales = Locale::newInstance()->listAllEnabled();
-		$this->_exportVariableToView('locales', $locales);
+		$locales = $this->getClassLoader()->getClassInstance( 'Model_Locale' )->listAllEnabled();
+		$this->view->_exportVariableToView('locales', $locales);
 		if (Params::getParam('id') == '') 
 		{
 			$this->redirectTo(osc_base_url());
 		}
 		if (Params::getParam('lang') != '') 
 		{
-			Session::newInstance()->_set('userLocale', Params::getParam('lang'));
+			$this->getSession()->_set('userLocale', Params::getParam('lang'));
 		};
-		$item = $this->itemManager->findByPrimaryKey(Params::getParam('id'));
+		$item = $this->itemModel->findByPrimaryKey(Params::getParam('id'));
 		// if item doesn't exist redirect to base url
 		if (count($item) == 0) 
 		{
@@ -81,7 +82,7 @@ class CWebItem extends Controller
 				$item['locale'][$k]['s_title'] = osc_apply_filter('item_title', $v['s_title']);
 				$item['locale'][$k]['s_description'] = nl2br(osc_apply_filter('item_description', $v['s_description']));
 			}
-			$this->_exportVariableToView('items', array($item));
+			$this->view->_exportVariableToView('items', array($item));
 			osc_run_hook('show_item', $item);
 			$this->doView( 'item/index.php' );
 		}
@@ -90,7 +91,7 @@ class CWebItem extends Controller
 	{
 		osc_run_hook("before_html");
 		osc_current_web_theme_path($file);
-		Session::newInstance()->_clearVariables();
+		$this->getSession()->_clearVariables();
 		osc_run_hook("after_html");
 	}
 }

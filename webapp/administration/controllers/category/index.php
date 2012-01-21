@@ -25,19 +25,19 @@ class CAdminCategory extends AdminSecBaseModel
 	{
 		parent::__construct();
 		//specific things for this class
-		$this->categoryManager = Category::newInstance();
+		$this->categoryManager = ClassLoader::getInstance()->getClassInstance( 'Model_Category' );
 	}
 
 	function doModel() 
 	{
 		parent::doModel();
-		$this->_exportVariableToView("categories", $this->categoryManager->toTreeAll());
+		$this->getView()->_exportVariableToView("categories", $this->categoryManager->toTreeAll());
 		$this->doView("categories/index.php");
 	}
 
 	function doView($file) 
 	{
 		osc_current_admin_theme_path($file);
-		Session::newInstance()->_clearVariables();
+		$this->getSession()->_clearVariables();
 	}
 }

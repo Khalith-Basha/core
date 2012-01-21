@@ -29,15 +29,17 @@ class CWebUser extends Controller
 	function doModel() 
 	{
 		$userID = Params::getParam('id');
-		$user = User::newInstance()->findByPrimaryKey($userID);
+		$user = $this->getClassLoader()->getClassInstance( 'Model_User' )->findByPrimaryKey($userID);
 		// user doesn't exist
 		if (!$user) 
 		{
 			$this->redirectTo(osc_base_url());
 		}
-		View::newInstance()->_exportVariableToView('user', $user);
-		$items = Item::newInstance()->findByUserIDEnabled($user['pk_i_id'], 0, 3);
-		View::newInstance()->_exportVariableToView('items', $items);
+		$itemUrls = $this->getClassLoader()->getClassInstance( 'Url_Item' );
+		$this->getView()->_exportVariableToView( 'itemUrls', $itemUrls );
+		$this->getView()->_exportVariableToView('user', $user);
+		$items = $this->getClassLoader()->getClassInstance( 'Model_Item' )->findByUserIDEnabled($user['pk_i_id'], 0, 3);
+		$this->getView()->_exportVariableToView('items', $items);
 		$this->doView('user/public-profile.php');
 	}
 
@@ -45,7 +47,8 @@ class CWebUser extends Controller
 	{
 		osc_run_hook("before_html");
 		osc_current_web_theme_path($file);
-		Session::newInstance()->_clearVariables();
+		$this->getSession()->_clearVariables();
 		osc_run_hook("after_html");
 	}
 }
+

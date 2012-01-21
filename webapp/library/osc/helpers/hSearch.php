@@ -250,7 +250,7 @@ function osc_search_category_id()
 	}
 	else
 	{
-		$categories = Category::newInstance()->listWhere(implode(" OR ", $where));
+		$categories = ClassLoader::getInstance()->getClassInstance( 'Model_Category' )->listWhere(implode(" OR ", $where));
 		foreach ($categories as $cat) 
 		{
 			$category[] = $cat['pk_i_id'];

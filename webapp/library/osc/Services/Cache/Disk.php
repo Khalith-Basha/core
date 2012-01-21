@@ -20,7 +20,7 @@
 */
 define('CACHE_PATH', CONTENT_PATH . '/uploads');
 
-require 'osc/services/cache/interface.php';
+require 'osc/Services/Cache/Interface.php';
 
 /**
  * This is the simplest cache service on earth.
@@ -28,7 +28,7 @@ require 'osc/services/cache/interface.php';
  * @author OpenSourceClassifieds
  * @version 1.0
  */
-class DiskCacheService implements CacheService
+class Services_Cache_Disk implements CacheService
 {
 	private $objectKey;
 	private $expiration;

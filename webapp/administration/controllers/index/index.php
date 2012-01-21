@@ -23,17 +23,14 @@ class CAdminIndex extends AdminSecBaseModel
 {
 	public function doModel() 
 	{
-		require 'osc/model/User.php';
-		require 'osc/model/ItemComment.php';
 		require 'osc/feeds.php';
-		require 'osc/utils.php';
 
-		$this->_exportVariableToView("numUsers", User::newInstance()->count());
-		$this->_exportVariableToView("numAdmins", Admin::newInstance()->count());
-		$this->_exportVariableToView("numItems", Item::newInstance()->count());
-		$this->_exportVariableToView("numItemsPerCategory", osc_get_non_empty_categories());
-		$this->_exportVariableToView("newsList", osc_listNews());
-		$this->_exportVariableToView("comments", ItemComment::newInstance()->getLastComments(5));
+		$this->getView()->_exportVariableToView("numUsers", $this->getClassLoader()->getClassInstance( 'Model_User' )->count());
+		$this->getView()->_exportVariableToView("numAdmins", $this->getClassLoader()->getClassInstance( 'Model_Admin' )->count());
+		$this->getView()->_exportVariableToView("numItems", $this->getClassLoader()->getClassInstance( 'Model_Item' )->count());
+		$this->getView()->_exportVariableToView("numItemsPerCategory", osc_get_non_empty_categories());
+		$this->getView()->_exportVariableToView("newsList", osc_listNews());
+		$this->getView()->_exportVariableToView("comments", $this->getClassLoader()->getClassInstance( 'Model_ItemComment' )->getLastComments(5));
 
 		$this->doView('main/index.php');
 	}
@@ -41,7 +38,7 @@ class CAdminIndex extends AdminSecBaseModel
 	public function doView($file) 
 	{
 		osc_current_admin_theme_path($file);
-		Session::newInstance()->_clearVariables();
+	$this->getSession()->_clearVariables();
 	}
 }
 

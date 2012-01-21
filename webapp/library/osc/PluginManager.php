@@ -52,11 +52,12 @@ class PluginManager
 
 	public function applyFilter( $hook, $content )
 	{
-		if (isset( $this->hooks[$hook])) 
+		if( isset( $this->hooks[$hook] ) )
 		{
 			for ($priority = 0; $priority <= 10; $priority++) 
 			{
-				if (isset( $this->hooks[$hook][$priority]) && is_array( $this->$hooks[$hook][$priority])) 
+				/* @TODO FIX */
+				if (false&&isset( $this->hooks[$hook][$priority]) && is_array( $this->$hooks[$hook][$priority])) 
 				{
 					foreach ( $this->hooks[$hook][$priority] as $fxName) 
 					{
@@ -135,6 +136,10 @@ class PluginManager
 				{
 					//This should include the file and adds the hooks
 					include_once $pluginPath;
+				}
+				else
+				{
+					trigger_error( 'Plugin path not found: ' . $pluginPath, E_USER_WARNING );
 				}
 			}
 		}

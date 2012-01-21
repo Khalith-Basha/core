@@ -24,7 +24,6 @@ class SecBaseModel extends Controller
 	public function __construct() 
 	{
 		parent::__construct();
-		//Checking granting...
 		if (!$this->isLogged()) 
 		{
 			//If we are not logged or we do not have permissions -> go to the login page
@@ -38,7 +37,7 @@ class SecBaseModel extends Controller
 	}
 	public function logout() 
 	{
-		Session::newInstance()->destroy();
+		$this->getSession()->destroy();
 	}
 	public function doModel() 
 	{

@@ -27,6 +27,7 @@ $cachedir = '../../uploads';
 $base = dirname(__FILE__);
 $type = $_GET['type'];
 $elements = explode(',', $_GET['files']);
+
 // Determine last modification date of the files
 $lastmodified = 0;
 while (list(, $element) = each($elements)) 
@@ -35,12 +36,12 @@ while (list(, $element) = each($elements))
 	if (($type == 'js' && substr($path, -3) != '.js') || ($type == 'css' && substr($path, -4) != '.css')) 
 	{
 		header("HTTP/1.0 403 Forbidden");
-		exit;
+		die( 'Forbidden' );
 	}
 	if (substr($path, 0, strlen($base)) != $base || !file_exists($path)) 
 	{
 		header("HTTP/1.0 404 Not Found");
-		exit;
+		die( 'Not Found' );
 	}
 	$lastmodified = max($lastmodified, filemtime($path));
 }

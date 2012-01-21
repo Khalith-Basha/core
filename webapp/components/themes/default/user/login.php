@@ -17,7 +17,8 @@
  *
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
+$userForm = $classLoader->getClassInstance( 'Form_User' );
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -43,13 +44,10 @@ echo osc_base_url(true); ?>" method="post" >
                         <input type="hidden" name="action" value="login_post" />
                         <fieldset>
                             <label for="email"><?php
-_e('E-mail', 'modern'); ?></label> <?php
-UserForm::email_login_text(); ?><br />
+_e('E-mail', 'modern'); ?></label> <?php $userForm->email_login_text(); ?><br />
                             <label for="password"><?php
-_e('Password', 'modern'); ?></label> <?php
-UserForm::password_login_text(); ?><br />
-                            <p class="checkbox"><?php
-UserForm::rememberme_login_checkbox(); ?> <label for="rememberMe"><?php
+_e('Password', 'modern'); ?></label> <?php $userForm->password_login_text(); ?><br />
+                            <p class="checkbox"><?php $userForm->rememberme_login_checkbox(); ?> <label for="rememberMe"><?php
 _e('Remember me', 'modern'); ?></label></p>
                             <button type="submit"><?php
 _e("Log in", 'modern'); ?></button>

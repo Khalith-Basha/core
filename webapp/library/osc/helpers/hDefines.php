@@ -110,7 +110,7 @@ function osc_translations_path()
  */
 function osc_current_admin_theme() 
 {
-	return (AdminThemes::newInstance()->getCurrentTheme());
+	return (ClassLoader::getInstance()->getClassInstance( 'AdminThemes' )->getCurrentTheme());
 }
 /**
  * Gets the complete url of a given admin's file
@@ -120,7 +120,7 @@ function osc_current_admin_theme()
  */
 function osc_current_admin_theme_url($file = '') 
 {
-	return AdminThemes::newInstance()->getCurrentThemeUrl() . '/' . $file;
+	return ClassLoader::getInstance()->getClassInstance( 'AdminThemes' )->getCurrentThemeUrl() . '/' . $file;
 }
 /**
  * Gets the complete path of a given admin's file
@@ -130,7 +130,7 @@ function osc_current_admin_theme_url($file = '')
  */
 function osc_current_admin_theme_path($file = '') 
 {
-	require AdminThemes::newInstance()->getCurrentThemePath() . '/' . $file;
+	require ClassLoader::getInstance()->getClassInstance( 'AdminThemes' )->getCurrentThemePath() . '/' . $file;
 }
 /**
  * Gets the complete url of a given style's file
@@ -140,7 +140,7 @@ function osc_current_admin_theme_path($file = '')
  */
 function osc_current_admin_theme_styles_url($file = '') 
 {
-	return AdminThemes::newInstance()->getCurrentThemeStyles() . '/' . $file;
+	return ClassLoader::getInstance()->getClassInstance( 'AdminThemes' )->getCurrentThemeStyles() . '/' . $file;
 }
 /**
  * Gets the complete url of a given js's file
@@ -150,7 +150,7 @@ function osc_current_admin_theme_styles_url($file = '')
  */
 function osc_current_admin_theme_js_url($file = '') 
 {
-	return AdminThemes::newInstance()->getCurrentThemeJs() . '/' . $file;
+	return ClassLoader::getInstance()->getClassInstance( 'AdminThemes' )->getCurrentThemeJs() . '/' . $file;
 }
 /**
  * Gets the current theme for the public website
@@ -332,7 +332,8 @@ function osc_search_category_url($pattern = '')
 	{
 		if ($category != '') 
 		{
-			$category = Category::newInstance()->hierarchy($category['pk_i_id']);
+			$categoryModel = ClassLoader::getInstance()->getClassInstance( 'Model_Category' );
+			$category = $categoryModel->hierarchy($category['pk_i_id']);
 			$sanitized_category = "";
 			for ($i = count($category); $i > 0; $i--) 
 			{
@@ -845,9 +846,9 @@ function osc_item_send_friend_url()
  */
 function osc_get_countries() 
 {
-	if (View::newInstance()->_exists('countries')) 
+	if (ClassLoader::getInstance()->getClassInstance( 'View' )->_exists('countries')) 
 	{
-		return View::newInstance()->_get('countries');
+		return ClassLoader::getInstance()->getClassInstance( 'View' )->_get('countries');
 	}
 	else
 	{
@@ -862,9 +863,9 @@ function osc_get_countries()
  */
 function osc_get_regions($country = '') 
 {
-	if (View::newInstance()->_exists('regions')) 
+	if (ClassLoader::getInstance()->getClassInstance( 'View' )->_exists('regions')) 
 	{
-		return View::newInstance()->_get('regions');
+		return ClassLoader::getInstance()->getClassInstance( 'View' )->_get('regions');
 	}
 	else
 	{
@@ -886,9 +887,9 @@ function osc_get_regions($country = '')
  */
 function osc_get_cities($region = '') 
 {
-	if (View::newInstance()->_exists('cities')) 
+	if (ClassLoader::getInstance()->getClassInstance( 'View' )->_exists('cities')) 
 	{
-		return View::newInstance()->_get('cities');
+		return ClassLoader::getInstance()->getClassInstance( 'View' )->_get('cities');
 	}
 	else
 	{
@@ -909,11 +910,11 @@ function osc_get_cities($region = '')
  */
 function osc_get_currencies() 
 {
-	if (!View::newInstance()->_exists('currencies')) 
+	if (!ClassLoader::getInstance()->getClassInstance( 'View' )->_exists('currencies')) 
 	{
-		View::newInstance()->_exportVariableToView('currencies', Currency::newInstance()->listAll());
+		ClassLoader::getInstance()->getClassInstance( 'View' )->_exportVariableToView('currencies', Currency::newInstance()->listAll());
 	}
-	return View::newInstance()->_get('currencies');
+	return ClassLoader::getInstance()->getClassInstance( 'View' )->_get('currencies');
 }
 /**
  * Prints the additional options to the menu

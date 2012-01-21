@@ -77,7 +77,8 @@ abstract class Controller
 	protected $action;
 	protected $ajax;
 
-	private $server;
+	protected $classLoader;
+	protected $server;
 	protected $view;
 	protected $session;
 
@@ -86,14 +87,20 @@ abstract class Controller
 		$this->action = Params::getParam('action');
 		$this->ajax = false;
 
-		$classLoader = ClassLoader::getInstance();
-		$this->server = $classLoader->getClassInstance( 'Server' );
-		$this->view = $classLoader->getClassInstance( 'View' );
-		$this->session = $classLoader->getClassInstance( 'Session' );
+		$this->classLoader = ClassLoader::getInstance();
+		$this->server = $this->classLoader->getClassInstance( 'Server' );
+		$this->view = $this->classLoader->getClassInstance( 'View' );
+		$this->session = $this->classLoader->getClassInstance( 'Session' );
+		$this->cookie = $this->classLoader->getClassInstance( 'Cookie' );
 	}
 
 	public function __destruct() 
 	{
+	}
+
+	protected function getView()
+	{
+		return $this->view;
 	}
 
 	protected function getServer()
@@ -132,7 +139,7 @@ abstract class Controller
 	}
 	public function do404() 
 	{
-		ClassLoader::getInstance()->getClassInstance( 'Rewrite' )->set_location('error');
+		$this->classLoader->getClassInstance( 'Rewrite' )->set_location('error');
 		header('HTTP/1.1 404 Not Found');
 		osc_current_web_theme_path('404.php');
 	}
@@ -142,9 +149,19 @@ abstract class Controller
 		exit;
 	}
 
+	public function getClassLoader()
+	{
+		return $this->classLoader;
+	}
+
 	public function getSession()
 	{
 		return $this->session;
+	}
+
+	public function getCookie()
+	{
+		return $this->cookie;
 	}
 }
 abstract class BaseModel extends Controller

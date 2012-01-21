@@ -25,7 +25,7 @@ class CAdminPage extends AdminSecBaseModel
 	{
 		parent::__construct();
 		//specific things for this class
-		$this->pageManager = Page::newInstance();
+		$this->pageManager = $this->getClassLoader()->getClassInstance( 'Model_Page' );
 	}
 	public function doModel() 
 	{
@@ -38,7 +38,7 @@ class CAdminPage extends AdminSecBaseModel
 			{
 				$this->redirectTo(osc_admin_base_url(true) . "?page=pages");
 			}
-			$this->_exportVariableToView("page", $this->pageManager->findByPrimaryKey(Params::getParam("id")));
+			$this->getView()->_exportVariableToView("page", $this->pageManager->findByPrimaryKey(Params::getParam("id")));
 			$this->doView("pages/frm.php");
 			break;
 
@@ -151,14 +151,14 @@ class CAdminPage extends AdminSecBaseModel
 			break;
 
 		default:
-			$this->_exportVariableToView("prefLocale", osc_current_admin_locale());
-			$this->_exportVariableToView("pages", $this->pageManager->listAll(0));
+			$this->getView()->_exportVariableToView("prefLocale", osc_current_admin_locale());
+			$this->getView()->_exportVariableToView("pages", $this->pageManager->listAll(0));
 			$this->doView("pages/index.php");
 		}
 	}
 	function doView($file) 
 	{
 		osc_current_admin_theme_path($file);
-		Session::newInstance()->_clearVariables();
+	$this->getSession()->_clearVariables();
 	}
 }

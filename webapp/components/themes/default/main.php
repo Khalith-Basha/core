@@ -17,7 +17,8 @@
  *
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
+$itemUrls = $classLoader->getClassInstance( 'Url_Item' );
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="<?php
@@ -125,8 +126,7 @@ else
 <?php
 $item = osc_item();
 ?>
-                                     <tr class="<?php
-		echo $class . (osc_item_is_premium() ? " premium" : ""); ?>">
+                                     <tr class="<?php echo $class . (osc_item_is_premium() ? " premium" : ""); ?>">
                                             <?php
 		if (osc_images_enabled_at_items()) 
 		{ ?>
@@ -141,30 +141,24 @@ $item = osc_item();
 			}
 			else
 			{ ?>
-                                                    <img src="<?php
-				echo osc_current_web_theme_url('images/no_photo.gif'); ?>" alt="" title=""/>
+                                                    <img src="<?php echo osc_current_web_theme_url('images/no_photo.gif'); ?>" alt="" title=""/>
                                                 <?php
 			} ?>
                                              </td>
                                             <?php
 		} ?>
                                              <td class="text">
-                                                 <h3><a href="<?php echo ItemUrls::getInstance()->getDetailsUrl( $item ); ?>"><?php
-		echo osc_item_title(); ?></a></h3>
+                                                 <h3><a href="<?php echo $itemUrls->getDetailsUrl( $item ); ?>"><?php echo osc_item_title(); ?></a></h3>
                                                  <p><strong><?php
 		if (osc_price_enabled_at_items()) 
 		{
 			echo osc_item_formated_price(); ?> - <?php
 		}
-		echo osc_item_city(); ?> (<?php
-		echo osc_item_region(); ?>) - <?php
-		echo osc_format_date(osc_item_pub_date()); ?></strong></p>
-                                                 <p><?php
-		echo osc_highlight(strip_tags(osc_item_description())); ?></p>
+		echo osc_item_city(); ?> (<?php echo osc_item_region(); ?>) - <?php echo osc_format_date(osc_item_pub_date()); ?></strong></p>
+                                                 <p><?php echo osc_highlight(strip_tags(osc_item_description())); ?></p>
                                              </td>                                       
                                          </tr>
-                                        <?php
-		$class = ($class == 'even') ? 'odd' : 'even'; ?>
+                                        <?php $class = ($class == 'even') ? 'odd' : 'even'; ?>
 				    <?php endwhile; ?>
                                 </tbody>
                             </table>

@@ -18,15 +18,6 @@
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-/**
- * Helper Premiums - returns object from the static class (View)
- * @package OpenSourceClassifieds
- * @subpackage premiums
- * @author OpenSourceClassifieds
- */
-////////////////////////////////////////////////////////////////
-// FUNCTIONS THAT RETURNS OBJECT FROM THE STATIC CLASS (VIEW) //
-////////////////////////////////////////////////////////////////
 
 /**
  * Gets new premiums ads
@@ -35,19 +26,19 @@
  */
 function osc_get_premiums($max = 2) 
 {
-	if (View::newInstance()->_exists('search')) 
+	if (ClassLoader::getInstance()->getClassInstance( 'View' )->_exists('search')) 
 	{
-		$mSearch = View::newInstance()->_get('search');
+		$mSearch = ClassLoader::getInstance()->getClassInstance( 'View' )->_get('search');
 	}
 	else
 	{
 		$mSearch = Search::newInstance();
-		View::newInstance()->_exportVariableToView('search', $mSearch);
+		ClassLoader::getInstance()->getClassInstance( 'View' )->_exportVariableToView('search', $mSearch);
 	}
 	// santiagolizardo: it should be fixed, little hack to get alerts work in search layout
 	$mSearch->reconnect();
 	$premiums = $mSearch->getPremiums($max);
-	View::newInstance()->_exportVariableToView('premiums', $premiums);
+	ClassLoader::getInstance()->getClassInstance( 'View' )->_exportVariableToView('premiums', $premiums);
 	return $premiums;
 }
 /**
@@ -57,9 +48,9 @@ function osc_get_premiums($max = 2)
  */
 function osc_premium() 
 {
-	if (View::newInstance()->_exists('premiums')) 
+	if (ClassLoader::getInstance()->getClassInstance( 'View' )->_exists('premiums')) 
 	{
-		return View::newInstance()->_current('premiums');
+		return ClassLoader::getInstance()->getClassInstance( 'View' )->_current('premiums');
 	}
 	else
 	{
@@ -167,11 +158,11 @@ function osc_premium_title($locale = "")
 function osc_premium_category($locale = "") 
 {
 	if ($locale == "") $locale = osc_current_user_locale();
-	if (!View::newInstance()->_exists('premium_category')) 
+	if (!ClassLoader::getInstance()->getClassInstance( 'View' )->_exists('premium_category')) 
 	{
-		View::newInstance()->_exportVariableToView('premium_category', Category::newInstance()->findByPrimaryKey(osc_premium_category_id()));
+		ClassLoader::getInstance()->getClassInstance( 'View' )->_exportVariableToView('premium_category', Category::newInstance()->findByPrimaryKey(osc_premium_category_id()));
 	}
-	$category = View::newInstance()->_get('premium_category');
+	$category = ClassLoader::getInstance()->getClassInstance( 'View' )->_get('premium_category');
 	return (string)osc_field($category, "s_name", $locale);
 }
 /**
@@ -183,11 +174,11 @@ function osc_premium_category($locale = "")
 function osc_premium_category_description($locale = "") 
 {
 	if ($locale == "") $locale = osc_current_user_locale();
-	if (!View::newInstance()->_exists('premium_category')) 
+	if (!ClassLoader::getInstance()->getClassInstance( 'View' )->_exists('premium_category')) 
 	{
-		View::newInstance()->_exportVariableToView('premium_category', Category::newInstance()->findByPrimaryKey(osc_premium_category_id()));
+		ClassLoader::getInstance()->getClassInstance( 'View' )->_exportVariableToView('premium_category', Category::newInstance()->findByPrimaryKey(osc_premium_category_id()));
 	}
-	$category = View::newInstance()->_get('premium_category');
+	$category = ClassLoader::getInstance()->getClassInstance( 'View' )->_get('premium_category');
 	return osc_field($category, "s_description", $locale);
 }
 /**
@@ -464,19 +455,19 @@ function osc_premium_comments_page()
  */
 function osc_has_premiums() 
 {
-	if (View::newInstance()->_exists('resources')) 
+	if (ClassLoader::getInstance()->getClassInstance( 'View' )->_exists('resources')) 
 	{
-		View::newInstance()->_erase('resources');
+		ClassLoader::getInstance()->getClassInstance( 'View' )->_erase('resources');
 	}
-	if (View::newInstance()->_exists('premium_category')) 
+	if (ClassLoader::getInstance()->getClassInstance( 'View' )->_exists('premium_category')) 
 	{
-		View::newInstance()->_erase('premium_category');
+		ClassLoader::getInstance()->getClassInstance( 'View' )->_erase('premium_category');
 	}
-	if (View::newInstance()->_exists('metafields')) 
+	if (ClassLoader::getInstance()->getClassInstance( 'View' )->_exists('metafields')) 
 	{
-		View::newInstance()->_erase('metafields');
+		ClassLoader::getInstance()->getClassInstance( 'View' )->_erase('metafields');
 	}
-	return View::newInstance()->_next('premiums');
+	return ClassLoader::getInstance()->getClassInstance( 'View' )->_next('premiums');
 }
 /**
  * Set the internal pointer of array premiums to its first element, and return it.
@@ -485,7 +476,7 @@ function osc_has_premiums()
  */
 function osc_reset_premiums() 
 {
-	return View::newInstance()->_reset('premiums');
+	return ClassLoader::getInstance()->getClassInstance( 'View' )->_reset('premiums');
 }
 /**
  * Gets number of premiums in current array premiums
@@ -494,7 +485,7 @@ function osc_reset_premiums()
  */
 function osc_count_premiums() 
 {
-	return (int)View::newInstance()->_count('premiums');
+	return (int)ClassLoader::getInstance()->getClassInstance( 'View' )->_count('premiums');
 }
 /**
  * Gets number of resources in array resources of current premium
@@ -503,9 +494,9 @@ function osc_count_premiums()
  */
 function osc_count_premium_resources() 
 {
-	if (!View::newInstance()->_exists('resources')) 
+	if (!ClassLoader::getInstance()->getClassInstance( 'View' )->_exists('resources')) 
 	{
-		View::newInstance()->_exportVariableToView('resources', ItemResource::newInstance()->getAllResources(osc_premium_id()));
+		ClassLoader::getInstance()->getClassInstance( 'View' )->_exportVariableToView('resources', ItemResource::newInstance()->getAllResources(osc_premium_id()));
 	}
 	return osc_priv_count_item_resources();
 }
@@ -516,11 +507,11 @@ function osc_count_premium_resources()
  */
 function osc_has_premium_resources() 
 {
-	if (!View::newInstance()->_exists('resources')) 
+	if (!ClassLoader::getInstance()->getClassInstance( 'View' )->_exists('resources')) 
 	{
-		View::newInstance()->_exportVariableToView('resources', ItemResource::newInstance()->getAllResources(osc_premium_id()));
+		ClassLoader::getInstance()->getClassInstance( 'View' )->_exportVariableToView('resources', ItemResource::newInstance()->getAllResources(osc_premium_id()));
 	}
-	return View::newInstance()->_next('resources');
+	return ClassLoader::getInstance()->getClassInstance( 'View' )->_next('resources');
 }
 /**
  * Gets current resource of current array resources of current premium
@@ -529,11 +520,11 @@ function osc_has_premium_resources()
  */
 function osc_get_premium_resources() 
 {
-	if (!View::newInstance()->_exists('resources')) 
+	if (!ClassLoader::getInstance()->getClassInstance( 'View' )->_exists('resources')) 
 	{
-		View::newInstance()->_exportVariableToView('resources', ItemResource::newInstance()->getAllResources(osc_premium_id()));
+		ClassLoader::getInstance()->getClassInstance( 'View' )->_exportVariableToView('resources', ItemResource::newInstance()->getAllResources(osc_premium_id()));
 	}
-	return View::newInstance()->_get('resources');
+	return ClassLoader::getInstance()->getClassInstance( 'View' )->_get('resources');
 }
 /**
  * Gets number of premium comments of current premium
@@ -542,11 +533,11 @@ function osc_get_premium_resources()
  */
 function osc_count_premium_comments() 
 {
-	if (!View::newInstance()->_exists('comments')) 
+	if (!ClassLoader::getInstance()->getClassInstance( 'View' )->_exists('comments')) 
 	{
-		View::newInstance()->_exportVariableToView('comments', ItemComment::newInstance()->findBypremiumID(osc_premium_id(), osc_premium_comments_page(), osc_comments_per_page()));
+		ClassLoader::getInstance()->getClassInstance( 'View' )->_exportVariableToView('comments', ItemComment::newInstance()->findBypremiumID(osc_premium_id(), osc_premium_comments_page(), osc_comments_per_page()));
 	}
-	return View::newInstance()->_count('comments');
+	return ClassLoader::getInstance()->getClassInstance( 'View' )->_count('comments');
 }
 /**
  * Gets next comment of current premium comments
@@ -555,11 +546,11 @@ function osc_count_premium_comments()
  */
 function osc_has_premium_comments() 
 {
-	if (!View::newInstance()->_exists('comments')) 
+	if (!ClassLoader::getInstance()->getClassInstance( 'View' )->_exists('comments')) 
 	{
-		View::newInstance()->_exportVariableToView('comments', ItemComment::newInstance()->findBypremiumID(osc_premium_id(), osc_premium_comments_page(), osc_comments_per_page()));
+		ClassLoader::getInstance()->getClassInstance( 'View' )->_exportVariableToView('comments', ItemComment::newInstance()->findBypremiumID(osc_premium_id(), osc_premium_comments_page(), osc_comments_per_page()));
 	}
-	return View::newInstance()->_next('comments');
+	return ClassLoader::getInstance()->getClassInstance( 'View' )->_next('comments');
 }
 /**
  * Gets number of premiums
@@ -569,7 +560,7 @@ function osc_has_premium_comments()
  */
 function osc_priv_count_premiums() 
 {
-	return (int)View::newInstance()->_count('premiums');
+	return (int)ClassLoader::getInstance()->getClassInstance( 'View' )->_count('premiums');
 }
 /***************
  * META FIELDS *
@@ -581,11 +572,11 @@ function osc_priv_count_premiums()
  */
 function osc_count_premium_meta() 
 {
-	if (!View::newInstance()->_exists('metafields')) 
+	if (!ClassLoader::getInstance()->getClassInstance( 'View' )->_exists('metafields')) 
 	{
-		View::newInstance()->_exportVariableToView('metafields', Item::newInstance()->metaFields(osc_premium_id()));
+		ClassLoader::getInstance()->getClassInstance( 'View' )->_exportVariableToView('metafields', Item::newInstance()->metaFields(osc_premium_id()));
 	}
-	return View::newInstance()->_count('metafields');
+	return ClassLoader::getInstance()->getClassInstance( 'View' )->_count('metafields');
 }
 /**
  * Gets next premium meta field if there is, else return null
@@ -594,11 +585,11 @@ function osc_count_premium_meta()
  */
 function osc_has_premium_meta() 
 {
-	if (!View::newInstance()->_exists('metafields')) 
+	if (!ClassLoader::getInstance()->getClassInstance( 'View' )->_exists('metafields')) 
 	{
-		View::newInstance()->_exportVariableToView('metafields', Item::newInstance()->metaFields(osc_premium_id()));
+		ClassLoader::getInstance()->getClassInstance( 'View' )->_exportVariableToView('metafields', Item::newInstance()->metaFields(osc_premium_id()));
 	}
-	return View::newInstance()->_next('metafields');
+	return ClassLoader::getInstance()->getClassInstance( 'View' )->_next('metafields');
 }
 /**
  * Gets premium meta fields
@@ -607,9 +598,9 @@ function osc_has_premium_meta()
  */
 function osc_get_premium_meta() 
 {
-	if (!View::newInstance()->_exists('metafields')) 
+	if (!ClassLoader::getInstance()->getClassInstance( 'View' )->_exists('metafields')) 
 	{
-		View::newInstance()->_exportVariableToView('metafields', Item::newInstance()->metaFields(osc_premium_id()));
+		ClassLoader::getInstance()->getClassInstance( 'View' )->_exportVariableToView('metafields', Item::newInstance()->metaFields(osc_premium_id()));
 	}
-	return View::newInstance()->_get('metafields');
+	return ClassLoader::getInstance()->getClassInstance( 'View' )->_get('metafields');
 }

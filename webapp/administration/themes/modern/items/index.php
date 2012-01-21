@@ -15,6 +15,8 @@
  * You should have received a copy of the GNU Affero General Public
  * License along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+$itemForm = ClassLoader::getInstance()->getClassInstance( 'Form_Item' );
+$userForm = ClassLoader::getInstance()->getClassInstance( 'Form_User' );
 $users = __get("users");
 $stat = __get("stat");
 $categories = __get("categories");
@@ -70,7 +72,7 @@ osc_current_admin_theme_path('header.php'); ?>
             }
        </style>
         <?php
-ItemForm::location_javascript('admin'); ?>
+$itemForm->location_javascript('admin'); ?>
         <script type="text/javascript">
             $(function() {
                 oTable = new osc_datatable();
@@ -233,7 +235,7 @@ _e('Title and Description'); ?>)</span>
 _e('Item posted by'); ?></label>
                                     <?php
 array_unshift($users, array('pk_i_id' => 'NULL', 's_name' => __('Non-registered user')));
-UserForm::user_select($users);
+$userForm->user_select($users);
 ?>
                                 </div>
                                 <div class="row">
@@ -242,26 +244,26 @@ _e('Country'); ?></label>
                                     <?php
 $item = array();
 $item["countryId"] = "";
-ItemForm::country_select($countries, $item); ?>
+$itemForm->country_select($countries, $item); ?>
                                 </div>
                                 <div class="row">
                                     <label><?php
 _e('Region'); ?></label>
                                     <?php
-ItemForm::region_select($regions, null); ?>
+$itemForm->region_select($regions, null); ?>
                                 </div>
                                 <div class="row">
                                     <label><?php
 _e('City'); ?></label>
                                     <?php
-ItemForm::city_select($cities, null); ?>
+$itemForm->city_select($cities, null); ?>
                                 </div>
 
                                 <div class="row">
                                     <label for="catId"><?php
 _e('Category') ?>:</label>
                                     <?php
-ItemForm::category_select($categories, null, null, true); ?>
+$itemForm->category_select($categories, null, null, true); ?>
                                 </div>
                             </div>
                             <div class="" style="float:left;">

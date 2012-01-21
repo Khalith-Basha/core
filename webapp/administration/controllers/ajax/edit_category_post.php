@@ -89,8 +89,8 @@ class CAdminAjax extends AdminSecBaseModel
 				$msg = __('Error while updating');
 			}
 			echo json_encode(array('error' => $error, 'msg' => $msg, 'text' => $aFieldsDescription[$l]['s_name']));
-		Session::newInstance()->_dropKeepForm();
-		Session::newInstance()->_clearVariables();
+	$this->getSession()->_dropKeepForm();
+	$this->getSession()->_clearVariables();
 	}
 }
 

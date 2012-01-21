@@ -37,9 +37,10 @@ class Form_Contact extends Form
 	}
 	static public function your_name() 
 	{
-		if (Session::newInstance()->_getForm("yourName") != "") 
+		$session = ClassLoader::getInstance()->getClassInstance( 'Session' );
+		if ($session->_getForm("yourName") != "") 
 		{
-			$name = Session::newInstance()->_getForm("yourName");
+			$name = $session->_getForm("yourName");
 			parent::generic_input_text("yourName", $name, null, false);
 		}
 		else
@@ -50,9 +51,10 @@ class Form_Contact extends Form
 	}
 	static public function your_email() 
 	{
-		if (Session::newInstance()->_getForm("yourEmail") != "") 
+		$session = ClassLoader::getInstance()->getClassInstance( 'Session' );
+		if ($session->_getForm("yourEmail") != "") 
 		{
-			$email = Session::newInstance()->_getForm("yourEmail");
+			$email = $session->_getForm("yourEmail");
 			parent::generic_input_text("yourEmail", $email, null, false);
 		}
 		else
@@ -63,9 +65,10 @@ class Form_Contact extends Form
 	}
 	static public function your_phone_number() 
 	{
-		if (Session::newInstance()->_getForm("phoneNumber") != "") 
+		$session = ClassLoader::getInstance()->getClassInstance( 'Session' );
+		if ($session->_getForm("phoneNumber") != "") 
 		{
-			$phoneNumber = Session::newInstance()->_getForm("phoneNumber");
+			$phoneNumber = $session->_getForm("phoneNumber");
 			parent::generic_input_text("phoneNumber", $phoneNumber, null, false);
 		}
 		else
@@ -76,9 +79,10 @@ class Form_Contact extends Form
 	}
 	static public function the_subject() 
 	{
-		if (Session::newInstance()->_getForm("subject") != "") 
+		$session = ClassLoader::getInstance()->getClassInstance( 'Session' );
+		if ($session->_getForm("subject") != "") 
 		{
-			$subject = Session::newInstance()->_getForm("subject");
+			$subject = $session->_getForm("subject");
 			parent::generic_input_text("subject", $subject, null, false);
 		}
 		else
@@ -89,9 +93,10 @@ class Form_Contact extends Form
 	}
 	static public function your_message() 
 	{
-		if (Session::newInstance()->_getForm("message_body") != "") 
+		$session = ClassLoader::getInstance()->getClassInstance( 'Session' );
+		if ($session->_getForm("message_body") != "") 
 		{
-			$message = Session::newInstance()->_getForm("message_body");
+			$message = $session->_getForm("message_body");
 			parent::generic_textarea("message", $message);
 		}
 		else
