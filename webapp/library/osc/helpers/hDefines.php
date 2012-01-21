@@ -159,7 +159,8 @@ function osc_current_admin_theme_js_url($file = '')
  */
 function osc_current_web_theme() 
 {
-	return WebThemes::newInstance()->getCurrentTheme();
+	$themes = ClassLoader::getInstance()->getClassInstance( 'WebThemes' );
+	return $themes->getCurrentTheme();
 }
 /**
  * Gets the complete url of a given file using the theme url as a root
@@ -169,7 +170,8 @@ function osc_current_web_theme()
  */
 function osc_current_web_theme_url($file = '') 
 {
-	return WebThemes::newInstance()->getCurrentThemeUrl() . $file;
+	$themes = ClassLoader::getInstance()->getClassInstance( 'WebThemes' );
+	return $themes->getCurrentThemeUrl() . $file;
 }
 /**
  * Gets the complete path of a given file using the theme path as a root
@@ -179,9 +181,11 @@ function osc_current_web_theme_url($file = '')
  */
 function osc_current_web_theme_path( $file, View $view = null ) 
 {
+	$classLoader = ClassLoader::getInstance();
+	$themes = $classLoader->getClassInstance( 'WebThemes' );
 	if( is_null( $view ) )
-		$view = new HtmlView;
-	$webThemes = WebThemes::newInstance();
+		$view = $classLoader->getClassInstance( 'HtmlView' );
+	$webThemes = $themes;
 	$filePath = $webThemes->getCurrentThemePath() . DIRECTORY_SEPARATOR . $file;
 	if (file_exists($filePath)) 
 	{
@@ -211,8 +215,9 @@ function osc_render_view( $file, array $variables = array(), View $view = null )
 {
 	extract( $variables );
 
+	$themes = ClassLoader::getInstance()->getClassInstance( 'WebThemes' );
 	$viewContent = null;
-	$webThemes = WebThemes::newInstance();
+	$webThemes = $themes;
 	$filePath = $webThemes->getCurrentThemePath() . $file;
 	if (!file_exists($filePath)) 
 	{
@@ -240,7 +245,8 @@ function osc_render_view( $file, array $variables = array(), View $view = null )
  */
 function osc_current_web_theme_styles_url($file = '') 
 {
-	return WebThemes::newInstance()->getCurrentThemeStyles() . $file;
+	$themes = ClassLoader::getInstance()->getClassInstance( 'WebThemes' );
+	return $themes->getCurrentThemeStyles() . $file;
 }
 /**
  * Gets the complete path of a given js file using the theme path as a root
@@ -250,7 +256,8 @@ function osc_current_web_theme_styles_url($file = '')
  */
 function osc_current_web_theme_js_url($file = '') 
 {
-	return WebThemes::newInstance()->getCurrentThemeJs() . $file;
+	$themes = ClassLoader::getInstance()->getClassInstance( 'WebThemes' );
+	return $themes->getCurrentThemeJs() . $file;
 }
 
 /**

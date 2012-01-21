@@ -19,7 +19,7 @@
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once 'osc/classes/Server.php';
+require_once 'osc/Server.php';
 
 class HttpRequest
 {
@@ -78,13 +78,18 @@ abstract class Controller
 	protected $ajax;
 
 	private $server;
+	protected $view;
+	protected $session;
 
 	public function __construct() 
 	{
 		$this->action = Params::getParam('action');
 		$this->ajax = false;
 
-		$this->server = new Server;
+		$classLoader = ClassLoader::getInstance();
+		$this->server = $classLoader->getClassInstance( 'Server' );
+		$this->view = $classLoader->getClassInstance( 'View' );
+		$this->session = $classLoader->getClassInstance( 'Session' );
 	}
 
 	public function __destruct() 
@@ -98,11 +103,11 @@ abstract class Controller
 
 	protected function _exportVariableToView($key, $value) 
 	{
-		View::newInstance()->_exportVariableToView($key, $value);
+		$this->_exportVariableToView($key, $value);
 	}
 	protected function _view($key = null) 
 	{
-		View::newInstance()->_view($key);
+		$this->_view($key);
 	}
 	public function processRequest(HttpRequest $req, HttpResponse $resp) 
 	{
@@ -127,7 +132,7 @@ abstract class Controller
 	}
 	public function do404() 
 	{
-		Rewrite::newInstance()->set_location('error');
+		ClassLoader::getInstance()->getClassInstance( 'Rewrite' )->set_location('error');
 		header('HTTP/1.1 404 Not Found');
 		osc_current_web_theme_path('404.php');
 	}
@@ -135,6 +140,11 @@ abstract class Controller
 	{
 		header('Location: ' . $url);
 		exit;
+	}
+
+	public function getSession()
+	{
+		return $this->session;
 	}
 }
 abstract class BaseModel extends Controller

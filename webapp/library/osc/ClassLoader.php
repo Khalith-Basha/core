@@ -36,7 +36,7 @@ class ClassLoader
 			$requirePath = $searchPath['searchPath'] . DIRECTORY_SEPARATOR . str_replace( '_', DIRECTORY_SEPARATOR, $filePath ) . '.php';
 			if( file_exists( $requirePath ) )
 			{
-				require $requirePath;
+				require_once $requirePath;
 				return $searchPath['classNamePrefix'];
 			}
 		}
@@ -46,7 +46,7 @@ class ClassLoader
 
 	private $classInstances;
 
-	public function getClassInstance( $className, $singleton = true )
+	public function getClassInstance( $className, $singleton = true, $args = null )
 	{
 		if( isset( $this->classInstances[ $className ] ) )
 			return $this->classInstances[ $className ];
@@ -55,7 +55,11 @@ class ClassLoader
 
 		if( class_exists( $className ) )
 		{
-			$this->classInstances[ $className ] = new $className;
+			$reflectionClass = new ReflectionClass( $className );
+			$instance = is_null( $args ) ?
+				$reflectionClass->newInstance() :
+				$reflectionClass->newInstanceArgs( $args );
+			$this->classInstances[ $className ] = $instance;
 			return $this->classInstances[ $className ];
 		}
 

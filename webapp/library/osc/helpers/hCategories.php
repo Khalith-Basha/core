@@ -31,17 +31,18 @@
  */
 function osc_category() 
 {
-	if (View::newInstance()->_exists('subcategories')) 
+	$view = ClassLoader::getInstance()->getClassInstance( 'View' );
+	if ($view->_exists('subcategories')) 
 	{
-		$category = View::newInstance()->_current('subcategories');
+		$category = $view->_current('subcategories');
 	}
-	elseif (View::newInstance()->_exists('categories')) 
+	elseif ($view->_exists('categories')) 
 	{
-		$category = View::newInstance()->_current('categories');
+		$category = $view->_current('categories');
 	}
-	elseif (View::newInstance()->_exists('category')) 
+	elseif ($view->_exists('category')) 
 	{
-		$category = View::newInstance()->_get('category');
+		$category = $view->_get('category');
 	}
 	else
 	{
@@ -62,10 +63,11 @@ function osc_category()
  */
 function osc_get_categories() 
 {
-	//if ( !View::newInstance()->_exists('categories') ) {
-	View::newInstance()->_exportVariableToView('categories', Category::newInstance()->toTree());
-	//}
-	return View::newInstance()->_get('categories');
+	$classLoader = ClassLoader::getInstance();
+	$view = $classLoader->getClassInstance( 'View' );
+	$category = $classLoader->getClassInstance( 'Model_Category' );
+	$view->_exportVariableToView('categories', $category->toTree());
+	return $view->_get('categories');
 }
 /* #dev.conquer: review that. If the result of toTree had the same format as items or comments, it would be the same as osc_field */
 function osc_field_toTree($item, $field) 
@@ -92,7 +94,8 @@ function osc_category_field($field, $locale = '')
  */
 function osc_priv_count_categories() 
 {
-	return View::newInstance()->_count('categories');
+	$view = ClassLoader::getInstance()->getClassInstance( 'View' );
+	return $view->_count('categories');
 }
 /**
  * Gets the number of subcategories
@@ -101,7 +104,8 @@ function osc_priv_count_categories()
  */
 function osc_priv_count_subcategories() 
 {
-	return View::newInstance()->_count('subcategories');
+	$view = ClassLoader::getInstance()->getClassInstance( 'View' );
+	return $view->_count('subcategories');
 }
 /**
  * Gets the total of categories. If categories are not loaded, this function will load them.
@@ -110,9 +114,12 @@ function osc_priv_count_subcategories()
  */
 function osc_count_categories() 
 {
-	if (!View::newInstance()->_exists('categories')) 
+	$classLoader = ClassLoader::getInstance();
+	$view = $classLoader->getClassInstance( 'View' );
+	if (!$view->_exists('categories')) 
 	{
-		View::newInstance()->_exportVariableToView('categories', Category::newInstance()->toTree());
+		$category = $classLoader->getClassInstance( 'Model_Category' );
+		$view->_exportVariableToView('categories', $category->toTree());
 	}
 	return osc_priv_count_categories();
 }
@@ -123,11 +130,14 @@ function osc_count_categories()
  */
 function osc_has_categories() 
 {
-	if (!View::newInstance()->_exists('categories')) 
+	$classLoader = ClassLoader::getInstance();
+	$view = $classLoader->getClassInstance( 'View' );
+	if (!$view->_exists('categories')) 
 	{
-		View::newInstance()->_exportVariableToView('categories', Category::newInstance()->toTree());
+		$category = $classLoader->getClassInstance( 'Model_Category' );
+		$view->_exportVariableToView('categories', $category->toTree());
 	}
-	return View::newInstance()->_next('categories');
+	return $view->_next('categories');
 }
 /**
  * Gets the total of subcategories for the current category. If subcategories are not loaded, this function will load them and
@@ -137,14 +147,15 @@ function osc_has_categories()
  */
 function osc_count_subcategories() 
 {
-	$category = View::newInstance()->_current('categories');
+	$view = ClassLoader::getInstance()->getClassInstance( 'View' );
+	$category = $view->_current('categories');
 	if ($category == '') return -1;
 	if (!isset($category['categories'])) return 0;
 	if (!is_array($category['categories'])) return 0;
 	if (count($category['categories']) == 0) return 0;
-	if (!View::newInstance()->_exists('subcategories')) 
+	if (!$view->_exists('subcategories')) 
 	{
-		View::newInstance()->_exportVariableToView('subcategories', $category['categories']);
+		$view->_exportVariableToView('subcategories', $category['categories']);
 	}
 	return osc_priv_count_subcategories();
 }
@@ -156,16 +167,17 @@ function osc_count_subcategories()
  */
 function osc_has_subcategories() 
 {
-	$category = View::newInstance()->_current('categories');
+	$view = ClassLoader::getInstance()->getClassInstance( 'View' );
+	$category = $view->_current('categories');
 	if ($category == '') return -1;
 	if (!isset($category['categories'])) return false;
-	if (!View::newInstance()->_exists('subcategories')) 
+	if (!$view->_exists('subcategories')) 
 	{
-		View::newInstance()->_exportVariableToView('subcategories', $category['categories']);
+		$view->_exportVariableToView('subcategories', $category['categories']);
 	}
-	$ret = View::newInstance()->_next('subcategories');
+	$ret = $view->_next('subcategories');
 	//we have to delete for next iteration
-	if (!$ret) View::newInstance()->_erase('subcategories');
+	if (!$ret) $view->_erase('subcategories');
 	return $ret;
 }
 /**
@@ -220,9 +232,6 @@ function osc_category_slug($locale = "")
 function osc_category_total_items() 
 {
 	return osc_category_field("i_num_items", "");
-	//$category = osc_category() ;
-	//return CategoryStats::newInstance()->getNumItems($category) ;
-	
 }
 /**
  * Reset the pointer of the array to the first category
@@ -231,7 +240,8 @@ function osc_category_total_items()
  */
 function osc_goto_first_category() 
 {
-	View::newInstance()->_reset('categories');
+	$view = ClassLoader::getInstance()->getClassInstance( 'View' );
+	$view->_reset('categories');
 }
 /**
  * Gets list of non-empty categories
@@ -240,9 +250,12 @@ function osc_goto_first_category()
  */
 function osc_get_non_empty_categories() 
 {
-	$aCategories = Category::newInstance()->toTree(false);
-	View::newInstance()->_exportVariableToView('categories', $aCategories);
-	return View::newInstance()->_get('categories');
+	$classLoader = ClassLoader::getInstance();
+	$view = $classLoader->getClassInstance( 'View' );
+	$category = $classLoader->getClassInstance( 'Model_Category' );
+	$aCategories = $category->toTree(false);
+	$view->_exportVariableToView('categories', $aCategories);
+	return $view->_get('categories');
 }
 /**
  * Prints category select
@@ -251,6 +264,10 @@ function osc_get_non_empty_categories()
  */
 function osc_categories_select($name = 'sCategory', $category = null, $default_str = null) 
 {
-	if ($default_str == null) $default_str = __('Select a category');
-	CategoryForm::category_select(Category::newInstance()->toTree(), $category, $default_str, $name);
+	$classLoader = ClassLoader::getInstance();
+	if ($default_str == null)
+		$default_str = __('Select a category');
+	$categoryModel = $classLoader->getClassInstance( 'Model_Category' );
+	$categoryForm = $classLoader->getClassInstance( 'Form_Category' );
+	$categoryForm->category_select($categoryModel->toTree(), $category, $default_str, $name);
 }

@@ -33,7 +33,7 @@
  */
 function __($key, $domain = 'core') 
 {
-	$gt = Translation::newInstance()->_get($domain);
+	$gt = ClassLoader::getInstance()->getClassInstance( 'Core_Translation' )->_get($domain);
 	if (!$gt) 
 	{
 		return $key;
@@ -49,7 +49,7 @@ function __($key, $domain = 'core')
  */
 function _e($key, $domain = 'core') 
 {
-	$gt = Translation::newInstance()->_get($domain);
+	$gt = ClassLoader::getInstance()->getClassInstance( 'Core_Translation' )->_get($domain);
 	if (!$gt) 
 	{
 		echo $key;
@@ -81,7 +81,7 @@ function _m($key)
  */
 function _n($single_key, $plural_key, $count, $domain = 'core') 
 {
-	$gt = Translation::newInstance()->_get($domain);
+	$gt = ClassLoader::getInstance()->getClassInstance( 'Core_Translation' )->_get($domain);
 	if (!$gt) 
 	{
 		return $key;

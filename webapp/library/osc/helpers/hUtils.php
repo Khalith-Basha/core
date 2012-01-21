@@ -32,7 +32,8 @@
  */
 function __get($key) 
 {
-	return View::newInstance()->_get($key);
+	$view = ClassLoader::getInstance()->getClassInstance( 'View' );
+	return $view->_get($key);
 }
 /**
  * Get variable from $_REQUEST[$key]
@@ -95,8 +96,10 @@ function osc_field($item, $field, $locale)
  */
 function osc_show_widgets($location) 
 {
-	$widgets = Widget::newInstance()->findByLocation($location);
-	foreach ($widgets as $w) echo $w['s_content'];
+	$widget = ClassLoader::getInstance()->getClassInstance( 'Model_Widget' );
+	$widgets = $widget->findByLocation($location);
+	foreach ($widgets as $w)
+		echo $w['s_content'];
 }
 /**
  * Print recaptcha html, if $section = "recover_password"
@@ -113,7 +116,8 @@ function osc_show_recaptcha($section = '')
 		switch ($section) 
 		{
 		case ('recover_password'):
-			$time = Session::newInstance()->_get('recover_time');
+			$session = ClassLoader::getInstance()->getClassInstance( 'Session' );
+			$time = $session->_get('recover_time');
 			if ((time() - $time) <= 1200) 
 			{
 				echo recaptcha_get_html(osc_recaptcha_public_key()) . "<br />";

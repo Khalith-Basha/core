@@ -23,15 +23,6 @@ class OldView
 {
 	private $aExported;
 	private $aCurrent;
-	private static $instance;
-	public static function newInstance() 
-	{
-		if (!self::$instance instanceof self) 
-		{
-			self::$instance = new self;
-		}
-		return self::$instance;
-	}
 	function __construct() 
 	{
 		$this->aExported = array();

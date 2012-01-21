@@ -31,13 +31,15 @@
  */
 function osc_static_page() 
 {
-	if (View::newInstance()->_exists('pages')) 
+	$classLoader = ClassLoader::getInstance();
+	$view = $classLoader->getClassInstance( 'View' );
+	if ($view->_exists('pages')) 
 	{
-		$page = View::newInstance()->_current('pages');
+		$page = $view->_current('pages');
 	}
-	else if (View::newInstance()->_exists('page')) 
+	else if ($view->_exists('page')) 
 	{
-		$page = View::newInstance()->_get('page');
+		$page = $view->_get('page');
 	}
 	else
 	{
@@ -154,8 +156,11 @@ function osc_static_page_url($locale = '')
  */
 function osc_get_static_page($internal_name, $locale = '') 
 {
-	if ($locale == "") $locale = osc_current_user_locale();
-	return View::newInstance()->_exportVariableToView('page', Page::newInstance()->findByInternalName($internal_name, $locale));
+	$classLoader = ClassLoader::getInstance();
+	$view = $classLoader->getClassInstance( 'View' );
+	if ($locale == "")
+		$locale = osc_current_user_locale();
+	return $view->_exportVariableToView('page', $classLoader->getClassInstance( 'Model_Page' )->findByInternalName($internal_name, $locale));
 }
 /**
  * Gets the total of static pages. If static pages are not loaded, this function will load them.
@@ -164,11 +169,14 @@ function osc_get_static_page($internal_name, $locale = '')
  */
 function osc_count_static_pages() 
 {
-	if (!View::newInstance()->_exists('pages')) 
+	$classLoader = ClassLoader::getInstance();
+	$view = $classLoader->getClassInstance( 'View' );
+
+	if (!$view->_exists('pages')) 
 	{
-		View::newInstance()->_exportVariableToView('pages', Page::newInstance()->listAll(false));
+		$view->_exportVariableToView('pages', $classLoader->getClassInstance( 'Model_Page' )->listAll(false));
 	}
-	return View::newInstance()->_count('pages');
+	return $view->_count('pages');
 }
 /**
  * Let you know if there are more static pages in the list. If static pages are not loaded,
@@ -178,11 +186,14 @@ function osc_count_static_pages()
  */
 function osc_has_static_pages() 
 {
-	if (!View::newInstance()->_exists('pages')) 
+	$classLoader = ClassLoader::getInstance();
+	$view = $classLoader->getClassInstance( 'View' );
+
+	if (!$view->_exists('pages')) 
 	{
-		View::newInstance()->_exportVariableToView('pages', Page::newInstance()->listAll(false));
+		$view->_exportVariableToView('pages', $classLoader->getClassInstance( 'Model_Page' )->listAll(false));
 	}
-	return View::newInstance()->_next('pages');
+	return $view->_next('pages');
 }
 /**
  * Move the iterator to the first position of the pages array
@@ -193,5 +204,8 @@ function osc_has_static_pages()
  */
 function osc_reset_static_pages() 
 {
-	return View::newInstance()->_erase('pages');
+	$classLoader = ClassLoader::getInstance();
+	$view = $classLoader->getClassInstance( 'View' );
+
+	return $view->_erase('pages');
 }

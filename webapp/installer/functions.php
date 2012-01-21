@@ -206,7 +206,7 @@ function oc_install()
 	{
 		$adminuser = Params::getParam('admin_username');
 		$adminpwd = Params::getParam('admin_password');
-		$master_conn = new DBConnectionClass($dbhost, $adminuser, $adminpwd, '');
+		$master_conn = new Database_Connection($dbhost, $adminuser, $adminpwd, '');
 		$error_num = $master_conn->getErrorConnectionLevel();
 		if ($error_num > 0) 
 		{
@@ -249,7 +249,7 @@ function oc_install()
 		unset($comm);
 		unset($master_conn);
 	}
-	$conn = new DBConnectionClass($dbhost, $username, $password, $dbname);
+	$conn = new Database_Connection($dbhost, $username, $password, $dbname);
 	$error_num = $conn->getErrorLevel();
 	if ($error_num > 0) 
 	{

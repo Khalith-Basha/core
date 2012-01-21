@@ -17,19 +17,12 @@
  */
 class CWebIndex extends Controller
 {
-	function __construct() 
+	public function doModel() 
 	{
-		parent::__construct();
-	}
-	function doModel() 
-	{
-		$this->doView('main.php');
-	}
-	function doView($file) 
-	{
+		require 'osc/functions.php';
 		osc_run_hook("before_html");
-		osc_current_web_theme_path($file);
-		Session::newInstance()->_clearVariables();
+		osc_current_web_theme_path( 'main.php' );
+		$this->getSession()->_clearVariables();
 		osc_run_hook("after_html");
 	}
 }

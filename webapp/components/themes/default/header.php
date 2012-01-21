@@ -18,6 +18,8 @@
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
+$userForm = $classLoader->getClassInstance( 'Form_User' );
 ?>
 <div id="header">
     <a id="logo" href="<?php echo osc_base_url(); ?>"><strong><?php echo osc_page_title(); ?></strong></a>
@@ -63,14 +65,11 @@ if (osc_users_enabled())
                                 <input type="hidden" name="action" value="login_post" />
                                 <label for="email"><?php
 		_e('E-mail', 'modern'); ?></label>
-                                <?php
-		UserForm::email_login_text(); ?>
+                                <?php $userForm->email_login_text(); ?>
                                 <label for="password"><?php
 		_e('Password', 'modern'); ?></label>
-                                <?php
-		UserForm::password_login_text(); ?>
-                                <p class="checkbox"><?php
-		UserForm::rememberme_login_checkbox(); ?> <label for="rememberMe"><?php
+                                <?php $userForm->password_login_text(); ?>
+                                <p class="checkbox"><?php $userForm->rememberme_login_checkbox(); ?> <label for="rememberMe"><?php
 		_e('Remember me', 'modern'); ?></label></p>
                                 <button type="submit"><?php
 		_e('Log in', 'modern'); ?></button>

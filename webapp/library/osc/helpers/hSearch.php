@@ -31,14 +31,16 @@
  */
 function osc_search() 
 {
-	if (View::newInstance()->_exists('search')) 
+	$classLoader = ClassLoader::getInstance();
+	$view = $classLoader->getClassInstance( 'View' );
+	if ($view->_exists('search')) 
 	{
-		return View::newInstance()->_get('search');
+		return $view->_get('search');
 	}
 	else
 	{
-		$search = new Search();
-		View::newInstance()->_exportVariableToView('search', $search);
+		$search = $classLoader->getClassInstance( 'Model_Search' );
+		$view->_exportVariableToView('search', $search);
 		return $search;
 	}
 }
@@ -58,7 +60,8 @@ function osc_list_orders()
  */
 function osc_search_page() 
 {
-	return View::newInstance()->_get('search_page');
+	$view = ClassLoader::getInstance()->getClassInstance( 'View' );
+	return $view->_get('search_page');
 }
 /**
  * Gets total pages of search
@@ -67,7 +70,8 @@ function osc_search_page()
  */
 function osc_search_total_pages() 
 {
-	return View::newInstance()->_get('search_total_pages');
+	$view = ClassLoader::getInstance()->getClassInstance( 'View' );
+	return $view->_get('search_total_pages');
 }
 /**
  * Gets if "has pic" option is enabled or not in the search
@@ -76,7 +80,8 @@ function osc_search_total_pages()
  */
 function osc_search_has_pic() 
 {
-	return View::newInstance()->_get('search_has_pic');
+	$view = ClassLoader::getInstance()->getClassInstance( 'View' );
+	return $view->_get('search_has_pic');
 }
 /**
  * Gets current search order
@@ -85,7 +90,8 @@ function osc_search_has_pic()
  */
 function osc_search_order() 
 {
-	return View::newInstance()->_get('search_order');
+	$view = ClassLoader::getInstance()->getClassInstance( 'View' );
+	return $view->_get('search_order');
 }
 /**
  * Gets current search order type
@@ -94,7 +100,8 @@ function osc_search_order()
  */
 function osc_search_order_type() 
 {
-	return View::newInstance()->_get('search_order_type');
+	$view = ClassLoader::getInstance()->getClassInstance( 'View' );
+	return $view->_get('search_order_type');
 }
 /**
  * Gets current search pattern
@@ -103,9 +110,10 @@ function osc_search_order_type()
  */
 function osc_search_pattern() 
 {
-	if (View::newInstance()->_exists('search_pattern')) 
+	$view = ClassLoader::getInstance()->getClassInstance( 'View' );
+	if ($view->_exists('search_pattern')) 
 	{
-		return View::newInstance()->_get('search_pattern');
+		return $view->_get('search_pattern');
 	}
 	else
 	{
@@ -119,7 +127,8 @@ function osc_search_pattern()
  */
 function osc_search_region() 
 {
-	return View::newInstance()->_get('search_region');
+	$view = ClassLoader::getInstance()->getClassInstance( 'View' );
+	return $view->_get('search_region');
 }
 /**
  * Gets current search city
@@ -128,7 +137,8 @@ function osc_search_region()
  */
 function osc_search_city() 
 {
-	return View::newInstance()->_get('search_city');
+	$view = ClassLoader::getInstance()->getClassInstance( 'View' );
+	return $view->_get('search_city');
 }
 /**
  * Gets current search max price
@@ -137,7 +147,8 @@ function osc_search_city()
  */
 function osc_search_price_max() 
 {
-	return View::newInstance()->_get('search_price_max');
+	$view = ClassLoader::getInstance()->getClassInstance( 'View' );
+	return $view->_get('search_price_max');
 }
 /**
  * Gets current search min price
@@ -146,7 +157,8 @@ function osc_search_price_max()
  */
 function osc_search_price_min() 
 {
-	return View::newInstance()->_get('search_price_min');
+	$view = ClassLoader::getInstance()->getClassInstance( 'View' );
+	return $view->_get('search_price_min');
 }
 /**
  * Gets current search total items
@@ -155,7 +167,8 @@ function osc_search_price_min()
  */
 function osc_search_total_items() 
 {
-	return View::newInstance()->_get('search_total_items');
+	$view = ClassLoader::getInstance()->getClassInstance( 'View' );
+	return $view->_get('search_total_items');
 }
 /**
  * Gets current search "show as" variable (show the items as a list or as a gallery)
@@ -164,7 +177,8 @@ function osc_search_total_items()
  */
 function osc_search_show_as() 
 {
-	return View::newInstance()->_get('search_show_as');
+	$view = ClassLoader::getInstance()->getClassInstance( 'View' );
+	return $view->_get('search_show_as');
 }
 /**
  * Gets current search start item record
@@ -173,7 +187,8 @@ function osc_search_show_as()
  */
 function osc_search_start() 
 {
-	return View::newInstance()->_get('search_start');
+	$view = ClassLoader::getInstance()->getClassInstance( 'View' );
+	return $view->_get('search_start');
 }
 /**
  * Gets current search end item record
@@ -182,7 +197,8 @@ function osc_search_start()
  */
 function osc_search_end() 
 {
-	return View::newInstance()->_get('search_end');
+	$view = ClassLoader::getInstance()->getClassInstance( 'View' );
+	return $view->_get('search_end');
 }
 /**
  * Gets current search category
@@ -191,17 +207,18 @@ function osc_search_end()
  */
 function osc_search_category() 
 {
-	if (View::newInstance()->_exists('search_subcategories')) 
+	$view = ClassLoader::getInstance()->getClassInstance( 'View' );
+	if ($view->_exists('search_subcategories')) 
 	{
-		$category = View::newInstance()->_current('search_subcategories');
+		$category = $view->_current('search_subcategories');
 	}
-	elseif (View::newInstance()->_exists('search_categories')) 
+	elseif ($view->_exists('search_categories')) 
 	{
-		$category = View::newInstance()->_current('search_categories');
+		$category = $view->_current('search_categories');
 	}
 	else
 	{
-		$category = View::newInstance()->_get('search_category');
+		$category = $view->_get('search_category');
 	}
 	return ($category);
 }
@@ -265,12 +282,13 @@ function osc_update_search_url($params, $delimiter = '&amp;')
  */
 function osc_alert_form() 
 {
-	if (!View::newInstance()->_exists('search_alert')) 
+	$view = ClassLoader::getInstance()->getClassInstance( 'View' );
+	if (!$view->_exists('search_alert')) 
 	{
 		$search = osc_search();
 		$search->order();
 		$search->limit();
-		View::newInstance()->_exportVariableToView('search_alert', base64_encode(serialize($search)));
+		$view->_exportVariableToView('search_alert', base64_encode(serialize($search)));
 	}
 	osc_current_web_theme_path('alert-form.php');
 }
@@ -281,7 +299,8 @@ function osc_alert_form()
  */
 function osc_search_alert() 
 {
-	return View::newInstance()->_get('search_alert');
+	$view = ClassLoader::getInstance()->getClassInstance( 'View' );
+	return $view->_get('search_alert');
 }
 /**
  * Gets for a default search (all categories, noother option)
@@ -324,9 +343,10 @@ function osc_search_url($params = null)
  */
 function osc_list_country() 
 {
-	if (View::newInstance()->_exists('list_countries')) 
+	$view = ClassLoader::getInstance()->getClassInstance( 'View' );
+	if ($view->_exists('list_countries')) 
 	{
-		return View::newInstance()->_current('list_countries');
+		return $view->_current('list_countries');
 	}
 	else
 	{
@@ -340,9 +360,10 @@ function osc_list_country()
  */
 function osc_list_region() 
 {
-	if (View::newInstance()->_exists('list_regions')) 
+	$view = ClassLoader::getInstance()->getClassInstance( 'View' );
+	if ($view->_exists('list_regions')) 
 	{
-		return View::newInstance()->_current('list_regions');
+		return $view->_current('list_regions');
 	}
 	else
 	{
@@ -356,9 +377,10 @@ function osc_list_region()
  */
 function osc_list_city() 
 {
-	if (View::newInstance()->_exists('list_cities')) 
+	$view = ClassLoader::getInstance()->getClassInstance( 'View' );
+	if ($view->_exists('list_cities')) 
 	{
-		return View::newInstance()->_current('list_cities');
+		return $view->_current('list_cities');
 	}
 	else
 	{
@@ -372,11 +394,13 @@ function osc_list_city()
  */
 function osc_has_list_countries() 
 {
-	if (!View::newInstance()->_exists('list_countries')) 
+	$classLoader = ClassLoader::getInstance();
+	$view = $classLoader->getClassInstance( 'View' );
+	if (!$view->_exists('list_countries')) 
 	{
-		View::newInstance()->_exportVariableToView('list_countries', Search::newInstance()->listCountries('>='));
+		$view->_exportVariableToView('list_countries', $classLoader->getClassInstance( 'Model_Search' )->listCountries('>='));
 	}
-	return View::newInstance()->_next('list_countries');
+	return $view->_next('list_countries');
 }
 /**
  * Gets the next region in the list_regions list
@@ -386,11 +410,13 @@ function osc_has_list_countries()
  */
 function osc_has_list_regions($country = '%%%%') 
 {
-	if (!View::newInstance()->_exists('list_regions')) 
+	$classLoader = ClassLoader::getInstance();
+	$view = $classLoader->getClassInstance( 'View' );
+	if (!$view->_exists('list_regions')) 
 	{
-		View::newInstance()->_exportVariableToView('list_regions', Search::newInstance()->listRegions($country, '>'));
+		$view->_exportVariableToView('list_regions', $classLoader->getClassInstance( 'Model_Search' )->listRegions($country, '>'));
 	}
-	return View::newInstance()->_next('list_regions');
+	return $view->_next('list_regions');
 }
 /**
  * Gets the next city in the list_cities list
@@ -400,12 +426,14 @@ function osc_has_list_regions($country = '%%%%')
  */
 function osc_has_list_cities($region = '%%%%') 
 {
-	if (!View::newInstance()->_exists('list_cities')) 
+	$classLoader = ClassLoader::getInstance();
+	$view = $classLoader->getClassInstance( 'View' );
+	if (!$view->_exists('list_cities')) 
 	{
-		View::newInstance()->_exportVariableToView('list_cities', Search::newInstance()->listCities($region, '>='));
+		$view->_exportVariableToView('list_cities', $classLoader->getClassInstance( 'Model_Search' )->listCities($region, '>='));
 	}
-	$result = View::newInstance()->_next('list_cities');
-	if (!$result) View::newInstance()->_erase('list_cities');
+	$result = $view->_next('list_cities');
+	if (!$result) $view->_erase('list_cities');
 	return $result;
 }
 /**
@@ -415,11 +443,13 @@ function osc_has_list_cities($region = '%%%%')
  */
 function osc_count_list_countries() 
 {
-	if (!View::newInstance()->_exists('list_countries')) 
+	$classLoader = ClassLoader::getInstance();
+	$view = $classLoader->getClassInstance( 'View' );
+	if (!$view->_exists('list_countries')) 
 	{
-		View::newInstance()->_exportVariableToView('list_countries', Search::newInstance()->listCountries());
+		$view->_exportVariableToView('list_countries', $classLoader->getClassInstance( 'Model_Search' )->listCountries());
 	}
-	return View::newInstance()->_count('list_countries');
+	return $view->_count('list_countries');
 }
 /**
  * Gets the total number of regions in list_regions
@@ -429,11 +459,13 @@ function osc_count_list_countries()
  */
 function osc_count_list_regions($country = '%%%%') 
 {
-	if (!View::newInstance()->_exists('list_regions')) 
+	$classLoader = ClassLoader::getInstance();
+	$view = $classLoader->getClassInstance( 'View' );
+	if (!$view->_exists('list_regions')) 
 	{
-		View::newInstance()->_exportVariableToView('list_regions', Search::newInstance()->listRegions($country));
+		$view->_exportVariableToView('list_regions', $classLoader->getClassInstance( 'Model_Search' )->listRegions($country));
 	}
-	return View::newInstance()->_count('list_regions');
+	return $view->_count('list_regions');
 }
 /**
  * Gets the total number of cities in list_cities
@@ -443,11 +475,13 @@ function osc_count_list_regions($country = '%%%%')
  */
 function osc_count_list_cities($region = '%%%%') 
 {
-	if (!View::newInstance()->_exists('list_cities')) 
+	$classLoader = ClassLoader::getInstance();
+	$view = $classLoader->getClassInstance( 'View' );
+	if (!$view->_exists('list_cities')) 
 	{
-		View::newInstance()->_exportVariableToView('list_cities', Search::newInstance()->listCities($region));
+		$view->_exportVariableToView('list_cities', $classLoader->getClassInstance( 'Model_Search' )->listCities($region));
 	}
-	return View::newInstance()->_count('list_cities');
+	return $view->_count('list_cities');
 }
 /**
  * Gets the the name of current "list region"
@@ -523,11 +557,12 @@ function osc_list_city_url()
  */
 function osc_get_latest_searches($limit = 20) 
 {
-	if (!View::newInstance()->_exists('latest_searches')) 
+	$view = ClassLoader::getInstance()->getClassInstance( 'View' );
+	if (!$view->_exists('latest_searches')) 
 	{
-		View::newInstance()->_exportVariableToView('latest_searches', LatestSearches::newInstance()->getSearches($limit));
+		$view->_exportVariableToView('latest_searches', LatestSearches::newInstance()->getSearches($limit));
 	}
-	return View::newInstance()->_count('latest_searches');
+	return $view->_count('latest_searches');
 }
 /**
  * Gets the total number of latest searches done in the website
@@ -536,11 +571,12 @@ function osc_get_latest_searches($limit = 20)
  */
 function osc_count_latest_searches() 
 {
-	if (!View::newInstance()->_exists('latest_searches')) 
+	$view = ClassLoader::getInstance()->getClassInstance( 'View' );
+	if (!$view->_exists('latest_searches')) 
 	{
-		View::newInstance()->_exportVariableToView('latest_searches', LatestSearches::newInstance()->getSearches());
+		$view->_exportVariableToView('latest_searches', LatestSearches::newInstance()->getSearches());
 	}
-	return View::newInstance()->_count('latest_searches');
+	return $view->_count('latest_searches');
 }
 /**
  * Gets the next latest search
@@ -549,11 +585,12 @@ function osc_count_latest_searches()
  */
 function osc_has_latest_searches() 
 {
-	if (!View::newInstance()->_exists('latest_searches')) 
+	$view = ClassLoader::getInstance()->getClassInstance( 'View' );
+	if (!$view->_exists('latest_searches')) 
 	{
-		View::newInstance()->_exportVariableToView('latest_searches', LatestSearches::newInstance()->getSearches());
+		$view->_exportVariableToView('latest_searches', LatestSearches::newInstance()->getSearches());
 	}
-	return View::newInstance()->_next('latest_searches');
+	return $view->_next('latest_searches');
 }
 /**
  * Gets the current latest search
@@ -562,9 +599,10 @@ function osc_has_latest_searches()
  */
 function osc_latest_search() 
 {
-	if (View::newInstance()->_exists('latest_searches')) 
+	$view = ClassLoader::getInstance()->getClassInstance( 'View' );
+	if ($view->_exists('latest_searches')) 
 	{
-		return View::newInstance()->_current('latest_searches');
+		return $view->_current('latest_searches');
 	}
 	return null;
 }

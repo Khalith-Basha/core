@@ -42,13 +42,14 @@ function osc_locale_field($field, $locale = '')
  */
 function osc_locale() 
 {
-	if (View::newInstance()->_exists('locales')) 
+	$view = ClassLoader::getInstance()->getClassInstance( 'View' );
+	if ($view->_exists('locales')) 
 	{
-		$locale = View::newInstance()->_current('locales');
+		$locale = $view->_current('locales');
 	}
-	elseif (View::newInstance()->_exists('locale')) 
+	elseif ($view->_exists('locale')) 
 	{
-		$locale = View::newInstance()->_get('locale');
+		$locale = $view->_get('locale');
 	}
 	else
 	{
@@ -63,14 +64,16 @@ function osc_locale()
  */
 function osc_get_locales() 
 {
-	if (!View::newInstance()->_exists('locales')) 
+	$classLoader = ClassLoader::getInstance();
+	$view = $classLoader->getClassInstance( 'View' );
+	if (!$view->_exists('locales')) 
 	{
-		$locale = Locale::newInstance()->listAllEnabled();
-		View::newInstance()->_exportVariableToView("locales", $locale);
+		$locale = $classLoader->getClassInstance( 'Model_Locale' )->listAllEnabled();
+		$view->_exportVariableToView("locales", $locale);
 	}
 	else
 	{
-		$locale = View::newInstance()->_get('locales');
+		$locale = $view->_get('locales');
 	}
 	return $locale;
 }
@@ -81,7 +84,8 @@ function osc_get_locales()
  */
 function osc_priv_count_locales() 
 {
-	return View::newInstance()->_count('locales');
+	$view = ClassLoader::getInstance()->getClassInstance( 'View' );
+	return $view->_count('locales');
 }
 /**
  * Reset iterator of locales
@@ -90,7 +94,8 @@ function osc_priv_count_locales()
  */
 function osc_goto_first_locale() 
 {
-	View::newInstance()->_reset('locales');
+	$view = ClassLoader::getInstance()->getClassInstance( 'View' );
+	$view->_reset('locales');
 }
 /**
  * Gets number of enabled locales for website
@@ -99,9 +104,11 @@ function osc_goto_first_locale()
  */
 function osc_count_web_enabled_locales() 
 {
-	if (!View::newInstance()->_exists('locales')) 
+	$classLoader = ClassLoader::getInstance();
+	$view = $classLoader->getClassInstance( 'View' );
+	if (!$view->_exists('locales')) 
 	{
-		View::newInstance()->_exportVariableToView('locales', Locale::newInstance()->listAllEnabled());
+		$view->_exportVariableToView('locales', $classLoader->getClassInstance( 'Model_Locale' )->listAllEnabled());
 	}
 	return osc_priv_count_locales();
 }
@@ -112,11 +119,13 @@ function osc_count_web_enabled_locales()
  */
 function osc_has_web_enabled_locales() 
 {
-	if (!View::newInstance()->_exists('locales')) 
+	$classLoader = ClassLoader::getInstance();
+	$view = $classLoader->getClassInstance( 'View' );
+	if (!$view->_exists('locales')) 
 	{
-		View::newInstance()->_exportVariableToView('locales', Locale::newInstance()->listAllEnabled());
+		$view->_exportVariableToView('locales', $classLoader->getClassInstance( 'Model_Locale' )->listAllEnabled());
 	}
-	return View::newInstance()->_next('locales');
+	return $view->_next('locales');
 }
 /**
  * Gets current locale's code
@@ -219,7 +228,8 @@ function osc_locale_num_dec()
  */
 function osc_all_enabled_locales_for_admin($indexed_by_pk = false) 
 {
-	return (Locale::newInstance()->listAllEnabled(true, $indexed_by_pk));
+	$classLoader = ClassLoader::getInstance();
+	return ($classLoader->getClassInstance( 'Model_Locale' )->listAllEnabled(true, $indexed_by_pk));
 }
 /**
  * Gets current locale object
@@ -228,7 +238,9 @@ function osc_all_enabled_locales_for_admin($indexed_by_pk = false)
  */
 function osc_get_current_user_locale() 
 {
-	View::newInstance()->_exportVariableToView('locale', Locale::newInstance()->findByPrimaryKey(osc_current_user_locale()));
+	$classLoader = ClassLoader::getInstance();
+	$view = $classLoader->getClassInstance( 'View' );
+	$view->_exportVariableToView('locale', $classLoader->getClassInstance( 'Model_Locale' )->findByPrimaryKey(osc_current_user_locale()));
 }
 /**
  * Get the actual locale of the user.
@@ -240,9 +252,10 @@ function osc_get_current_user_locale()
  */
 function osc_current_user_locale() 
 {
-	if (Session::newInstance()->_get('userLocale') != '') 
+	$session = ClassLoader::getInstance()->getClassInstance( 'Session' );
+	if ( $session->_get('userLocale') != '') 
 	{
-		return Session::newInstance()->_get('userLocale');
+		return $session->_get('userLocale');
 	}
 	return osc_language();
 }
@@ -256,9 +269,10 @@ function osc_current_user_locale()
  */
 function osc_current_admin_locale() 
 {
-	if (Session::newInstance()->_get('adminLocale') != '') 
+	$session = ClassLoader::getInstance()->getClassInstance( 'Session' );
+	if ( $session->_get('adminLocale') != '') 
 	{
-		return Session::newInstance()->_get('adminLocale');
+		return $session->_get('adminLocale');
 	}
 	return osc_admin_language();
 }

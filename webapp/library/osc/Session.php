@@ -21,11 +21,6 @@
 
 class Session
 {
-	public static function newInstance()
-	{
-		return $GLOBALS['classLoader']->getClassInstance( 'Session' );
-	}
-
 	private $session;
 
 	public function start() 

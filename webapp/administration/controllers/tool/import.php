@@ -38,7 +38,7 @@ class CAdminTool extends AdminSecBaseModel
 			if (isset($sql['size']) && $sql['size'] != 0) 
 			{
 				$content_file = file_get_contents($sql['tmp_name']);
-				$conn = DBConnectionClass::newInstance();
+				$conn = Database_Connection::newInstance();
 				$c_db = $conn->getOsclassDb();
 				$comm = new DBCommandClass($c_db);
 				if ($comm->importSQL($content_file)) 

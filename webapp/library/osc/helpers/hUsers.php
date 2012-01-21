@@ -48,9 +48,10 @@ function osc_user()
  */
 function osc_is_web_user_logged_in() 
 {
-	if (Session::newInstance()->_get("userId") != '') 
+	$session = ClassLoader::getInstance()->getClassInstance( 'Session' );
+	if ( $session->_get("userId") != '') 
 	{
-		$user = User::newInstance()->findByPrimaryKey(Session::newInstance()->_get("userId"));
+		$user = User::newInstance()->findByPrimaryKey( $session->_get("userId"));
 		if (isset($user['b_enabled']) && $user['b_enabled'] == 1) 
 		{
 			return true;
@@ -61,16 +62,18 @@ function osc_is_web_user_logged_in()
 		}
 	}
 	//can already be a logged user or not, we'll take a look into the cookie
-	if (Cookie::newInstance()->get_value('oc_userId') != '' && Cookie::newInstance()->get_value('oc_userSecret') != '') 
+
+	$cookie = ClassLoader::getInstance()->getClassInstance( 'Cookie' );
+	if ($cookie->get_value('oc_userId') != '' && $cookie->get_value('oc_userSecret') != '') 
 	{
-		$user = User::newInstance()->findByIdSecret(Cookie::newInstance()->get_value('oc_userId'), Cookie::newInstance()->get_value('oc_userSecret'));
+		$user = User::newInstance()->findByIdSecret($cookie->get_value('oc_userId'), $cookie->get_value('oc_userSecret'));
 		if (isset($user['b_enabled']) && $user['b_enabled'] == 1) 
 		{
-			Session::newInstance()->_set('userId', $user['pk_i_id']);
-			Session::newInstance()->_set('userName', $user['s_name']);
-			Session::newInstance()->_set('userEmail', $user['s_email']);
+			$session->_set('userId', $user['pk_i_id']);
+			$session->_set('userName', $user['s_name']);
+			$session->_set('userEmail', $user['s_email']);
 			$phone = ($user['s_phone_mobile']) ? $user['s_phone_mobile'] : $user['s_phone_land'];
-			Session::newInstance()->_set('userPhone', $phone);
+			$session->_set('userPhone', $phone);
 			return true;
 		}
 		else
@@ -87,7 +90,8 @@ function osc_is_web_user_logged_in()
  */
 function osc_logged_user_id() 
 {
-	return (int)Session::newInstance()->_get("userId");
+	$session = ClassLoader::getInstance()->getClassInstance( 'Session' );
+	return (int)$session->_get("userId");
 }
 /**
  * Gets logged user mail
@@ -96,7 +100,8 @@ function osc_logged_user_id()
  */
 function osc_logged_user_email() 
 {
-	return (string)Session::newInstance()->_get('userEmail');
+	$session = ClassLoader::getInstance()->getClassInstance( 'Session' );
+	return (string)$session->_get('userEmail');
 }
 /**
  * Gets logged user email
@@ -105,7 +110,8 @@ function osc_logged_user_email()
  */
 function osc_logged_user_name() 
 {
-	return (string)Session::newInstance()->_get('userName');
+	$session = ClassLoader::getInstance()->getClassInstance( 'Session' );
+	return (string)$session->_get('userName');
 }
 /**
  * Gets logged user phone
@@ -114,7 +120,8 @@ function osc_logged_user_name()
  */
 function osc_logged_user_phone() 
 {
-	return (string)Session::newInstance()->_get('userPhone');
+	$session = ClassLoader::getInstance()->getClassInstance( 'Session' );
+	return (string)$session->_get('userPhone');
 }
 /**
  * Gets user's profile url
@@ -151,9 +158,10 @@ function osc_user_public_profile_url($id = null)
  */
 function osc_is_admin_user_logged_in() 
 {
-	if (Session::newInstance()->_get("adminId") != '') 
+	$session = ClassLoader::getInstance()->getClassInstance( 'Session' );
+	if ($session->_get("adminId") != '') 
 	{
-		$admin = Admin::newInstance()->findByPrimaryKey(Session::newInstance()->_get("adminId"));
+		$admin = Admin::newInstance()->findByPrimaryKey($session->_get("adminId"));
 		if (isset($admin['pk_i_id'])) 
 		{
 			return true;
@@ -164,16 +172,17 @@ function osc_is_admin_user_logged_in()
 		}
 	}
 	//can already be a logged user or not, we'll take a look into the cookie
-	if (Cookie::newInstance()->get_value('oc_adminId') != '' && Cookie::newInstance()->get_value('oc_adminSecret') != '') 
+	$cookie = ClassLoader::getInstance()->getClassInstance( 'Cookie' );
+	if ($cookie->get_value('oc_adminId') != '' && $cookie->get_value('oc_adminSecret') != '') 
 	{
-		$admin = Admin::newInstance()->findByIdSecret(Cookie::newInstance()->get_value('oc_adminId'), Cookie::newInstance()->get_value('oc_adminSecret'));
+		$admin = Admin::newInstance()->findByIdSecret($cookie->get_value('oc_adminId'), $cookie->get_value('oc_adminSecret'));
 		if (isset($admin['pk_i_id'])) 
 		{
-			Session::newInstance()->_set('adminId', $admin['pk_i_id']);
-			Session::newInstance()->_set('adminUserName', $admin['s_username']);
-			Session::newInstance()->_set('adminName', $admin['s_name']);
-			Session::newInstance()->_set('adminEmail', $admin['s_email']);
-			Session::newInstance()->_set('adminLocale', Cookie::newInstance()->get_value('oc_adminLocale'));
+			$session->_set('adminId', $admin['pk_i_id']);
+			$session->_set('adminUserName', $admin['s_username']);
+			$session->_set('adminName', $admin['s_name']);
+			$session->_set('adminEmail', $admin['s_email']);
+			$session->_set('adminLocale', $cookie->get_value('oc_adminLocale'));
 			return true;
 		}
 		else
@@ -190,7 +199,8 @@ function osc_is_admin_user_logged_in()
  */
 function osc_logged_admin_id() 
 {
-	return (int)Session::newInstance()->_get("adminId");
+	$session = ClassLoader::getInstance()->getClassInstance( 'Session' );
+	return (int)$session->_get("adminId");
 }
 /**
  * Gets logged admin username
@@ -199,7 +209,8 @@ function osc_logged_admin_id()
  */
 function osc_logged_admin_username() 
 {
-	return (string)Session::newInstance()->_get('adminUserName');
+	$session = ClassLoader::getInstance()->getClassInstance( 'Session' );
+	return (string)$session->_get('adminUserName');
 }
 /**
  * Gets logged admin name
@@ -207,7 +218,8 @@ function osc_logged_admin_username()
  */
 function osc_logged_admin_name() 
 {
-	return (string)Session::newInstance()->_get('adminName');
+	$session = ClassLoader::getInstance()->getClassInstance( 'Session' );
+	return (string)$session->_get('adminName');
 }
 /**
  * Gets logged admin email
@@ -216,7 +228,8 @@ function osc_logged_admin_name()
  */
 function osc_logged_admin_email() 
 {
-	return (string)Session::newInstance()->_get('adminEmail');
+	$session = ClassLoader::getInstance()->getClassInstance( 'Session' );
+	return (string)$session->_get('adminEmail');
 }
 /**
  * Gets name of current user

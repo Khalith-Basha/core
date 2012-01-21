@@ -2,15 +2,6 @@
 
 class ItemUrls
 {
-	private static $singleton = null;
-
-	public static function getInstance()
-	{
-		if( is_null( self::$singleton ) )
-			self::$singleton = new self;
-		return self::$singleton;
-	}
-
 	private $urls;
 
 	public function __construct()

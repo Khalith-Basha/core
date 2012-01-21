@@ -2,9 +2,9 @@
 define('ABS_PATH', dirname(dirname(dirname(__FILE__))));
 set_include_path(get_include_path() . PATH_SEPARATOR . ABS_PATH . DIRECTORY_SEPARATOR . 'library');
 require_once ABS_PATH . '/config.php';
-require_once 'osc/classes/database/DBConnectionClass.php';
+require_once 'osc/classes/database/Database_Connection.php';
 require_once 'osc/classes/database/DBCommandClass.php';
-require_once 'osc/classes/database/DBRecordsetClass.php';
+require_once 'osc/classes/database/Database_Collection.php';
 require_once 'osc/classes/database/DAO.php';
 require_once 'osc/Logger/Logger.php';
 require_once 'osc/core/Params.php';

@@ -207,7 +207,7 @@ class ItemActions
 	 */
 	protected function updateItemStatus( array &$item )
 	{
-		$conn = DBConnectionClass::newInstance()->getConnection();
+		$conn = ClassLoader::getInstance()->getClassInstance( 'Database_Connection' );
 
 		$bwList = getBadWordsList( $conn );
 

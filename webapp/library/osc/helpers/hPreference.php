@@ -721,7 +721,8 @@ function osc_get_preference($key, $section = 'osclass')
  */
 function osc_set_preference($key, $value = '', $section = 'osclass', $type = 'STRING') 
 {
-	return Preference::newInstance()->replace($key, $value, $section, $type);
+	$_P = ClassLoader::getInstance()->getClassInstance( 'Model_Preference' );
+	return $_P->replace($key, $value, $section, $type);
 }
 /**
  * generic function to delete preferences
@@ -732,7 +733,8 @@ function osc_set_preference($key, $value = '', $section = 'osclass', $type = 'ST
  */
 function osc_delete_preference($key = '', $section = 'osclass') 
 {
-	return Preference::newInstance()->delete(array('s_name' => $key, 's_section' => $section));
+	$_P = ClassLoader::getInstance()->getClassInstance( 'Model_Preference' );
+	return $_P->delete(array('s_name' => $key, 's_section' => $section));
 }
 /**
  * Reload preferences
@@ -741,7 +743,8 @@ function osc_delete_preference($key = '', $section = 'osclass')
  */
 function osc_reset_preferences() 
 {
-	return Preference::newInstance()->toArray();
+	$_P = ClassLoader::getInstance()->getClassInstance( 'Model_Preference' );
+	return $_P->toArray();
 }
 /**
  * Return if need mark images with text
@@ -814,15 +817,8 @@ function osc_watermark_place()
  */
 function getBoolPreference($key) 
 {
-	$_P = Preference::newInstance();
-	if ($_P->get($key)) 
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
+	$_P = ClassLoader::getInstance()->getClassInstance( 'Model_Preference' );
+	return $_P->get($key);
 }
 //PRIVATE FUNCTION FOR GETTING NO BOOLEAN INFORMATION (if there was a class :P)
 
@@ -835,6 +831,6 @@ function getBoolPreference($key)
  */
 function getPreference($key, $section = 'osclass') 
 {
-	$_P = Preference::newInstance();
+	$_P = ClassLoader::getInstance()->getClassInstance( 'Model_Preference' );
 	return ($_P->get($key, $section));
 }

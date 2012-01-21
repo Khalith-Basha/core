@@ -28,7 +28,8 @@ if (!function_exists('add_logo_header'))
                               $('#logo').html('" . $html . "');
                           });
                       </script>";
-		if (file_exists(WebThemes::newInstance()->getCurrentThemePath() . "images/logo.jpg")) 
+		$themes = ClassLoader::getInstance()->getClassInstance( 'WebThemes' );
+		if (file_exists( $themes->getCurrentThemePath() . "images/logo.jpg")) 
 		{
 			echo $js;
 		}
@@ -50,8 +51,9 @@ if (!function_exists('meta_title'))
 {
 	function meta_title() 
 	{
-		$location = Rewrite::newInstance()->get_location();
-		$section = Rewrite::newInstance()->get_section();
+		$rewrite = ClassLoader::getInstance()->getClassInstance( 'Rewrite' );
+		$location = $rewrite->get_location();
+		$section = $rewrite->get_section();
 		switch ($location) 
 		{
 		case ('item'):
@@ -116,7 +118,8 @@ if (!function_exists('meta_title'))
 			if ($b_category) 
 			{
 				$list = array();
-				$aCategories = Category::newInstance()->toRootTree($category);
+				$category = ClassLoader::getInstance()->getClassInstance( 'Category' );
+				$aCategories = $category->toRootTree($category);
 				if (count($aCategories) > 0) 
 				{
 					foreach ($aCategories as $single) 
@@ -209,8 +212,9 @@ if (!function_exists('meta_description'))
 {
 	function meta_description() 
 	{
-		$location = Rewrite::newInstance()->get_location();
-		$section = Rewrite::newInstance()->get_section();
+		$rewrite = ClassLoader::getInstance()->getClassInstance( 'Rewrite' );
+		$location = $rewrite->get_location();
+		$section = $rewrite->get_section();
 		$text = '';
 		switch ($location) 
 		{

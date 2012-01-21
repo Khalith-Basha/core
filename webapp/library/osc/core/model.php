@@ -6,7 +6,7 @@ class Model
 
 	public function __construct()
 	{
-		$this->conn = DBConnectionClass::newInstance()->getConnection();
+		$this->conn = ClassLoader::getInstance()->getClassInstance( 'Database_Connection' );
 	}
 
 	public function __destruct()

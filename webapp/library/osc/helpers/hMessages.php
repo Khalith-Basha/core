@@ -33,7 +33,7 @@
  */
 function osc_add_flash_message($msg, $section = 'pubMessages') 
 {
-	Session::newInstance()->_setMessage($section, $msg, 'error');
+	ClassLoader::getInstance()->getClassInstance( 'Session' )->_setMessage($section, $msg, 'error');
 }
 /**
  * Adds an ephemeral message to the session. (ok style)
@@ -44,7 +44,7 @@ function osc_add_flash_message($msg, $section = 'pubMessages')
  */
 function osc_add_flash_ok_message($msg, $section = 'pubMessages') 
 {
-	Session::newInstance()->_setMessage($section, $msg, 'ok');
+	ClassLoader::getInstance()->getClassInstance( 'Session' )->_setMessage($section, $msg, 'ok');
 }
 /**
  * Adds an ephemeral message to the session. (error style)
@@ -55,7 +55,7 @@ function osc_add_flash_ok_message($msg, $section = 'pubMessages')
  */
 function osc_add_flash_error_message($msg, $section = 'pubMessages') 
 {
-	Session::newInstance()->_setMessage($section, $msg, 'error');
+	ClassLoader::getInstance()->getClassInstance( 'Session' )->_setMessage($section, $msg, 'error');
 }
 /**
  * Adds an ephemeral message to the session. (info style)
@@ -66,7 +66,7 @@ function osc_add_flash_error_message($msg, $section = 'pubMessages')
  */
 function osc_add_flash_info_message($msg, $section = 'pubMessages') 
 {
-	Session::newInstance()->_setMessage($section, $msg, 'info');
+	ClassLoader::getInstance()->getClassInstance( 'Session' )->_setMessage($section, $msg, 'info');
 }
 /**
  * Adds an ephemeral message to the session. (warning style)
@@ -77,7 +77,7 @@ function osc_add_flash_info_message($msg, $section = 'pubMessages')
  */
 function osc_add_flash_warning_message($msg, $section = 'pubMessages') 
 {
-	Session::newInstance()->_setMessage($section, $msg, 'warning');
+	ClassLoader::getInstance()->getClassInstance( 'Session' )->_setMessage($section, $msg, 'warning');
 }
 /**
  * Shows all the pending flash messages in session and cleans up the array.
@@ -89,20 +89,22 @@ function osc_add_flash_warning_message($msg, $section = 'pubMessages')
  */
 function osc_show_flash_message($section = 'pubMessages', $class = "FlashMessage", $id = "FlashMessage") 
 {
-	$message = Session::newInstance()->_getMessage($section);
+	$session = ClassLoader::getInstance()->getClassInstance( 'Session' );
+	$message = $session->_getMessage($section);
 	echo '<div id="flash_js"></div>';
 	if (isset($message['msg']) && $message['msg'] != '') 
 	{
 		echo '<div id="' . $id . '" class="' . $class . ' ' . $message['type'] . '">';
 		echo $message['msg'];
 		echo '</div>';
-		Session::newInstance()->_dropMessage($section);
+		$session->_dropMessage($section);
 	}
 	else if ($message != '') 
 	{
 		echo '<div id="' . $id . '" class="' . $class . '">';
 		echo $message;
 		echo '</div>';
-		Session::newInstance()->_dropMessage($section);
+		$session->_dropMessage($section);
 	}
 }
+

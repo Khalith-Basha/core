@@ -23,15 +23,6 @@ require_once 'osc/services/cache/interface.php';
 
 class MemcachedCacheService implements CacheService
 {
-	private static $singleton = null;
-	public static function getInstance() 
-	{
-		if (is_null(self::$singleton)) 
-		{
-			self::$singleton = new self;
-		}
-		return self::$singleton;
-	}
 	private $service;
 	private function __construct() 
 	{

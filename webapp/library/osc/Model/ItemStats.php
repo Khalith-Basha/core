@@ -28,31 +28,6 @@
 class Model_ItemStats extends DAO
 {
 	/**
-	 * It references to self object: ItemStats.
-	 * It is used as a singleton
-	 *
-	 * @access private
-	 * @since unknown
-	 * @var ItemStats
-	 */
-	private static $instance;
-	/**
-	 * It creates a new ItemStats object class ir if it has been created
-	 * before, it return the previous object
-	 *
-	 * @access public
-	 * @since unknown
-	 * @return ItemStats
-	 */
-	public static function newInstance() 
-	{
-		if (!self::$instance instanceof self) 
-		{
-			self::$instance = new self;
-		}
-		return self::$instance;
-	}
-	/**
 	 * Set data related to t_item_stats table
 	 */
 	public function __construct() 

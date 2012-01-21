@@ -20,19 +20,10 @@
 */
 class AdminThemes
 {
-	private static $instance;
 	private $theme;
 	private $theme_url;
 	private $theme_path;
 	private $theme_exists;
-	public static function newInstance() 
-	{
-		if (!self::$instance instanceof self) 
-		{
-			self::$instance = new self;
-		}
-		return self::$instance;
-	}
 	public function __construct() 
 	{
 		$this->setCurrentTheme(osc_admin_theme());

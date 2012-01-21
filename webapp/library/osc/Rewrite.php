@@ -36,17 +36,6 @@ class RewriteRule
 
 class Rewrite
 {
-	private static $instance;
-
-	public static function newInstance() 
-	{
-		if (!self::$instance instanceof self) 
-		{
-			self::$instance = new self;
-		}
-		return self::$instance;
-	}
-
 	private $rules;
 	private $location;
 	private $section;
