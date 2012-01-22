@@ -33,7 +33,7 @@ class CWebUser extends WebSecBaseModel
 		{
 		case ('dashboard'): //dashboard...
 			$max_items = (Params::getParam('max_items') != '') ? Params::getParam('max_items') : 5;
-			$aItems = Item::newInstance()->findByUserIDEnabled(Session::newInstance()->_get('userId'), 0, $max_items);
+			$aItems = ClassLoader::getInstance()->getClassInstance( 'Model_Item' )->findByUserIDEnabled($this->getSession()->_get('userId'), 0, $max_items);
 			//calling the view...
 			$this->getView()->_exportVariableToView('items', $aItems);
 			$this->getView()->_exportVariableToView('max_items', $max_items);
@@ -56,14 +56,14 @@ class CWebUser extends WebSecBaseModel
 				if (!isset($user['pk_i_id'])) 
 				{
 					$userEmailTmp = array();
-					$userEmailTmp['fk_i_user_id'] = Session::newInstance()->_get('userId');
+					$userEmailTmp['fk_i_user_id'] = $this->getSession()->_get('userId');
 					$userEmailTmp['s_new_email'] = Params::getParam('new_email');
 					UserEmailTmp::newInstance()->insertOrUpdate($userEmailTmp);
 					$code = osc_genRandomPassword(30);
 					$date = date('Y-m-d H:i:s');
 					$userManager = new User();
-					$userManager->update(array('s_pass_code' => $code, 's_pass_date' => $date, 's_pass_ip' => $_SERVER['REMOTE_ADDR']), array('pk_i_id' => Session::newInstance()->_get('userId')));
-					$validation_url = osc_change_user_email_confirm_url(Session::newInstance()->_get('userId'), $code);
+					$userManager->update(array('s_pass_code' => $code, 's_pass_date' => $date, 's_pass_ip' => $_SERVER['REMOTE_ADDR']), array('pk_i_id' => $this->getSession()->_get('userId')));
+					$validation_url = osc_change_user_email_confirm_url($this->getSession()->_get('userId'), $code);
 					osc_run_hook('hook_email_new_email', Params::getParam('new_email'), $validation_url);
 					$this->redirectTo(osc_user_profile_url());
 				}
@@ -80,7 +80,7 @@ class CWebUser extends WebSecBaseModel
 			break;
 
 		case 'change_password_post': //change password post
-			$user = ClassLoader::getInstance()->getClassInstance( 'Model_User' )->findByPrimaryKey(Session::newInstance()->_get('userId'));
+			$user = ClassLoader::getInstance()->getClassInstance( 'Model_User' )->findByPrimaryKey($this->getSession()->_get('userId'));
 			if ((Params::getParam('password') == '') || (Params::getParam('new_password') == '') || (Params::getParam('new_password2') == '')) 
 			{
 				osc_add_flash_warning_message(_m('Password cannot be blank'));
@@ -101,7 +101,7 @@ class CWebUser extends WebSecBaseModel
 				osc_add_flash_error_message(_m('Passwords don\'t match'));
 				$this->redirectTo(osc_change_user_password_url());
 			}
-			ClassLoader::getInstance()->getClassInstance( 'Model_User' )->update(array('s_password' => sha1(Params::getParam('new_password'))), array('pk_i_id' => Session::newInstance()->_get('userId')));
+			ClassLoader::getInstance()->getClassInstance( 'Model_User' )->update(array('s_password' => sha1(Params::getParam('new_password'))), array('pk_i_id' => $this->getSession()->_get('userId')));
 			osc_add_flash_ok_message(_m('Password has been changed'));
 			$this->redirectTo(osc_user_profile_url());
 			break;
@@ -145,7 +145,7 @@ class CWebUser extends WebSecBaseModel
 			$name = Params::getParam('name');
 			$fkid = Params::getParam('fkid');
 			osc_deleteResource($id);
-			ItemResource::newInstance()->delete(array('pk_i_id' => $id, 'fk_i_item_id' => $fkid, 's_name' => $name));
+			ClassLoader::getInstance()->getClassInstance( 'Model_ItemResource' )->delete(array('pk_i_id' => $id, 'fk_i_item_id' => $fkid, 's_name' => $name));
 			$this->redirectTo(osc_base_url(true) . "?page=item&action=item_edit&id=" . $fkid);
 			break;
 		}
@@ -155,7 +155,7 @@ class CWebUser extends WebSecBaseModel
 	{
 		osc_run_hook("before_html");
 		osc_current_web_theme_path($file);
-		Session::newInstance()->_clearVariables();
+		$this->getSession()->_clearVariables();
 		osc_run_hook("after_html");
 	}
 }

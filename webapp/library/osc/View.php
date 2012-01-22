@@ -26,7 +26,7 @@ class View
 		$fileName = $this->name . '.php';
 		osc_run_hook('before_html');
 		$content = osc_render_view( $fileName, $this->variables, $this );
-		Session::newInstance()->_clearVariables();
+		ClassLoader::getInstance()->getClassInstance( 'Session' )->_clearVariables();
 		osc_run_hook('after_html');
 
 		echo $content;

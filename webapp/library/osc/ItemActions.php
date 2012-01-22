@@ -28,7 +28,7 @@ class ItemActions
 	function __construct($is_admin) 
 	{
 		$this->is_admin = $is_admin;
-		$this->manager = Item::newInstance();
+		$this->manager = ClassLoader::getInstance()->getClassInstance( 'Model_Item' );
 	}
 	/**
 	 * @return boolean
@@ -97,7 +97,7 @@ class ItemActions
 			$desc_message.= (!osc_validate_text($value, 3) ? _m("Description too short.") . PHP_EOL : '') . (!osc_validate_max($value, 5000) ? _m("Description too long.") . PHP_EOL : '');
 		}
 		$flash_error.= $desc_message;
-		$flash_error.= ((!osc_validate_category($aItem['catId'])) ? _m("Category invalid.") . PHP_EOL : '') . ((!osc_validate_number($aItem['price'])) ? _m("Price must be number.") . PHP_EOL : '') . ((!osc_validate_max($aItem['price'], 15)) ? _m("Price too long.") . PHP_EOL : '') . ((!osc_validate_max($contactName, 35)) ? _m("Name too long.") . PHP_EOL : '') . ((!osc_validate_email($contactEmail)) ? _m("Email invalid.") . PHP_EOL : '') . ((!osc_validate_text($aItem['countryName'], 3, false)) ? _m("Country too short.") . PHP_EOL : '') . ((!osc_validate_max($aItem['countryName'], 50)) ? _m("Country too long.") . PHP_EOL : '') . ((!osc_validate_text($aItem['regionName'], 3, false)) ? _m("Region too short.") . PHP_EOL : '') . ((!osc_validate_max($aItem['regionName'], 50)) ? _m("Region too long.") . PHP_EOL : '') . ((!osc_validate_text($aItem['cityName'], 3, false)) ? _m("City too short.") . PHP_EOL : '') . ((!osc_validate_max($aItem['cityName'], 50)) ? _m("City too long.") . PHP_EOL : '') . ((!osc_validate_text($aItem['cityArea'], 3, false)) ? _m("Municipality too short.") . PHP_EOL : '') . ((!osc_validate_max($aItem['cityArea'], 50)) ? _m("Municipality too long.") . PHP_EOL : '') . ((!osc_validate_text($aItem['address'], 3, false)) ? _m("Address too short.") . PHP_EOL : '') . ((!osc_validate_max($aItem['address'], 100)) ? _m("Address too long.") . PHP_EOL : '') . ((((time() - Session::newInstance()->_get('last_submit_item')) < osc_items_wait_time()) && !$this->is_admin) ? _m("Too fast. You should wait a little to publish your ad.") . PHP_EOL : '');
+		$flash_error.= ((!osc_validate_category($aItem['catId'])) ? _m("Category invalid.") . PHP_EOL : '') . ((!osc_validate_number($aItem['price'])) ? _m("Price must be number.") . PHP_EOL : '') . ((!osc_validate_max($aItem['price'], 15)) ? _m("Price too long.") . PHP_EOL : '') . ((!osc_validate_max($contactName, 35)) ? _m("Name too long.") . PHP_EOL : '') . ((!osc_validate_email($contactEmail)) ? _m("Email invalid.") . PHP_EOL : '') . ((!osc_validate_text($aItem['countryName'], 3, false)) ? _m("Country too short.") . PHP_EOL : '') . ((!osc_validate_max($aItem['countryName'], 50)) ? _m("Country too long.") . PHP_EOL : '') . ((!osc_validate_text($aItem['regionName'], 3, false)) ? _m("Region too short.") . PHP_EOL : '') . ((!osc_validate_max($aItem['regionName'], 50)) ? _m("Region too long.") . PHP_EOL : '') . ((!osc_validate_text($aItem['cityName'], 3, false)) ? _m("City too short.") . PHP_EOL : '') . ((!osc_validate_max($aItem['cityName'], 50)) ? _m("City too long.") . PHP_EOL : '') . ((!osc_validate_text($aItem['cityArea'], 3, false)) ? _m("Municipality too short.") . PHP_EOL : '') . ((!osc_validate_max($aItem['cityArea'], 50)) ? _m("Municipality too long.") . PHP_EOL : '') . ((!osc_validate_text($aItem['address'], 3, false)) ? _m("Address too short.") . PHP_EOL : '') . ((!osc_validate_max($aItem['address'], 100)) ? _m("Address too long.") . PHP_EOL : '') . ((((time() - ClassLoader::getInstance()->getClassInstance( 'Session' )->_get('last_submit_item')) < osc_items_wait_time()) && !$this->is_admin) ? _m("Too fast. You should wait a little to publish your ad.") . PHP_EOL : '');
 		$meta = Params::getParam("meta");
 		if ($meta != '' && count($meta) > 0) 
 		{
@@ -142,7 +142,7 @@ class ItemActions
 			if (!$this->is_admin) 
 			{
 				// Track spam delay: Session
-				Session::newInstance()->_set('last_submit_item', time());
+				ClassLoader::getInstance()->getClassInstance( 'Session' )->_set('last_submit_item', time());
 				// Track spam delay: Cookie
 				Cookie::newInstance()->set_expires(osc_time_cookie());
 				Cookie::newInstance()->push('last_submit_item', time());
@@ -176,7 +176,7 @@ class ItemActions
 			$item = $this->manager->findByPrimaryKey($itemId);
 			$aItem['item'] = $item;
 			osc_run_hook('after_item_post');
-			Session::newInstance()->_set('last_publish_time', time());
+			ClassLoader::getInstance()->getClassInstance( 'Session' )->_set('last_publish_time', time());
 			if (!$this->is_admin) 
 			{
 				$this->sendEmails($aItem);
@@ -454,7 +454,7 @@ class ItemActions
 	 */
 	public function deleteResourcesFromHD($itemId) 
 	{
-		$resources = ItemResource::newInstance()->getAllResources($itemId);
+		$resources = ClassLoader::getInstance()->getClassInstance( 'Model_ItemResource' )->getAllResources($itemId);
 		foreach ($resources as $resource) 
 		{
 			osc_deleteResource($resource['pk_i_id']);
@@ -554,16 +554,16 @@ class ItemActions
 		Params::setParam('itemURL', $itemURL);
 		if ($authorName == '' || !preg_match('|^.*?@.{2,}\..{2,3}$|', $authorEmail)) 
 		{
-			Session::newInstance()->_setForm('commentAuthorName', $authorName);
-			Session::newInstance()->_setForm('commentTitle', $title);
-			Session::newInstance()->_setForm('commentBody', $body);
+			ClassLoader::getInstance()->getClassInstance( 'Session' )->_setForm('commentAuthorName', $authorName);
+			ClassLoader::getInstance()->getClassInstance( 'Session' )->_setForm('commentTitle', $title);
+			ClassLoader::getInstance()->getClassInstance( 'Session' )->_setForm('commentBody', $body);
 			return 3;
 		}
 		if (($body == '')) 
 		{
-			Session::newInstance()->_setForm('commentAuthorName', $authorName);
-			Session::newInstance()->_setForm('commentAuthorEmail', $authorEmail);
-			Session::newInstance()->_setForm('commentTitle', $title);
+			ClassLoader::getInstance()->getClassInstance( 'Session' )->_setForm('commentAuthorName', $authorName);
+			ClassLoader::getInstance()->getClassInstance( 'Session' )->_setForm('commentAuthorEmail', $authorEmail);
+			ClassLoader::getInstance()->getClassInstance( 'Session' )->_setForm('commentTitle', $title);
 			return 4;
 		}
 		$num_moderate_comments = osc_moderate_comments();
@@ -600,7 +600,7 @@ class ItemActions
 				$status_num = 5;
 			}
 		}
-		$mComments = ItemComment::newInstance();
+		$mComments = ClassLoader::getInstance()->getClassInstance( 'Model_ItemComment' );
 		$aComment = array('pub_date' => date('Y-m-d H:i:s'), 'fk_i_item_id' => $itemId, 's_author_name' => $authorName, 's_author_email' => $authorEmail, 's_title' => $title, 's_body' => $body, 'b_active' => ($status == 'ACTIVE' ? 1 : 0), 'b_enabled' => 1, 'fk_i_user_id' => $userId);
 		if ($mComments->insert($aComment)) 
 		{
@@ -669,7 +669,7 @@ class ItemActions
 			$aItem['body'] = Params::getParam('body');
 			$aItem['title'] = Params::getParam('title');
 			$aItem['id'] = Params::getParam('id');
-			$aItem['userId'] = Session::newInstance()->_get('userId');
+			$aItem['userId'] = ClassLoader::getInstance()->getClassInstance( 'Session' )->_get('userId');
 			if ($aItem['userId'] == '') 
 			{
 				$aItem['userId'] = NULL;
@@ -700,7 +700,7 @@ class ItemActions
 			}
 			else
 			{
-				$userId = Session::newInstance()->_get('userId');
+				$userId = ClassLoader::getInstance()->getClassInstance( 'Session' )->_get('userId');
 				if ($userId == '') 
 				{
 					$userId = NULL;
@@ -1003,7 +1003,7 @@ class ItemActions
 		if ($aResources != '') 
 		{
 			$wat = new Watermark();
-			$itemResourceManager = ItemResource::newInstance();
+			$itemResourceManager = ClassLoader::getInstance()->getClassInstance( 'Model_ItemResource' );
 			$numImagesItems = osc_max_images_per_item();
 			$numImages = $itemResourceManager->countResources($itemId);
 			foreach ($aResources['error'] as $key => $error) 
@@ -1044,7 +1044,7 @@ class ItemActions
 						$s_path = 'components/uploads/';
 						$resourceType = 'image/jpeg';
 						$itemResourceManager->update(array('s_path' => $s_path, 's_name' => osc_genRandomPassword(), 's_extension' => 'jpg', 's_content_type' => $resourceType), array('pk_i_id' => $resourceId, 'fk_i_item_id' => $itemId));
-						osc_run_hook('uploaded_file', ItemResource::newInstance()->findByPrimaryKey($resourceId));
+						osc_run_hook('uploaded_file', ClassLoader::getInstance()->getClassInstance( 'Model_ItemResource' )->findByPrimaryKey($resourceId));
 					}
 				}
 			}
@@ -1058,7 +1058,7 @@ class ItemActions
 		/**
 		 * Send email to non-reg user requesting item activation
 		 */
-		if (Session::newInstance()->_get('userId') == '' && $aItem['active'] == 'INACTIVE') 
+		if (ClassLoader::getInstance()->getClassInstance( 'Session' )->_get('userId') == '' && $aItem['active'] == 'INACTIVE') 
 		{
 			osc_run_hook('hook_email_item_validation_non_register_user', $item);
 		}
@@ -1066,7 +1066,7 @@ class ItemActions
 		{ //  USER IS REGISTERED
 			osc_run_hook('hook_email_item_validation', $item);
 		}
-		else if (Session::newInstance()->_get('userId') == '') 
+		else if (ClassLoader::getInstance()->getClassInstance( 'Session' )->_get('userId') == '') 
 		{ // USER IS NOT REGISTERED
 			osc_run_hook('hook_email_new_item_non_register_user', $item);
 		}

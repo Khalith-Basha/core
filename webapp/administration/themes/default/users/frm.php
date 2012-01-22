@@ -38,11 +38,6 @@ else
 	$btn_text = __('Add');
 }
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en-US">
-    <head>
-        <?php
-osc_current_admin_theme_path('head.php'); ?>
         <?php
 if (isset($user['pk_i_id'])) 
 {
@@ -52,11 +47,6 @@ else
 {
 	$userForm->js_validation();
 } ?>
-    </head>
-    <body>
-        <?php
-osc_current_admin_theme_path('header.php'); ?>
-        <div id="update_version" style="display:none;"></div>
         <script type="text/javascript">
             document.write('<style type="text/css">.tabber{display:none;}</style>');
             $(document).ready(function(){
@@ -65,13 +55,8 @@ osc_current_admin_theme_path('header.php'); ?>
                 }
             });
         </script>
-        <div id="content">
-            <div id="separator"></div>
             <?php
 $userForm->location_javascript("admin"); ?>
-            <?php
-osc_current_admin_theme_path('include/backoffice_menu.php'); ?>
-            <div id="right_column">
                 <div id="content_header" class="content_header">
                     <div style="float: left;">
                         <img src="<?php
@@ -207,10 +192,4 @@ echo $btn_text; ?>" />
                         </form>
                     </div>
                 </div>
-            </div>
-            <div style="clear: both;"></div>
-        </div> <!-- end of container -->
-        <?php
-osc_current_admin_theme_path('footer.php'); ?>
-    </body>
-</html>
+

@@ -28,8 +28,8 @@ class CWebUser extends WebSecBaseModel
 	}
 	public function doModel() 
 	{
-		$aAlerts = Alerts::newInstance()->findByUser(Session::newInstance()->_get('userId'));
-		$user = ClassLoader::getInstance()->getClassInstance( 'Model_User' )->findByPrimaryKey(Session::newInstance()->_get('userId'));
+		$aAlerts = Alerts::newInstance()->findByUser($this->getSession()->_get('userId'));
+		$user = ClassLoader::getInstance()->getClassInstance( 'Model_User' )->findByPrimaryKey($this->getSession()->_get('userId'));
 		foreach ($aAlerts as $k => $a) 
 		{
 			$search = osc_unserialize(base64_decode($a['s_search']));
@@ -45,7 +45,7 @@ class CWebUser extends WebSecBaseModel
 	{
 		osc_run_hook("before_html");
 		osc_current_web_theme_path($file);
-		Session::newInstance()->_clearVariables();
+		$this->getSession()->_clearVariables();
 		osc_run_hook("after_html");
 	}
 }

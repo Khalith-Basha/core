@@ -23,7 +23,7 @@ class CWebItem extends Controller
 	function __construct() 
 	{
 		parent::__construct();
-		$this->itemManager = Item::newInstance();
+		$this->itemManager = ClassLoader::getInstance()->getClassInstance( 'Model_Item' );
 		// here allways userId == ''
 		if (osc_is_web_user_logged_in()) 
 		{
@@ -76,10 +76,10 @@ class CWebItem extends Controller
 			if (!osc_check_recaptcha()) 
 			{
 				osc_add_flash_error_message(_m('The Recaptcha code is wrong'));
-				Session::newInstance()->_setForm("yourEmail", Params::getParam('yourEmail'));
-				Session::newInstance()->_setForm("yourName", Params::getParam('yourName'));
-				Session::newInstance()->_setForm("phoneNumber", Params::getParam('phoneNumber'));
-				Session::newInstance()->_setForm("message_body", Params::getParam('message'));
+				$this->getSession()->_setForm("yourEmail", Params::getParam('yourEmail'));
+				$this->getSession()->_setForm("yourName", Params::getParam('yourName'));
+				$this->getSession()->_setForm("phoneNumber", Params::getParam('phoneNumber'));
+				$this->getSession()->_setForm("message_body", Params::getParam('message'));
 				$this->redirectTo(osc_item_url());
 				return false; // BREAK THE PROCESS, THE RECAPTCHA IS WRONG
 				
@@ -114,7 +114,7 @@ class CWebItem extends Controller
 	{
 		osc_run_hook("before_html");
 		osc_current_web_theme_path($file);
-		Session::newInstance()->_clearVariables();
+		$this->getSession()->_clearVariables();
 		osc_run_hook("after_html");
 	}
 }

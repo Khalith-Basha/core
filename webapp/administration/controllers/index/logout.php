@@ -18,7 +18,7 @@
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-class CAdminIndex extends AdminSecBaseModel
+class CAdminIndex extends AdministrationController
 {
 	public function doModel() 
 	{
@@ -27,10 +27,10 @@ class CAdminIndex extends AdminSecBaseModel
 	$this->getSession()->_drop('adminName');
 	$this->getSession()->_drop('adminEmail');
 	$this->getSession()->_drop('adminLocale');
-		Cookie::newInstance()->pop('oc_adminId');
-		Cookie::newInstance()->pop('oc_adminSecret');
-		Cookie::newInstance()->pop('oc_adminLocale');
-		Cookie::newInstance()->set();
+		$this->getCookie()->pop('oc_adminId');
+		$this->getCookie()->pop('oc_adminSecret');
+		$this->getCookie()->pop('oc_adminLocale');
+		$this->getCookie()->set();
 		$this->redirectTo(osc_admin_base_url(true));
 	}
 }

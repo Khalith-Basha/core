@@ -47,7 +47,7 @@ class CWebUser extends Controller
 				$request_uri = urldecode(preg_replace('@^' . osc_base_url() . '@', "", $httpReferer ));
 				$tmp_ar = explode("?", $request_uri);
 				$request_uri = $tmp_ar[0];
-				$rules = Rewrite::newInstance()->getRules();
+				$rules = ClassLoader::getInstance()->getClassInstance( 'Rewrite' )->getRules();
 				foreach ($rules as $rule) 
 				{
 					$match = $rule->rePath;
@@ -70,17 +70,17 @@ class CWebUser extends Controller
 		}
 		if (Params::getParam('http_referer') != '') 
 		{
-			Session::newInstance()->_setReferer(Params::getParam('http_referer'));
+			$this->getSession()->_setReferer(Params::getParam('http_referer'));
 			$url_redirect = Params::getParam('http_referer');
 		}
-		else if (Session::newInstance()->_getReferer() != '') 
+		else if ($this->getSession()->_getReferer() != '') 
 		{
-			Session::newInstance()->_setReferer(Session::newInstance()->_getReferer());
-			$url_redirect = Session::newInstance()->_getReferer();
+			$this->getSession()->_setReferer($this->getSession()->_getReferer());
+			$url_redirect = $this->getSession()->_getReferer();
 		}
 		else if ($page_redirect != '' && $page_redirect != 'login') 
 		{
-			Session::newInstance()->_setReferer( $httpReferer );
+			$this->getSession()->_setReferer( $httpReferer );
 			$url_redirect = $httpReferer;
 		}
 		if (!$user) 

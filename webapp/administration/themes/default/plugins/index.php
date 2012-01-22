@@ -21,16 +21,6 @@ $last_id = $last['int_name'];
 $active_plugins = osc_get_plugins();
 ?>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en-US">
-    <head>
-        <?php
-osc_current_admin_theme_path('head.php'); ?>
-    </head>
-    <body>
-        <?php
-osc_current_admin_theme_path('header.php'); ?>
-        <div id="update_version" style="display:none;"></div>
         <script type="text/javascript">
             $(function() {
                 sSearchName = "<?php
@@ -145,11 +135,6 @@ _e('Description'); ?>"
         </script>
         <script type="text/javascript" src="<?php
 echo osc_current_admin_theme_url('js/datatables.post_init.js'); ?>"></script>
-        <div id="content">
-            <div id="separator"></div>
-            <?php
-osc_current_admin_theme_path('include/backoffice_menu.php'); ?>
-            <div id="right_column">
                 <div id="content_header" class="content_header">
                     <div style="float: left;">
                         <img src="<?php
@@ -165,11 +150,4 @@ _e('Add a new plugin'); ?></a>
                 <?php
 osc_show_flash_message('admin'); ?>
                 <table cellpadding="0" cellspacing="0" border="0" class="display" id="datatables_list" style="border-bottom: 1px solid #AAAAAA; border-left: 1px solid #AAAAAA; border-right: 1px solid #AAAAAA;"></table>
-                <div style="clear: both;"></div>
-            </div> <!-- end of right column -->
-            <div style="clear: both;"></div>
-        </div> <!-- end of container -->
-        <?php
-osc_current_admin_theme_path('footer.php'); ?>
-    </body>
-</html>
+

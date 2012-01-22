@@ -69,9 +69,9 @@ class Form_Field extends Form
 	{
 		if ($field != null) 
 		{
-			if (Session::newInstance()->_getForm('meta_' . $field['pk_i_id']) != "") 
+			if (ClassLoader::getInstance()->getClassInstance( 'Session' )->_getForm('meta_' . $field['pk_i_id']) != "") 
 			{
-				$field['s_value'] = Session::newInstance()->_getForm('meta_' . $field['pk_i_id']);
+				$field['s_value'] = ClassLoader::getInstance()->getClassInstance( 'Session' )->_getForm('meta_' . $field['pk_i_id']);
 			}
 			echo '<label for="meta_' . $field['s_slug'] . '">' . $field['s_name'] . ': </label>';
 			if ($field['e_type'] == "TEXTAREA") 

@@ -21,8 +21,7 @@ $adminEdit = __get("admin");
 
                 <div id="settings_form" style="border: 1px solid #ccc; background: #eee; ">
                     <div style="padding: 20px;">				
-                        <form action="<?php
-echo osc_admin_base_url(true); ?>" method="post" onSubmit="return checkForm()">
+                        <form action="<?php echo osc_admin_base_url(true); ?>" method="post" onSubmit="return checkForm()">
                             <input type="hidden" name="action" value="edit_post" />
                             <input type="hidden" name="page" value="admins" />
                             <input type="hidden" name="id" value="<?php
@@ -81,7 +80,4 @@ _e('Update'); ?>" />
                 </div>
             </div>
         </div>
-        <?php
-osc_current_admin_theme_path('footer.php'); ?>
-    </body>
-</html>
+

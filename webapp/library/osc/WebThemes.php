@@ -26,7 +26,7 @@ class WebThemes
 	public function __construct() 
 	{
 		$this->path = osc_themes_path();
-		if (Params::getParam('theme') != '' && Session::newInstance()->_get('adminId') != '') $this->setCurrentTheme(Params::getParam('theme'));
+		if (Params::getParam('theme') != '' && ClassLoader::getInstance()->getClassInstance( 'Session' )->_get('adminId') != '') $this->setCurrentTheme(Params::getParam('theme'));
 		else $this->setCurrentTheme(osc_theme());
 		$functions_path = $this->getCurrentThemePath() . 'functions.php';
 		if (file_exists($functions_path)) 

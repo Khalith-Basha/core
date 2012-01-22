@@ -18,7 +18,7 @@
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-class CAdminCategory extends AdminSecBaseModel
+class CAdminCategory extends AdministrationController
 {
 	private $categoryManager;
 	function __construct() 
@@ -49,10 +49,5 @@ class CAdminCategory extends AdminSecBaseModel
 		$this->categoryManager->updateOrder($categoryId, '0');
 		$this->redirectTo(osc_admin_base_url(true) . '?page=category');
 	}
-
-	function doView($file) 
-	{
-		osc_current_admin_theme_path($file);
-	$this->getSession()->_clearVariables();
-	}
 }
+

@@ -23,7 +23,7 @@ class CWebItem extends Controller
 	function __construct() 
 	{
 		parent::__construct();
-		$this->itemManager = Item::newInstance();
+		$this->itemManager = ClassLoader::getInstance()->getClassInstance( 'Model_Item' );
 		// here allways userId == ''
 		if (osc_is_web_user_logged_in()) 
 		{
@@ -51,11 +51,11 @@ class CWebItem extends Controller
 		case 'send_friend_post':
 			$item = $this->itemManager->findByPrimaryKey(Params::getParam('id'));
 			$this->getView()->_exportVariableToView('item', $item);
-			Session::newInstance()->_setForm("yourEmail", Params::getParam('yourEmail'));
-			Session::newInstance()->_setForm("yourName", Params::getParam('yourName'));
-			Session::newInstance()->_setForm("friendName", Params::getParam('friendName'));
-			Session::newInstance()->_setForm("friendEmail", Params::getParam('friendEmail'));
-			Session::newInstance()->_setForm("message_body", Params::getParam('message'));
+			$this->getSession()->_setForm("yourEmail", Params::getParam('yourEmail'));
+			$this->getSession()->_setForm("yourName", Params::getParam('yourName'));
+			$this->getSession()->_setForm("friendName", Params::getParam('friendName'));
+			$this->getSession()->_setForm("friendEmail", Params::getParam('friendEmail'));
+			$this->getSession()->_setForm("message_body", Params::getParam('message'));
 			if ((osc_recaptcha_private_key() != '') && Params::existParam("recaptcha_challenge_field")) 
 			{
 				if (!osc_check_recaptcha()) 
@@ -70,7 +70,7 @@ class CWebItem extends Controller
 			$success = $mItem->send_friend();
 			if ($success) 
 			{
-				Session::newInstance()->_clearVariables();
+				$this->getSession()->_clearVariables();
 				$this->redirectTo(osc_item_url());
 			}
 			else
@@ -84,7 +84,7 @@ class CWebItem extends Controller
 	{
 		osc_run_hook("before_html");
 		osc_current_web_theme_path($file);
-		Session::newInstance()->_clearVariables();
+		$this->getSession()->_clearVariables();
 		osc_run_hook("after_html");
 	}
 }

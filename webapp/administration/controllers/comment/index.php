@@ -18,14 +18,14 @@
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-class CAdminComment extends AdminSecBaseModel
+class CAdminComment extends AdministrationController
 {
 	private $itemCommentManager;
 	function __construct() 
 	{
 		parent::__construct();
 		//specific things for this class
-		$this->itemCommentManager = ItemComment::newInstance();
+		$this->itemCommentManager = ClassLoader::getInstance()->getClassInstance( 'Model_ItemComment' );
 	}
 
 	function doModel() 
@@ -138,7 +138,7 @@ class CAdminComment extends AdminSecBaseModel
 
 		case 'comment_edit':
 			$id = Params::getParam('id');
-			$comment = ItemComment::newInstance()->findByPrimaryKey($id);
+			$comment = ClassLoader::getInstance()->getClassInstance( 'Model_ItemComment' )->findByPrimaryKey($id);
 			$this->getView()->_exportVariableToView('comment', $comment);
 			$this->doView('comments/frm.php');
 			break;
@@ -172,15 +172,10 @@ class CAdminComment extends AdminSecBaseModel
 		}
 	}
 
-	function doView($file) 
-	{
-		osc_current_admin_theme_path($file);
-	$this->getSession()->_clearVariables();
-	}
 	function sendCommentActivated($commentId) 
 	{
 		$aComment = $this->itemCommentManager->findByPrimaryKey($commentId);
-		$aItem = Item::newInstance()->findByPrimaryKey($aComment['fk_i_item_id']);
+		$aItem = ClassLoader::getInstance()->getClassInstance( 'Model_Item' )->findByPrimaryKey($aComment['fk_i_item_id']);
 		View::newInstance()->_exportVariableToView('item', $aItem);
 		osc_run_hook('hook_email_comment_validated', $aComment);
 	}

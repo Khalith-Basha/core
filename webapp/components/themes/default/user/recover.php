@@ -17,7 +17,8 @@
  *
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
+$userForm = ClassLoader::getInstance()->getClassInstance( 'Form_User' );
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -44,7 +45,7 @@ echo osc_base_url(true); ?>" method="post" >
                         <fieldset>
                             <label for="email"><?php
 _e('E-mail', 'modern'); ?></label> <?php
-UserForm::email_text(); ?><br />
+$userForm->email_text(); ?><br />
                             <?php
 osc_show_recaptcha('recover_password'); ?>
                             <button type="submit"><?php

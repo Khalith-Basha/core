@@ -25,7 +25,7 @@
  * @subpackage Model
  * @since unknown
  */
-class ItemResourceManager extends DAO
+class Model_ItemResource extends DAO
 {
 	/**
 	 * Set data related to t_item_resource table

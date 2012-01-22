@@ -23,7 +23,7 @@ class CWebItem extends Controller
 	function __construct() 
 	{
 		parent::__construct();
-		$this->itemManager = Item::newInstance();
+		$this->itemManager = ClassLoader::getInstance()->getClassInstance( 'Model_Item' );
 		// here allways userId == ''
 		if (osc_is_web_user_logged_in()) 
 		{
@@ -85,7 +85,7 @@ class CWebItem extends Controller
 			$status = $mItem->add_comment();
 			$itemId = Params::getParam('id');
 			$commentId = Params::getParam('comment');
-			$item = Item::newInstance()->findByPrimaryKey($itemId);
+			$item = ClassLoader::getInstance()->getClassInstance( 'Model_Item' )->findByPrimaryKey($itemId);
 			if (count($item) == 0) 
 			{
 				osc_add_flash_error_message(_m('This item doesn\'t exist'));
@@ -97,7 +97,7 @@ class CWebItem extends Controller
 				osc_add_flash_error_message(_m('You must be logged in to delete a comment'));
 				$this->redirectTo(osc_item_url());
 			}
-			$commentManager = ItemComment::newInstance();
+			$commentManager = ClassLoader::getInstance()->getClassInstance( 'Model_ItemComment' );
 			$aComment = $commentManager->findByPrimaryKey($commentId);
 			if (count($aComment) == 0) 
 			{
@@ -124,7 +124,7 @@ class CWebItem extends Controller
 	{
 		osc_run_hook("before_html");
 		osc_current_web_theme_path($file);
-		Session::newInstance()->_clearVariables();
+		$this->getSession()->_clearVariables();
 		osc_run_hook("after_html");
 	}
 }

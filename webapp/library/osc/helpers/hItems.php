@@ -821,7 +821,7 @@ function osc_count_item_resources()
 	$view = ClassLoader::getInstance()->getClassInstance( 'View' );
 	if (!$view->_exists('resources')) 
 	{
-		$itemResourceManager = ClassLoader::getInstance()->getClassInstance( 'ItemResourceManager' );
+		$itemResourceManager = ClassLoader::getInstance()->getClassInstance( 'Model_ItemResource' );
 		$view->_exportVariableToView('resources', $itemResourceManager->getAllResources(osc_item_id()));
 	}
 	return osc_priv_count_item_resources();
@@ -836,7 +836,7 @@ function osc_has_item_resources()
 	$view = ClassLoader::getInstance()->getClassInstance( 'View' );
 	if (!$view->_exists('resources')) 
 	{
-		$itemResourceManager = ClassLoader::getInstance()->getClassInstance( 'ItemResourceManager' );
+		$itemResourceManager = ClassLoader::getInstance()->getClassInstance( 'Model_ItemResource' );
 		$view->_exportVariableToView('resources', $itemResourceManager->getAllResources(osc_item_id()));
 	}
 	return $view->_next('resources');
@@ -851,7 +851,7 @@ function osc_get_item_resources()
 	$view = ClassLoader::getInstance()->getClassInstance( 'View' );
 	if (!$view->_exists('resources')) 
 	{
-		$itemResourceManager = ClassLoader::getInstance()->getClassInstance( 'ItemResourceManager' );
+		$itemResourceManager = ClassLoader::getInstance()->getClassInstance( 'Model_ItemResource' );
 		$view->_exportVariableToView('resources', $itemResourceManager->getAllResources(osc_item_id()));
 	}
 	return $view->_get('resources');

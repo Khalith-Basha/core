@@ -15,20 +15,16 @@
  * You should have received a copy of the GNU Affero General Public
  * License along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-//$categories   = __get("categories");
 $field = __get("field");
 $categories = __get("categories");
 $selected = __get("selected");
 $numCols = 1;
 ?>
 
-<link href="<?php
-echo osc_current_admin_theme_styles_url('jquery.treeview.css'); ?>" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="<?php
-echo osc_current_admin_theme_js_url('jquery.treeview.js'); ?>"></script>
+<link href="<?php echo osc_current_admin_theme_styles_url('jquery.treeview.css'); ?>" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="<?php echo osc_current_admin_theme_js_url('jquery.treeview.js'); ?>"></script>
 <div id="settings_form">
-    <form action="<?php
-echo osc_admin_base_url(true); ?>?page=ajax" method="post" id="field_form">
+    <form action="<?php echo osc_admin_base_url(true); ?>?page=ajax" method="post" id="field_form">
             <input type="hidden" name="action" value="field_categories_post" />
            <?php
 FieldForm::primary_input_hidden($field); ?>

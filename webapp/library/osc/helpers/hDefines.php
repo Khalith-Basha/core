@@ -937,8 +937,8 @@ function osc_add_option_menu($option = null)
  */
 function osc_is_ad_page() 
 {
-	$location = Rewrite::newInstance()->get_location();
-	$section = Rewrite::newInstance()->get_section();
+	$location = ClassLoader::getInstance()->getClassInstance( 'Rewrite' )->get_location();
+	$section = ClassLoader::getInstance()->getClassInstance( 'Rewrite' )->get_section();
 	if ($location == 'item' && $section == '') 
 	{
 		return true;
@@ -952,7 +952,7 @@ function osc_is_ad_page()
  */
 function osc_is_search_page() 
 {
-	$location = Rewrite::newInstance()->get_location();
+	$location = ClassLoader::getInstance()->getClassInstance( 'Rewrite' )->get_location();
 	if ($location == 'search') 
 	{
 		return true;
@@ -966,7 +966,7 @@ function osc_is_search_page()
  */
 function osc_is_static_page() 
 {
-	$location = Rewrite::newInstance()->get_location();
+	$location = ClassLoader::getInstance()->getClassInstance( 'Rewrite' )->get_location();
 	if ($location == 'page') 
 	{
 		return true;
@@ -980,8 +980,8 @@ function osc_is_static_page()
  */
 function osc_is_home_page() 
 {
-	$location = Rewrite::newInstance()->get_location();
-	$section = Rewrite::newInstance()->get_section();
+	$location = ClassLoader::getInstance()->getClassInstance( 'Rewrite' )->get_location();
+	$section = ClassLoader::getInstance()->getClassInstance( 'Rewrite' )->get_section();
 	if ($location == '' && $section == '') 
 	{
 		return true;
@@ -995,8 +995,8 @@ function osc_is_home_page()
  */
 function osc_is_user_dashboard() 
 {
-	$location = Rewrite::newInstance()->get_location();
-	$section = Rewrite::newInstance()->get_section();
+	$location = ClassLoader::getInstance()->getClassInstance( 'Rewrite' )->get_location();
+	$section = ClassLoader::getInstance()->getClassInstance( 'Rewrite' )->get_section();
 	if ($location == 'user' && $section == 'dashboard') 
 	{
 		return true;
@@ -1010,8 +1010,8 @@ function osc_is_user_dashboard()
  */
 function osc_is_publish_page() 
 {
-	$location = Rewrite::newInstance()->get_location();
-	$section = Rewrite::newInstance()->get_section();
+	$location = ClassLoader::getInstance()->getClassInstance( 'Rewrite' )->get_location();
+	$section = ClassLoader::getInstance()->getClassInstance( 'Rewrite' )->get_section();
 	if ('item' == $location && 'add' == $section) 
 	{
 		return true;
@@ -1025,8 +1025,8 @@ function osc_is_publish_page()
  */
 function osc_is_login_form() 
 {
-	$location = Rewrite::newInstance()->get_location();
-	$section = Rewrite::newInstance()->get_section();
+	$location = ClassLoader::getInstance()->getClassInstance( 'Rewrite' )->get_location();
+	$section = ClassLoader::getInstance()->getClassInstance( 'Rewrite' )->get_section();
 	if ($location == 'login' && $section == '') 
 	{
 		return true;
@@ -1040,7 +1040,7 @@ function osc_is_login_form()
  */
 function osc_get_osclass_location() 
 {
-	return Rewrite::newInstance()->get_location();
+	return ClassLoader::getInstance()->getClassInstance( 'Rewrite' )->get_location();
 }
 /**
  * Get section
@@ -1049,5 +1049,5 @@ function osc_get_osclass_location()
  */
 function osc_get_osclass_section() 
 {
-	return Rewrite::newInstance()->get_section();
+	return ClassLoader::getInstance()->getClassInstance( 'Rewrite' )->get_section();
 }

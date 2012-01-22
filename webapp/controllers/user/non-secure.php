@@ -41,10 +41,10 @@ class CWebUserNonSecure extends Controller
 					$userEmailTmp = UserEmailTmp::newInstance()->findByPk(Params::getParam('userId'));
 					$code = osc_genRandomPassword(50);
 					$userManager->update(array('s_email' => $userEmailTmp['s_new_email']), array('pk_i_id' => $userEmailTmp['fk_i_user_id']));
-					Item::newInstance()->update(array('s_contact_email' => $userEmailTmp['s_new_email']), array('fk_i_user_id' => $userEmailTmp['fk_i_user_id']));
-					ItemComment::newInstance()->update(array('s_author_email' => $userEmailTmp['s_new_email']), array('fk_i_user_id' => $userEmailTmp['fk_i_user_id']));
+					ClassLoader::getInstance()->getClassInstance( 'Model_Item' )->update(array('s_contact_email' => $userEmailTmp['s_new_email']), array('fk_i_user_id' => $userEmailTmp['fk_i_user_id']));
+					ClassLoader::getInstance()->getClassInstance( 'Model_ItemComment' )->update(array('s_author_email' => $userEmailTmp['s_new_email']), array('fk_i_user_id' => $userEmailTmp['fk_i_user_id']));
 					Alerts::newInstance()->update(array('s_email' => $userEmailTmp['s_new_email']), array('fk_i_user_id' => $userEmailTmp['fk_i_user_id']));
-					Session::newInstance()->_set('userEmail', $userEmailTmp['s_new_email']);
+					$this->getSession()->_set('userEmail', $userEmailTmp['s_new_email']);
 					UserEmailTmp::newInstance()->delete(array('s_new_email' => $userEmailTmp['s_new_email']));
 					osc_add_flash_ok_message(_m('Your email has been changed successfully'));
 					$this->redirectTo(osc_user_profile_url());
@@ -106,7 +106,7 @@ class CWebUserNonSecure extends Controller
 	{
 		osc_run_hook("before_html");
 		osc_current_web_theme_path($file);
-		Session::newInstance()->_clearVariables();
+		$this->getSession()->_clearVariables();
 		osc_run_hook("after_html");
 	}
 }

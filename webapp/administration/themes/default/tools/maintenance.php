@@ -18,21 +18,6 @@
 ?>
 <?php
 $maintenance = file_exists(ABS_PATH . '.maintenance'); ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en-US">
-    <head>
-        <?php
-osc_current_admin_theme_path('head.php'); ?>
-    </head>
-    <body>
-        <?php
-osc_current_admin_theme_path('header.php'); ?>
-        <div id="update_version" style="display:none;"></div>
-        <div id="content">
-            <div id="separator"></div>
-            <?php
-osc_current_admin_theme_path('include/backoffice_menu.php'); ?>
-            <div id="right_column">
                 <div id="content_header" class="content_header">
                     <div style="float: left;">
                         <img src="<?php
@@ -62,9 +47,4 @@ echo $maintenance ? 'off' : 'on'; ?>"><button><?php
 $maintenance ? _e('Disable maintenance mode') : _e('Enable maintenance mode'); ?></button></a>
                     </div>
                 </div>
-            </div> <!-- end of right column -->
-        </div>
-        <?php
-osc_current_admin_theme_path('footer.php'); ?>
-    </body>
-</html>
+

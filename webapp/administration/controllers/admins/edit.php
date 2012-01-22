@@ -20,7 +20,7 @@
 * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-class CAdminAdmins extends AdminSecBaseModel
+class CAdminAdmins extends AdministrationController
 {
 	private $adminManager ;
 
@@ -142,12 +142,6 @@ class CAdminAdmins extends AdminSecBaseModel
 		    }
 
 		    $this->redirectTo(osc_admin_base_url(true).'?page=admins');
-	}
-
-	function doView($file)
-	{
-	    osc_current_admin_theme_path($file) ;
-	    $this->getSession()->_clearVariables();
 	}
 }
 

@@ -23,7 +23,7 @@ class CWebItem extends Controller
 	function __construct() 
 	{
 		parent::__construct();
-		$this->itemManager = Item::newInstance();
+		$this->itemManager = ClassLoader::getInstance()->getClassInstance( 'Model_Item' );
 		// here allways userId == ''
 		if (osc_is_web_user_logged_in()) 
 		{
@@ -48,12 +48,12 @@ class CWebItem extends Controller
 			$item = $this->itemManager->listWhere("i.pk_i_id = '%s' AND ((i.s_secret = '%s' AND i.fk_i_user_id IS NULL) OR (i.fk_i_user_id = '%d'))", $id, $secret, $this->userId);
 			if (count($item) == 1) 
 			{
-				$item = Item::newInstance()->findByPrimaryKey($id);
-				$form = count(Session::newInstance()->_getForm());
-				$keepForm = count(Session::newInstance()->_getKeepForm());
+				$item = ClassLoader::getInstance()->getClassInstance( 'Model_Item' )->findByPrimaryKey($id);
+				$form = count($this->getSession()->_getForm());
+				$keepForm = count($this->getSession()->_getKeepForm());
 				if ($form == 0 || $form == $keepForm) 
 				{
-					Session::newInstance()->_dropKeepForm();
+					$this->getSession()->_dropKeepForm();
 				}
 				$this->getView()->_exportVariableToView('item', $item);
 				osc_run_hook("before_item_edit", $item);
@@ -88,15 +88,15 @@ class CWebItem extends Controller
 				// set all parameters into session
 				foreach ($mItems->data as $key => $value) 
 				{
-					Session::newInstance()->_setForm($key, $value);
+					$this->getSession()->_setForm($key, $value);
 				}
 				$meta = Params::getParam('meta');
 				if (is_array($meta)) 
 				{
 					foreach ($meta as $key => $value) 
 					{
-						Session::newInstance()->_setForm('meta_' . $key, $value);
-						Session::newInstance()->_keepForm('meta_' . $key);
+						$this->getSession()->_setForm('meta_' . $key, $value);
+						$this->getSession()->_keepForm('meta_' . $key);
 					}
 				}
 				if ((osc_recaptcha_private_key() != '') && Params::existParam("recaptcha_challenge_field")) 
@@ -110,7 +110,7 @@ class CWebItem extends Controller
 					}
 				}
 				$success = $mItems->edit();
-				osc_run_hook('edited_item', Item::newInstance()->findByPrimaryKey($id));
+				osc_run_hook('edited_item', ClassLoader::getInstance()->getClassInstance( 'Model_Item' )->findByPrimaryKey($id));
 				if ($success == 1) 
 				{
 					osc_add_flash_ok_message(_m('Great! We\'ve just updated your item'));
@@ -129,7 +129,7 @@ class CWebItem extends Controller
 	{
 		osc_run_hook("before_html");
 		osc_current_web_theme_path($file);
-		Session::newInstance()->_clearVariables();
+		$this->getSession()->_clearVariables();
 		osc_run_hook("after_html");
 	}
 }

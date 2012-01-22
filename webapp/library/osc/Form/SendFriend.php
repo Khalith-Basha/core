@@ -25,9 +25,9 @@ class Form_SendFriend extends Form
 	       }*/
 	static public function your_name() 
 	{
-		if (Session::newInstance()->_getForm("yourName") != "") 
+		if (ClassLoader::getInstance()->getClassInstance( 'Session' )->_getForm("yourName") != "") 
 		{
-			$yourName = Session::newInstance()->_getForm("yourName");
+			$yourName = ClassLoader::getInstance()->getClassInstance( 'Session' )->_getForm("yourName");
 			parent::generic_input_text("yourName", $yourName, null, false);
 		}
 		else
@@ -38,9 +38,9 @@ class Form_SendFriend extends Form
 	}
 	static public function your_email() 
 	{
-		if (Session::newInstance()->_getForm("yourEmail") != "") 
+		if (ClassLoader::getInstance()->getClassInstance( 'Session' )->_getForm("yourEmail") != "") 
 		{
-			$yourEmail = Session::newInstance()->_getForm("yourEmail");
+			$yourEmail = ClassLoader::getInstance()->getClassInstance( 'Session' )->_getForm("yourEmail");
 			parent::generic_input_text("yourEmail", $yourEmail, null, false);
 		}
 		else
@@ -51,9 +51,9 @@ class Form_SendFriend extends Form
 	}
 	static public function friend_name() 
 	{
-		if (Session::newInstance()->_getForm("friendName") != "") 
+		if (ClassLoader::getInstance()->getClassInstance( 'Session' )->_getForm("friendName") != "") 
 		{
-			$friendName = Session::newInstance()->_getForm("friendName");
+			$friendName = ClassLoader::getInstance()->getClassInstance( 'Session' )->_getForm("friendName");
 			parent::generic_input_text("friendName", $friendName, null, false);
 		}
 		else
@@ -64,9 +64,9 @@ class Form_SendFriend extends Form
 	}
 	static public function friend_email() 
 	{
-		if (Session::newInstance()->_getForm("friendEmail") != "") 
+		if (ClassLoader::getInstance()->getClassInstance( 'Session' )->_getForm("friendEmail") != "") 
 		{
-			$friendEmail = Session::newInstance()->_getForm("friendEmail");
+			$friendEmail = ClassLoader::getInstance()->getClassInstance( 'Session' )->_getForm("friendEmail");
 			parent::generic_input_text("friendEmail", $friendEmail, null, false);
 		}
 		else
@@ -77,9 +77,9 @@ class Form_SendFriend extends Form
 	}
 	static public function your_message() 
 	{
-		if (Session::newInstance()->_getForm("message_body") != "") 
+		if (ClassLoader::getInstance()->getClassInstance( 'Session' )->_getForm("message_body") != "") 
 		{
-			$message_body = Session::newInstance()->_getForm("message_body");
+			$message_body = ClassLoader::getInstance()->getClassInstance( 'Session' )->_getForm("message_body");
 			parent::generic_textarea("message", $message_body, null, false);
 		}
 		else

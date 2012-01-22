@@ -23,7 +23,7 @@ class CWebIndex extends Controller
 		$locale = Params::getParam('locale');
 		if (preg_match('/.{2}_.{2}/', $locale)) 
 		{
-			Session::newinstance()->_set('userLocale', $locale);
+			$this->getSession()->_set('userLocale', $locale);
 		}
 
 		$redirectUrl = $this->getServer()->hasHttpReferer() ?

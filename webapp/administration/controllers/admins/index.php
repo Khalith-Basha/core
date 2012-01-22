@@ -20,7 +20,7 @@
 * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-class CAdminAdmins extends AdminSecBaseModel
+class CAdminAdmins extends AdministrationController
 {
 	private $adminManager ;
 
@@ -37,11 +37,8 @@ class CAdminAdmins extends AdminSecBaseModel
 
     switch ($this->action)
     {
-	case 'delete':      if( defined('DEMO') ) {
-				osc_add_flash_warning_message( _m("This action cannot be done because is a demo site"), 'admin');
-				$this->redirectTo(osc_admin_base_url(true) . '?page=admins');
-			    }
-			    // deleting and admin
+    case 'delete':
+	    // deleting and admin
 			    $isDeleted = false;
 			    $adminId   = Params::getParam('id');
 
@@ -73,11 +70,5 @@ class CAdminAdmins extends AdminSecBaseModel
 	break;
     }
 }
-
-	function doView($file)
-	{
-	    osc_current_admin_theme_path($file) ;
-	    $this->getSession()->_clearVariables();
-	}
 }
 

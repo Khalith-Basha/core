@@ -18,7 +18,7 @@
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-class CAdminField extends AdminSecBaseModel
+class CAdminField extends AdministrationController
 {
 	private $fieldManager;
 	function __construct() 
@@ -45,9 +45,5 @@ class CAdminField extends AdminSecBaseModel
 		$this->getView()->_exportVariableToView("fields", $this->fieldManager->listAll());
 		$this->doView("fields/index.php");
 	}
-	function doView($file) 
-	{
-		osc_current_admin_theme_path($file);
-	$this->getSession()->_clearVariables();
-	}
 }
+

@@ -63,7 +63,7 @@ function osc_render_file_url($file = '')
  */
 function osc_resend_flash_messages($section = "pubMessages") 
 {
-	$message = Session::newInstance()->_getMessage($section);
+	$message = ClassLoader::getInstance()->getClassInstance( 'Session' )->_getMessage($section);
 	if ($message["type"] == "info") 
 	{
 		osc_add_flash_info_message($message['msg'], $section);

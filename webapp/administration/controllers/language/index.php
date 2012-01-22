@@ -18,7 +18,7 @@
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-class CAdminLanguage extends AdminSecBaseModel
+class CAdminLanguage extends AdministrationController
 {
 	private $localeManager;
 	function __construct() 
@@ -256,9 +256,5 @@ class CAdminLanguage extends AdminSecBaseModel
 			break;
 		}
 	}
-	function doView($file) 
-	{
-		osc_current_admin_theme_path($file);
-	$this->getSession()->_clearVariables();
-	}
 }
+

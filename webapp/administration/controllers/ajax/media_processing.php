@@ -39,9 +39,9 @@ class MediaProcessingAjax
 	{
 		$this->_get = $params;
 		$this->getDBParams();
-		$this->result = ItemResource::newInstance()->getResources(Params::getParam('resourceId'), $this->_get['iDisplayStart'], $this->_get['iDisplayLength'], isset($this->order_by['column_name']) ? $this->order_by['column_name'] : 'pk_i_id', isset($this->order_by['type']) ? $this->order_by['type'] : 'desc');
-		$this->filtered_total = ItemResource::newInstance()->countResources(Params::getParam('resourceId'));
-		$this->total = ItemResource::newInstance()->countResources('');
+		$this->result = ClassLoader::getInstance()->getClassInstance( 'Model_ItemResource' )->getResources(Params::getParam('resourceId'), $this->_get['iDisplayStart'], $this->_get['iDisplayLength'], isset($this->order_by['column_name']) ? $this->order_by['column_name'] : 'pk_i_id', isset($this->order_by['type']) ? $this->order_by['type'] : 'desc');
+		$this->filtered_total = ClassLoader::getInstance()->getClassInstance( 'Model_ItemResource' )->countResources(Params::getParam('resourceId'));
+		$this->total = ClassLoader::getInstance()->getClassInstance( 'Model_ItemResource' )->countResources('');
 		$this->toDatatablesFormat();
 		$this->dumpToDatatables();
 	}

@@ -31,9 +31,9 @@ class CWebUser extends WebSecBaseModel
 	{
 		$itemsPerPage = (Params::getParam('itemsPerPage') != '') ? Params::getParam('itemsPerPage') : 5;
 		$page = (Params::getParam('iPage') != '') ? Params::getParam('iPage') : 0;
-		$total_items = Item::newInstance()->countByUserIDEnabled($_SESSION['userId']);
+		$total_items = ClassLoader::getInstance()->getClassInstance( 'Model_Item' )->countByUserIDEnabled($_SESSION['userId']);
 		$total_pages = ceil($total_items / $itemsPerPage);
-		$items = Item::newInstance()->findByUserIDEnabled($_SESSION['userId'], $page * $itemsPerPage, $itemsPerPage);
+		$items = ClassLoader::getInstance()->getClassInstance( 'Model_Item' )->findByUserIDEnabled($_SESSION['userId'], $page * $itemsPerPage, $itemsPerPage);
 		$this->getView()->_exportVariableToView('items', $items);
 		$this->getView()->_exportVariableToView('list_total_pages', $total_pages);
 		$this->getView()->_exportVariableToView('list_total_items', $total_items);
@@ -46,7 +46,7 @@ class CWebUser extends WebSecBaseModel
 	{
 		osc_run_hook("before_html");
 		osc_current_web_theme_path($file);
-		Session::newInstance()->_clearVariables();
+		$this->getSession()->_clearVariables();
 		osc_run_hook("after_html");
 	}
 }

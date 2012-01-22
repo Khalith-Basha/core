@@ -19,19 +19,7 @@ $admins = __get("admins");
 $last = end($admins);
 $last_id = $last['pk_i_id'];
 ?>
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en-US">
-    <head>
-        <?php
-osc_current_admin_theme_path('head.php'); ?>
-    </head>
-    <body>
-        <?php
-osc_current_admin_theme_path('header.php'); ?>
-        <div id="update_version" style="display:none;"></div>
-        <div class="Header"><?php
-_e('Admins'); ?></div>
+        <div class="Header"><?php _e('Admins'); ?></div>
 
         <script type="text/javascript">
                 $(function() {
@@ -45,27 +33,19 @@ _e('Admins'); ?></div>
                         return anRows;
                     };
 
-                    sSearchName = "<?php
-_e('Search'); ?>...";
+                    sSearchName = "<?php _e('Search'); ?>...";
                     oTable = $('#datatables_list').dataTable({
                     "bAutoWidth": false,
                             "sDom": '<"top"fl>rt<"bottom"ip<"clear">',
                             "oLanguage": {
-                                            "sProcessing":   "<?php
-_e('Processing'); ?>...",
-                                            "sLengthMenu":   "<?php
-_e('Show _MENU_ entries'); ?>",
-                                            "sZeroRecords":  "<?php
-_e('No matching records found'); ?>",
-                                            "sInfo":         "<?php
-_e('Showing _START_ to _END_ of _TOTAL_ entries'); ?>",
-                                            "sInfoEmpty":    "<?php
-_e('Showing 0 to 0 of 0 entries'); ?>",
-                                            "sInfoFiltered": "(<?php
-_e('filtered from _MAX_ total entries'); ?>)",
+                                            "sProcessing":   "<?php _e('Processing'); ?>...",
+                                            "sLengthMenu":   "<?php _e('Show _MENU_ entries'); ?>",
+                                            "sZeroRecords":  "<?php _e('No matching records found'); ?>",
+                                            "sInfo":         "<?php _e('Showing _START_ to _END_ of _TOTAL_ entries'); ?>",
+                                            "sInfoEmpty":    "<?php _e('Showing 0 to 0 of 0 entries'); ?>",
+                                            "sInfoFiltered": "(<?php _e('filtered from _MAX_ total entries'); ?>)",
                                             "sInfoPostFix":  "",
-                                            "sSearch":       "<?php
-_e('Search'); ?>:",
+                                            "sSearch":       "<?php _e('Search'); ?>:",
                                             "sUrl":          "",
                                             "oPaginate": {
                                                     "sFirst":    "<?php
@@ -133,13 +113,7 @@ _e('E-mail'); ?>" }
                     });
                 });
         </script>
-        <script type="text/javascript" src="<?php
-echo osc_current_admin_theme_url('js/datatables.post_init.js'); ?>"></script>
-        <div id="content">
-            <div id="separator"></div>
-            <?php
-osc_current_admin_theme_path('include/backoffice_menu.php'); ?>
-            <div id="right_column">
+        <script type="text/javascript" src="<?php echo osc_current_admin_theme_url('js/datatables.post_init.js'); ?>"></script>
                 <div id="content_header" class="content_header">
                     <div style="float: left;">
                         <img src="<?php
@@ -167,15 +141,13 @@ _e('Delete') ?></option>
 _e('Apply') ?></button>
                 </div>
 
-                <form id="datatablesForm" action="<?php
-echo osc_admin_base_url(true); ?>" method="post">
+                <form id="datatablesForm" action="<?php echo osc_admin_base_url(true); ?>" method="post">
                     <input type="hidden" name="action" value="delete" />
                     <input type="hidden" name="page" value="admins" />
                     <table cellpadding="0" cellspacing="0" border="0" class="display" id="datatables_list"></table>
                     <br />
                 </form>
 
-            </div> <!-- end of right column -->
             <script type="text/javascript">
                 $(document).ready(function() {
                     $('#datatables_list tr').live('mouseover', function(event) {
@@ -187,8 +159,4 @@ echo osc_admin_base_url(true); ?>" method="post">
                     });
                 });
             </script>
-        </div>
-        <?php
-osc_current_admin_theme_path('footer.php'); ?>
-    </body>
-</html>
+

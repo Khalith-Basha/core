@@ -23,7 +23,7 @@ class CWebUser extends Controller
 	}
 	function doModel() 
 	{
-		$session = Session::newInstance();
+		$session = $this->getSession();
 		$session->_drop('userId');
 		$session->_drop('userName');
 		$session->_drop('userEmail');
@@ -38,7 +38,7 @@ class CWebUser extends Controller
 	{
 		osc_run_hook("before_html");
 		osc_current_web_theme_path($file);
-		Session::newInstance()->_clearVariables();
+		$this->getSession()->_clearVariables();
 		osc_run_hook("after_html");
 	}
 }

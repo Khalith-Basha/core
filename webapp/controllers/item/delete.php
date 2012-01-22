@@ -23,7 +23,7 @@ class CWebItem extends Controller
 	function __construct() 
 	{
 		parent::__construct();
-		$this->itemManager = Item::newInstance();
+		$this->itemManager = ClassLoader::getInstance()->getClassInstance( 'Model_Item' );
 		// here allways userId == ''
 		if (osc_is_web_user_logged_in()) 
 		{
@@ -76,7 +76,7 @@ class CWebItem extends Controller
 	{
 		osc_run_hook("before_html");
 		osc_current_web_theme_path($file);
-		Session::newInstance()->_clearVariables();
+		$this->getSession()->_clearVariables();
 		osc_run_hook("after_html");
 	}
 }

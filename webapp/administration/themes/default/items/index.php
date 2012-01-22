@@ -25,16 +25,6 @@ $regions = __get("regions");
 $cities = __get("cities");
 ?>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en-US">
-    <head>
-        <?php
-osc_current_admin_theme_path('head.php'); ?>
-    </head>
-    <body>
-        <?php
-osc_current_admin_theme_path('header.php'); ?>
-        <div id="update_version" style="display:none;"></div>
         <script type="text/javascript">
             $(document).ready(function(){
                 if (typeof $.uniform != 'undefined') {
@@ -71,27 +61,22 @@ osc_current_admin_theme_path('header.php'); ?>
                 width: 40px;
             }
        </style>
-        <?php
-$itemForm->location_javascript('admin'); ?>
+        <?php $itemForm->location_javascript('admin'); ?>
         <script type="text/javascript">
             $(function() {
                 oTable = new osc_datatable();
                 oTable.fnInit({
                     'idTable'       : 'datatables_list',
-                    "sAjaxSource": "<?php
-echo osc_admin_base_url(true); ?>?page=ajax&action=items<?php
+                    "sAjaxSource": "<?php echo osc_admin_base_url(true); ?>?page=ajax&action=items<?php
 if (Params::getParam('catId') != ""): ?>&catId=<?php
 	echo Params::getParam('catId'); ?><?php
 endif; ?>",
                     'iDisplayLength': '10',
                     'iColumns'      : '8',
                     'oLanguage'     : {
-                            "sInfo":         "<?php
-_e('Showing _START_ to _END_ of _TOTAL_ entries'); ?>"
-                            ,"sZeroRecords":  "<?php
-_e('No matching records found'); ?>"
-                            ,"sInfoFiltered": "(<?php
-_e('filtered from _MAX_ total entries'); ?>)"
+                            "sInfo":         "<?php _e('Showing _START_ to _END_ of _TOTAL_ entries'); ?>"
+                            ,"sZeroRecords":  "<?php _e('No matching records found'); ?>"
+                            ,"sInfoFiltered": "(<?php _e('filtered from _MAX_ total entries'); ?>)"
                             ,"oPaginate": {
                                         "sFirst":    "<?php
 _e('First'); ?>",
@@ -195,13 +180,6 @@ _e('Show filters') ?>');
             
         </script>
         
-        <div id="content">
-            <div id="separator"></div>
-
-            <?php
-osc_current_admin_theme_path('include/backoffice_menu.php'); ?>
-            
-            <div id="right_column">
                 <div id="content_header" class="content_header">
                     <div style="float: left;">
                         <img src="<?php
@@ -438,11 +416,4 @@ _e('Apply') ?></button>
                     }
                 });
             </script>
-            <div style="clear: both;"></div>
 
-        </div> <!-- end of container -->
-
-        <?php
-osc_current_admin_theme_path('footer.php'); ?>
-    </body>
-</html>

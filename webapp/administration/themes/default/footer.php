@@ -16,14 +16,19 @@
  * License along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 ?>
-        
+
+	</div><!-- Right column -->	
+	    <div style="clear: both;"></div>
+</div><!-- Container -->
 <div style="clear: both;"></div>
 <div id="footer">
     <?php osc_run_hook('admin_footer'); ?>
     <div id="footer_left">
-        <?php _e('Thank you for using'); ?> <a href="http://opensourceclassifieds.org/" target="_blank"><?php _e('OpenSourceClassifieds'); ?></a> |
+        <?php _e('Thank you for using'); ?> <a href="http://www.opensourceclassifieds.org/" target="_blank"><?php _e('OpenSourceClassifieds'); ?></a> |
         <a title="<?php _e('Documentation'); ?>" href="http://wiki.opensourceclassifieds.org/" target="_blank"><?php _e('Documentation'); ?></a> |
         <a title="<?php _e('Forums'); ?>" href="http://forums.opensourceclassifieds.org" target="_blank"><?php _e('Forums'); ?></a>
     </div>
     <div id="footer_right"><?php echo _e('OpenSourceClassifieds'); ?> <?php echo APP_VERSION; ?></div>
 </div>
+</body>
+</html>

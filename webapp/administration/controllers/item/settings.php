@@ -18,14 +18,14 @@
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-class CAdminItem extends AdminSecBaseModel
+class CAdminItem extends AdministrationController
 {
 	private $itemManager;
 	function __construct() 
 	{
 		parent::__construct();
 		//specific things for this class
-		$this->itemManager = Item::newInstance();
+		$this->itemManager = ClassLoader::getInstance()->getClassInstance( 'Model_Item' );
 	}
 	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
@@ -91,9 +91,5 @@ class CAdminItem extends AdminSecBaseModel
 		}
 		$this->redirectTo(osc_admin_base_url(true) . '?page=item&action=settings');
 	}
-	function doView($file) 
-	{
-		osc_current_admin_theme_path($file);
-	$this->getSession()->_clearVariables();
-	}
 }
+

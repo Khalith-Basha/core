@@ -496,7 +496,7 @@ function osc_count_premium_resources()
 {
 	if (!ClassLoader::getInstance()->getClassInstance( 'View' )->_exists('resources')) 
 	{
-		ClassLoader::getInstance()->getClassInstance( 'View' )->_exportVariableToView('resources', ItemResource::newInstance()->getAllResources(osc_premium_id()));
+		ClassLoader::getInstance()->getClassInstance( 'View' )->_exportVariableToView('resources', ClassLoader::getInstance()->getClassInstance( 'Model_ItemResource' )->getAllResources(osc_premium_id()));
 	}
 	return osc_priv_count_item_resources();
 }
@@ -509,7 +509,7 @@ function osc_has_premium_resources()
 {
 	if (!ClassLoader::getInstance()->getClassInstance( 'View' )->_exists('resources')) 
 	{
-		ClassLoader::getInstance()->getClassInstance( 'View' )->_exportVariableToView('resources', ItemResource::newInstance()->getAllResources(osc_premium_id()));
+		ClassLoader::getInstance()->getClassInstance( 'View' )->_exportVariableToView('resources', ClassLoader::getInstance()->getClassInstance( 'Model_ItemResource' )->getAllResources(osc_premium_id()));
 	}
 	return ClassLoader::getInstance()->getClassInstance( 'View' )->_next('resources');
 }
@@ -522,7 +522,7 @@ function osc_get_premium_resources()
 {
 	if (!ClassLoader::getInstance()->getClassInstance( 'View' )->_exists('resources')) 
 	{
-		ClassLoader::getInstance()->getClassInstance( 'View' )->_exportVariableToView('resources', ItemResource::newInstance()->getAllResources(osc_premium_id()));
+		ClassLoader::getInstance()->getClassInstance( 'View' )->_exportVariableToView('resources', ClassLoader::getInstance()->getClassInstance( 'Model_ItemResource' )->getAllResources(osc_premium_id()));
 	}
 	return ClassLoader::getInstance()->getClassInstance( 'View' )->_get('resources');
 }
@@ -535,7 +535,7 @@ function osc_count_premium_comments()
 {
 	if (!ClassLoader::getInstance()->getClassInstance( 'View' )->_exists('comments')) 
 	{
-		ClassLoader::getInstance()->getClassInstance( 'View' )->_exportVariableToView('comments', ItemComment::newInstance()->findBypremiumID(osc_premium_id(), osc_premium_comments_page(), osc_comments_per_page()));
+		ClassLoader::getInstance()->getClassInstance( 'View' )->_exportVariableToView('comments', ClassLoader::getInstance()->getClassInstance( 'Model_ItemComment' )->findBypremiumID(osc_premium_id(), osc_premium_comments_page(), osc_comments_per_page()));
 	}
 	return ClassLoader::getInstance()->getClassInstance( 'View' )->_count('comments');
 }
@@ -548,7 +548,7 @@ function osc_has_premium_comments()
 {
 	if (!ClassLoader::getInstance()->getClassInstance( 'View' )->_exists('comments')) 
 	{
-		ClassLoader::getInstance()->getClassInstance( 'View' )->_exportVariableToView('comments', ItemComment::newInstance()->findBypremiumID(osc_premium_id(), osc_premium_comments_page(), osc_comments_per_page()));
+		ClassLoader::getInstance()->getClassInstance( 'View' )->_exportVariableToView('comments', ClassLoader::getInstance()->getClassInstance( 'Model_ItemComment' )->findBypremiumID(osc_premium_id(), osc_premium_comments_page(), osc_comments_per_page()));
 	}
 	return ClassLoader::getInstance()->getClassInstance( 'View' )->_next('comments');
 }
@@ -574,7 +574,7 @@ function osc_count_premium_meta()
 {
 	if (!ClassLoader::getInstance()->getClassInstance( 'View' )->_exists('metafields')) 
 	{
-		ClassLoader::getInstance()->getClassInstance( 'View' )->_exportVariableToView('metafields', Item::newInstance()->metaFields(osc_premium_id()));
+		ClassLoader::getInstance()->getClassInstance( 'View' )->_exportVariableToView('metafields', ClassLoader::getInstance()->getClassInstance( 'Model_Item' )->metaFields(osc_premium_id()));
 	}
 	return ClassLoader::getInstance()->getClassInstance( 'View' )->_count('metafields');
 }
@@ -587,7 +587,7 @@ function osc_has_premium_meta()
 {
 	if (!ClassLoader::getInstance()->getClassInstance( 'View' )->_exists('metafields')) 
 	{
-		ClassLoader::getInstance()->getClassInstance( 'View' )->_exportVariableToView('metafields', Item::newInstance()->metaFields(osc_premium_id()));
+		ClassLoader::getInstance()->getClassInstance( 'View' )->_exportVariableToView('metafields', ClassLoader::getInstance()->getClassInstance( 'Model_Item' )->metaFields(osc_premium_id()));
 	}
 	return ClassLoader::getInstance()->getClassInstance( 'View' )->_next('metafields');
 }
@@ -600,7 +600,7 @@ function osc_get_premium_meta()
 {
 	if (!ClassLoader::getInstance()->getClassInstance( 'View' )->_exists('metafields')) 
 	{
-		ClassLoader::getInstance()->getClassInstance( 'View' )->_exportVariableToView('metafields', Item::newInstance()->metaFields(osc_premium_id()));
+		ClassLoader::getInstance()->getClassInstance( 'View' )->_exportVariableToView('metafields', ClassLoader::getInstance()->getClassInstance( 'Model_Item' )->metaFields(osc_premium_id()));
 	}
 	return ClassLoader::getInstance()->getClassInstance( 'View' )->_get('metafields');
 }

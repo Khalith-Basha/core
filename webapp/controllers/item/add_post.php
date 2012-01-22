@@ -23,7 +23,7 @@ class CWebItem extends Controller
 	function __construct() 
 	{
 		parent::__construct();
-		$this->itemManager = Item::newInstance();
+		$this->itemManager = ClassLoader::getInstance()->getClassInstance( 'Model_Item' );
 		// here allways userId == ''
 		if (osc_is_web_user_logged_in()) 
 		{
@@ -50,15 +50,15 @@ class CWebItem extends Controller
 		// set all parameters into session
 		foreach ($mItems->getData() as $key => $value) 
 		{
-			Session::newInstance()->_setForm($key, $value);
+			$this->getSession()->_setForm($key, $value);
 		}
 		$meta = Params::getParam('meta');
 		if (is_array($meta)) 
 		{
 			foreach ($meta as $key => $value) 
 			{
-				Session::newInstance()->_setForm('meta_' . $key, $value);
-				Session::newInstance()->_keepForm('meta_' . $key);
+				$this->getSession()->_setForm('meta_' . $key, $value);
+				$this->getSession()->_keepForm('meta_' . $key);
 			}
 		}
 		if ((osc_recaptcha_private_key() != '') && Params::existParam("recaptcha_challenge_field")) 
@@ -79,7 +79,7 @@ class CWebItem extends Controller
 		}
 		else
 		{
-			Session::newInstance()->_dropkeepForm('meta_' . $key);
+			$this->getSession()->_dropkeepForm('meta_' . $key);
 			if ($success == 1) 
 			{
 				osc_add_flash_ok_message(_m('Check your inbox to verify your email address'));

@@ -18,7 +18,7 @@
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-class CAdminPlugin extends AdminSecBaseModel
+class CAdminPlugin extends AdministrationController
 {
 	function __construct() 
 	{
@@ -29,8 +29,7 @@ class CAdminPlugin extends AdminSecBaseModel
 	{
 		parent::doModel();
 
-		osc_current_admin_theme_path( 'plugins/add.php' );
-	$this->getSession()->_clearVariables();
+		$this->doView( 'plugins/add.php' );
 	}
 	
 	public function doPost( HttpRequest $req, HttpResponse $res )
@@ -75,9 +74,6 @@ class CAdminPlugin extends AdminSecBaseModel
 			break;
 		}
 		$this->redirectTo(osc_admin_base_url(true) . "?page=plugin");
-	}
-	function doView($file) 
-	{
 	}
 	function errorHandler($pn, $action) 
 	{

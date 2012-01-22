@@ -20,16 +20,6 @@ $last = end($locales);
 $last_id = $last['pk_c_code'];
 $default_lang = osc_language();
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en-US">
-    <head>
-        <?php
-osc_current_admin_theme_path('head.php'); ?>
-    </head>
-    <body>
-        <?php
-osc_current_admin_theme_path('header.php'); ?>
-        <div id="update_version" style="display:none;"></div>
         <script type="text/javascript">
             $(function() {
                 $.fn.dataTableExt.oApi.fnGetFilteredNodes = function ( oSettings )
@@ -149,14 +139,6 @@ _e('Enabled (administration)'); ?>"}
         <script type="text/javascript" src="<?php
 echo osc_current_admin_theme_url('js/datatables.post_init.js'); ?>"></script>
 
-        <div id="content">
-            <div id="separator"></div>
-
-            <?php
-osc_current_admin_theme_path('include/backoffice_menu.php'); ?>
-
-            <div id="right_column">
-
                 <div id="content_header" class="content_header">
                     <div style="float: left;">
                         <img src="<?php
@@ -200,8 +182,6 @@ echo osc_admin_base_url(true); ?>?page=languages" method="post">
                     <br />
                     <div style="clear: both;"></div>
                 </form>
-            </div> <!-- end of right column -->
-
             <script type="text/javascript">
                 $(document).ready(function() {
                     $('#datatables_list tr').live('mouseover', function(event) {
@@ -213,8 +193,4 @@ echo osc_admin_base_url(true); ?>?page=languages" method="post">
                     });
                 });
             </script>
-        </div> <!-- end of container -->
-        <?php
-osc_current_admin_theme_path('footer.php'); ?>
-    </body>
-</html>
+

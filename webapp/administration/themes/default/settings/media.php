@@ -17,27 +17,10 @@
  */
 ?>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en-US">
-    <head>
-        <?php
-osc_current_admin_theme_path('head.php'); ?>
-        <link rel="stylesheet" media="screen" type="text/css" href="<?php
-echo osc_current_admin_theme_js_url() ?>colorpicker/css/colorpicker.css" />
-        <script type="text/javascript" src="<?php
-echo osc_current_admin_theme_js_url() ?>colorpicker/js/colorpicker.js"></script>
-    </head>
-    <body>
-        <?php
-osc_current_admin_theme_path('header.php'); ?>
-        <div id="update_version" style="display:none;"></div>
+        <link rel="stylesheet" media="screen" type="text/css" href="<?php echo osc_current_admin_theme_js_url() ?>colorpicker/css/colorpicker.css" />
+        <script type="text/javascript" src="<?php echo osc_current_admin_theme_js_url() ?>colorpicker/js/colorpicker.js"></script>
         <div class="Header"><?php
 _e('Media settings'); ?></div>
-        <div id="content">
-            <div id="separator"></div>
-            <?php
-osc_current_admin_theme_path('include/backoffice_menu.php'); ?>
-            <div id="right_column">
                 <div id="content_header" class="content_header">
                     <div style="float: left;">
                         <img src="<?php
@@ -247,11 +230,6 @@ _e('Update'); ?>" />
                         </form>
                     </div>
                 </div>
-                <div style="clear: both;"></div>
-            </div> <!-- end of right column -->
-        </div><!-- end of container -->
-        <?php
-osc_current_admin_theme_path('footer.php'); ?>
         <script type="text/javascript">
             $('input#watermark_none').change(function(){
                 if( $(this).attr('checked') ){
@@ -298,5 +276,4 @@ _e("Is highly recommended to have 'Keep original image' option active when you w
             });
             
         </script>
-    </body>
-</html>
+

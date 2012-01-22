@@ -44,9 +44,7 @@ _e('Please enter your username or e-mail address'); ?>.<br />
 _e('You will receive a new password via e-mail'); ?>.
             </div>
 
-            <form action="<?php
-echo osc_admin_base_url(true); ?>" method="post">
-                <input type="hidden" name="page" value="login" />
+            <form action="<?php echo osc_admin_base_url(true); ?>" method="post">
                 <input type="hidden" name="action" value="recover" />
                 <p>
                     <label><?php

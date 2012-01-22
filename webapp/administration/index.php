@@ -29,7 +29,7 @@ if (file_exists(ABS_PATH . '.maintenance'))
 }
 
 require 'osc/core/SecBaseModel.php';
-require 'osc/core/AdminSecBaseModel.php';
+require 'osc/core/AdministrationController.php';
 require 'osc/AdminThemes.php';
 
 $page = Params::getParam('page');

@@ -49,7 +49,7 @@ class CWebPage extends Controller
 		{
 			if (Params::getParam('lang') != '') 
 			{
-				Session::newInstance()->_set('userLocale', Params::getParam('lang'));
+				$this->getSession()->_set('userLocale', Params::getParam('lang'));
 			}
 			$this->getView()->_exportVariableToView('page', $page);
 			$this->doView('page.php');
@@ -59,7 +59,7 @@ class CWebPage extends Controller
 	{
 		osc_run_hook("before_html");
 		osc_current_web_theme_path($file);
-		Session::newInstance()->_clearVariables();
+		$this->getSession()->_clearVariables();
 		osc_run_hook("after_html");
 	}
 }

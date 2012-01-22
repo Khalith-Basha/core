@@ -29,7 +29,7 @@ function osc_deleteResource($id)
 	{
 		$id = $id[0];
 	}
-	$resource = ItemResource::newInstance()->findByPrimaryKey($id);
+	$resource = ClassLoader::getInstance()->getClassInstance( 'Model_ItemResource' )->findByPrimaryKey($id);
 	if (!is_null($resource)) 
 	{
 		$resource_original = osc_base_path() . $resource['s_path'] . $resource['pk_i_id'] . "." . $resource['s_extension'];

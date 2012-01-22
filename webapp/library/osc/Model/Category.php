@@ -473,7 +473,7 @@ class Model_Category extends DAO
 	 */
 	public function deleteByPrimaryKey($pk) 
 	{
-		$items = Item::newInstance()->findByCategoryID($pk);
+		$items = ClassLoader::getInstance()->getClassInstance( 'Model_Item' )->findByCategoryID($pk);
 		$subcats = $this->findSubcategories($pk);
 		if (count($subcats) > 0) 
 		{
@@ -486,7 +486,7 @@ class Model_Category extends DAO
 		{
 			foreach ($items as $item) 
 			{
-				Item::newInstance()->deleteByPrimaryKey($item["pk_i_id"]);
+				ClassLoader::getInstance()->getClassInstance( 'Model_Item' )->deleteByPrimaryKey($item["pk_i_id"]);
 			}
 		}
 		osc_run_hook("delete_category", $pk);

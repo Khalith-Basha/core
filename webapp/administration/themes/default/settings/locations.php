@@ -18,31 +18,12 @@
 $aCountries = __get('aCountries');
 ?>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en-US">
-    <head>
         <script type="text/javascript">
-            var base_url    = '<?php
-echo osc_admin_base_url(); ?>';
-            var s_close     = '<?php
-_e('Close'); ?>';
-            var s_view_more = '<?php
-_e('View more'); ?>';
+            var base_url    = '<?php echo osc_admin_base_url(); ?>';
+            var s_close     = '<?php _e('Close'); ?>';
+            var s_view_more = '<?php _e('View more'); ?>';
         </script>
-        <?php
-osc_current_admin_theme_path('head.php'); ?>
-        <script type="text/javascript" src="<?php
-echo osc_current_admin_theme_js_url('location.js'); ?>"></script>
-    </head>
-    <body>
-        <?php
-osc_current_admin_theme_path('header.php'); ?>
-        <div id="update_version" style="display:none;"></div>
-        <div id="content">
-            <div id="separator"></div>
-            <?php
-osc_current_admin_theme_path('include/backoffice_menu.php'); ?>
-            <div id="right_column">
+        <script type="text/javascript" src="<?php echo osc_current_admin_theme_js_url('location.js'); ?>"></script>
                 <div id="content_header" class="content_header">
                     <div style="float: left;">
                         <img src="<?php
@@ -405,7 +386,4 @@ _e('Edit'); ?>" />
         </div>
         <!-- End form edit city -->
         <div id="fade" class="black_overlay"></div> 
-        <?php
-osc_current_admin_theme_path('footer.php'); ?>
-    </body>
-</html>
+

@@ -24,16 +24,6 @@ $last = end($comments);
 $last_id = $last['pk_i_id'];
 ?>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en-US">
-    <head>
-        <?php
-osc_current_admin_theme_path('head.php'); ?>
-    </head>
-    <body>
-        <?php
-osc_current_admin_theme_path('header.php'); ?>
-        <div id="update_version" style="display:none;"></div>
         <script type="text/javascript">
             $(function() {
                 $.fn.dataTableExt.oApi.fnGetFilteredNodes = function ( oSettings ) {
@@ -158,13 +148,6 @@ _e('Date'); ?>"
         </script>
         <script type="text/javascript" src="<?php
 echo osc_current_admin_theme_js_url('datatables.post_init.js'); ?>"></script>
-        <div id="content">
-            <div id="separator"></div>
-
-            <?php
-osc_current_admin_theme_path('include/backoffice_menu.php'); ?>
-
-            <div id="right_column">
                 <div id="content_header" class="content_header">
                     <div style="float: left;">
                         <img src="<?php
@@ -204,7 +187,6 @@ _e('Apply') ?></button>
                     <br />
                 </form>
 
-            </div> <!-- end of right column -->
             <script type="text/javascript">
                 $(document).ready(function() {
 
@@ -217,9 +199,4 @@ _e('Apply') ?></button>
                     });
                 });
             </script>
-            <div style="clear: both;"></div>
-        </div> <!-- end of container -->
-        <?php
-osc_current_admin_theme_path('footer.php'); ?>
-    </body>
-</html>
+

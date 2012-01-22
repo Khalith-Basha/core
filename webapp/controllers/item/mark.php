@@ -23,7 +23,7 @@ class CWebItem extends Controller
 	function __construct() 
 	{
 		parent::__construct();
-		$this->itemManager = Item::newInstance();
+		$this->itemManager = ClassLoader::getInstance()->getClassInstance( 'Model_Item' );
 		// here allways userId == ''
 		if (osc_is_web_user_logged_in()) 
 		{
@@ -43,7 +43,7 @@ class CWebItem extends Controller
 		$mItem = new ItemActions(false);
 		$id = Params::getParam('id');
 		$as = Params::getParam('as');
-		$item = Item::newInstance()->findByPrimaryKey($id);
+		$item = ClassLoader::getInstance()->getClassInstance( 'Model_Item' )->findByPrimaryKey($id);
 		View::newInstance()->_exportVariableToView('item', $item);
 		$mItem->mark($id, $as);
 		osc_add_flash_ok_message(_m('Thanks! That\'s very helpful'));
@@ -53,7 +53,7 @@ class CWebItem extends Controller
 	{
 		osc_run_hook("before_html");
 		osc_current_web_theme_path($file);
-		Session::newInstance()->_clearVariables();
+		$this->getSession()->_clearVariables();
 		osc_run_hook("after_html");
 	}
 }

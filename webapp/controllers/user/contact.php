@@ -36,10 +36,10 @@ class CWebUser extends Controller
 			if (!osc_check_recaptcha()) 
 			{
 				osc_add_flash_error_message(_m('The Recaptcha code is wrong'));
-				Session::newInstance()->_setForm("yourEmail", Params::getParam('yourEmail'));
-				Session::newInstance()->_setForm("yourName", Params::getParam('yourName'));
-				Session::newInstance()->_setForm("phoneNumber", Params::getParam('phoneNumber'));
-				Session::newInstance()->_setForm("message_body", Params::getParam('message'));
+				$this->getSession()->_setForm("yourEmail", Params::getParam('yourEmail'));
+				$this->getSession()->_setForm("yourName", Params::getParam('yourName'));
+				$this->getSession()->_setForm("phoneNumber", Params::getParam('phoneNumber'));
+				$this->getSession()->_setForm("message_body", Params::getParam('message'));
 				$this->redirectTo(osc_user_public_profile_url());
 				return false; // BREAK THE PROCESS, THE RECAPTCHA IS WRONG				
 			}

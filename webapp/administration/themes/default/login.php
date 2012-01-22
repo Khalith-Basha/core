@@ -98,10 +98,7 @@ _e('Log in'); ?>" tabindex="100" />
             </form>
 
             <p id="nav">
-                <a href="<?php
-echo osc_admin_base_url(true); ?>?page=login&action=recover" title="<?php
-_e('Forgot your password?'); ?>"><?php
-_e('Forgot your password?'); ?></a>
+                <a href="<?php echo osc_admin_base_url(true); ?>?action=recover" title="<?php _e('Forgot your password?'); ?>"><?php _e('Forgot your password?'); ?></a>
             </p>
         </div>
         <p id="backtoblog"><a href="<?php

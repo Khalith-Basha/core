@@ -23,8 +23,7 @@
  */
 function osc_listNews() 
 {
-	require_once 'osc/services/cache/disk.php';
-	$cache = new DiskCacheService('admin-blog_news', 900);
+	$cache = ClassLoader::getInstance()->getClassInstance( 'Services_Cache_Disk', true, array( 'admin-blog_news', 900 ) );
 	if ($cache->check()) 
 	{
 		return $cache->retrieve();

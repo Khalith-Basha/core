@@ -18,14 +18,14 @@
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-class CAdminItem extends AdminSecBaseModel
+class CAdminItem extends AdministrationController
 {
 	private $itemManager;
 	function __construct() 
 	{
 		parent::__construct();
 		//specific things for this class
-		$this->itemManager = Item::newInstance();
+		$this->itemManager = ClassLoader::getInstance()->getClassInstance( 'Model_Item' );
 	}
 
 	function doModel() 
@@ -36,7 +36,7 @@ class CAdminItem extends AdminSecBaseModel
 	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
 		$id = Params::getParam('id');
-		$item = Item::newInstance()->findByPrimaryKey($id);
+		$item = ClassLoader::getInstance()->getClassInstance( 'Model_Item' )->findByPrimaryKey($id);
 		if (count($item) <= 0) 
 		{
 			$this->redirectTo(osc_admin_base_url(true) . "?page=item");
@@ -78,11 +78,11 @@ class CAdminItem extends AdminSecBaseModel
 			if ($id != '') 
 			{
 				$user = ClassLoader::getInstance()->getClassInstance( 'Model_User' )->findByPrimaryKey($id);
-				Item::newInstance()->update(array('fk_i_user_id' => $id, 's_contact_name' => $user['s_name'], 's_contact_email' => $user['s_email']), array('pk_i_id' => Params::getParam('id'), 's_secret' => Params::getParam('secret')));
+				ClassLoader::getInstance()->getClassInstance( 'Model_Item' )->update(array('fk_i_user_id' => $id, 's_contact_name' => $user['s_name'], 's_contact_email' => $user['s_email']), array('pk_i_id' => Params::getParam('id'), 's_secret' => Params::getParam('secret')));
 			}
 			else
 			{
-				Item::newInstance()->update(array('fk_i_user_id' => NULL, 's_contact_name' => Params::getParam('contactName'), 's_contact_email' => Params::getParam('contactEmail')), array('pk_i_id' => Params::getParam('id'), 's_secret' => Params::getParam('secret')));
+				ClassLoader::getInstance()->getClassInstance( 'Model_Item' )->update(array('fk_i_user_id' => NULL, 's_contact_name' => Params::getParam('contactName'), 's_contact_email' => Params::getParam('contactEmail')), array('pk_i_id' => Params::getParam('id'), 's_secret' => Params::getParam('secret')));
 			}
 			osc_add_flash_ok_message(_m('Changes saved correctly'), 'admin');
 			$this->redirectTo(osc_admin_base_url(true) . "?page=item");

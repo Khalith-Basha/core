@@ -18,7 +18,7 @@
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-class AdminSecBaseModel extends SecBaseModel
+class AdministrationController extends SecBaseModel
 {
 	public function isLogged() 
 	{
@@ -41,6 +41,14 @@ class AdminSecBaseModel extends SecBaseModel
 	{
 		osc_current_admin_theme_path( 'login.php' );
 		exit;
+	}
+
+	public function doView( $file )
+	{
+		osc_current_admin_theme_path( 'header.php' );
+		osc_current_admin_theme_path( $file );
+		osc_current_admin_theme_path( 'footer.php' );
+		$this->getSession()->_clearVariables();
 	}
 }
 

@@ -278,7 +278,7 @@ function osc_validate_spam_delay($type = 'item')
 		$saved_as = 'last_submit_comment';
 	}
 	// check $_SESSION
-	if ((Session::newInstance()->_get($saved_as) + $delay) > time() || (Cookie::newInstance()->get_value($saved_as) + $delay) > time()) 
+	if ((ClassLoader::getInstance()->getClassInstance( 'Session' )->_get($saved_as) + $delay) > time() || (Cookie::newInstance()->get_value($saved_as) + $delay) > time()) 
 	{
 		return false;
 	}

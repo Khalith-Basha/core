@@ -18,7 +18,7 @@
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-class CAdminTool extends AdminSecBaseModel
+class CAdminTool extends AdministrationController
 {
 	function __construct() 
 	{
@@ -58,9 +58,5 @@ class CAdminTool extends AdminSecBaseModel
 			break;
 		}
 	}
-	function doView($file) 
-	{
-		osc_current_admin_theme_path($file);
-	$this->getSession()->_clearVariables();
-	}
 }
+

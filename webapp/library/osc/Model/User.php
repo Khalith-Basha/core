@@ -204,12 +204,12 @@ class Model_User extends DAO
 			$this->dao->where('fk_i_user_id', $id);
 			$result = $this->dao->get();
 			$items = $result->result();
-			$itemManager = Item::newInstance();
+			$itemManager = ClassLoader::getInstance()->getClassInstance( 'Model_Item' );
 			foreach ($items as $item) 
 			{
 				$itemManager->deleteByPrimaryKey($item['pk_i_id']);
 			}
-			ItemComment::newInstance()->delete(array('fk_i_user_id' => $id));
+			ClassLoader::getInstance()->getClassInstance( 'Model_ItemComment' )->delete(array('fk_i_user_id' => $id));
 			$this->dao->delete(DB_TABLE_PREFIX . 't_user_email_tmp', array('fk_i_user_id' => $id));
 			$this->dao->delete(DB_TABLE_PREFIX . 't_user_description', array('fk_i_user_id' => $id));
 			$this->dao->delete(DB_TABLE_PREFIX . 't_alerts', array('fk_i_user_id' => $id));

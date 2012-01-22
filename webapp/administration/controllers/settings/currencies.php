@@ -22,87 +22,131 @@ class CAdminSettings extends AdministrationController
 {
 	public function doModel() 
 	{
-		switch ($this->action) 
+		$currencies_action = Params::getParam('type');
+		switch ($currencies_action) 
 		{
-		case ('update'): // update index view
-			$iUpdated = 0;
-			$sPageTitle = Params::getParam('pageTitle');
-			$sPageDesc = Params::getParam('pageDesc');
-			$sContactEmail = Params::getParam('contactEmail');
-			$sLanguage = Params::getParam('language');
-			$sDateFormat = Params::getParam('dateFormat');
-			$sCurrency = Params::getParam('currency');
-			$sWeekStart = Params::getParam('weekStart');
-			$sTimeFormat = Params::getParam('timeFormat');
-			$sTimezone = Params::getParam('timezone');
-			$sNumRssItems = Params::getParam('num_rss_items');
-			$maxLatestItems = Params::getParam('max_latest_items_at_home');
-			$numItemsSearch = Params::getParam('default_results_per_page');
-			// preparing parameters
-			$sPageTitle = strip_tags($sPageTitle);
-			$sPageDesc = strip_tags($sPageDesc);
-			$sContactEmail = strip_tags($sContactEmail);
-			$sLanguage = strip_tags($sLanguage);
-			$sDateFormat = strip_tags($sDateFormat);
-			$sCurrency = strip_tags($sCurrency);
-			$sWeekStart = strip_tags($sWeekStart);
-			$sTimeFormat = strip_tags($sTimeFormat);
-			$sNumRssItems = (int)strip_tags($sNumRssItems);
-			$maxLatestItems = (int)strip_tags($maxLatestItems);
-			$numItemsSearch = (int)$numItemsSearch;
-			$error = "";
-			$iUpdated+= Preference::newInstance()->update(array('s_value' => $sPageTitle), array('s_section' => 'osclass', 's_name' => 'pageTitle'));
-			$iUpdated+= Preference::newInstance()->update(array('s_value' => $sPageDesc), array('s_section' => 'osclass', 's_name' => 'pageDesc'));
-			$iUpdated+= Preference::newInstance()->update(array('s_value' => $sContactEmail), array('s_section' => 'osclass', 's_name' => 'contactEmail'));
-			$iUpdated+= Preference::newInstance()->update(array('s_value' => $sLanguage), array('s_section' => 'osclass', 's_name' => 'language'));
-			$iUpdated+= Preference::newInstance()->update(array('s_value' => $sDateFormat), array('s_section' => 'osclass', 's_name' => 'dateFormat'));
-			$iUpdated+= Preference::newInstance()->update(array('s_value' => $sCurrency), array('s_section' => 'osclass', 's_name' => 'currency'));
-			$iUpdated+= Preference::newInstance()->update(array('s_value' => $sWeekStart), array('s_section' => 'osclass', 's_name' => 'weekStart'));
-			$iUpdated+= Preference::newInstance()->update(array('s_value' => $sTimeFormat), array('s_section' => 'osclass', 's_name' => 'timeFormat'));
-			$iUpdated+= Preference::newInstance()->update(array('s_value' => $sTimezone), array('s_section' => 'osclass', 's_name' => 'timezone'));
-			if (is_int($sNumRssItems)) 
-			{
-				$iUpdated+= Preference::newInstance()->update(array('s_value' => $sNumRssItems), array('s_section' => 'osclass', 's_name' => 'num_rss_items'));
-			}
-			else
-			{
-				if ($error != '') $error.= "<br/>";
-				$error.= _m('Number of items in the RSS must be integer');
-			}
-			if (is_int($maxLatestItems)) 
-			{
-				$iUpdated+= Preference::newInstance()->update(array('s_value' => $maxLatestItems), array('s_section' => 'osclass', 's_name' => 'maxLatestItems@home'));
-			}
-			else
-			{
-				if ($error != '') $error.= "<br/>";
-				$error.= _m('Number of recent items displayed at home must be integer');
-			}
-			$iUpdated+= Preference::newInstance()->update(array('s_value' => $numItemsSearch), array('s_section' => 'osclass', 's_name' => 'defaultResultsPerPage@search'));
-			if ($iUpdated > 0) 
-			{
-				if ($error != '') 
-				{
-					osc_add_flash_error_message($error . "<br/>" . _m('General settings have been updated'), 'admin');
-				}
-				else
-				{
-					osc_add_flash_ok_message(_m('General settings have been updated'), 'admin');
-				}
-			}
-			else if ($error != '') 
-			{
-				osc_add_flash_error_message($error, 'admin');
-			}
-			$this->redirectTo(osc_admin_base_url(true) . '?page=settings');
+		case ('add'): // calling add currency view
+			$this->doView('settings/add_currency.php');
 			break;
 
-		default: // calling the view
-			$aLanguages = ClassLoader::getInstance()->getClassInstance( 'Model_Locale' )->listAllEnabled();
+		case ('add_post'): // adding a new currency
+			$currencyCode = Params::getParam('pk_c_code');
+			$currencyName = Params::getParam('s_name');
+			$currencyDescription = Params::getParam('s_description');
+			// cleaning parameters
+			$currencyName = strip_tags($currencyName);
+			$currencyDescription = strip_tags($currencyDescription);
+			$currencyCode = strip_tags($currencyCode);
+			$currencyCode = trim($currencyCode);
+			if (!preg_match('/^.{1,3}$/', $currencyCode)) 
+			{
+				osc_add_flash_error_message(_m('Error: the currency code is not in the correct format'), 'admin');
+				$this->redirectTo(osc_admin_base_url(true) . '?page=settings&action=currencies');
+			}
+			$fields = array('pk_c_code' => $currencyCode, 's_name' => $currencyName, 's_description' => $currencyDescription);
+			$isInserted = ClassLoader::getInstance()->getClassInstance( 'Model_Currency' )->insert($fields);
+			if ($isInserted) 
+			{
+				osc_add_flash_ok_message(_m('New currency has been added'), 'admin');
+			}
+			else
+			{
+				osc_add_flash_error_message(_m('Error: currency couldn\'t be added'), 'admin');
+			}
+			$this->redirectTo(osc_admin_base_url(true) . '?page=settings&action=currencies');
+			break;
+
+		case ('edit'): // calling edit currency view
+			$currencyCode = Params::getParam('code');
+			$currencyCode = strip_tags($currencyCode);
+			$currencyCode = trim($currencyCode);
+			if ($currencyCode == '') 
+			{
+				osc_add_flash_error_message(_m('Error: the currency code is not in the correct format'), 'admin');
+				$this->redirectTo(osc_admin_base_url(true) . '?page=settings&action=currencies');
+			}
+			$aCurrency = ClassLoader::getInstance()->getClassInstance( 'Model_Currency' )->findByPrimaryKey($currencyCode);
+			if (count($aCurrency) == 0) 
+			{
+				osc_add_flash_error_message(_m('Error: the currency doesn\'t exist'), 'admin');
+				$this->redirectTo(osc_admin_base_url(true) . '?page=settings&action=currencies');
+			}
+			$this->getView()->_exportVariableToView('aCurrency', $aCurrency);
+			$this->doView('settings/edit_currency.php');
+			break;
+
+		case ('edit_post'): // updating currency
+			$currencyName = Params::getParam('s_name');
+			$currencyDescription = Params::getParam('s_description');
+			$currencyCode = Params::getParam('pk_c_code');
+			// cleaning parameters
+			$currencyName = strip_tags($currencyName);
+			$currencyDescription = strip_tags($currencyDescription);
+			$currencyCode = strip_tags($currencyCode);
+			$currencyCode = trim($currencyCode);
+			if (!preg_match('/.{1,3}/', $currencyCode)) 
+			{
+				osc_add_flash_error_message(_m('Error: the currency code is not in the correct format'), 'admin');
+				$this->redirectTo(osc_admin_base_url(true) . '?page=settings&action=currencies');
+			}
+			$iUpdated = ClassLoader::getInstance()->getClassInstance( 'Model_Currency' )->update(array('s_name' => $currencyName, 's_description' => $currencyDescription), array('pk_c_code' => $currencyCode));
+			if ($iUpdated == 1) 
+			{
+				osc_add_flash_ok_message(_m('Currency has been updated'), 'admin');
+			}
+			$this->redirectTo(osc_admin_base_url(true) . '?page=settings&action=currencies');
+			break;
+
+		case ('delete'): // deleting a currency
+			$rowChanged = 0;
+			$aCurrencyCode = Params::getParam('code');
+			if (!is_array($aCurrencyCode)) 
+			{
+				osc_add_flash_error_message(_m('Error: the currency code is not in the correct format'), 'admin');
+				$this->redirectTo(osc_admin_base_url(true) . '?page=settings&action=currencies');
+			}
+			$msg_current = '';
+			foreach ($aCurrencyCode as $currencyCode) 
+			{
+				if (preg_match('/.{1,3}/', $currencyCode) && $currencyCode != osc_currency()) 
+				{
+					$rowChanged+= ClassLoader::getInstance()->getClassInstance( 'Model_Currency' )->delete(array('pk_c_code' => $currencyCode));
+				}
+				if ($currencyCode == osc_currency()) 
+				{
+					$msg_current = sprintf('. ' . _m("%s could not be deleted because it's the default currency"), $currencyCode);
+				}
+			}
+			$msg = '';
+			switch ($rowChanged) 
+			{
+			case ('0'):
+				$msg = _m('No currencies have been deleted');
+				osc_add_flash_error_message($msg . $msg_current, 'admin');
+				break;
+
+			case ('1'):
+				$msg = _m('One currency has been deleted');
+				osc_add_flash_ok_message($msg . $msg_current, 'admin');
+				break;
+
+			case ('-1'):
+				$msg = sprintf(_m("%s could not be deleted because this currency still in use"), $currencyCode);
+				osc_add_flash_error_message($msg . $msg_current, 'admin');
+				break;
+
+			default:
+				$msg = sprintf(_m('%s currencies have been deleted'), $rowChanged);
+				osc_add_flash_ok_message($msg . $msg_current, 'admin');
+				break;
+			}
+			$this->redirectTo(osc_admin_base_url(true) . '?page=settings&action=currencies');
+			break;
+
+		default: // calling the currencies view
 			$aCurrencies = ClassLoader::getInstance()->getClassInstance( 'Model_Currency' )->listAll();
-			$this->getView()->_exportVariableToView('aLanguages', $aLanguages);
 			$this->getView()->_exportVariableToView('aCurrencies', $aCurrencies);
-			$this->doView('settings/index.php');
+			$this->doView('settings/currencies.php');
 			break;
 		}
 	}

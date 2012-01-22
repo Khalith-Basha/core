@@ -18,7 +18,7 @@
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-class CAdminTool extends AdminSecBaseModel
+class CAdminTool extends AdministrationController
 {
 	function __construct() 
 	{
@@ -36,7 +36,7 @@ class CAdminTool extends AdminSecBaseModel
 		case 'images_post':
 			$preferences = Preference::newInstance()->toArray();
 			$wat = new Watermark();
-			$aResources = ItemResource::newInstance()->getAllResources();
+			$aResources = ClassLoader::getInstance()->getClassInstance( 'Model_ItemResource' )->getAllResources();
 			foreach ($aResources as $resource) 
 			{
 				osc_run_hook('regenerate_image', $resource);
@@ -90,8 +90,8 @@ class CAdminTool extends AdminSecBaseModel
 					$size = explode('x', osc_thumbnail_dimensions());
 					ImageResizer::fromFile($path_normal)->resizeTo($size[0], $size[1])->saveToFile($path);
 					// update resource info
-					ItemResource::newInstance()->update(array('s_path' => 'components/uploads/', 's_name' => osc_genRandomPassword(), 's_extension' => 'jpg', 's_content_type' => 'image/jpeg'), array('pk_i_id' => $resource['pk_i_id']));
-					osc_run_hook('regenerated_image', ItemResource::newInstance()->findByPrimaryKey($resource['pk_i_id']));
+					ClassLoader::getInstance()->getClassInstance( 'Model_ItemResource' )->update(array('s_path' => 'components/uploads/', 's_name' => osc_genRandomPassword(), 's_extension' => 'jpg', 's_content_type' => 'image/jpeg'), array('pk_i_id' => $resource['pk_i_id']));
+					osc_run_hook('regenerated_image', ClassLoader::getInstance()->getClassInstance( 'Model_ItemResource' )->findByPrimaryKey($resource['pk_i_id']));
 					// si extension es direfente a jpg, eliminar las imagenes con $extension si hay
 					if ($extension != 'jpg') 
 					{
@@ -116,9 +116,5 @@ class CAdminTool extends AdminSecBaseModel
 			break;
 		}
 	}
-	function doView($file) 
-	{
-		osc_current_admin_theme_path($file);
-	$this->getSession()->_clearVariables();
-	}
 }
+

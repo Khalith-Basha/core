@@ -29,7 +29,7 @@ class CWebUser extends WebSecBaseModel
 
 	public function doGet( HttpRequest $req, HttpResponse $res ) 
 	{
-		$user = ClassLoader::getInstance()->getClassInstance( 'Model_User' )->findByPrimaryKey(Session::newInstance()->_get('userId'));
+		$user = ClassLoader::getInstance()->getClassInstance( 'Model_User' )->findByPrimaryKey($this->getSession()->_get('userId'));
 		$aCountries = ClassLoader::getInstance()->getClassInstance( 'Model_Country' )->listAll();
 		$aRegions = array();
 		if ($user['fk_c_country_code'] != '') 
@@ -59,7 +59,7 @@ class CWebUser extends WebSecBaseModel
 
 	public function doPost( HttpRequest $req, HttpResponse $res )
 	{
-		$userId = Session::newInstance()->_get('userId');
+		$userId = $this->getSession()->_get('userId');
 		require_once 'osc/UserActions.php';
 		$userActions = new UserActions(false);
 		$success = $userActions->edit($userId);
@@ -71,7 +71,7 @@ class CWebUser extends WebSecBaseModel
 	{
 		osc_run_hook("before_html");
 		osc_current_web_theme_path($file);
-		Session::newInstance()->_clearVariables();
+		$this->getSession()->_clearVariables();
 		osc_run_hook("after_html");
 	}
 }

@@ -19,29 +19,11 @@ $htaccess_status = __get('htaccess');
 $file_status = __get('file');
 ?>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en-US">
-    <head>
         <script type="text/javascript">
-            var base_url    = '<?php
-echo osc_base_url(); ?>';
-            var s_close     = '<?php
-_e('Close'); ?>';
-            var s_view_more = '<?php
-_e('View more'); ?>';
+            var base_url    = '<?php echo osc_base_url(); ?>';
+            var s_close     = '<?php _e('Close'); ?>';
+            var s_view_more = '<?php _e('View more'); ?>';
         </script>
-        <?php
-osc_current_admin_theme_path('head.php'); ?>
-    </head>
-    <body>
-        <?php
-osc_current_admin_theme_path('header.php'); ?>
-        <div id="update_version" style="display:none;"></div>
-		<div id="content">
-            <div id="separator"></div>
-			<?php
-osc_current_admin_theme_path('include/backoffice_menu.php'); ?>
-		    <div id="right_column">
 				<div id="content_header" class="content_header">
 					<div style="float: left;">
                         <img src="<?php
@@ -157,9 +139,4 @@ _e('Update'); ?>" />
                         </form>
 					</div>
 				</div>
-			</div> <!-- end of right column -->
-        </div>
-        <?php
-osc_current_admin_theme_path('footer.php'); ?>
-    </body>
-</html>
+

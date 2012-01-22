@@ -18,7 +18,7 @@
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-class CAdminLanguage extends AdminSecBaseModel
+class CAdminLanguage extends AdministrationController
 {
 	private $localeManager;
 	function __construct() 
@@ -30,8 +30,7 @@ class CAdminLanguage extends AdminSecBaseModel
 
 	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
-		osc_current_admin_theme_path( 'languages/add.php' );
-	$this->getSession()->_clearVariables();
+		$this->doView( 'languages/add.php' );
 	}
 
 	public function doPost( HttpRequest $req, HttpResponse $res )

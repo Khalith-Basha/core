@@ -16,18 +16,9 @@
  * License along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 $new_item = __get("new_item");
+$itemForm = ClassLoader::getInstance()->getClassInstance( 'Form_Item' );
 ?>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en-US">
-    <head>
-        <?php
-osc_current_admin_theme_path('head.php'); ?>
-    </head>
-    <body>
-        <?php
-osc_current_admin_theme_path('header.php'); ?>
-        <div id="update_version" style="display:none;"></div>
         <script type="text/javascript">
             document.write('<style type="text/css">.tabber{display:none;}<\/style>');
 $(document).ready(function(){
@@ -91,16 +82,9 @@ $(document).ready(function(){
             }
         </script>
         <?php
-ItemForm::location_javascript_new('admin'); ?>
+$itemForm->location_javascript_new('admin'); ?>
         <?php
-if (osc_images_enabled_at_items()) ItemForm::photos_javascript(); ?>
-        <div id="content">
-            <div id="separator"></div>
-
-            <?php
-osc_current_admin_theme_path('include/backoffice_menu.php'); ?>
-
-            <div id="right_column">
+if (osc_images_enabled_at_items()) $itemForm->photos_javascript(); ?>
                 <?php
 osc_show_flash_message('admin'); ?>
                 <div class="content_header" id="content_header">
@@ -156,16 +140,16 @@ _e('User'); ?></h2>
                             <label><?php
 _e('Item posted by'); ?></label>
                             <?php
-ItemForm::user_select(null, null, __('Non-registered user')); ?>
+$itemForm->user_select(null, null, __('Non-registered user')); ?>
                             <div  id="contact_info">
                                 <label for="contactName"><?php
 _e('Name'); ?></label>
                                 <?php
-ItemForm::contact_name_text(); ?><br/>
+$itemForm->contact_name_text(); ?><br/>
                                 <label for="contactEmail"><?php
 _e('E-Mail'); ?></label>
                                 <?php
-ItemForm::contact_email_text(); ?>
+$itemForm->contact_email_text(); ?>
                             </div>
                         </div>
                         <h2>
@@ -177,10 +161,10 @@ _e('General information'); ?>
 _e('Category') ?>:
                         </label>
                         <?php
-ItemForm::category_select(); ?>
+$itemForm->category_select(); ?>
 
                         <?php
-ItemForm::multilanguage_title_description(osc_get_locales()); ?>
+$itemForm->multilanguage_title_description(osc_get_locales()); ?>
 
                         <?php
 if (osc_price_enabled_at_items()) 
@@ -189,9 +173,9 @@ if (osc_price_enabled_at_items())
                                 <h2><?php
 	_e('Price'); ?></h2>
                                 <?php
-	ItemForm::price_input_text(); ?>
+	$itemForm->price_input_text(); ?>
                                 <?php
-	ItemForm::currency_select(); ?>
+	$itemForm->currency_select(); ?>
                             </div>
                         <?php
 } ?>
@@ -203,7 +187,7 @@ if (osc_images_enabled_at_items())
                                 <h2><?php
 	_e('Photos'); ?></h2>
                                 <?php
-	ItemForm::photos(); ?>
+	$itemForm->photos(); ?>
                                 <div id="photos">
                                     
                                     <?php
@@ -230,42 +214,42 @@ _e('Location'); ?></h2>
                                 <label><?php
 _e('Country'); ?></label>
                                 <?php
-ItemForm::country_select(); ?>
+$itemForm->country_select(); ?>
                             </div>
                             <div class="row">
                                 <label><?php
 _e('Region'); ?></label>
                                 <?php
-ItemForm::region_text(); ?>
+$itemForm->region_text(); ?>
                             </div>
                             <div class="row">
                                 <label><?php
 _e('City'); ?></label>
                                 <?php
-ItemForm::city_text(); ?>
+$itemForm->city_text(); ?>
                             </div>
                             <div class="row">
                                 <label><?php
 _e('City area'); ?></label>
                                 <?php
-ItemForm::city_area_text(); ?>
+$itemForm->city_area_text(); ?>
                             </div>
                             <div class="row">
                                 <label><?php
 _e('Address'); ?></label>
                                 <?php
-ItemForm::address_text(); ?>
+$itemForm->address_text(); ?>
                             </div>
                         </div>
 
                         <?php
 if ($new_item) 
 {
-	ItemForm::plugin_post_item();
+	$itemForm->plugin_post_item();
 }
 else
 {
-	ItemForm::plugin_edit_item();
+	$itemForm->plugin_edit_item();
 };
 ?>
                         <div class="clear"></div>
@@ -283,9 +267,4 @@ else
                         </div>
                     </form>
                 </div>
-            </div>
 
-        </div>
-        <?php osc_current_admin_theme_path('footer.php'); ?>
-    </body>
-</html>

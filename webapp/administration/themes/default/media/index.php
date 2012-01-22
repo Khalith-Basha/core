@@ -15,18 +15,9 @@
  * You should have received a copy of the GNU Affero General Public
  * License along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+$itemForm = ClassLoader::getInstance()->getClassInstance( 'Form_Item' );
 ?>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en-US">
-    <head>
-        <?php
-osc_current_admin_theme_path('head.php'); ?>
-    </head>
-    <body>
-        <?php
-osc_current_admin_theme_path('header.php'); ?>
-        <div id="update_version" style="display:none;"></div>
         <script type="text/javascript">
             $(document).ready(function(){
                 if (typeof $.uniform != 'undefined') {
@@ -64,7 +55,7 @@ osc_current_admin_theme_path('header.php'); ?>
             }
        </style>
         <?php
-ItemForm::location_javascript('admin'); ?>
+$itemForm->location_javascript('admin'); ?>
         <script type="text/javascript">
             $(function() {
                 oTable = new osc_datatable();
@@ -132,13 +123,6 @@ _e('Date'); ?>",
 
         </script>
         
-        <div id="content">
-            <div id="separator"></div>
-
-            <?php
-osc_current_admin_theme_path('include/backoffice_menu.php'); ?>
-            
-            <div id="right_column">
                 <div id="content_header" class="content_header">
                     <div style="float: left;">
                         <img src="<?php
@@ -187,7 +171,6 @@ _e('Apply') ?></button>
                     </form>
                 </div>
 
-            </div> <!-- end of right column -->
             <script>
                 $('#check_all').live('change',
                     function(){
@@ -204,11 +187,4 @@ _e('Apply') ?></button>
                 );
 
             </script>
-            <div style="clear: both;"></div>
 
-        </div> <!-- end of container -->
-
-        <?php
-osc_current_admin_theme_path('footer.php'); ?>
-    </body>
-</html>

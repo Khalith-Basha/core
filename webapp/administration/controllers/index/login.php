@@ -63,36 +63,6 @@ class CAdminIndex extends Controller
 	{
 		switch(123)
 	{
-		case ('recover'): //form to recover the password (in this case we have the form in /gui/)
-			//#dev.conquer: we cannot use the doView here and only here
-			$this->doView('gui/recover.php');
-			break;
-
-		case ('recover_post'):
-			//post execution to recover the password
-			$admin = $this->getClassLoader()->getClassInstance( 'Model_Admin' )->findByEmail(Params::getParam('email'));
-			if ($admin) 
-			{
-				if ((osc_recaptcha_private_key() != '') && Params::existParam("recaptcha_challenge_field")) 
-				{
-					if (!osc_check_recaptcha()) 
-					{
-						osc_add_flash_error_message(_m('The Recaptcha code is wrong'), 'admin');
-						$this->redirectTo(osc_admin_base_url(true) . '?page=login&action=recover');
-						return false; // BREAK THE PROCESS, THE RECAPTCHA IS WRONG
-						
-					}
-				}
-				require_once 'osc/helpers/hSecurity.php';
-				$newPassword = osc_genRandomPassword(40);
-				$this->getClassLoader()->getClassInstance( 'Model_Admin' )->update(array('s_secret' => $newPassword), array('pk_i_id' => $admin['pk_i_id']));
-				$password_url = osc_forgot_admin_password_confirm_url($admin['pk_i_id'], $newPassword);
-				osc_run_hook('hook_email_user_forgot_password', $admin, $password_url);
-			}
-			osc_add_flash_ok_message(_m('A new password has been sent to your e-mail'), 'admin');
-			$this->redirectTo(osc_admin_base_url());
-			break;
-
 		case ('forgot'): //form to recover the password (in this case we have the form in /gui/)
 			$admin = $this->getClassLoader()->getClassInstance( 'Model_Admin' )->findByIdSecret(Params::getParam('adminId'), Params::getParam('code'));
 			if ($admin) 

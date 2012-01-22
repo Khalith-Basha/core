@@ -154,7 +154,7 @@ class Model_Item extends DAO
 	 */
 	public function findResourcesByID($id) 
 	{
-		return ItemResource::newInstance()->getResources($id);
+		return ClassLoader::getInstance()->getClassInstance( 'Model_ItemResource' )->getResources($id);
 	}
 	/**
 	 * Find the item location given a item id

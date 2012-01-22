@@ -114,7 +114,7 @@ class ItemsProcessingAjax
 		}
 		// do Search
 		$list_items = $mSearch->doSearch(true);
-		$this->result = Item::newInstance()->extendCategoryName(Item::newInstance()->extendData($list_items));
+		$this->result = ClassLoader::getInstance()->getClassInstance( 'Model_Item' )->extendCategoryName(ClassLoader::getInstance()->getClassInstance( 'Model_Item' )->extendData($list_items));
 		$this->filtered_total = $mSearch->count();
 		$this->total = count($list_items); //TEMPORARY FIX
 		$this->toDatatablesFormat();

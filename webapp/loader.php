@@ -34,16 +34,15 @@ $classLoader->addSearchPath( LIBRARY_PATH . '/osc' );
 
 $classLoader->loadFile( 'plugins' );
 $classLoader->loadFile( 'helpers/hCategories' );
-$classLoader->loadFile( 'urls/item' );
 $classLoader->loadFile( 'formatting' );
 $classLoader->loadFile( 'Form/Form' );
+$classLoader->loadFile( 'core/Controller' );
 
 require_once 'osc/Database/DAO.php';
 require_once 'osc/utils.php';
 require_once 'osc/Model/Preference.php';
 require_once 'osc/Model/Locale.php';
 require_once 'osc/core/Params.php';
-require_once 'osc/core/controller.php';
 require_once 'osc/helpers/hPreference.php';
 require_once 'osc/helpers/hLocale.php';
 require_once 'osc/helpers/hTranslations.php';
@@ -60,10 +59,6 @@ $dbConnection = $classLoader->getClassInstance( 'Database_Connection', true, arr
 
 $pluginManager = $classLoader->getClassInstance( 'PluginManager' );
 $pluginManager->init();
-
-$rewrite = $classLoader->getClassInstance( 'Rewrite' );
-$rewrite->loadRules();
-$rewrite->init();
 
 $session = $classLoader->getClassInstance( 'Session' );
 $session->start();

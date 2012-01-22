@@ -18,7 +18,7 @@
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-class CAdminStats extends AdminSecBaseModel
+class CAdminStats extends AdministrationController
 {
 	function __construct() 
 	{
@@ -87,10 +87,5 @@ class CAdminStats extends AdminSecBaseModel
 		$this->getView()->_exportVariableToView("max_views", $max_views);
 		$this->doView("stats/items.php");
 	}
-
-	function doView($file) 
-	{
-		osc_current_admin_theme_path($file);
-	$this->getSession()->_clearVariables();
-	}
 }
+

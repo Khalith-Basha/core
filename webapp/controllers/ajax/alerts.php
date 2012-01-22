@@ -71,9 +71,9 @@ class CWebAjax extends Controller
 			$code = Params::getParam('code');
 			$secret = Params::getParam('secret');
 			$json = array();
-			if (Session::newInstance()->_get('userId') != '') 
+			if ($this->getSession()->_get('userId') != '') 
 			{
-				$userId = Session::newInstance()->_get('userId');
+				$userId = $this->getSession()->_get('userId');
 				$user = ClassLoader::getInstance()->getClassInstance( 'Model_User' )->findByPrimaryKey($userId);
 			}
 			else
@@ -89,7 +89,7 @@ class CWebAjax extends Controller
 				echo json_encode($json);
 				return false;
 			}
-			$aItem = Item::newInstance()->findByPrimaryKey($item);
+			$aItem = ClassLoader::getInstance()->getClassInstance( 'Model_Item' )->findByPrimaryKey($item);
 			// Check if the item exists
 			if (count($aItem) == 0) 
 			{
@@ -118,12 +118,12 @@ class CWebAjax extends Controller
 				}
 			}
 			// Does id & code combination exist?
-			$result = ItemResource::newInstance()->existResource($id, $code);
+			$result = ClassLoader::getInstance()->getClassInstance( 'Model_ItemResource' )->existResource($id, $code);
 			if ($result > 0) 
 			{
 				// Delete: file, db table entry
 				osc_deleteResource($id);
-				ItemResource::newInstance()->delete(array('pk_i_id' => $id, 'fk_i_item_id' => $item, 's_name' => $code));
+				ClassLoader::getInstance()->getClassInstance( 'Model_ItemResource' )->delete(array('pk_i_id' => $id, 'fk_i_item_id' => $item, 's_name' => $code));
 				$json['msg'] = _m('The selected photo has been successfully deleted');
 				$json['success'] = 'true';
 			}
@@ -201,8 +201,8 @@ class CWebAjax extends Controller
 			break;
 		}
 		// clear all keep variables into session
-		Session::newInstance()->_dropKeepForm();
-		Session::newInstance()->_clearVariables();
+		$this->getSession()->_dropKeepForm();
+		$this->getSession()->_clearVariables();
 	}
 
 	function doView($file) 

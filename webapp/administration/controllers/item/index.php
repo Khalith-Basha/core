@@ -18,7 +18,7 @@
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-class CAdminItem extends AdminSecBaseModel
+class CAdminItem extends AdministrationController
 {
 	private $itemManager;
 	function __construct() 
@@ -212,50 +212,9 @@ class CAdminItem extends AdminSecBaseModel
 			$fkid = Params::getParam('fkid');
 			// delete files
 			osc_deleteResource($id);
-			ItemResource::newInstance()->delete(array('pk_i_id' => $id, 'fk_i_item_id' => $fkid, 's_name' => $name));
+			ClassLoader::getInstance()->getClassInstance( 'Model_ItemResource' )->delete(array('pk_i_id' => $id, 'fk_i_item_id' => $fkid, 's_name' => $name));
 			osc_add_flash_ok_message(_m('Resource deleted'), 'admin');
 			$this->redirectTo(osc_admin_base_url(true) . "?page=item");
-			break;
-
-		case 'post': // add item
-			$form = count($this->getSession()->_getForm());
-			$keepForm = count($this->getSession()->_getKeepForm());
-			if ($form == 0 || $form == $keepForm) 
-			{
-				$this->getSession()->_dropKeepForm();
-			}
-			$this->getView()->_exportVariableToView("new_item", TRUE);
-			$this->doView('items/frm.php');
-			break;
-
-		case 'post_item': //post item
-			$mItem = new ItemActions(true);
-			$mItem->prepareData(true);
-			// set all parameters into session
-			foreach ($mItem->data as $key => $value) 
-			{
-				$this->getSession()->_setForm($key, $value);
-			}
-			$meta = Params::getParam('meta');
-			if (is_array($meta)) 
-			{
-				foreach ($meta as $key => $value) 
-				{
-					$this->getSession()->_setForm('meta_' . $key, $value);
-					$this->getSession()->_keepForm('meta_' . $key);
-				}
-			}
-			$success = $mItem->add();
-			if ($success == 1 || $success == 2) 
-			{
-				osc_add_flash_ok_message(_m('A new item has been added'), 'admin');
-				$this->redirectTo(osc_admin_base_url(true) . "?page=item");
-			}
-			else
-			{
-				osc_add_flash_error_message($success, 'admin');
-				$this->redirectTo(osc_admin_base_url(true) . "?page=item&action=post");
-			}
 			break;
 
 		default: //default
@@ -282,9 +241,5 @@ class CAdminItem extends AdminSecBaseModel
 			$this->doView('items/index.php');
 		}
 	}
-	function doView($file) 
-	{
-		osc_current_admin_theme_path($file);
-		$this->getSession()->_clearVariables();
-	}
 }
+

@@ -48,14 +48,19 @@ if( file_exists( ABS_PATH . '/.maintenance' ) )
 }
 if (!osc_users_enabled() && osc_is_web_user_logged_in()) 
 {
-	Session::newInstance()->_drop('userId');
-	Session::newInstance()->_drop('userName');
-	Session::newInstance()->_drop('userEmail');
-	Session::newInstance()->_drop('userPhone');
+	$classLoader->getClassInstance( 'Session' )->_drop('userId');
+	$classLoader->getClassInstance( 'Session' )->_drop('userName');
+	$classLoader->getClassInstance( 'Session' )->_drop('userEmail');
+	$classLoader->getClassInstance( 'Session' )->_drop('userPhone');
 	Cookie::newInstance()->pop('oc_userId');
 	Cookie::newInstance()->pop('oc_userSecret');
 	Cookie::newInstance()->set();
 }
+
+$rewrite = $classLoader->getClassInstance( 'Rewrite' );
+$rewrite->loadRules();
+$rewrite->init();
+
 $page = Params::getParam('page');
 if (empty($page)) $page = 'index';
 $action = Params::getParam('action');

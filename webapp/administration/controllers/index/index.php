@@ -19,7 +19,7 @@
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-class CAdminIndex extends AdminSecBaseModel
+class CAdminIndex extends AdministrationController
 {
 	public function doModel() 
 	{
@@ -33,12 +33,6 @@ class CAdminIndex extends AdminSecBaseModel
 		$this->getView()->_exportVariableToView("comments", $this->getClassLoader()->getClassInstance( 'Model_ItemComment' )->getLastComments(5));
 
 		$this->doView('main/index.php');
-	}
-
-	public function doView($file) 
-	{
-		osc_current_admin_theme_path($file);
-	$this->getSession()->_clearVariables();
 	}
 }
 

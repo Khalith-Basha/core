@@ -83,21 +83,21 @@ Class UserActions
 		$this->manager->update($input, array('pk_i_id' => $userId));
 		if ($this->is_admin) 
 		{
-			Item::newInstance()->update(array('s_contact_name' => $input['s_name'], 's_contact_email' => $input['s_email']), array('fk_i_user_id' => $userId));
-			ItemComment::newInstance()->update(array('s_author_name' => $input['s_name'], 's_author_email' => $input['s_email']), array('fk_i_user_id' => $userId));
+			ClassLoader::getInstance()->getClassInstance( 'Model_Item' )->update(array('s_contact_name' => $input['s_name'], 's_contact_email' => $input['s_email']), array('fk_i_user_id' => $userId));
+			ClassLoader::getInstance()->getClassInstance( 'Model_ItemComment' )->update(array('s_author_name' => $input['s_name'], 's_author_email' => $input['s_email']), array('fk_i_user_id' => $userId));
 			Alerts::newInstance()->update(array('s_email' => $input['s_email']), array('fk_i_user_id' => $userId));
 			Log::newInstance()->insertLog('user', 'edit', $userId, $input['s_email'], $this->is_admin ? 'admin' : 'user', $this->is_admin ? osc_logged_admin_id() : osc_logged_user_id());
 		}
 		else
 		{
-			Item::newInstance()->update(array('s_contact_name' => $input['s_name']), array('fk_i_user_id' => $userId));
-			ItemComment::newInstance()->update(array('s_author_name' => $input['s_name']), array('fk_i_user_id' => $userId));
+			ClassLoader::getInstance()->getClassInstance( 'Model_Item' )->update(array('s_contact_name' => $input['s_name']), array('fk_i_user_id' => $userId));
+			ClassLoader::getInstance()->getClassInstance( 'Model_ItemComment' )->update(array('s_author_name' => $input['s_name']), array('fk_i_user_id' => $userId));
 			$user = $this->manager->findByPrimaryKey($userId);
 			Log::newInstance()->insertLog('user', 'edit', $userId, $user['s_email'], $this->is_admin ? 'admin' : 'user', $this->is_admin ? osc_logged_admin_id() : osc_logged_user_id());
 		}
-		Session::newInstance()->_set('userName', $input['s_name']);
+		ClassLoader::getInstance()->getClassInstance( 'Session' )->_set('userName', $input['s_name']);
 		$phone = ($input['s_phone_mobile']) ? $input['s_phone_mobile'] : $input['s_phone_land'];
-		Session::newInstance()->_set('userPhone', $phone);
+		ClassLoader::getInstance()->getClassInstance( 'Session' )->_set('userPhone', $phone);
 		if (is_array(Params::getParam('s_info'))) 
 		{
 			foreach (Params::getParam('s_info') as $key => $value) 
@@ -134,7 +134,7 @@ Class UserActions
 	function recover_password() 
 	{
 		$user = ClassLoader::getInstance()->getClassInstance( 'Model_User' )->findByEmail(Params::getParam('s_email'));
-		Session::newInstance()->_set('recover_time', time());
+		ClassLoader::getInstance()->getClassInstance( 'Session' )->_set('recover_time', time());
 		if ((osc_recaptcha_private_key() != '') && Params::existParam("recaptcha_challenge_field")) 
 		{
 			if (!$this->recaptcha()) 
@@ -260,7 +260,7 @@ Class UserActions
 		if ($user['b_enabled'] == 1) 
 		{
 			$mItem = new ItemActions(true);
-			$items = Item::newInstance()->findByUserID($user_id);
+			$items = ClassLoader::getInstance()->getClassInstance( 'Model_Item' )->findByUserID($user_id);
 			foreach ($items as $item) 
 			{
 				$mItem->enable($item['pk_i_id']);
@@ -280,7 +280,7 @@ Class UserActions
 		if ($user['b_enabled'] == 1) 
 		{
 			$mItem = new ItemActions(true);
-			$items = Item::newInstance()->findByUserID($user_id);
+			$items = ClassLoader::getInstance()->getClassInstance( 'Model_Item' )->findByUserID($user_id);
 			foreach ($items as $item) 
 			{
 				$mItem->disable($item['pk_i_id']);
@@ -300,7 +300,7 @@ Class UserActions
 		if ($user['b_active'] == 1) 
 		{
 			$mItem = new ItemActions(true);
-			$items = Item::newInstance()->findByUserID($user_id);
+			$items = ClassLoader::getInstance()->getClassInstance( 'Model_Item' )->findByUserID($user_id);
 			foreach ($items as $item) 
 			{
 				$mItem->enable($item['pk_i_id']);
@@ -320,7 +320,7 @@ Class UserActions
 		if ($user['b_active'] == 1) 
 		{
 			$mItem = new ItemActions(true);
-			$items = Item::newInstance()->findByUserID($user_id);
+			$items = ClassLoader::getInstance()->getClassInstance( 'Model_Item' )->findByUserID($user_id);
 			foreach ($items as $item) 
 			{
 				$mItem->disable($item['pk_i_id']);
@@ -344,11 +344,11 @@ Class UserActions
 			return 2;
 		}
 		//we are logged in... let's go!
-		Session::newInstance()->_set('userId', $user['pk_i_id']);
-		Session::newInstance()->_set('userName', $user['s_name']);
-		Session::newInstance()->_set('userEmail', $user['s_email']);
+		ClassLoader::getInstance()->getClassInstance( 'Session' )->_set('userId', $user['pk_i_id']);
+		ClassLoader::getInstance()->getClassInstance( 'Session' )->_set('userName', $user['s_name']);
+		ClassLoader::getInstance()->getClassInstance( 'Session' )->_set('userEmail', $user['s_email']);
 		$phone = ($user['s_phone_mobile']) ? $user['s_phone_mobile'] : $user['s_phone_land'];
-		Session::newInstance()->_set('userPhone', $phone);
+		ClassLoader::getInstance()->getClassInstance( 'Session' )->_set('userPhone', $phone);
 		return 3;
 	}
 }

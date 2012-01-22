@@ -61,8 +61,8 @@ class CWebAjax extends Controller
 			}
 			break;
 		}
-		Session::newInstance()->_dropKeepForm();
-		Session::newInstance()->_clearVariables();
+		$this->getSession()->_dropKeepForm();
+		$this->getSession()->_clearVariables();
 	}
 	function doView($file) 
 	{

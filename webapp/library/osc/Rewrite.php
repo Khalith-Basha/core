@@ -163,7 +163,7 @@ class Rewrite
 		// Clean archive files
 		$this->addRule('^(.+?)\.php(.*)$', '$1.php$2');
 		// Category rules
-		$this->addRule('^(.+)$', 'index.php?page=search&sCategory=$1');
+		$this->addRule('^(.+)$', 'index.php?page=search&sCategory=$2');
 	}
 
 	public function clearRules() 

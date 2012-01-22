@@ -1,3 +1,6 @@
+<?php
+$alertForm = ClassLoader::getInstance()->getClassInstance( 'Form_Alert' );
+?>
 <script type="text/javascript">
 $(document).ready(function(){
     $(".sub_button").click(function(){
@@ -16,7 +19,7 @@ _e('There was a problem with the alert', 'modern'); ?>');
     });
 
     var sQuery = '<?php
-echo AlertForm::default_email_text(); ?>' ;
+echo $alertForm->default_email_text(); ?>' ;
 
     if($('input[name=alert_email]').val() == sQuery) {
         $('input[name=alert_email]').css('color', 'gray');
@@ -48,26 +51,26 @@ _e('Subscribe to this search', 'modern'); ?></strong>
 echo osc_base_url(true); ?>" method="post" name="sub_alert" id="sub_alert">
         <fieldset>
             <?php
-AlertForm::page_hidden(); ?>
+$alertForm->page_hidden(); ?>
             <?php
-AlertForm::alert_hidden(); ?>
+$alertForm->alert_hidden(); ?>
 
             <?php
 if (osc_is_web_user_logged_in()) 
 { ?>
                 <?php
-	AlertForm::user_id_hidden(); ?>
+	$alertForm->user_id_hidden(); ?>
                 <?php
-	AlertForm::email_hidden(); ?>
+	$alertForm->email_hidden(); ?>
 
             <?php
 }
 else
 { ?>
                 <?php
-	AlertForm::user_id_hidden(); ?>
+	$alertForm->user_id_hidden(); ?>
                 <?php
-	AlertForm::email_text(); ?>
+	$alertForm->email_text(); ?>
 
             <?php
 }; ?>

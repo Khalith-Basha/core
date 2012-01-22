@@ -258,10 +258,10 @@ function fn_email_new_email($new_email, $validation_url)
 	{
 		$words = array();
 		$words[] = array('{USER_NAME}', '{USER_EMAIL}', '{WEB_URL}', '{WEB_TITLE}', '{VALIDATION_LINK}', '{VALIDATION_URL}');
-		$words[] = array(Session::newInstance()->_get('userName'), Params::getParam('new_email'), '<a href="' . osc_base_url() . '" >' . osc_base_url() . '</a>', osc_page_title(), '<a href="' . $validation_url . '" >' . $validation_url . '</a>', $validation_url);
+		$words[] = array(ClassLoader::getInstance()->getClassInstance( 'Session' )->_get('userName'), Params::getParam('new_email'), '<a href="' . osc_base_url() . '" >' . osc_base_url() . '</a>', osc_page_title(), '<a href="' . $validation_url . '" >' . $validation_url . '</a>', $validation_url);
 		$title = osc_mailBeauty(osc_apply_filter('email_title', osc_apply_filter('email_new_email_title', $content['s_title'])), $words);
 		$body = osc_mailBeauty(osc_apply_filter('email_description', osc_apply_filter('email_new_email_description', $content['s_text'])), $words);
-		$params = array('subject' => $title, 'to' => $new_email, 'to_name' => Session::newInstance()->_get('userName'), 'body' => $body, 'alt_body' => $body);
+		$params = array('subject' => $title, 'to' => $new_email, 'to_name' => ClassLoader::getInstance()->getClassInstance( 'Session' )->_get('userName'), 'body' => $body, 'alt_body' => $body);
 		osc_sendMail($params);
 		osc_add_flash_ok_message(_m('We have sent you an e-mail. Follow the instructions to validate the changes'));
 	}
@@ -336,7 +336,7 @@ function fn_email_item_inquiry($aItem)
 	$phoneNumber = $aItem['phoneNumber'];
 	$message = $aItem['message'];
 	$path = NULL;
-	$item = Item::newInstance()->findByPrimaryKey($id);
+	$item = ClassLoader::getInstance()->getClassInstance( 'Model_Item' )->findByPrimaryKey($id);
 	View::newInstance()->_exportVariableToView('item', $item);
 	$mPages = new Page();
 	$aPage = $mPages->findByInternalName('email_item_inquiry');
@@ -404,7 +404,7 @@ function fn_email_new_comment_admin($aItem)
 	$userId = $aItem['userId'];
 	$admin_email = osc_contact_email();
 	$prefLocale = osc_language();
-	$item = Item::newInstance()->findByPrimaryKey($itemId);
+	$item = ClassLoader::getInstance()->getClassInstance( 'Model_Item' )->findByPrimaryKey($itemId);
 	View::newInstance()->_exportVariableToView('item', $item);
 	$itemURL = osc_item_url();
 	$itemURL = '<a href="' . $itemURL . '" >' . $itemURL . '</a>';
@@ -674,7 +674,7 @@ function fn_email_new_comment_user($aItem)
 	$userId = $aItem['userId'];
 	$admin_email = osc_contact_email();
 	$prefLocale = osc_language();
-	$item = Item::newInstance()->findByPrimaryKey($itemId);
+	$item = ClassLoader::getInstance()->getClassInstance( 'Model_Item' )->findByPrimaryKey($itemId);
 	View::newInstance()->_exportVariableToView('item', $item);
 	$itemURL = osc_item_url();
 	$itemURL = '<a href="' . $itemURL . '" >' . $itemURL . '</a>';

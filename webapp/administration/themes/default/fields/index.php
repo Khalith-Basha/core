@@ -24,20 +24,8 @@ $selected = __get("default_selected");
 $numCols = 1;
 ?>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en-US">
-    <head>
-        <?php
-osc_current_admin_theme_path('head.php'); ?>
-    </head>
-    <body>
-        <?php
-osc_current_admin_theme_path('header.php'); ?>
-        <link href="<?php
-echo osc_current_admin_theme_styles_url('jquery.treeview.css'); ?>" rel="stylesheet" type="text/css" />
-        <script type="text/javascript" src="<?php
-echo osc_current_admin_theme_js_url('jquery.treeview.js'); ?>"></script>
-        <div id="update_version" style="display:none;"></div>
+        <link href="<?php echo osc_current_admin_theme_styles_url('jquery.treeview.css'); ?>" rel="stylesheet" type="text/css" />
+        <script type="text/javascript" src="<?php echo osc_current_admin_theme_js_url('jquery.treeview.js'); ?>"></script>
         <script type="text/javascript">
             
             function show_iframe(class_name, id) {
@@ -47,8 +35,7 @@ echo osc_current_admin_theme_js_url('jquery.treeview.js'); ?>"></script>
 
                 var name = 'frame_'+ id ; 
                 var id_  = 'frame_'+ id ;
-                var url  = '<?php
-echo osc_admin_base_url(true); ?>?page=ajax&action=field_categories_iframe&id='+id;
+                var url  = '<?php echo osc_admin_base_url(true); ?>?page=ajax&action=field_categories_iframe&id='+id;
                 $.ajax({
                     url: url,
                     context: document.body,
@@ -158,11 +145,6 @@ _e('Ajax error, try again.'); ?>");
                 }}
             }    
         </script>
-        <div id="content">
-            <div id="separator"></div>	
-            <?php
-osc_current_admin_theme_path('include/backoffice_menu.php'); ?>
-            <div id="right_column">
                 <div id="content_header" class="content_header">
                     <div style="float: left;">
                         <img src="<?php
@@ -327,11 +309,4 @@ else
 }; ?>
                     </ul>
                 </div>
-                <div style="clear: both;"></div>
-            </div> <!-- end of right column -->
-            <div style="clear: both;"></div>
-        </div> <!-- end of container -->
-        <?php
-osc_current_admin_theme_path('footer.php'); ?>
-    </body>
-</html>
+

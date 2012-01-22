@@ -18,7 +18,7 @@
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-class CAdminSettings extends AdminSecBaseModel
+class CAdminSettings extends AdministrationController
 {
 	public function doGet( HttpRequest $req, HttpResponse $res ) 
 	{
@@ -80,10 +80,5 @@ class CAdminSettings extends AdminSecBaseModel
 			$redirectUrl.= $htaccess_status . '&file_status=' . $file_status;
 			$this->redirectTo($redirectUrl);
 	}
-	
-	public function doView($file) 
-	{
-		osc_current_admin_theme_path($file);
-	$this->getSession()->_clearVariables();
-	}
 }
+
