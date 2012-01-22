@@ -83,10 +83,8 @@ class Session
 		{
 			return ($this->session['osc_http_referer']);
 		}
-		else
-		{
-			return '';
-		}
+
+		return null;
 	}
 
 	function _dropReferer() 
@@ -95,13 +93,6 @@ class Session
 		unset($this->session['osc_http_referer']);
 		unset($_SESSION['osc_http_referer_state']);
 		unset($this->session['osc_http_referer_state']);
-	}
-
-	function _view() 
-	{
-		print_r($this->session);
-		//            echo "\n" ;
-		
 	}
 
 	function _setMessage($key, $value, $type) 
@@ -182,18 +173,6 @@ class Session
 	function _getKeepForm() 
 	{
 		return $this->_get('keepForm');
-	}
-	function _viewMessage() 
-	{
-		print_r($this->session['messages']);
-	}
-	function _viewForm() 
-	{
-		print_r($_SESSION['form']);
-	}
-	function _viewKeep() 
-	{
-		print_r($_SESSION['keepForm']);
 	}
 	function _clearVariables() 
 	{

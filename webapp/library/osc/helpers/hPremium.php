@@ -368,7 +368,7 @@ function osc_premium_views()
 	}
 	else
 	{
-		return ItemStats::newInstance()->getViews(osc_premium_id());
+		return ItemClassLoader::getInstance()->getClassInstance( 'Stats' )->getViews(osc_premium_id());
 	}
 }
 /**

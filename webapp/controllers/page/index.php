@@ -21,7 +21,7 @@ class CWebPage extends Controller
 	function __construct() 
 	{
 		parent::__construct();
-		$this->pageManager = Page::newInstance();
+		$this->pageManager = ClassLoader::getInstance()->getClassInstance( 'Model_Page' );
 	}
 	function doModel() 
 	{
@@ -51,7 +51,7 @@ class CWebPage extends Controller
 			{
 				Session::newInstance()->_set('userLocale', Params::getParam('lang'));
 			}
-			$this->_exportVariableToView('page', $page);
+			$this->getView()->_exportVariableToView('page', $page);
 			$this->doView('page.php');
 		}
 	}

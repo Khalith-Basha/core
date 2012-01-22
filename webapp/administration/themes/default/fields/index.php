@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU Affero General Public
  * License along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+$categoryForm = ClassLoader::getInstance()->getClassInstance( 'Form_Category' );
 $fields = __get("fields");
 $last = end($fields);
 $last_id = $last['pk_i_id'];
@@ -236,7 +237,7 @@ _e("Uncheck all"); ?></a>
                                                     <td>
                                                         <ul id="new_cat_tree">
                                                             <?php
-CategoryForm::categories_tree($categories, $selected); ?>
+$categoryForm->categories_tree($categories, $selected); ?>
                                                         </ul>
                                                     </td>
                                                 </tr>

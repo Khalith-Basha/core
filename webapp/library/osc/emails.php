@@ -20,7 +20,7 @@ function fn_email_alert_validation($alert, $email, $secret)
 	$user['s_name'] = "";
 	// send alert validation email
 	$prefLocale = osc_language();
-	$page = Page::newInstance()->findByInternalName('email_alert_validation');
+	$page = ClassLoader::getInstance()->getClassInstance( 'Model_Page' )->findByInternalName('email_alert_validation');
 	$page_description = $page['locale'];
 	$_title = osc_apply_filter('email_title', osc_apply_filter('email_alert_validation_title', $page_description[$prefLocale]['s_title']));
 	$_body = osc_apply_filter('email_description', osc_apply_filter('email_alert_validation_description', $page_description[$prefLocale]['s_text']));
@@ -37,13 +37,13 @@ osc_add_hook('hook_email_alert_validation', 'fn_email_alert_validation');
 function fn_alert_email_hourly($user, $ads, $s_search) 
 {
 	$prefLocale = osc_language();
-	$page = Page::newInstance()->findByInternalName('alert_email_hourly');
+	$page = ClassLoader::getInstance()->getClassInstance( 'Model_Page' )->findByInternalName('alert_email_hourly');
 	$page_description = $page['locale'];
 	$_title = osc_apply_filter('email_title', osc_apply_filter('alert_email_hourly_title', $page_description[$prefLocale]['s_title']));
 	$_body = osc_apply_filter('email_description', osc_apply_filter('alert_email_hourly_description', $page_description[$prefLocale]['s_text']));
 	if ($user['fk_i_user_id'] != 0) 
 	{
-		$user = User::newInstance()->findByPrimaryKey($user['fk_i_user_id']);
+		$user = ClassLoader::getInstance()->getClassInstance( 'Model_User' )->findByPrimaryKey($user['fk_i_user_id']);
 	}
 	else
 	{
@@ -63,13 +63,13 @@ osc_add_hook('hook_alert_email_hourly', 'fn_alert_email_hourly');
 function fn_alert_email_daily($user, $ads, $s_search) 
 {
 	$prefLocale = osc_language();
-	$page = Page::newInstance()->findByInternalName('alert_email_daily');
+	$page = ClassLoader::getInstance()->getClassInstance( 'Model_Page' )->findByInternalName('alert_email_daily');
 	$page_description = $page['locale'];
 	$_title = osc_apply_filter('email_title', osc_apply_filter('alert_email_daily_title', $page_description[$prefLocale]['s_title']));
 	$_body = osc_apply_filter('email_description', osc_apply_filter('alert_email_daily_description', $page_description[$prefLocale]['s_text']));
 	if ($user['fk_i_user_id'] != 0) 
 	{
-		$user = User::newInstance()->findByPrimaryKey($user['fk_i_user_id']);
+		$user = ClassLoader::getInstance()->getClassInstance( 'Model_User' )->findByPrimaryKey($user['fk_i_user_id']);
 	}
 	else
 	{
@@ -89,13 +89,13 @@ osc_add_hook('hook_alert_email_daily', 'fn_alert_email_daily');
 function fn_alert_email_weekly($user, $ads, $s_search) 
 {
 	$prefLocale = osc_language();
-	$page = Page::newInstance()->findByInternalName('alert_email_weekly');
+	$page = ClassLoader::getInstance()->getClassInstance( 'Model_Page' )->findByInternalName('alert_email_weekly');
 	$page_description = $page['locale'];
 	$_title = osc_apply_filter('email_title', osc_apply_filter('alert_email_weekly_title', $page_description[$prefLocale]['s_title']));
 	$_body = osc_apply_filter('email_description', osc_apply_filter('alert_email_weekly_description', $page_description[$prefLocale]['s_text']));
 	if ($user['fk_i_user_id'] != 0) 
 	{
-		$user = User::newInstance()->findByPrimaryKey($user['fk_i_user_id']);
+		$user = ClassLoader::getInstance()->getClassInstance( 'Model_User' )->findByPrimaryKey($user['fk_i_user_id']);
 	}
 	else
 	{
@@ -115,13 +115,13 @@ osc_add_hook('hook_alert_email_weekly', 'fn_alert_email_weekly');
 function fn_alert_email_instant($user, $ads, $s_search) 
 {
 	$prefLocale = osc_language();
-	$page = Page::newInstance()->findByInternalName('alert_email_instant');
+	$page = ClassLoader::getInstance()->getClassInstance( 'Model_Page' )->findByInternalName('alert_email_instant');
 	$page_description = $page['locale'];
 	$_title = osc_apply_filter('email_title', osc_apply_filter('alert_email_instant_title', $page_description[$prefLocale]['s_title']));
 	$_body = osc_apply_filter('email_description', osc_apply_filter('alert_email_instant_description', $page_description[$prefLocale]['s_text']));
 	if ($user['fk_i_user_id'] != 0) 
 	{
-		$user = User::newInstance()->findByPrimaryKey($user['fk_i_user_id']);
+		$user = ClassLoader::getInstance()->getClassInstance( 'Model_User' )->findByPrimaryKey($user['fk_i_user_id']);
 	}
 	else
 	{
@@ -193,7 +193,7 @@ function fn_email_new_item_non_register_user($item)
 osc_add_hook('hook_email_new_item_non_register_user', 'fn_email_new_item_non_register_user');
 function fn_email_user_forgot_password( $user, $password_url ) 
 {
-	$aPage = Page::newInstance()->findByInternalName('email_user_forgot_password');
+	$aPage = ClassLoader::getInstance()->getClassInstance( 'Model_Page' )->findByInternalName('email_user_forgot_password');
 	$content = array();
 	$locale = osc_current_user_locale();
 	if (isset($aPage['locale'][$locale]['s_title'])) 
@@ -245,7 +245,7 @@ osc_add_hook('hook_email_user_registration', 'fn_email_user_registration');
 function fn_email_new_email($new_email, $validation_url) 
 {
 	$locale = osc_current_user_locale();
-	$aPage = Page::newInstance()->findByInternalName('email_new_email');
+	$aPage = ClassLoader::getInstance()->getClassInstance( 'Model_Page' )->findByInternalName('email_new_email');
 	if (isset($aPage['locale'][$locale]['s_title'])) 
 	{
 		$content = $aPage['locale'][$locale];
@@ -456,7 +456,7 @@ function fn_email_item_validation($item)
 	{
 		foreach ($item['locale'] as $locale => $data) 
 		{
-			$locale_name = Locale::newInstance()->findByCode($locale);
+			$locale_name = ClassLoader::getInstance()->getClassInstance( 'Model_Locale' )->findByCode($locale);
 			$all.= '<br/>';
 			if (isset($locale_name[0]) && isset($locale_name[0]['s_name'])) 
 			{
@@ -513,7 +513,7 @@ function fn_email_admin_new_item($item)
 	{
 		foreach ($item['locale'] as $locale => $data) 
 		{
-			$locale_name = Locale::newInstance()->findByCode($locale);
+			$locale_name = ClassLoader::getInstance()->getClassInstance( 'Model_Locale' )->findByCode($locale);
 			$all.= '<br/>';
 			if (isset($locale_name[0]) && isset($locale_name[0]['s_name'])) 
 			{
@@ -570,7 +570,7 @@ function fn_email_item_validation_non_register_user($item)
 	{
 		foreach ($item['locale'] as $locale => $data) 
 		{
-			$locale_name = Locale::newInstance()->findByCode($locale);
+			$locale_name = ClassLoader::getInstance()->getClassInstance( 'Model_Locale' )->findByCode($locale);
 			$all.= '<br/>';
 			if (isset($locale_name[0]) && isset($locale_name[0]['s_name'])) 
 			{

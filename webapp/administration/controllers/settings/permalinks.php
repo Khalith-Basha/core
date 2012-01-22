@@ -24,8 +24,8 @@ class CAdminSettings extends AdminSecBaseModel
 	{
 			$htaccess = Params::getParam('htaccess_status');
 			$file = Params::getParam('file_status');
-			$this->_exportVariableToView('htaccess', $htaccess);
-			$this->_exportVariableToView('file', $file);
+			$this->getView()->_exportVariableToView('htaccess', $htaccess);
+			$this->getView()->_exportVariableToView('file', $file);
 			$this->doView('settings/permalinks.php');
 	}
 

@@ -29,7 +29,7 @@ class CWebUser extends Controller
 
 	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
-		$user = User::newInstance()->findByIdPasswordSecret(Params::getParam('userId'), Params::getParam('code'));
+		$user = ClassLoader::getInstance()->getClassInstance( 'Model_User' )->findByIdPasswordSecret(Params::getParam('userId'), Params::getParam('code'));
 		if ($user) 
 		{
 			osc_run_hook("before_html");
@@ -51,12 +51,12 @@ class CWebUser extends Controller
 			osc_add_flash_warning_message(_m('Password cannot be blank'));
 			$this->redirectTo(osc_forgot_user_password_confirm_url(Params::getParam('userId'), Params::getParam('code')));
 		}
-		$user = User::newInstance()->findByIdPasswordSecret(Params::getParam('userId'), Params::getParam('code'));
+		$user = ClassLoader::getInstance()->getClassInstance( 'Model_User' )->findByIdPasswordSecret(Params::getParam('userId'), Params::getParam('code'));
 		if ($user['b_enabled'] == 1) 
 		{
 			if (Params::getParam('new_password') == Params::getParam('new_password2')) 
 			{
-				User::newInstance()->update(array('s_pass_code' => osc_genRandomPassword(50), 's_pass_date' => date('Y-m-d H:i:s', 0), 's_pass_ip' => $_SERVER['REMOTE_ADDR'], 's_password' => sha1(Params::getParam('new_password'))), array('pk_i_id' => $user['pk_i_id']));
+				ClassLoader::getInstance()->getClassInstance( 'Model_User' )->update(array('s_pass_code' => osc_genRandomPassword(50), 's_pass_date' => date('Y-m-d H:i:s', 0), 's_pass_ip' => $_SERVER['REMOTE_ADDR'], 's_password' => sha1(Params::getParam('new_password'))), array('pk_i_id' => $user['pk_i_id']));
 				osc_add_flash_ok_message(_m('The password has been changed'));
 				$this->redirectTo(osc_user_login_url());
 			}

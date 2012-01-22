@@ -35,7 +35,7 @@ class Model_ItemComment extends DAO
 		parent::__construct();
 		$this->setTableName('t_item_comment');
 		$this->setPrimaryKey('pk_i_id');
-		$array_fields = array('pk_i_id', 'fk_i_item_id', 'pub_date', 's_title', 's_author_name', 's_author_email', 's_body', 'b_enabled', 'b_active', 'b_spam', 'fk_i_user_id');
+		$array_fields = array('pk_i_id', 'fk_i_item_id', 'dt_pub_date', 's_title', 's_author_name', 's_author_email', 's_body', 'b_enabled', 'b_active', 'b_spam', 'fk_i_user_id');
 		$this->setFields($array_fields);
 	}
 	/**

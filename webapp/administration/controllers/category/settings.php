@@ -25,7 +25,7 @@ class CAdminCategory extends AdminSecBaseModel
 	{
 		parent::__construct();
 		//specific things for this class
-		$this->categoryManager = Category::newInstance();
+		$this->categoryManager = $this->getClassLoader()->getClassInstance( 'Model_Category' );
 	}
 
 	public function doGet( HttpRequest $req, HttpResponse $res )

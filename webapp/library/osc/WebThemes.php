@@ -132,11 +132,14 @@ class WebThemes
 	 */
 	function loadThemeInfo($theme) 
 	{
-		$path = $this->path . $theme . '/index.php';
-		if (!file_exists($path)) return false;
+		$path = $this->path . DIRECTORY_SEPARATOR . $theme . '/index.php';
+		if( !file_exists( $path ) )
+			throw new Exception( "Theme '$theme' does not have an 'index.php' file." );
 		require_once $path;
 		$fxName = $theme . '_theme_info';
-		if (!function_exists($fxName)) return false;
+		if( !function_exists( $fxName ) )
+			throw new Exception( "Theme '$theme' does not have function '$fxName'." );
+	
 		$result = call_user_func($fxName);
 		$result['int_name'] = $theme;
 		return $result;

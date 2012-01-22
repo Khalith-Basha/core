@@ -325,7 +325,7 @@ _e('Comments'); ?></a>
             </li>
             <li>
                 <a href="<?php
-echo osc_admin_base_url(true); ?>?page=stats&action=reports">&raquo; <?php
+echo osc_admin_base_url(true); ?>?page=stats">&raquo; <?php
 _e('Reports'); ?></a>
             </li>
         </ul>

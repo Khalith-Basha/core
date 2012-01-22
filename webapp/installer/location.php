@@ -31,7 +31,7 @@ if ($_POST['skip-location-h'] == 0)
 echo json_encode($json_message);
 function location_international() 
 {
-	$manager_country = Country::newInstance();
+	$manager_country = ClassLoader::getInstance()->getClassInstance( 'Model_Country' );
 	$manager_region = Region::newInstance();
 	$manager_city = City::newInstance();
 	$countries_json = osc_file_get_contents('http://geo.opensourceclassifieds.org/geo.download.php?action=country&term=all&install=true&version=' . osc_version());
@@ -71,7 +71,7 @@ function location_by_country()
 	}
 	$countries_json = osc_file_get_contents('http://geo.opensourceclassifieds.org/geo.download.php?action=country&term=' . urlencode(implode(',', $country)) . '&install=true&version=' . osc_version());
 	$countries = json_decode($countries_json);
-	$manager_country = Country::newInstance();
+	$manager_country = ClassLoader::getInstance()->getClassInstance( 'Model_Country' );
 	foreach ($countries as $c) 
 	{
 		$manager_country->insert(array("pk_c_code" => $c->id, "fk_c_locale_code" => $c->locale_code, "s_name" => $c->name));
@@ -114,7 +114,7 @@ function location_by_region()
 	}
 	$countries_json = osc_file_get_contents('http://geo.opensourceclassifieds.org/geo.download.php?action=country&term=' . urlencode(implode(',', $country)) . '&install=true&version=' . osc_version());
 	$countries = json_decode($countries_json);
-	$manager_country = Country::newInstance();
+	$manager_country = ClassLoader::getInstance()->getClassInstance( 'Model_Country' );
 	foreach ($countries as $c) 
 	{
 		$manager_country->insert(array("pk_c_code" => $c->id, "fk_c_locale_code" => $c->locale_code, "s_name" => $c->name));
@@ -157,7 +157,7 @@ function location_by_city()
 	}
 	$countries_json = osc_file_get_contents('http://geo.opensourceclassifieds.org/geo.download.php?action=country&term=' . urlencode(implode(',', $country)) . '&install=true&version=' . osc_version());
 	$countries = json_decode($countries_json);
-	$manager_country = Country::newInstance();
+	$manager_country = ClassLoader::getInstance()->getClassInstance( 'Model_Country' );
 	foreach ($countries as $c) 
 	{
 		$manager_country->insert(array("pk_c_code" => $c->id, "fk_c_locale_code" => $c->locale_code, "s_name" => $c->name));

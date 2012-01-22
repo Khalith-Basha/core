@@ -29,16 +29,16 @@ class CWebUser extends WebSecBaseModel
 	public function doModel() 
 	{
 		$aAlerts = Alerts::newInstance()->findByUser(Session::newInstance()->_get('userId'));
-		$user = User::newInstance()->findByPrimaryKey(Session::newInstance()->_get('userId'));
+		$user = ClassLoader::getInstance()->getClassInstance( 'Model_User' )->findByPrimaryKey(Session::newInstance()->_get('userId'));
 		foreach ($aAlerts as $k => $a) 
 		{
 			$search = osc_unserialize(base64_decode($a['s_search']));
 			$search->limit(0, 3);
 			$aAlerts[$k]['items'] = $search->doSearch();
 		}
-		$this->_exportVariableToView('alerts', $aAlerts);
+		$this->getView()->_exportVariableToView('alerts', $aAlerts);
 		View::newInstance()->_reset('alerts');
-		$this->_exportVariableToView('user', $user);
+		$this->getView()->_exportVariableToView('user', $user);
 		$this->doView('user/alerts.php');
 	}
 	public function doView($file) 

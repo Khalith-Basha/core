@@ -98,7 +98,7 @@ PageForm::internal_name_input_text($email); ?>
                         </div>
                         <div class="clear50"></div>
                         <?php
-$locales = Locale::newInstance()->listAllEnabled();
+$locales = ClassLoader::getInstance()->getClassInstance( 'Model_Locale' )->listAllEnabled();
 PageForm::multilanguage_name_description($locales, $email);
 ?>
                         <div class="FormElement">

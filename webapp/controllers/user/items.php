@@ -34,11 +34,11 @@ class CWebUser extends WebSecBaseModel
 		$total_items = Item::newInstance()->countByUserIDEnabled($_SESSION['userId']);
 		$total_pages = ceil($total_items / $itemsPerPage);
 		$items = Item::newInstance()->findByUserIDEnabled($_SESSION['userId'], $page * $itemsPerPage, $itemsPerPage);
-		$this->_exportVariableToView('items', $items);
-		$this->_exportVariableToView('list_total_pages', $total_pages);
-		$this->_exportVariableToView('list_total_items', $total_items);
-		$this->_exportVariableToView('items_per_page', $itemsPerPage);
-		$this->_exportVariableToView('list_page', $page);
+		$this->getView()->_exportVariableToView('items', $items);
+		$this->getView()->_exportVariableToView('list_total_pages', $total_pages);
+		$this->getView()->_exportVariableToView('list_total_items', $total_items);
+		$this->getView()->_exportVariableToView('items_per_page', $itemsPerPage);
+		$this->getView()->_exportVariableToView('list_page', $page);
 		$this->doView('user/items.php');
 	}
 

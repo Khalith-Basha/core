@@ -34,9 +34,9 @@ class Form_Page extends Form
 		{
 			$internal_name = $page['s_internal_name'];
 		}
-		if (Session::newInstance()->_getForm('s_internal_name') != '') 
+		if (ClassLoader::getInstance()->getClassInstance( 'Session' )->_getForm('s_internal_name') != '') 
 		{
-			$internal_name = Session::newInstance()->_getForm('s_internal_name');
+			$internal_name = ClassLoader::getInstance()->getClassInstance( 'Session' )->_getForm('s_internal_name');
 		}
 		parent::generic_input_text('s_internal_name', $internal_name, null, (isset($page['b_indelible']) && $page['b_indelible'] == 1) ? true : false);
 	}
@@ -59,9 +59,9 @@ class Form_Page extends Form
 			{
 				$title = $category['locale'][$locale['pk_c_code']]['s_title'];
 			}
-			if (Session::newInstance()->_getForm($locale['pk_c_code'] . '#s_title') != '') 
+			if (ClassLoader::getInstance()->getClassInstance( 'Session' )->_getForm($locale['pk_c_code'] . '#s_title') != '') 
 			{
-				$title = Session::newInstance()->_getForm($locale['pk_c_code'] . '#s_title');
+				$title = ClassLoader::getInstance()->getClassInstance( 'Session' )->_getForm($locale['pk_c_code'] . '#s_title');
 			}
 			parent::generic_input_text($locale['pk_c_code'] . '#s_title', $title);
 			echo '</div>';
@@ -74,9 +74,9 @@ class Form_Page extends Form
 			{
 				$description = $category['locale'][$locale['pk_c_code']]['s_text'];
 			}
-			if (Session::newInstance()->_getForm($locale['pk_c_code'] . '#s_text') != '') 
+			if (ClassLoader::getInstance()->getClassInstance( 'Session' )->_getForm($locale['pk_c_code'] . '#s_text') != '') 
 			{
-				$description = Session::newInstance()->_getForm($locale['pk_c_code'] . '#s_text');
+				$description = ClassLoader::getInstance()->getClassInstance( 'Session' )->_getForm($locale['pk_c_code'] . '#s_text');
 			}
 			parent::generic_textarea($locale['pk_c_code'] . '#s_text', $description);
 			echo '</div>';

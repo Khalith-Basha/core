@@ -165,7 +165,7 @@ function osc_validate_location($city, $sCity, $region, $sRegion, $country, $sCou
 {
 	if (osc_validate_nozero($city) && osc_validate_nozero($region) && osc_validate_text($country, 2)) 
 	{
-		$data = Country::newInstance()->findByCode($country);
+		$data = ClassLoader::getInstance()->getClassInstance( 'Model_Country' )->findByCode($country);
 		$countryId = $data['pk_c_code'];
 		if ($countryId) 
 		{

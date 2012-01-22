@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU Affero General Public
  * License along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+$userForm = ClassLoader::getInstance()->getClassInstance( 'Form_User' );
 $user = __get('user');
 $countries = __get('countries');
 $regions = __get('regions');
@@ -45,11 +46,11 @@ osc_current_admin_theme_path('head.php'); ?>
         <?php
 if (isset($user['pk_i_id'])) 
 {
-	UserForm::js_validation_edit();
+	$userForm->js_validation_edit();
 }
 else
 {
-	UserForm::js_validation();
+	$userForm->js_validation();
 } ?>
     </head>
     <body>
@@ -67,7 +68,7 @@ osc_current_admin_theme_path('header.php'); ?>
         <div id="content">
             <div id="separator"></div>
             <?php
-UserForm::location_javascript("admin"); ?>
+$userForm->location_javascript("admin"); ?>
             <?php
 osc_current_admin_theme_path('include/backoffice_menu.php'); ?>
             <div id="right_column">
@@ -90,7 +91,7 @@ echo osc_admin_base_url(true); ?>" method="post" onSubmit="return checkForm()">
                             <input type="hidden" name="action" value="<?php
 echo $action_frm; ?>"/>
                             <?php
-UserForm::primary_input_hidden($user); ?>
+$userForm->primary_input_hidden($user); ?>
                             <?php
 if ($edit) 
 { ?>
@@ -105,7 +106,7 @@ if ($edit)
                                     <legend><?php
 _e('E-mail'); ?></legend>
                                     <?php
-UserForm::email_text($user); ?>
+$userForm->email_text($user); ?>
                                 </fieldset>
                             </div>
 
@@ -114,13 +115,13 @@ UserForm::email_text($user); ?>
                                     <legend><?php
 _e('Password'); ?></legend>
                                     <?php
-UserForm::password_text($user); ?>
+$userForm->password_text($user); ?>
                                 </fieldset>
                                 <fieldset style="float:left;">
                                     <legend><?php
 _e('Re-type the password'); ?> </legend>
                                     <?php
-UserForm::check_password_text($user); ?>
+$userForm->check_password_text($user); ?>
                                 </fieldset>
                                 <p id="password-error" style="display:none;">
                                     <?php
@@ -135,31 +136,31 @@ _e('Passwords don\'t match'); ?>.
                                     <legend><?php
 _e('Real name'); ?></legend>
                                     <?php
-UserForm::name_text($user); ?>
+$userForm->name_text($user); ?>
                                 </fieldset>
                                 <fieldset>
                                     <legend><?php
 _e('Cell phone'); ?></legend>
                                     <?php
-UserForm::mobile_text($user); ?>
+$userForm->mobile_text($user); ?>
                                 </fieldset>
                                 <fieldset>
                                     <legend><?php
 _e('Phone'); ?></legend>
                                     <?php
-UserForm::phone_land_text($user); ?>
+$userForm->phone_land_text($user); ?>
                                 </fieldset>
                                 <fieldset>
                                     <legend><?php
 _e('Website'); ?></legend>
                                     <?php
-UserForm::website_text($user); ?>
+$userForm->website_text($user); ?>
                                 </fieldset>
                                 <fieldset style="min-height: 166px;">
                                     <legend><?php
 _e('Additional information'); ?></legend>
                                     <?php
-UserForm::multilanguage_info($locales, $user); ?>
+$userForm->multilanguage_info($locales, $user); ?>
                                 </fieldset>
                             </div>
                             <div style="float: left; width: 50%;">
@@ -167,37 +168,37 @@ UserForm::multilanguage_info($locales, $user); ?>
                                     <legend><?php
 _e('Country'); ?></legend>
                                     <?php
-UserForm::country_select($countries, $user); ?>
+$userForm->country_select($countries, $user); ?>
                                 </fieldset>
                                 <fieldset>
                                     <legend><?php
 _e('Region'); ?></legend>
                                     <?php
-UserForm::region_select($regions, $user); ?>
+$userForm->region_select($regions, $user); ?>
                                 </fieldset>
                                 <fieldset>
                                     <legend><?php
 _e('City'); ?></legend>
                                     <?php
-UserForm::city_select($cities, $user); ?>
+$userForm->city_select($cities, $user); ?>
                                 </fieldset>
                                 <fieldset>
                                     <legend><?php
 _e('City Area'); ?></legend>
                                     <?php
-UserForm::city_area_text($user); ?>
+$userForm->city_area_text($user); ?>
                                 </fieldset>
                                 <fieldset>
                                     <legend><?php
 _e('Address'); ?></legend>
                                     <?php
-UserForm::address_text($user); ?>
+$userForm->address_text($user); ?>
                                 </fieldset>
                                 <fieldset>
                                     <legend><?php
 _e('User type'); ?></legend>
                                     <?php
-UserForm::is_company_select($user); ?>
+$userForm->is_company_select($user); ?>
                                 </fieldset>
                             </div>
                             <div style="clear: both;"></div>

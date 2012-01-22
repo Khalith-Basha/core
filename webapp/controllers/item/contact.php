@@ -28,7 +28,7 @@ class CWebItem extends Controller
 		if (osc_is_web_user_logged_in()) 
 		{
 			$this->userId = osc_logged_user_id();
-			$this->user = User::newInstance()->findByPrimaryKey($this->userId);
+			$this->user = ClassLoader::getInstance()->getClassInstance( 'Model_User' )->findByPrimaryKey($this->userId);
 		}
 		else
 		{
@@ -39,8 +39,8 @@ class CWebItem extends Controller
 
 	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
-		$locales = Locale::newInstance()->listAllEnabled();
-		$this->_exportVariableToView('locales', $locales);
+		$locales = ClassLoader::getInstance()->getClassInstance( 'Model_Locale' )->listAllEnabled();
+		$this->getView()->_exportVariableToView('locales', $locales);
 		$item = $this->itemManager->findByPrimaryKey(Params::getParam('id'));
 		if (empty($item)) 
 		{
@@ -49,7 +49,7 @@ class CWebItem extends Controller
 		}
 		else
 		{
-			$this->_exportVariableToView('item', $item);
+			$this->getView()->_exportVariableToView('item', $item);
 			if (osc_item_is_expired()) 
 			{
 				osc_add_flash_error_message(_m('We\'re sorry, but the item has expired. You can\'t contact the seller'));
@@ -70,7 +70,7 @@ class CWebItem extends Controller
 	public function doPost( HttpRequest $req, HttpResponse $res )
 	{
 		$item = $this->itemManager->findByPrimaryKey(Params::getParam('id'));
-		$this->_exportVariableToView('item', $item);
+		$this->getView()->_exportVariableToView('item', $item);
 		if ((osc_recaptcha_private_key() != '') && Params::existParam("recaptcha_challenge_field")) 
 		{
 			if (!osc_check_recaptcha()) 

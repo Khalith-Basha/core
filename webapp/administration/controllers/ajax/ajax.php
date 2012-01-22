@@ -169,9 +169,9 @@ class CAdminAjax extends AdminSecBaseModel
 			{
 				$selected = array();
 			};
-			$this->_exportVariableToView("selected", $selected);
-			$this->_exportVariableToView("field", Field::newInstance()->findByPrimaryKey(Params::getParam("id")));
-			$this->_exportVariableToView("categories", Category::newInstance()->toTreeAll());
+			$this->getView()->_exportVariableToView("selected", $selected);
+			$this->getView()->_exportVariableToView("field", Field::newInstance()->findByPrimaryKey(Params::getParam("id")));
+			$this->getView()->_exportVariableToView("categories", Category::newInstance()->toTreeAll());
 			$this->doView("fields/iframe.php");
 			break;
 
@@ -338,7 +338,7 @@ class CAdminAjax extends AdminSecBaseModel
 			$count = osc_count_static_pages();
 			if ($order != '' && $id != '') 
 			{
-				$mPages = Page::newInstance();
+				$mPages = ClassLoader::getInstance()->getClassInstance( 'Model_Page' );
 				$actual_page = $mPages->findByPrimaryKey($id);
 				$actual_order = $actual_page['i_order'];
 				$array = array();

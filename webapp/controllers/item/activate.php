@@ -28,7 +28,7 @@ class CWebItem extends Controller
 		if (osc_is_web_user_logged_in()) 
 		{
 			$this->userId = osc_logged_user_id();
-			$this->user = User::newInstance()->findByPrimaryKey($this->userId);
+			$this->user = ClassLoader::getInstance()->getClassInstance( 'Model_User' )->findByPrimaryKey($this->userId);
 		}
 		else
 		{
@@ -38,8 +38,8 @@ class CWebItem extends Controller
 	}
 	function doModel() 
 	{
-		$locales = Locale::newInstance()->listAllEnabled();
-		$this->_exportVariableToView('locales', $locales);
+		$locales = ClassLoader::getInstance()->getClassInstance( 'Model_Locale' )->listAllEnabled();
+		$this->getView()->_exportVariableToView('locales', $locales);
 		$secret = Params::getParam('secret');
 		$id = Params::getParam('id');
 		$item = $this->itemManager->listWhere("i.pk_i_id = '%s' AND ((i.s_secret = '%s') OR (i.fk_i_user_id = '%d'))", $id, $secret, $this->userId);

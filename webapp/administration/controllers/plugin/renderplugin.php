@@ -49,7 +49,7 @@ class CAdminPlugin extends AdminSecBaseModel
 				{
 					$file = $_REQUEST['file'];
 				};
-				$this->_exportVariableToView("file", osc_plugins_path() . DIRECTORY_SEPARATOR . $file);
+				$this->getView()->_exportVariableToView("file", osc_plugins_path() . DIRECTORY_SEPARATOR . $file);
 				//osc_renderPluginView($file);
 				$this->doView("plugins/view.php");
 			}
@@ -75,7 +75,7 @@ class CAdminPlugin extends AdminSecBaseModel
 				{
 					$file = $_REQUEST['file'];
 				};
-				$this->_exportVariableToView("file", ABS_PATH . DIRECTORY_SEPARATOR . $file);
+				$this->getView()->_exportVariableToView("file", ABS_PATH . DIRECTORY_SEPARATOR . $file);
 				$this->doView("theme/view.php");
 			}
 			break;

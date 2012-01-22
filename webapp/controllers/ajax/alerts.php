@@ -51,7 +51,7 @@ class CWebAjax extends Controller
 			break;
 
 		case 'location_countries': // This is the autocomplete AJAX
-			$countries = Country::newInstance()->ajax(Params::getParam("term"));
+			$countries = ClassLoader::getInstance()->getClassInstance( 'Model_Country' )->ajax(Params::getParam("term"));
 			echo json_encode($countries);
 			break;
 
@@ -74,7 +74,7 @@ class CWebAjax extends Controller
 			if (Session::newInstance()->_get('userId') != '') 
 			{
 				$userId = Session::newInstance()->_get('userId');
-				$user = User::newInstance()->findByPrimaryKey($userId);
+				$user = ClassLoader::getInstance()->getClassInstance( 'Model_User' )->findByPrimaryKey($userId);
 			}
 			else
 			{
@@ -149,7 +149,7 @@ class CWebAjax extends Controller
 					{
 						if ((int)$userid > 0) 
 						{
-							$user = User::newInstance()->findByPrimaryKey($userid);
+							$user = ClassLoader::getInstance()->getClassInstance( 'Model_User' )->findByPrimaryKey($userid);
 							if ($user['b_active'] == 1 && $user['b_enabled'] == 1) 
 							{
 								Alerts::newInstance()->activate($email, $secret);

@@ -28,7 +28,7 @@ class CWebItem extends Controller
 		if (osc_is_web_user_logged_in()) 
 		{
 			$this->userId = osc_logged_user_id();
-			$this->user = User::newInstance()->findByPrimaryKey($this->userId);
+			$this->user = ClassLoader::getInstance()->getClassInstance( 'Model_User' )->findByPrimaryKey($this->userId);
 		}
 		else
 		{
@@ -38,19 +38,19 @@ class CWebItem extends Controller
 	}
 	function doModel() 
 	{
-		$locales = Locale::newInstance()->listAllEnabled();
-		$this->_exportVariableToView('locales', $locales);
+		$locales = ClassLoader::getInstance()->getClassInstance( 'Model_Locale' )->listAllEnabled();
+		$this->getView()->_exportVariableToView('locales', $locales);
 		switch ($this->action) 
 		{
 		case 'send_friend':
 			$item = $this->itemManager->findByPrimaryKey(Params::getParam('id'));
-			$this->_exportVariableToView('item', $item);
+			$this->getView()->_exportVariableToView('item', $item);
 			$this->doView('item/send-friend.php');
 			break;
 
 		case 'send_friend_post':
 			$item = $this->itemManager->findByPrimaryKey(Params::getParam('id'));
-			$this->_exportVariableToView('item', $item);
+			$this->getView()->_exportVariableToView('item', $item);
 			Session::newInstance()->_setForm("yourEmail", Params::getParam('yourEmail'));
 			Session::newInstance()->_setForm("yourName", Params::getParam('yourName'));
 			Session::newInstance()->_setForm("friendName", Params::getParam('friendName'));

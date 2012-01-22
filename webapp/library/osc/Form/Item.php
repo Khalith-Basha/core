@@ -119,7 +119,7 @@ class Form_Item extends Form
 	{
 		if ($users == null) 
 		{
-			$users = User::newInstance()->listAll();
+			$users = ClassLoader::getInstance()->getClassInstance( 'Model_User' )->listAll();
 		};
 		if ($item == null) 
 		{
@@ -513,7 +513,7 @@ class Form_Item extends Form
 	{
 		if (isset($_SESSION['userId']) && $_SESSION['userId'] != null) 
 		{
-			$user = User::newInstance()->findByPrimaryKey($_SESSION['userId']);
+			$user = ClassLoader::getInstance()->getClassInstance( 'Model_User' )->findByPrimaryKey($_SESSION['userId']);
 			parent::generic_input_hidden('contactName', $user['s_name']);
 			parent::generic_input_hidden('contactEmail', $user['s_email']);
 			return true;

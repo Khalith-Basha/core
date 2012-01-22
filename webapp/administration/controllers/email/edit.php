@@ -24,7 +24,7 @@ class CAdminEmail extends AdminSecBaseModel
 	function __construct() 
 	{
 		parent::__construct();
-		$this->emailManager = Page::newInstance();
+		$this->emailManager = ClassLoader::getInstance()->getClassInstance( 'Model_Page' );
 	}
 	public function doModel() 
 	{
@@ -36,7 +36,7 @@ class CAdminEmail extends AdminSecBaseModel
 			{
 				$this->redirectTo(osc_admin_base_url(true) . "?page=emails");
 			}
-			$this->_exportVariableToView("email", $this->emailManager->findByPrimaryKey(Params::getParam("id")));
+			$this->getView()->_exportVariableToView("email", $this->emailManager->findByPrimaryKey(Params::getParam("id")));
 			$this->doView("emails/frm.php");
 			break;
 

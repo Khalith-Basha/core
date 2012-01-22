@@ -17,6 +17,7 @@
  */
 //getting variables for this view
 $info = __get("info");
+$widgetModel = ClassLoader::getInstance()->getClassInstance( 'Model_Widget' );
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -55,9 +56,7 @@ echo $info['author_url']; ?>"><?php
 echo $info['author_name']; ?></a></strong><br />
                         <p><?php
 echo $info['description']; ?></p>
-                        <?php
-foreach ($info['locations'] as $location) 
-{ ?>
+                        <?php foreach ($info['locations'] as $location) { ?>
                             <div>
                                 <div style="font-weight: bold; background-color: white; padding: 5px;">
                                     <?php
@@ -67,7 +66,7 @@ foreach ($info['locations'] as $location)
 	_e('Add HTML widget'); ?></a>
                                     <br />
                                     <?php
-	$widgets = Widget::newInstance()->findByLocation($location);
+	$widgets = $widgetModel->findByLocation($location);
 	foreach ($widgets as $w) 
 	{
 		$aux_id = $w['pk_i_id'];

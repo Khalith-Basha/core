@@ -46,7 +46,7 @@ class CAdminPlugin extends AdminSecBaseModel
 				{
 					$file = $_REQUEST['file'];
 				};
-				$this->_exportVariableToView("file", ABS_PATH . $file);
+				$this->getView()->_exportVariableToView("file", ABS_PATH . $file);
 				$this->doView("theme/view.php");
 			}
 			break;
@@ -56,9 +56,9 @@ class CAdminPlugin extends AdminSecBaseModel
 			if ($plugin != '') 
 			{
 				$plugin_data = $pluginManager->getInfo($plugin);
-				$this->_exportVariableToView("categories", Category::newInstance()->toTreeAll());
-				$this->_exportVariableToView("selected", PluginCategory::newInstance()->listSelected($plugin_data['short_name']));
-				$this->_exportVariableToView("plugin_data", $plugin_data);
+				$this->getView()->_exportVariableToView("categories", Category::newInstance()->toTreeAll());
+				$this->getView()->_exportVariableToView("selected", PluginCategory::newInstance()->listSelected($plugin_data['short_name']));
+				$this->getView()->_exportVariableToView("plugin_data", $plugin_data);
 				$this->doView("plugins/configuration.php");
 			}
 			else
@@ -92,7 +92,7 @@ class CAdminPlugin extends AdminSecBaseModel
 			require_once 'osc/helpers/hDefines.php';
 			require_once 'osc/utils.php';
 
-			$this->_exportVariableToView("plugins", $pluginManager->listAll());
+			$this->getView()->_exportVariableToView("plugins", $pluginManager->listAll());
 			$this->doView("plugins/index.php");
 		}
 	}

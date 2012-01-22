@@ -30,29 +30,13 @@ class AdminThemes
 	}
 	private function setCurrentThemeUrl() 
 	{
-		if ($this->theme_exists) 
-		{
-			$this->theme_url = osc_admin_base_url() . '/themes/' . $this->theme;
-		}
-		else
-		{
-			$this->theme_url = osc_admin_base_url() . '/gui';
-		}
+		$this->theme_url = osc_admin_base_url() . '/themes/' . $this->theme;
 	}
 	private function setCurrentThemePath() 
 	{
-		if (file_exists(osc_admin_base_path() . '/themes/' . $this->theme ) ) 
-		{
-			$this->theme_exists = true;
-			$this->theme_path = osc_admin_base_path() . '/themes/' . $this->theme;
-		}
-		else
-		{
-			$this->theme_exists = false;
-			$this->theme_path = osc_admin_base_path() . '/gui';
-		}
+		$this->theme_exists = true;
+		$this->theme_path = osc_admin_base_path() . '/themes/' . $this->theme;
 	}
-	/* PUBLIC */
 	public function setCurrentTheme($theme) 
 	{
 		$this->theme = $theme;

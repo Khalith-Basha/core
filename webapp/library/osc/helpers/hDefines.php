@@ -852,7 +852,7 @@ function osc_get_countries()
 	}
 	else
 	{
-		return Country::newInstance()->listAll();
+		return ClassLoader::getInstance()->getClassInstance( 'Model_Country' )->listAll();
 	}
 }
 /**
@@ -912,7 +912,7 @@ function osc_get_currencies()
 {
 	if (!ClassLoader::getInstance()->getClassInstance( 'View' )->_exists('currencies')) 
 	{
-		ClassLoader::getInstance()->getClassInstance( 'View' )->_exportVariableToView('currencies', Currency::newInstance()->listAll());
+		ClassLoader::getInstance()->getClassInstance( 'View' )->_exportVariableToView('currencies', ClassLoader::getInstance()->getClassInstance( 'Model_Currency' )->listAll());
 	}
 	return ClassLoader::getInstance()->getClassInstance( 'View' )->_get('currencies');
 }

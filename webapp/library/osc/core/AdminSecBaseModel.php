@@ -39,7 +39,7 @@ class AdminSecBaseModel extends SecBaseModel
 	}
 	public function showAuthFailPage() 
 	{
-		require osc_admin_base_path() . '/gui/login.php';
+		osc_current_admin_theme_path( 'login.php' );
 		exit;
 	}
 }

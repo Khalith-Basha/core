@@ -139,7 +139,7 @@ class CAdminComment extends AdminSecBaseModel
 		case 'comment_edit':
 			$id = Params::getParam('id');
 			$comment = ItemComment::newInstance()->findByPrimaryKey($id);
-			$this->_exportVariableToView('comment', $comment);
+			$this->getView()->_exportVariableToView('comment', $comment);
 			$this->doView('comments/frm.php');
 			break;
 
@@ -166,7 +166,7 @@ class CAdminComment extends AdminSecBaseModel
 			{
 				$comments = $this->itemCommentManager->getAllComments();
 			}
-			$this->_exportVariableToView('comments', $comments);
+			$this->getView()->_exportVariableToView('comments', $comments);
 			//calling the view...
 			$this->doView('comments/index.php');
 		}

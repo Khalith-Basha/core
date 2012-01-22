@@ -47,8 +47,8 @@ class CAdminItem extends AdminSecBaseModel
 		{
 		$this->getSession()->_dropKeepForm();
 		}
-		$this->_exportVariableToView("item", $item);
-		$this->_exportVariableToView("new_item", FALSE);
+		$this->getView()->_exportVariableToView("item", $item);
+		$this->getView()->_exportVariableToView("new_item", FALSE);
 		osc_current_admin_theme_path( 'items/frm.php' );
 	$this->getSession()->_clearVariables();
 	}
@@ -77,7 +77,7 @@ class CAdminItem extends AdminSecBaseModel
 			$id = Params::getParam('userId');
 			if ($id != '') 
 			{
-				$user = User::newInstance()->findByPrimaryKey($id);
+				$user = ClassLoader::getInstance()->getClassInstance( 'Model_User' )->findByPrimaryKey($id);
 				Item::newInstance()->update(array('fk_i_user_id' => $id, 's_contact_name' => $user['s_name'], 's_contact_email' => $user['s_email']), array('pk_i_id' => Params::getParam('id'), 's_secret' => Params::getParam('secret')));
 			}
 			else

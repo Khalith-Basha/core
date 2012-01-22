@@ -25,7 +25,7 @@ class CAdminUser extends AdminSecBaseModel
 	{
 		parent::__construct();
 		//specific things for this class
-		$this->userManager = User::newInstance();
+		$this->userManager = ClassLoader::getInstance()->getClassInstance( 'Model_User' );
 	}
 
 	function doModel() 
@@ -34,67 +34,13 @@ class CAdminUser extends AdminSecBaseModel
 		//specific things for this class
 		switch ($this->action) 
 		{
-		case 'create': // callign create view
-			$aCountries = array();
-			$aRegions = array();
-			$aCities = array();
-			$aCountries = Country::newInstance()->listAll();
-			if (isset($aCountries[0]['pk_c_code'])) 
-			{
-				$aRegions = Region::newInstance()->findByCountry($aCountries[0]['pk_c_code']);
-			}
-			if (isset($aRegions[0]['pk_i_id'])) 
-			{
-				$aCities = City::newInstance()->findByRegion($aRegions[0]['pk_i_id']);
-			}
-			$this->_exportVariableToView('user', null);
-			$this->_exportVariableToView('countries', $aCountries);
-			$this->_exportVariableToView('regions', $aRegions);
-			$this->_exportVariableToView('cities', $aCities);
-			$this->_exportVariableToView('locales', Locale::newInstance()->listAllEnabled());
-			$this->doView("users/frm.php");
-			break;
-
-		case 'create_post': // creating the user...
-			require_once 'osc/UserActions.php';
-			$userActions = new UserActions(true);
-			$success = $userActions->add();
-			switch ($success) 
-			{
-			case 1:
-				osc_add_flash_ok_message(_m('The user has been created. We\'ve sent an activation e-mail'), 'admin');
-				break;
-
-			case 2:
-				osc_add_flash_ok_message(_m('The user has been created successfully'), 'admin');
-				break;
-
-			case 3:
-				osc_add_flash_warning_message(_m('Sorry, but that e-mail is already in use'), 'admin');
-				break;
-
-			case 5:
-				osc_add_flash_warning_message(_m('The specified e-mail is not valid'), 'admin');
-				break;
-
-			case 6:
-				osc_add_flash_warning_message(_m('Sorry, the password cannot be empty'), 'admin');
-				break;
-
-			case 7:
-				osc_add_flash_warning_message(_m("Sorry, passwords don't match"), 'admin');
-				break;
-			}
-			$this->redirectTo(osc_admin_base_url(true) . '?page=users');
-			break;
-
 		case 'edit': // calling the edit view
 			$aUser = array();
 			$aCountries = array();
 			$aRegions = array();
 			$aCities = array();
 			$aUser = $this->userManager->findByPrimaryKey(Params::getParam("id"));
-			$aCountries = Country::newInstance()->listAll();
+			$aCountries = ClassLoader::getInstance()->getClassInstance( 'Model_Country' )->listAll();
 			$aRegions = array();
 			if ($aUser['fk_c_country_code'] != '') 
 			{
@@ -113,11 +59,11 @@ class CAdminUser extends AdminSecBaseModel
 			{
 				$aCities = City::newInstance()->findByRegion($aRegions[0]['pk_i_id']);
 			}
-			$this->_exportVariableToView("user", $aUser);
-			$this->_exportVariableToView("countries", $aCountries);
-			$this->_exportVariableToView("regions", $aRegions);
-			$this->_exportVariableToView("cities", $aCities);
-			$this->_exportVariableToView("locales", Locale::newInstance()->listAllEnabled());
+			$this->getView()->_exportVariableToView("user", $aUser);
+			$this->getView()->_exportVariableToView("countries", $aCountries);
+			$this->getView()->_exportVariableToView("regions", $aRegions);
+			$this->getView()->_exportVariableToView("cities", $aCities);
+			$this->getView()->_exportVariableToView("locales", ClassLoader::getInstance()->getClassInstance( 'Model_Locale' )->listAllEnabled());
 			$this->doView("users/frm.php");
 			break;
 
@@ -300,34 +246,9 @@ class CAdminUser extends AdminSecBaseModel
 			$this->redirectTo(osc_admin_base_url(true) . '?page=users');
 			break;
 
-		case ('settings'): // calling the users settings view
-			$this->doView('users/settings.php');
-			break;
-
-		case ('settings_post'): // updating users
-			$iUpdated = 0;
-			$enabledUserValidation = Params::getParam('enabled_user_validation');
-			$enabledUserValidation = (($enabledUserValidation != '') ? true : false);
-			$enabledUserRegistration = Params::getParam('enabled_user_registration');
-			$enabledUserRegistration = (($enabledUserRegistration != '') ? true : false);
-			$enabledUsers = Params::getParam('enabled_users');
-			$enabledUsers = (($enabledUsers != '') ? true : false);
-			$notifyNewUser = Params::getParam('notify_new_user');
-			$notifyNewUser = (($notifyNewUser != '') ? true : false);
-			$iUpdated+= Preference::newInstance()->update(array('s_value' => $enabledUserValidation), array('s_name' => 'enabled_user_validation'));
-			$iUpdated+= Preference::newInstance()->update(array('s_value' => $enabledUserRegistration), array('s_name' => 'enabled_user_registration'));
-			$iUpdated+= Preference::newInstance()->update(array('s_value' => $enabledUsers), array('s_name' => 'enabled_users'));
-			$iUpdated+= Preference::newInstance()->update(array('s_value' => $notifyNewUser), array('s_name' => 'notify_new_user'));
-			if ($iUpdated > 0) 
-			{
-				osc_add_flash_ok_message(_m('Users\' settings have been updated'), 'admin');
-			}
-			$this->redirectTo(osc_admin_base_url(true) . '?page=users&action=settings');
-			break;
-
 		default: // manage users view
 			$aUsers = $this->userManager->listAll();
-			$this->_exportVariableToView("users", $aUsers);
+			$this->getView()->_exportVariableToView("users", $aUsers);
 			$this->doView("users/index.php");
 			break;
 		}

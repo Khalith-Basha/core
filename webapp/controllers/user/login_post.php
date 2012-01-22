@@ -37,7 +37,7 @@ class CWebUser extends Controller
 			$this->redirectTo(osc_base_url());
 		}
 		require_once 'osc/UserActions.php';
-		$user = User::newInstance()->findByEmail(Params::getParam('email'));
+		$user = ClassLoader::getInstance()->getClassInstance( 'Model_User' )->findByEmail(Params::getParam('email'));
 		$url_redirect = osc_user_dashboard_url();
 		$page_redirect = '';
 		if (osc_rewrite_enabled()) 
@@ -116,7 +116,7 @@ class CWebUser extends Controller
 				//this include contains de osc_genRandomPassword function
 				require_once 'osc/helpers/hSecurity.php';
 				$secret = osc_genRandomPassword();
-				User::newInstance()->update(array('s_secret' => $secret), array('pk_i_id' => $user['pk_i_id']));
+				ClassLoader::getInstance()->getClassInstance( 'Model_User' )->update(array('s_secret' => $secret), array('pk_i_id' => $user['pk_i_id']));
 				Cookie::newInstance()->set_expires(osc_time_cookie());
 				Cookie::newInstance()->push('oc_userId', $user['pk_i_id']);
 				Cookie::newInstance()->push('oc_userSecret', $secret);

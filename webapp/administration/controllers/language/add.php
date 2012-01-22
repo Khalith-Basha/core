@@ -25,7 +25,7 @@ class CAdminLanguage extends AdminSecBaseModel
 	{
 		parent::__construct();
 		//specific things for this class
-		$this->localeManager = Locale::newInstance();
+		$this->localeManager = ClassLoader::getInstance()->getClassInstance( 'Model_Locale' );
 	}
 
 	public function doGet( HttpRequest $req, HttpResponse $res )

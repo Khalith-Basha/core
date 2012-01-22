@@ -41,11 +41,11 @@ function osc_checkLocales()
 	$locales = osc_listLocales();
 	foreach ($locales as $locale) 
 	{
-		$data = Locale::newInstance()->findByPrimaryKey($locale['code']);
+		$data = ClassLoader::getInstance()->getClassInstance( 'Model_Locale' )->findByPrimaryKey($locale['code']);
 		if (!is_array($data)) 
 		{
 			$values = array('pk_c_code' => $locale['code'], 's_name' => $locale['name'], 's_short_name' => $locale['short_name'], 's_description' => $locale['description'], 's_version' => $locale['version'], 's_author_name' => $locale['author_name'], 's_author_url' => $locale['author_url'], 's_currency_format' => $locale['currency_format'], 's_date_format' => $locale['date_format'], 's_stop_words' => $locale['stop_words'], 'b_enabled' => 0, 'b_enabled_bo' => 1);
-			$result = Locale::newInstance()->insert($values);
+			$result = ClassLoader::getInstance()->getClassInstance( 'Model_Locale' )->insert($values);
 			if (!$result) 
 			{
 				return false;

@@ -35,8 +35,8 @@ class CWebUser extends WebSecBaseModel
 			$max_items = (Params::getParam('max_items') != '') ? Params::getParam('max_items') : 5;
 			$aItems = Item::newInstance()->findByUserIDEnabled(Session::newInstance()->_get('userId'), 0, $max_items);
 			//calling the view...
-			$this->_exportVariableToView('items', $aItems);
-			$this->_exportVariableToView('max_items', $max_items);
+			$this->getView()->_exportVariableToView('items', $aItems);
+			$this->getView()->_exportVariableToView('max_items', $max_items);
 			$this->doView('user/index.php');
 			break;
 
@@ -52,7 +52,7 @@ class CWebUser extends WebSecBaseModel
 			}
 			else
 			{
-				$user = User::newInstance()->findByEmail(Params::getParam('new_email'));
+				$user = ClassLoader::getInstance()->getClassInstance( 'Model_User' )->findByEmail(Params::getParam('new_email'));
 				if (!isset($user['pk_i_id'])) 
 				{
 					$userEmailTmp = array();
@@ -80,7 +80,7 @@ class CWebUser extends WebSecBaseModel
 			break;
 
 		case 'change_password_post': //change password post
-			$user = User::newInstance()->findByPrimaryKey(Session::newInstance()->_get('userId'));
+			$user = ClassLoader::getInstance()->getClassInstance( 'Model_User' )->findByPrimaryKey(Session::newInstance()->_get('userId'));
 			if ((Params::getParam('password') == '') || (Params::getParam('new_password') == '') || (Params::getParam('new_password2') == '')) 
 			{
 				osc_add_flash_warning_message(_m('Password cannot be blank'));
@@ -101,7 +101,7 @@ class CWebUser extends WebSecBaseModel
 				osc_add_flash_error_message(_m('Passwords don\'t match'));
 				$this->redirectTo(osc_change_user_password_url());
 			}
-			User::newInstance()->update(array('s_password' => sha1(Params::getParam('new_password'))), array('pk_i_id' => Session::newInstance()->_get('userId')));
+			ClassLoader::getInstance()->getClassInstance( 'Model_User' )->update(array('s_password' => sha1(Params::getParam('new_password'))), array('pk_i_id' => Session::newInstance()->_get('userId')));
 			osc_add_flash_ok_message(_m('Password has been changed'));
 			$this->redirectTo(osc_user_profile_url());
 			break;

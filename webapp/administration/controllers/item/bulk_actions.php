@@ -45,7 +45,7 @@ class CAdminItem extends AdminSecBaseModel
 					{
 						$this->itemManager->update(array('b_enabled' => $value), array('pk_i_id' => $_id));
 						$item = $this->itemManager->findByPrimaryKey($_id);
-						CategoryStats::newInstance()->increaseNumItems($item['fk_i_category_id']);
+						CategoryClassLoader::getInstance()->getClassInstance( 'Stats' )->increaseNumItems($item['fk_i_category_id']);
 					}
 					osc_add_flash_ok_message(sprintf(_mn('%d item has been enabled', '%d items have been enabled', $count), $count), 'admin');
 				}
@@ -68,7 +68,7 @@ class CAdminItem extends AdminSecBaseModel
 					{
 						$this->itemManager->update(array('b_enabled' => $value), array('pk_i_id' => $_id));
 						$item = $this->itemManager->findByPrimaryKey($_id);
-						CategoryStats::newInstance()->decreaseNumItems($item['fk_i_category_id']);
+						CategoryClassLoader::getInstance()->getClassInstance( 'Stats' )->decreaseNumItems($item['fk_i_category_id']);
 					}
 					osc_add_flash_ok_message(sprintf(_mn('%d item has been disabled', '%d items have been disabled', $count), $count), 'admin');
 				}
@@ -91,7 +91,7 @@ class CAdminItem extends AdminSecBaseModel
 					{
 						$this->itemManager->update(array('b_active' => $value), array('pk_i_id' => $_id));
 						$item = $this->itemManager->findByPrimaryKey($_id);
-						CategoryStats::newInstance()->increaseNumItems($item['fk_i_category_id']);
+						CategoryClassLoader::getInstance()->getClassInstance( 'Stats' )->increaseNumItems($item['fk_i_category_id']);
 					}
 					osc_add_flash_ok_message(sprintf(_mn('%d item has been activated', '%d items have been activated', $count), $count), 'admin');
 				}
@@ -114,7 +114,7 @@ class CAdminItem extends AdminSecBaseModel
 					{
 						$this->itemManager->update(array('b_active' => $value), array('pk_i_id' => $_id));
 						$item = $this->itemManager->findByPrimaryKey($_id);
-						CategoryStats::newInstance()->decreaseNumItems($item['fk_i_category_id']);
+						CategoryClassLoader::getInstance()->getClassInstance( 'Stats' )->decreaseNumItems($item['fk_i_category_id']);
 					}
 					osc_add_flash_ok_message(sprintf(_m('%d item has been deactivated', '%d items have been deactivated', $count), $count), 'admin');
 				}

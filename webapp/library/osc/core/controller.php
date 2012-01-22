@@ -110,7 +110,7 @@ abstract class Controller
 
 	protected function _exportVariableToView($key, $value) 
 	{
-		$this->_exportVariableToView($key, $value);
+		$this->getView()->_exportVariableToView($key, $value);
 	}
 	protected function _view($key = null) 
 	{

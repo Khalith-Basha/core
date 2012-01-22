@@ -5,7 +5,7 @@ INSERT INTO /*TABLE_PREFIX*/t_currency (pk_c_code, s_name, s_description, b_enab
 
 INSERT INTO /*TABLE_PREFIX*/t_preference VALUES
     ('osclass', 'version', 233, 'INTEGER')
-    ,('osclass', 'theme', 'modern', 'STRING')
+    ,('osclass', 'theme', 'default', 'STRING')
     ,('osclass', 'admin_language', 'en_US', 'STRING')
     ,('osclass', 'language', 'en_US', 'STRING')
     ,('osclass', 'pageDesc', '', 'STRING')
@@ -62,7 +62,7 @@ INSERT INTO /*TABLE_PREFIX*/t_preference VALUES
     ,('osclass', 'defaultShowAs@search', 'list', 'STRING')
     ,('osclass', 'defaultOrderField@search', 'pub_date', 'STRING')
     ,('osclass', 'defaultOrderType@search', '1', 'BOOLEAN')
-    ,('osclass', 'admin_theme', 'modern', 'STRING')
+    ,('osclass', 'admin_theme', 'default', 'STRING')
     ,('osclass', 'akismetKey', '', 'STRING')
     ,('osclass', 'recaptchaPrivKey', '', 'STRING')
     ,('osclass', 'recaptchaPubKey', '', 'STRING')

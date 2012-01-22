@@ -303,7 +303,7 @@ function oc_install()
 	}
 	require_once 'osc/locales.php';
 	require_once 'osc/model/Locale.php';
-	$localeManager = Locale::newInstance();
+	$localeManager = ClassLoader::getInstance()->getClassInstance( 'Model_Locale' );
 	$locales = osc_listLocales();
 	foreach ($locales as $locale) 
 	{

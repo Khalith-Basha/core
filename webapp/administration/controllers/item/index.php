@@ -73,7 +73,7 @@ class CAdminItem extends AdminSecBaseModel
 					osc_add_flash_ok_message(_m('The item has been activated'), 'admin');
 					if ($item['b_enabled'] == 1 && $item['b_active'] == 0) 
 					{
-						CategoryStats::newInstance()->increaseNumItems($item['fk_i_category_id']);
+						CategoryClassLoader::getInstance()->getClassInstance( 'Stats' )->increaseNumItems($item['fk_i_category_id']);
 						if ($item['fk_i_user_id'] != null) 
 						{
 							$user = $this->getClassLoader()->getClassInstance( 'Model_User' )->findByPrimaryKey($item['fk_i_user_id']);
@@ -90,7 +90,7 @@ class CAdminItem extends AdminSecBaseModel
 					osc_add_flash_ok_message(_m('The item has been deactivated'), 'admin');
 					if ($item['b_enabled'] == 1 && $item['b_active'] == 1) 
 					{
-						CategoryStats::newInstance()->decreaseNumItems($item['fk_i_category_id']);
+						CategoryClassLoader::getInstance()->getClassInstance( 'Stats' )->decreaseNumItems($item['fk_i_category_id']);
 						if ($item['fk_i_user_id'] != null) 
 						{
 							$user = $this->getClassLoader()->getClassInstance( 'Model_User' )->findByPrimaryKey($item['fk_i_user_id']);
@@ -107,7 +107,7 @@ class CAdminItem extends AdminSecBaseModel
 					osc_add_flash_ok_message(_m('The item has been enabled'), 'admin');
 					if ($item['b_enabled'] == 0 && $item['b_active'] == 1) 
 					{
-						CategoryStats::newInstance()->increaseNumItems($item['fk_i_category_id']);
+						CategoryClassLoader::getInstance()->getClassInstance( 'Stats' )->increaseNumItems($item['fk_i_category_id']);
 						if ($item['fk_i_user_id'] != null) 
 						{
 							$user = $this->getClassLoader()->getClassInstance( 'Model_User' )->findByPrimaryKey($item['fk_i_user_id']);
@@ -124,7 +124,7 @@ class CAdminItem extends AdminSecBaseModel
 					osc_add_flash_ok_message(_m('The item has been disabled'), 'admin');
 					if ($item['b_enabled'] == 1 && $item['b_active'] == 1) 
 					{
-						CategoryStats::newInstance()->decreaseNumItems($item['fk_i_category_id']);
+						CategoryClassLoader::getInstance()->getClassInstance( 'Stats' )->decreaseNumItems($item['fk_i_category_id']);
 						if ($item['fk_i_user_id'] != null) 
 						{
 							$user = $this->getClassLoader()->getClassInstance( 'Model_User' )->findByPrimaryKey($item['fk_i_user_id']);

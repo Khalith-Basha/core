@@ -482,7 +482,7 @@ class Model_Item extends DAO
 		}
 		if ($item['b_active'] == 1) 
 		{
-			CategoryStats::newInstance()->decreaseNumItems($item['fk_i_category_id']);
+			CategoryClassLoader::getInstance()->getClassInstance( 'Stats' )->decreaseNumItems($item['fk_i_category_id']);
 		}
 		$this->dao->delete(DB_TABLE_PREFIX . 't_item_description', "fk_i_item_id = $id");
 		$this->dao->delete(DB_TABLE_PREFIX . 't_item_comment', "fk_i_item_id = $id");

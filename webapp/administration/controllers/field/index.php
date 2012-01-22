@@ -40,9 +40,9 @@ class CAdminField extends AdminSecBaseModel
 				$selected[] = $cc['pk_i_id'];
 			}
 		}
-		$this->_exportVariableToView("categories", $categories);
-		$this->_exportVariableToView("default_selected", $selected);
-		$this->_exportVariableToView("fields", $this->fieldManager->listAll());
+		$this->getView()->_exportVariableToView("categories", $categories);
+		$this->getView()->_exportVariableToView("default_selected", $selected);
+		$this->getView()->_exportVariableToView("fields", $this->fieldManager->listAll());
 		$this->doView("fields/index.php");
 	}
 	function doView($file) 

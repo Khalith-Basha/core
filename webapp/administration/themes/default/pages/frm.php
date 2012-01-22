@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU Affero General Public
  * License along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+$pageForm = ClassLoader::getInstance()->getClassInstance( 'Form_Page' );
 $page = __get("page");
 if (isset($page['pk_i_id'])) 
 {
@@ -86,7 +87,7 @@ echo osc_admin_base_url(true); ?>?page=page" method="post" onSubmit="return chec
                         <input type="hidden" name="action" value="<?php
 echo $action_frm; ?>" />
                         <?php
-PageForm::primary_input_hidden($page); ?>
+$pageForm->primary_input_hidden($page); ?>
                         <div class="FormElement">
                             <div class="FormElementName">
                                 <?php
@@ -94,13 +95,13 @@ _e('Internal name (name to easily identify this page)'); ?>
                             </div>
                             <div class="FormElementInput">
                                <?php
-PageForm::internal_name_input_text($page); ?>
+$pageForm->internal_name_input_text($page); ?>
                             </div>
                         </div>
                         <div class="clear50"></div>
                         <?php
-$locales = Locale::newInstance()->listAllEnabled();
-PageForm::multilanguage_name_description($locales, $page);
+$locales = ClassLoader::getInstance()->getClassInstance( 'Model_Locale' )->listAllEnabled();
+$pageForm->multilanguage_name_description($locales, $page);
 ?>
                         <div class="FormElement">
                             <div class="FormElementName"></div>

@@ -189,13 +189,13 @@ class ItemActions
 			{
 				if ($aItem['userId'] != null) 
 				{
-					$user = User::newInstance()->findByPrimaryKey($aItem['userId']);
+					$user = ClassLoader::getInstance()->getClassInstance( 'Model_User' )->findByPrimaryKey($aItem['userId']);
 					if ($user) 
 					{
-						User::newInstance()->update(array('i_items' => $user['i_items'] + 1), array('pk_i_id' => $user['pk_i_id']));
+						ClassLoader::getInstance()->getClassInstance( 'Model_User' )->update(array('i_items' => $user['i_items'] + 1), array('pk_i_id' => $user['pk_i_id']));
 					}
 				}
-				CategoryStats::newInstance()->increaseNumItems($aItem['catId']);
+				CategoryClassLoader::getInstance()->getClassInstance( 'Stats' )->increaseNumItems($aItem['catId']);
 				return 2;
 			}
 		}
@@ -319,8 +319,8 @@ class ItemActions
 			$old_item = $this->manager->findByPrimaryKey($aItem['idItem']);
 			if ($old_item['fk_i_category_id'] != $aItem['catId']) 
 			{
-				CategoryStats::newInstance()->increaseNumItems($aItem['catId']);
-				CategoryStats::newInstance()->decreaseNumItems($old_item['fk_i_category_id']);
+				CategoryClassLoader::getInstance()->getClassInstance( 'Stats' )->increaseNumItems($aItem['catId']);
+				CategoryClassLoader::getInstance()->getClassInstance( 'Stats' )->decreaseNumItems($old_item['fk_i_category_id']);
 			}
 			unset($old_item);
 			$result = $this->manager->update(array('dt_mod_date' => date('Y-m-d H:i:s'), 'fk_i_category_id' => $aItem['catId'], 'i_price' => $aItem['price'], 'fk_c_currency_code' => $aItem['currency']), array('pk_i_id' => $aItem['idItem'], 's_secret' => $aItem['secret']));
@@ -359,14 +359,14 @@ class ItemActions
 			$result = $this->manager->update(array('b_active' => 1), array('s_secret' => $secret, 'pk_i_id' => $id));
 			if ($item[0]['fk_i_user_id'] != null) 
 			{
-				$user = User::newInstance()->findByPrimaryKey($item[0]['fk_i_user_id']);
+				$user = ClassLoader::getInstance()->getClassInstance( 'Model_User' )->findByPrimaryKey($item[0]['fk_i_user_id']);
 				if ($user) 
 				{
-					User::newInstance()->update(array('i_items' => $user['i_items'] + 1), array('pk_i_id' => $user['pk_i_id']));
+					ClassLoader::getInstance()->getClassInstance( 'Model_User' )->update(array('i_items' => $user['i_items'] + 1), array('pk_i_id' => $user['pk_i_id']));
 				}
 			}
 			osc_run_hook('activate_item', $id);
-			CategoryStats::newInstance()->increaseNumItems($item[0]['fk_i_category_id']);
+			CategoryClassLoader::getInstance()->getClassInstance( 'Stats' )->increaseNumItems($item[0]['fk_i_category_id']);
 			return $result;
 		}
 		else
@@ -383,7 +383,7 @@ class ItemActions
 			osc_run_hook('deactivate_item', $id);
 			if ($item['b_enabled'] == 1) 
 			{
-				CategoryStats::newInstance()->decreaseNumItems($item['fk_i_category_id']);
+				CategoryClassLoader::getInstance()->getClassInstance( 'Stats' )->decreaseNumItems($item['fk_i_category_id']);
 			}
 			return true;
 		}
@@ -398,7 +398,7 @@ class ItemActions
 			osc_run_hook('enable_item', $id);
 			if ($item['b_active'] == 1) 
 			{
-				CategoryStats::newInstance()->increaseNumItems($item['fk_i_category_id']);
+				CategoryClassLoader::getInstance()->getClassInstance( 'Stats' )->increaseNumItems($item['fk_i_category_id']);
 			}
 			return true;
 		}
@@ -413,7 +413,7 @@ class ItemActions
 			osc_run_hook('disable_item', $id);
 			if ($item['b_active'] == 1) 
 			{
-				CategoryStats::newInstance()->decreaseNumItems($item['fk_i_category_id']);
+				CategoryClassLoader::getInstance()->getClassInstance( 'Stats' )->decreaseNumItems($item['fk_i_category_id']);
 			}
 			return true;
 		}
@@ -489,7 +489,7 @@ class ItemActions
 			$column = 'i_num_expired';
 			break;
 		}
-		ItemStats::newInstance()->increase($column, $id);
+		ItemClassLoader::getInstance()->getClassInstance( 'Stats' )->increase($column, $id);
 	}
 	public function send_friend() 
 	{
@@ -573,7 +573,7 @@ class ItemActions
 		}
 		else
 		{
-			$user = User::newInstance()->findByPrimaryKey($userId);
+			$user = ClassLoader::getInstance()->getClassInstance( 'Model_User' )->findByPrimaryKey($userId);
 			$num_comments = $user['i_comments'];
 		}
 		if ($num_moderate_comments == - 1 || ($num_moderate_comments != 0 && $num_comments >= $num_moderate_comments)) 
@@ -607,10 +607,10 @@ class ItemActions
 			$commentID = $mComments->dao->insertedId();
 			if ($status_num == 2 && $userId != null) 
 			{ // COMMENT IS ACTIVE
-				$user = User::newInstance()->findByPrimaryKey($userId);
+				$user = ClassLoader::getInstance()->getClassInstance( 'Model_User' )->findByPrimaryKey($userId);
 				if ($user) 
 				{
-					User::newInstance()->update(array('i_comments' => $user['i_comments'] + 1), array('pk_i_id' => $user['pk_i_id']));
+					ClassLoader::getInstance()->getClassInstance( 'Model_User' )->update(array('i_comments' => $user['i_comments'] + 1), array('pk_i_id' => $user['pk_i_id']));
 				}
 			}
 			//Notify admin
@@ -726,7 +726,7 @@ class ItemActions
 						}
 						else
 						{ // USER IS LOGGED, NEED TO VALIDATE, CHECK NUMBER OF PREVIOUS ITEMS
-							$user = User::newInstance()->findByPrimaryKey(osc_logged_user_id());
+							$user = ClassLoader::getInstance()->getClassInstance( 'Model_User' )->findByPrimaryKey(osc_logged_user_id());
 							if ($user['i_items'] < osc_moderate_items()) 
 							{
 								$active = 'INACTIVE';
@@ -756,7 +756,7 @@ class ItemActions
 			}
 			if ($userId != null) 
 			{
-				$data = User::newInstance()->findByPrimaryKey($userId);
+				$data = ClassLoader::getInstance()->getClassInstance( 'Model_User' )->findByPrimaryKey($userId);
 				$aItem['contactName'] = $data['s_name'];
 				$aItem['contactEmail'] = $data['s_email'];
 				Params::setParam('contactName', $data['s_name']);
@@ -777,7 +777,7 @@ class ItemActions
 			$userId = Params::getParam('userId');
 			if ($userId != null) 
 			{
-				$data = User::newInstance()->findByPrimaryKey($userId);
+				$data = ClassLoader::getInstance()->getClassInstance( 'Model_User' )->findByPrimaryKey($userId);
 				$aItem['contactName'] = $data['s_name'];
 				$aItem['contactEmail'] = $data['s_email'];
 				Params::setParam('contactName', $data['s_name']);
@@ -807,7 +807,7 @@ class ItemActions
 		$aItem['photos'] = Params::getFiles('photos');
 		// check params
 		// ---------
-		$country = Country::newInstance()->findByCode($aItem['countryId']);
+		$country = ClassLoader::getInstance()->getClassInstance( 'Model_Country' )->findByCode($aItem['countryId']);
 		if (count($country) > 0) 
 		{
 			$countryId = $country['pk_c_code'];

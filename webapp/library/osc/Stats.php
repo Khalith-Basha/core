@@ -25,7 +25,7 @@ class Stats
 	{
 		$conn = ClassLoader::getInstance()->getClassInstance( 'Database_Connection' );
 		$data = $conn->getOsclassDb();
-		$this->conn = new DBCommandClass($data);
+		$this->conn = ClassLoader::getInstance()->getClassInstance( 'Database_Command', true, array( &$data ) );
 	}
 	public function new_users_count($from_date, $date = 'day') 
 	{
@@ -118,22 +118,22 @@ class Stats
 	{
 		if ($date == 'week') 
 		{
-			$this->conn->select('WEEK(pub_date) as d_date, COUNT(pk_i_id) as num');
-			$this->conn->groupBy('WEEK(pub_date)');
+			$this->conn->select('WEEK(dt_pub_date) as d_date, COUNT(pk_i_id) as num');
+			$this->conn->groupBy('WEEK(dt_pub_date)');
 		}
 		else if ($date == 'month') 
 		{
-			$this->conn->select('MONTH(pub_date) as d_date, COUNT(pk_i_id) as num');
-			$this->conn->groupBy('MONTH(pub_date)');
+			$this->conn->select('MONTH(dt_pub_date) as d_date, COUNT(pk_i_id) as num');
+			$this->conn->groupBy('MONTH(dt_pub_date)');
 		}
 		else
 		{
-			$this->conn->select('DAY(pub_date) as d_date, COUNT(pk_i_id) as num');
-			$this->conn->groupBy('DAY(pub_date)');
+			$this->conn->select('DAY(dt_pub_date) as d_date, COUNT(pk_i_id) as num');
+			$this->conn->groupBy('DAY(dt_pub_date)');
 		}
 		$this->conn->from(DB_TABLE_PREFIX . "t_item_comment");
-		$this->conn->where("pub_date > '$from_date'");
-		$this->conn->orderBy('pub_date', 'DESC');
+		$this->conn->where("dt_pub_date > '$from_date'");
+		$this->conn->orderBy('dt_pub_date', 'DESC');
 		$result = $this->conn->get();
 		return $result->result();
 	}
@@ -142,7 +142,7 @@ class Stats
 		$this->conn->select('i.*, c.*');
 		$this->conn->from(DB_TABLE_PREFIX . 'item i, ' . DB_TABLE_PREFIX . 't_item_comment c');
 		$this->conn->where('c.fk_i_item_id = i.pk_i_id');
-		$this->conn->orderBy('c.pub_date', 'DESC');
+		$this->conn->orderBy('c.dt_pub_date', 'DESC');
 		$this->conn->limit('5');
 		$result = $this->conn->get();
 		return $result->result();

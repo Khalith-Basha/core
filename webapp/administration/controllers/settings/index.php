@@ -264,7 +264,7 @@ class CAdminSettings extends AdminSecBaseModel
 				break;
 			}
 			$aCountries = $mCountries->listAllAdmin();
-			$this->_exportVariableToView('aCountries', $aCountries);
+			$this->getView()->_exportVariableToView('aCountries', $aCountries);
 			$this->doView('settings/locations.php');
 			break;
 
@@ -291,7 +291,7 @@ class CAdminSettings extends AdminSecBaseModel
 					$this->redirectTo(osc_admin_base_url(true) . '?page=settings&action=currencies');
 				}
 				$fields = array('pk_c_code' => $currencyCode, 's_name' => $currencyName, 's_description' => $currencyDescription);
-				$isInserted = Currency::newInstance()->insert($fields);
+				$isInserted = ClassLoader::getInstance()->getClassInstance( 'Model_Currency' )->insert($fields);
 				if ($isInserted) 
 				{
 					osc_add_flash_ok_message(_m('New currency has been added'), 'admin');
@@ -312,13 +312,13 @@ class CAdminSettings extends AdminSecBaseModel
 					osc_add_flash_error_message(_m('Error: the currency code is not in the correct format'), 'admin');
 					$this->redirectTo(osc_admin_base_url(true) . '?page=settings&action=currencies');
 				}
-				$aCurrency = Currency::newInstance()->findByPrimaryKey($currencyCode);
+				$aCurrency = ClassLoader::getInstance()->getClassInstance( 'Model_Currency' )->findByPrimaryKey($currencyCode);
 				if (count($aCurrency) == 0) 
 				{
 					osc_add_flash_error_message(_m('Error: the currency doesn\'t exist'), 'admin');
 					$this->redirectTo(osc_admin_base_url(true) . '?page=settings&action=currencies');
 				}
-				$this->_exportVariableToView('aCurrency', $aCurrency);
+				$this->getView()->_exportVariableToView('aCurrency', $aCurrency);
 				$this->doView('settings/edit_currency.php');
 				break;
 
@@ -336,7 +336,7 @@ class CAdminSettings extends AdminSecBaseModel
 					osc_add_flash_error_message(_m('Error: the currency code is not in the correct format'), 'admin');
 					$this->redirectTo(osc_admin_base_url(true) . '?page=settings&action=currencies');
 				}
-				$iUpdated = Currency::newInstance()->update(array('s_name' => $currencyName, 's_description' => $currencyDescription), array('pk_c_code' => $currencyCode));
+				$iUpdated = ClassLoader::getInstance()->getClassInstance( 'Model_Currency' )->update(array('s_name' => $currencyName, 's_description' => $currencyDescription), array('pk_c_code' => $currencyCode));
 				if ($iUpdated == 1) 
 				{
 					osc_add_flash_ok_message(_m('Currency has been updated'), 'admin');
@@ -357,7 +357,7 @@ class CAdminSettings extends AdminSecBaseModel
 				{
 					if (preg_match('/.{1,3}/', $currencyCode) && $currencyCode != osc_currency()) 
 					{
-						$rowChanged+= Currency::newInstance()->delete(array('pk_c_code' => $currencyCode));
+						$rowChanged+= ClassLoader::getInstance()->getClassInstance( 'Model_Currency' )->delete(array('pk_c_code' => $currencyCode));
 					}
 					if ($currencyCode == osc_currency()) 
 					{
@@ -391,8 +391,8 @@ class CAdminSettings extends AdminSecBaseModel
 				break;
 
 			default: // calling the currencies view
-				$aCurrencies = Currency::newInstance()->listAll();
-				$this->_exportVariableToView('aCurrencies', $aCurrencies);
+				$aCurrencies = ClassLoader::getInstance()->getClassInstance( 'Model_Currency' )->listAll();
+				$this->getView()->_exportVariableToView('aCurrencies', $aCurrencies);
 				$this->doView('settings/currencies.php');
 				break;
 			}
@@ -472,10 +472,10 @@ class CAdminSettings extends AdminSecBaseModel
 			break;
 
 		default: // calling the view
-			$aLanguages = Locale::newInstance()->listAllEnabled();
-			$aCurrencies = Currency::newInstance()->listAll();
-			$this->_exportVariableToView('aLanguages', $aLanguages);
-			$this->_exportVariableToView('aCurrencies', $aCurrencies);
+			$aLanguages = ClassLoader::getInstance()->getClassInstance( 'Model_Locale' )->listAllEnabled();
+			$aCurrencies = ClassLoader::getInstance()->getClassInstance( 'Model_Currency' )->listAll();
+			$this->getView()->_exportVariableToView('aLanguages', $aLanguages);
+			$this->getView()->_exportVariableToView('aCurrencies', $aCurrencies);
 			$this->doView('settings/index.php');
 			break;
 		}

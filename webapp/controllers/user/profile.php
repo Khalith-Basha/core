@@ -29,8 +29,8 @@ class CWebUser extends WebSecBaseModel
 
 	public function doGet( HttpRequest $req, HttpResponse $res ) 
 	{
-		$user = User::newInstance()->findByPrimaryKey(Session::newInstance()->_get('userId'));
-		$aCountries = Country::newInstance()->listAll();
+		$user = ClassLoader::getInstance()->getClassInstance( 'Model_User' )->findByPrimaryKey(Session::newInstance()->_get('userId'));
+		$aCountries = ClassLoader::getInstance()->getClassInstance( 'Model_Country' )->listAll();
 		$aRegions = array();
 		if ($user['fk_c_country_code'] != '') 
 		{
@@ -50,10 +50,10 @@ class CWebUser extends WebSecBaseModel
 			$aCities = City::newInstance()->findByRegion($aRegions[0]['pk_i_id']);
 		}
 		//calling the view...
-		$this->_exportVariableToView('countries', $aCountries);
-		$this->_exportVariableToView('regions', $aRegions);
-		$this->_exportVariableToView('cities', $aCities);
-		$this->_exportVariableToView('user', $user);
+		$this->getView()->_exportVariableToView('countries', $aCountries);
+		$this->getView()->_exportVariableToView('regions', $aRegions);
+		$this->getView()->_exportVariableToView('cities', $aCities);
+		$this->getView()->_exportVariableToView('user', $user);
 		$this->doView('user/profile.php');
 	}
 

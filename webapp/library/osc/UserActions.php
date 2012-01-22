@@ -22,7 +22,7 @@ Class UserActions
 	function __construct($is_admin) 
 	{
 		$this->is_admin = $is_admin;
-		$this->manager = User::newInstance();
+		$this->manager = ClassLoader::getInstance()->getClassInstance( 'Model_User' );
 	}
 
 	public function add() 
@@ -73,7 +73,7 @@ Class UserActions
 			osc_run_hook('hook_email_user_validation', $user, $input);
 			return 1;
 		}
-		User::newInstance()->update(array('b_active' => '1'), array('pk_i_id' => $userId));
+		ClassLoader::getInstance()->getClassInstance( 'Model_User' )->update(array('b_active' => '1'), array('pk_i_id' => $userId));
 		return 2;
 	}
 	//edit...
@@ -133,7 +133,7 @@ Class UserActions
 	}
 	function recover_password() 
 	{
-		$user = User::newInstance()->findByEmail(Params::getParam('s_email'));
+		$user = ClassLoader::getInstance()->getClassInstance( 'Model_User' )->findByEmail(Params::getParam('s_email'));
 		Session::newInstance()->_set('recover_time', time());
 		if ((osc_recaptcha_private_key() != '') && Params::existParam("recaptcha_challenge_field")) 
 		{
@@ -149,7 +149,7 @@ Class UserActions
 		}
 		$code = osc_genRandomPassword(30);
 		$date = date('Y-m-d H:i:s');
-		User::newInstance()->update(array('s_pass_code' => $code, 's_pass_date' => $date, 's_pass_ip' => $_SERVER['REMOTE_ADDR']), array('pk_i_id' => $user['pk_i_id']));
+		ClassLoader::getInstance()->getClassInstance( 'Model_User' )->update(array('s_pass_code' => $code, 's_pass_date' => $date, 's_pass_ip' => $_SERVER['REMOTE_ADDR']), array('pk_i_id' => $user['pk_i_id']));
 		$password_url = osc_forgot_user_password_confirm_url($user['pk_i_id'], $code);
 		osc_run_hook('hook_email_user_forgot_password', $user, $password_url);
 		return 0;
@@ -194,7 +194,7 @@ Class UserActions
 		$input['s_phone_land'] = Params::getParam('s_phone_land');
 		$input['s_phone_mobile'] = Params::getParam('s_phone_mobile');
 		//locations...
-		$country = Country::newInstance()->findByCode(Params::getParam('countryId'));
+		$country = ClassLoader::getInstance()->getClassInstance( 'Model_Country' )->findByCode(Params::getParam('countryId'));
 		if (count($country) > 0) 
 		{
 			$countryId = $country['pk_c_code'];
@@ -330,7 +330,7 @@ Class UserActions
 	}
 	public function bootstrap_login($user_id) 
 	{
-		$user = User::newInstance()->findByPrimaryKey($user_id);
+		$user = ClassLoader::getInstance()->getClassInstance( 'Model_User' )->findByPrimaryKey($user_id);
 		if (!$user) 
 		{
 			return 0;

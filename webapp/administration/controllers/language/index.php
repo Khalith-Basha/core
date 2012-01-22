@@ -25,7 +25,7 @@ class CAdminLanguage extends AdminSecBaseModel
 	{
 		parent::__construct();
 		//specific things for this class
-		$this->localeManager = Locale::newInstance();
+		$this->localeManager = ClassLoader::getInstance()->getClassInstance( 'Model_Locale' );
 	}
 	function doModel() 
 	{
@@ -44,7 +44,7 @@ class CAdminLanguage extends AdminSecBaseModel
 				osc_add_flash_error_message(_m('Language id doesn\'t exist'), 'admin');
 				$this->redirectTo(osc_admin_base_url(true) . '?page=language');
 			}
-			$this->_exportVariableToView("aLocale", $aLocale);
+			$this->getView()->_exportVariableToView("aLocale", $aLocale);
 			$this->doView('languages/frm.php');
 			break;
 
@@ -250,8 +250,8 @@ class CAdminLanguage extends AdminSecBaseModel
 			break;
 
 		default:
-			$locales = Locale::newInstance()->listAll();
-			$this->_exportVariableToView("locales", $locales);
+			$locales = ClassLoader::getInstance()->getClassInstance( 'Model_Locale' )->listAll();
+			$this->getView()->_exportVariableToView("locales", $locales);
 			$this->doView('languages/index.php');
 			break;
 		}
