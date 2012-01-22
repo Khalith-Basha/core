@@ -36,7 +36,7 @@ class CAdminEmail extends AdministrationController
 			{
 				$this->redirectTo(osc_admin_base_url(true) . "?page=emails");
 			}
-			$this->getView()->_exportVariableToView("email", $this->emailManager->findByPrimaryKey(Params::getParam("id")));
+			$this->getView()->assign("email", $this->emailManager->findByPrimaryKey(Params::getParam("id")));
 			$this->doView("emails/frm.php");
 			break;
 

@@ -59,11 +59,11 @@ class CAdminUser extends AdministrationController
 			{
 				$aCities = City::newInstance()->findByRegion($aRegions[0]['pk_i_id']);
 			}
-			$this->getView()->_exportVariableToView("user", $aUser);
-			$this->getView()->_exportVariableToView("countries", $aCountries);
-			$this->getView()->_exportVariableToView("regions", $aRegions);
-			$this->getView()->_exportVariableToView("cities", $aCities);
-			$this->getView()->_exportVariableToView("locales", ClassLoader::getInstance()->getClassInstance( 'Model_Locale' )->listAllEnabled());
+			$this->getView()->assign("user", $aUser);
+			$this->getView()->assign("countries", $aCountries);
+			$this->getView()->assign("regions", $aRegions);
+			$this->getView()->assign("cities", $aCities);
+			$this->getView()->assign("locales", ClassLoader::getInstance()->getClassInstance( 'Model_Locale' )->listAllEnabled());
 			$this->doView("users/frm.php");
 			break;
 
@@ -248,7 +248,7 @@ class CAdminUser extends AdministrationController
 
 		default: // manage users view
 			$aUsers = $this->userManager->listAll();
-			$this->getView()->_exportVariableToView("users", $aUsers);
+			$this->getView()->assign("users", $aUsers);
 			$this->doView("users/index.php");
 			break;
 		}

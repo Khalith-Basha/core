@@ -69,7 +69,7 @@ function osc_get_locales()
 	if (!$view->_exists('locales')) 
 	{
 		$locale = $classLoader->getClassInstance( 'Model_Locale' )->listAllEnabled();
-		$view->_exportVariableToView("locales", $locale);
+		$view->assign("locales", $locale);
 	}
 	else
 	{
@@ -108,7 +108,7 @@ function osc_count_web_enabled_locales()
 	$view = $classLoader->getClassInstance( 'View' );
 	if (!$view->_exists('locales')) 
 	{
-		$view->_exportVariableToView('locales', $classLoader->getClassInstance( 'Model_Locale' )->listAllEnabled());
+		$view->assign('locales', $classLoader->getClassInstance( 'Model_Locale' )->listAllEnabled());
 	}
 	return osc_priv_count_locales();
 }
@@ -123,7 +123,7 @@ function osc_has_web_enabled_locales()
 	$view = $classLoader->getClassInstance( 'View' );
 	if (!$view->_exists('locales')) 
 	{
-		$view->_exportVariableToView('locales', $classLoader->getClassInstance( 'Model_Locale' )->listAllEnabled());
+		$view->assign('locales', $classLoader->getClassInstance( 'Model_Locale' )->listAllEnabled());
 	}
 	return $view->_next('locales');
 }
@@ -240,7 +240,7 @@ function osc_get_current_user_locale()
 {
 	$classLoader = ClassLoader::getInstance();
 	$view = $classLoader->getClassInstance( 'View' );
-	$view->_exportVariableToView('locale', $classLoader->getClassInstance( 'Model_Locale' )->findByPrimaryKey(osc_current_user_locale()));
+	$view->assign('locale', $classLoader->getClassInstance( 'Model_Locale' )->findByPrimaryKey(osc_current_user_locale()));
 }
 /**
  * Get the actual locale of the user.

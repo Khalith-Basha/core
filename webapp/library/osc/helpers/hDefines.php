@@ -30,11 +30,13 @@
  * @param boolean $with_index true if index.php in the url is needed
  * @return string
  */
-function osc_base_url($with_index = false) 
+function osc_base_url( $withIndex = false ) 
 {
-	$path = WEB_PATH;
-	if ($with_index) $path.= "/index.php";
-	return ($path);
+	$generalConfig = ClassLoader::getInstance()->getClassInstance( 'Config' )->getConfig( 'general' );
+	$path = $generalConfig['webUrl'];
+	if( $withIndex )
+		$path .= '/index.php';
+	return $path;
 }
 /**
  * Gets the root url of administration for your installation
@@ -42,12 +44,13 @@ function osc_base_url($with_index = false)
  * @param boolean $with_index true if index.php in the url is needed
  * @return string
  */
-function osc_admin_base_url($with_index = false) 
+function osc_admin_base_url( $withIndex = false )
 {
-	$path = WEB_PATH;
-	$path.= "/administration";
-	if ($with_index) $path.= "/index.php";
-	return ($path);
+	$generalConfig = ClassLoader::getInstance()->getClassInstance( 'Config' )->getConfig( 'general' );
+	$path = $generalConfig['webUrl'] . '/administration';
+	if( $withIndex )
+		$path .= '/index.php';
+	return $path;
 }
 /**
  * Gets the root path for your installation
@@ -277,6 +280,20 @@ function osc_contact_url()
 	}
 	return $path;
 }
+function osc_item_url()
+{
+	$classLoader = ClassLoader::getInstance();
+	$items = $classLoader->getClassInstance( 'HtmlView' )->_get('items');
+	if( count( $items ) > 0 )
+	{
+		$itemUrl = $classLoader->getClassInstance( 'Url_Item' )->getDetailsUrl( $items[0] );
+		return $itemUrl;
+	}
+
+	return null;
+}
+
+
 /**
  * Create automatically the url to post an item in a category
  *
@@ -912,7 +929,7 @@ function osc_get_currencies()
 {
 	if (!ClassLoader::getInstance()->getClassInstance( 'View' )->_exists('currencies')) 
 	{
-		ClassLoader::getInstance()->getClassInstance( 'View' )->_exportVariableToView('currencies', ClassLoader::getInstance()->getClassInstance( 'Model_Currency' )->listAll());
+		ClassLoader::getInstance()->getClassInstance( 'View' )->assign('currencies', ClassLoader::getInstance()->getClassInstance( 'Model_Currency' )->listAll());
 	}
 	return ClassLoader::getInstance()->getClassInstance( 'View' )->_get('currencies');
 }

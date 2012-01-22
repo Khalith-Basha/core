@@ -20,22 +20,22 @@
 */
 class Form_Contact extends Form
 {
-	static public function primary_input_hidden() 
+	public function primary_input_hidden() 
 	{
 		parent::generic_input_hidden("id", osc_item_id());
 		return true;
 	}
-	static public function page_hidden() 
+	public function page_hidden() 
 	{
 		parent::generic_input_hidden("page", 'item');
 		return true;
 	}
-	static public function action_hidden() 
+	public function action_hidden() 
 	{
 		parent::generic_input_hidden("action", 'contact');
 		return true;
 	}
-	static public function your_name() 
+	public function your_name() 
 	{
 		$session = ClassLoader::getInstance()->getClassInstance( 'Session' );
 		if ($session->_getForm("yourName") != "") 
@@ -49,7 +49,7 @@ class Form_Contact extends Form
 		}
 		return true;
 	}
-	static public function your_email() 
+	public function your_email() 
 	{
 		$session = ClassLoader::getInstance()->getClassInstance( 'Session' );
 		if ($session->_getForm("yourEmail") != "") 
@@ -63,7 +63,7 @@ class Form_Contact extends Form
 		}
 		return true;
 	}
-	static public function your_phone_number() 
+	public function your_phone_number() 
 	{
 		$session = ClassLoader::getInstance()->getClassInstance( 'Session' );
 		if ($session->_getForm("phoneNumber") != "") 
@@ -77,7 +77,7 @@ class Form_Contact extends Form
 		}
 		return true;
 	}
-	static public function the_subject() 
+	public function the_subject() 
 	{
 		$session = ClassLoader::getInstance()->getClassInstance( 'Session' );
 		if ($session->_getForm("subject") != "") 
@@ -91,7 +91,7 @@ class Form_Contact extends Form
 		}
 		return true;
 	}
-	static public function your_message() 
+	public function your_message() 
 	{
 		$session = ClassLoader::getInstance()->getClassInstance( 'Session' );
 		if ($session->_getForm("message_body") != "") 
@@ -105,45 +105,9 @@ class Form_Contact extends Form
 		}
 		return true;
 	}
-	static public function your_attachment() 
+	public function your_attachment() 
 	{
 		echo '<input type="file" name="attachment" />';
 	}
-	static public function js_validation() 
-	{
-?>
-<script type="text/javascript">
-    $(document).ready(function(){
-        // Code for form validation
-        $("form[name=contact]").validate({
-            rules: {
-                message: {
-                    required: true,
-                    minlength: 1
-                },
-                yourEmail: {
-                    required: true,
-                    email: true
-                }
-            },
-            messages: {
-                yourEmail: {
-                    required: "<?php _e("Email: this field is required"); ?>.",
-                    email: "<?php _e("Invalid email address"); ?>."
-                },
-                message: {
-                    required: "<?php _e("Message: this field is required"); ?>.",
-                    minlength: "<?php _e("Message: this field is required"); ?>."
-                }
-            },
-            errorLabelContainer: "#error_list",
-            wrapper: "li",
-            invalidHandler: function(form, validator) {
-                $('html,body').animate({ scrollTop: $('h1').offset().top }, { duration: 250, easing: 'swing'});
-            }
-        });
-    });
-</script>
-<?php
-	}
 }
+

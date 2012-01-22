@@ -65,12 +65,12 @@ class CAdminStats extends AdministrationController
 				}
 			}
 			$item = ClassLoader::getInstance()->getClassInstance( 'Stats' )->items_by_user();
-			$this->getView()->_exportVariableToView("users_by_country", ClassLoader::getInstance()->getClassInstance( 'Stats' )->users_by_country());
-			$this->getView()->_exportVariableToView("users_by_region", ClassLoader::getInstance()->getClassInstance( 'Stats' )->users_by_region());
-			$this->getView()->_exportVariableToView("item", (!isset($item[0]['avg']) || !is_numeric($item[0]['avg'])) ? 0 : $item[0]['avg']);
-			$this->getView()->_exportVariableToView("latest_users", ClassLoader::getInstance()->getClassInstance( 'Stats' )->latest_users());
-			$this->getView()->_exportVariableToView("users", $users);
-			$this->getView()->_exportVariableToView("max", $max);
+			$this->getView()->assign("users_by_country", ClassLoader::getInstance()->getClassInstance( 'Stats' )->users_by_country());
+			$this->getView()->assign("users_by_region", ClassLoader::getInstance()->getClassInstance( 'Stats' )->users_by_region());
+			$this->getView()->assign("item", (!isset($item[0]['avg']) || !is_numeric($item[0]['avg'])) ? 0 : $item[0]['avg']);
+			$this->getView()->assign("latest_users", ClassLoader::getInstance()->getClassInstance( 'Stats' )->latest_users());
+			$this->getView()->assign("users", $users);
+			$this->getView()->assign("max", $max);
 			$this->doView("stats/users.php");
 	}
 }

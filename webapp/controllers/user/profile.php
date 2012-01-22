@@ -50,10 +50,10 @@ class CWebUser extends WebSecBaseModel
 			$aCities = City::newInstance()->findByRegion($aRegions[0]['pk_i_id']);
 		}
 		//calling the view...
-		$this->getView()->_exportVariableToView('countries', $aCountries);
-		$this->getView()->_exportVariableToView('regions', $aRegions);
-		$this->getView()->_exportVariableToView('cities', $aCities);
-		$this->getView()->_exportVariableToView('user', $user);
+		$this->getView()->assign('countries', $aCountries);
+		$this->getView()->assign('regions', $aRegions);
+		$this->getView()->assign('cities', $aCities);
+		$this->getView()->assign('user', $user);
 		$this->doView('user/profile.php');
 	}
 

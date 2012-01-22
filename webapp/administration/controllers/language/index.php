@@ -44,7 +44,7 @@ class CAdminLanguage extends AdministrationController
 				osc_add_flash_error_message(_m('Language id doesn\'t exist'), 'admin');
 				$this->redirectTo(osc_admin_base_url(true) . '?page=language');
 			}
-			$this->getView()->_exportVariableToView("aLocale", $aLocale);
+			$this->getView()->assign("aLocale", $aLocale);
 			$this->doView('languages/frm.php');
 			break;
 
@@ -251,7 +251,7 @@ class CAdminLanguage extends AdministrationController
 
 		default:
 			$locales = ClassLoader::getInstance()->getClassInstance( 'Model_Locale' )->listAll();
-			$this->getView()->_exportVariableToView("locales", $locales);
+			$this->getView()->assign("locales", $locales);
 			$this->doView('languages/index.php');
 			break;
 		}

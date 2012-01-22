@@ -27,7 +27,13 @@ class Services_Cache_Memcached implements CacheService
 	public function __construct() 
 	{
 		$this->service = new Memcached;
-		$this->service->addServer('127.0.0.1', 11211);
+
+		$config = ClassLoader::getInstance()->getClassInstance( 'Config' );
+		$memcachedConfig = $config->getConfig( 'memcached' );
+		foreach( $memcachedConfig['servers'] as $server )
+		{
+			$this->service->addServer( $server['host'], $server['ip'] );
+		}
 	}
 	public function read($key) 
 	{

@@ -20,10 +20,7 @@
 */
 class Form_SendFriend extends Form
 {
-	/*static public function primary_input_hidden($page) {
-	           parent::generic_input_hidden("id", $page["pk_i_id"]) ;
-	       }*/
-	static public function your_name() 
+	public function your_name() 
 	{
 		if (ClassLoader::getInstance()->getClassInstance( 'Session' )->_getForm("yourName") != "") 
 		{
@@ -36,7 +33,7 @@ class Form_SendFriend extends Form
 		}
 		return true;
 	}
-	static public function your_email() 
+	public function your_email() 
 	{
 		if (ClassLoader::getInstance()->getClassInstance( 'Session' )->_getForm("yourEmail") != "") 
 		{
@@ -49,7 +46,7 @@ class Form_SendFriend extends Form
 		}
 		return true;
 	}
-	static public function friend_name() 
+	public function friend_name() 
 	{
 		if (ClassLoader::getInstance()->getClassInstance( 'Session' )->_getForm("friendName") != "") 
 		{
@@ -62,7 +59,7 @@ class Form_SendFriend extends Form
 		}
 		return true;
 	}
-	static public function friend_email() 
+	public function friend_email() 
 	{
 		if (ClassLoader::getInstance()->getClassInstance( 'Session' )->_getForm("friendEmail") != "") 
 		{
@@ -75,7 +72,7 @@ class Form_SendFriend extends Form
 		}
 		return true;
 	}
-	static public function your_message() 
+	public function your_message() 
 	{
 		if (ClassLoader::getInstance()->getClassInstance( 'Session' )->_getForm("message_body") != "") 
 		{
@@ -88,7 +85,7 @@ class Form_SendFriend extends Form
 		}
 		return true;
 	}
-	static public function js_validation() 
+	public function js_validation() 
 	{
 ?>
 <script type="text/javascript">

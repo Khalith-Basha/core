@@ -80,7 +80,7 @@ class DAO
 		$conn = ClassLoader::getInstance()->getClassInstance( 'Database_Connection' ); 
 		$data = $conn->getOsclassDb();
 		$this->dao = new Database_Command($data);
-		$this->tablePrefix = DB_TABLE_PREFIX;
+		$this->tablePrefix = $conn->getTablePrefix();
 	}
 	/**
 	 * Get the result match of the primary key passed by parameter

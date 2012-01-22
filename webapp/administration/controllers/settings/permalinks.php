@@ -24,8 +24,8 @@ class CAdminSettings extends AdministrationController
 	{
 			$htaccess = Params::getParam('htaccess_status');
 			$file = Params::getParam('file_status');
-			$this->getView()->_exportVariableToView('htaccess', $htaccess);
-			$this->getView()->_exportVariableToView('file', $file);
+			$this->getView()->assign('htaccess', $htaccess);
+			$this->getView()->assign('file', $file);
 			$this->doView('settings/permalinks.php');
 	}
 

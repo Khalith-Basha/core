@@ -39,18 +39,18 @@ class CWebItem extends Controller
 	function doModel() 
 	{
 		$locales = ClassLoader::getInstance()->getClassInstance( 'Model_Locale' )->listAllEnabled();
-		$this->getView()->_exportVariableToView('locales', $locales);
+		$this->getView()->assign('locales', $locales);
 		switch ($this->action) 
 		{
 		case 'send_friend':
 			$item = $this->itemManager->findByPrimaryKey(Params::getParam('id'));
-			$this->getView()->_exportVariableToView('item', $item);
+			$this->getView()->assign('item', $item);
 			$this->doView('item/send-friend.php');
 			break;
 
 		case 'send_friend_post':
 			$item = $this->itemManager->findByPrimaryKey(Params::getParam('id'));
-			$this->getView()->_exportVariableToView('item', $item);
+			$this->getView()->assign('item', $item);
 			$this->getSession()->_setForm("yourEmail", Params::getParam('yourEmail'));
 			$this->getSession()->_setForm("yourName", Params::getParam('yourName'));
 			$this->getSession()->_setForm("friendName", Params::getParam('friendName'));

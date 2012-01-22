@@ -164,8 +164,8 @@ class CAdminAjax extends AdministrationController
 			break;
 
 		case 'category_edit_iframe':
-			$this->getView()->_exportVariableToView('category', Category::newInstance()->findByPrimaryKey(Params::getParam("id")));
-			$this->getView()->_exportVariableToView('languages', ClassLoader::getInstance()->getClassInstance( 'Model_Locale' )->listAllEnabled());
+			$this->getView()->assign('category', Category::newInstance()->findByPrimaryKey(Params::getParam("id")));
+			$this->getView()->assign('languages', ClassLoader::getInstance()->getClassInstance( 'Model_Locale' )->listAllEnabled());
 			$this->doView("categories/iframe.php");
 			break;
 
@@ -175,9 +175,9 @@ class CAdminAjax extends AdministrationController
 			{
 				$selected = array();
 			};
-			$this->getView()->_exportVariableToView("selected", $selected);
-			$this->getView()->_exportVariableToView("field", Field::newInstance()->findByPrimaryKey(Params::getParam("id")));
-			$this->getView()->_exportVariableToView("categories", Category::newInstance()->toTreeAll());
+			$this->getView()->assign("selected", $selected);
+			$this->getView()->assign("field", Field::newInstance()->findByPrimaryKey(Params::getParam("id")));
+			$this->getView()->assign("categories", Category::newInstance()->toTreeAll());
 			$this->doView("fields/iframe.php");
 			break;
 

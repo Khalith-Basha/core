@@ -35,8 +35,8 @@ class CWebUser extends WebSecBaseModel
 			$max_items = (Params::getParam('max_items') != '') ? Params::getParam('max_items') : 5;
 			$aItems = ClassLoader::getInstance()->getClassInstance( 'Model_Item' )->findByUserIDEnabled($this->getSession()->_get('userId'), 0, $max_items);
 			//calling the view...
-			$this->getView()->_exportVariableToView('items', $aItems);
-			$this->getView()->_exportVariableToView('max_items', $max_items);
+			$this->getView()->assign('items', $aItems);
+			$this->getView()->assign('max_items', $max_items);
 			$this->doView('user/index.php');
 			break;
 

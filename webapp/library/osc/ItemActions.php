@@ -493,13 +493,14 @@ class ItemActions
 	}
 	public function send_friend() 
 	{
+		$classLoader = ClassLoader::getInstance();
 		// get data for this function
 		$aItem = $this->prepareDataForFunction('send_friend');
 		$item = $aItem['item'];
 		$s_title = $aItem['s_title'];
-		View::newInstance()->_exportVariableToView('item', $item);
+		$classLoader->getClassInstance( 'HtmlView' )->assign('item', $item);
 		osc_run_hook('hook_email_send_friend', $aItem);
-		$item_url = osc_item_url();
+		$item_url = $classLoader->getClassInstance( 'Url_Item' )->getDetailsUrl( $item );
 		$item_url = '<a href="' . $item_url . '" >' . $item_url . '</a>';
 		Params::setParam('item_url', $item_url);
 		osc_add_flash_ok_message(sprintf(_m('We just send your message to %s'), $aItem['friendName']));
@@ -536,6 +537,7 @@ class ItemActions
 	*/
 	public function add_comment() 
 	{
+		$classLoader = ClassLoader::getInstance();
 		$aItem = $this->prepareDataForFunction('add_comment');
 		$authorName = trim($aItem['authorName']);
 		$authorName = strip_tags($authorName);
@@ -548,22 +550,23 @@ class ItemActions
 		$userId = $aItem['userId'];
 		$status_num = - 1;
 		$item = $this->manager->findByPrimaryKey($itemId);
-		View::newInstance()->_exportVariableToView('item', $item);
-		$itemURL = osc_item_url();
+		$classLoader->getClassInstance( 'HtmlView' )->assign('item', $item);
+		$itemURL = $classLoader->getClassInstance( 'Url_Item' )->getDetailsUrl( $item );
 		$itemURL = '<a href="' . $itemURL . '" >' . $itemURL . '</a>';
+		$session = $classLoader->getClassInstance( 'Session' );
 		Params::setParam('itemURL', $itemURL);
 		if ($authorName == '' || !preg_match('|^.*?@.{2,}\..{2,3}$|', $authorEmail)) 
 		{
-			ClassLoader::getInstance()->getClassInstance( 'Session' )->_setForm('commentAuthorName', $authorName);
-			ClassLoader::getInstance()->getClassInstance( 'Session' )->_setForm('commentTitle', $title);
-			ClassLoader::getInstance()->getClassInstance( 'Session' )->_setForm('commentBody', $body);
+			$session->_setForm('commentAuthorName', $authorName);
+			$session->_setForm('commentTitle', $title);
+			$session->_setForm('commentBody', $body);
 			return 3;
 		}
 		if (($body == '')) 
 		{
-			ClassLoader::getInstance()->getClassInstance( 'Session' )->_setForm('commentAuthorName', $authorName);
-			ClassLoader::getInstance()->getClassInstance( 'Session' )->_setForm('commentAuthorEmail', $authorEmail);
-			ClassLoader::getInstance()->getClassInstance( 'Session' )->_setForm('commentTitle', $title);
+			$session->_setForm('commentAuthorName', $authorName);
+			$session->_setForm('commentAuthorEmail', $authorEmail);
+			$session->_setForm('commentTitle', $title);
 			return 4;
 		}
 		$num_moderate_comments = osc_moderate_comments();
@@ -601,7 +604,7 @@ class ItemActions
 			}
 		}
 		$mComments = ClassLoader::getInstance()->getClassInstance( 'Model_ItemComment' );
-		$aComment = array('pub_date' => date('Y-m-d H:i:s'), 'fk_i_item_id' => $itemId, 's_author_name' => $authorName, 's_author_email' => $authorEmail, 's_title' => $title, 's_body' => $body, 'b_active' => ($status == 'ACTIVE' ? 1 : 0), 'b_enabled' => 1, 'fk_i_user_id' => $userId);
+		$aComment = array('dt_pub_date' => date('Y-m-d H:i:s'), 'fk_i_item_id' => $itemId, 's_author_name' => $authorName, 's_author_email' => $authorEmail, 's_title' => $title, 's_body' => $body, 'b_active' => ($status == 'ACTIVE' ? 1 : 0), 'b_enabled' => 1, 'fk_i_user_id' => $userId);
 		if ($mComments->insert($aComment)) 
 		{
 			$commentID = $mComments->dao->insertedId();
@@ -640,7 +643,7 @@ class ItemActions
 		case 'send_friend':
 			$item = $this->manager->findByPrimaryKey(Params::getParam('id'));
 			$aItem['item'] = $item;
-			View::newInstance()->_exportVariableToView('item', $aItem['item']);
+			ClassLoader::getInstance()->getClassInstance( 'HtmlView' )->assign('item', $aItem['item']);
 			$aItem['yourName'] = Params::getParam('yourName');
 			$aItem['yourEmail'] = Params::getParam('yourEmail');
 			$aItem['friendName'] = Params::getParam('friendName');
@@ -652,7 +655,7 @@ class ItemActions
 		case 'contact':
 			$item = $this->manager->findByPrimaryKey(Params::getParam('id'));
 			$aItem['item'] = $item;
-			View::newInstance()->_exportVariableToView('item', $aItem['item']);
+			ClassLoader::getInstance()->getClassInstance( 'HtmlView' )->assign('item', $aItem['item']);
 			$aItem['id'] = Params::getParam('id');
 			$aItem['yourEmail'] = Params::getParam('yourEmail');
 			$aItem['yourName'] = Params::getParam('yourName');
@@ -663,7 +666,7 @@ class ItemActions
 		case 'add_comment':
 			$item = $this->manager->findByPrimaryKey(Params::getParam('id'));
 			$aItem['item'] = $item;
-			View::newInstance()->_exportVariableToView('item', $aItem['item']);
+			ClassLoader::getInstance()->getClassInstance( 'HtmlView' )->assign('item', $aItem['item']);
 			$aItem['authorName'] = Params::getParam('authorName');
 			$aItem['authorEmail'] = Params::getParam('authorEmail');
 			$aItem['body'] = Params::getParam('body');
@@ -1054,7 +1057,7 @@ class ItemActions
 	public function sendEmails( array $aItem )
 	{
 		$item = $aItem['item'];
-		View::newInstance()->_exportVariableToView('item', $item);
+		ClassLoader::getInstance()->getClassInstance( 'HtmlView' )->assign('item', $item);
 		/**
 		 * Send email to non-reg user requesting item activation
 		 */

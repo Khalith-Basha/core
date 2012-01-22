@@ -21,13 +21,15 @@ class CWebContact extends Controller
 	{
 		$cacheKey = 'page-contact';
 		$cacheService = $this->getClassLoader()->getClassInstance( 'Services_Cache_Memcached' );
-		$viewContent = $cacheService->read($cacheKey);
-		if (false === $viewContent) 
+		$viewContent = $cacheService->read( $cacheKey );
+		if( false === $viewContent )
 		{
-			osc_run_hook('before_html');
-			$viewContent = osc_render_view('contact.php');
+			$view = $this->getView();
+			$view->setTitle( _m( 'Contact form' ) );
+			$view->addJavaScript( osc_current_web_theme_js_url('jquery.validate.min.js') );
+			$view->addJavaScript( '/static/scripts/contact-form.js' );
+			$viewContent = $view->render( 'contact' );
 			$this->getSession()->_clearVariables();
-			osc_run_hook('after_html');
 			$cacheService->write($cacheKey, $viewContent);
 		}
 		echo $viewContent;
@@ -67,8 +69,8 @@ class CWebContact extends Controller
 			$resourceName = $attachment['name'];
 			$tmpName = $attachment['tmp_name'];
 			$resourceType = $attachment['type'];
-			$path = osc_content_path() . 'uploads/' . time() . '_' . $resourceName;
-			if (!is_writable(osc_content_path() . 'uploads/')) 
+			$path = osc_content_path() . '/uploads/' . time() . '_' . $resourceName;
+			if (!is_writable(osc_content_path() . '/uploads/')) 
 			{
 				osc_add_flash_error_message(_m('There has been some errors sending the message'));
 				$this->redirectTo(osc_base_url());
@@ -87,3 +89,4 @@ class CWebContact extends Controller
 		$this->redirectTo(osc_base_url());
 	}
 }
+

@@ -30,7 +30,7 @@ class CWebUser extends Controller
 	public function doPost( HttpRequest $req, HttpResponse $res )
 	{
 		$user = ClassLoader::getInstance()->getClassInstance( 'Model_User' )->findByPrimaryKey(Params::getParam('id'));
-		View::newInstance()->_exportVariableToView('user', $user);
+		View::newInstance()->assign('user', $user);
 		if ((osc_recaptcha_private_key() != '') && Params::existParam("recaptcha_challenge_field")) 
 		{
 			if (!osc_check_recaptcha()) 

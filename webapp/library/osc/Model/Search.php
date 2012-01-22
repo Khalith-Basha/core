@@ -82,7 +82,6 @@ class Model_Search extends DAO
 	{
 		return (array(0 => 'asc', 1 => 'desc'));
 	}
-	// santiagolizardo: little hack to get alerts work in search layout
 	public function reconnect() 
 	{
 		//   $this->conn = getConnection();

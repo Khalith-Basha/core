@@ -71,7 +71,7 @@ class CAdminSettings extends AdministrationController
 				osc_add_flash_error_message(_m('Error: the currency doesn\'t exist'), 'admin');
 				$this->redirectTo(osc_admin_base_url(true) . '?page=settings&action=currencies');
 			}
-			$this->getView()->_exportVariableToView('aCurrency', $aCurrency);
+			$this->getView()->assign('aCurrency', $aCurrency);
 			$this->doView('settings/edit_currency.php');
 			break;
 
@@ -145,7 +145,7 @@ class CAdminSettings extends AdministrationController
 
 		default: // calling the currencies view
 			$aCurrencies = ClassLoader::getInstance()->getClassInstance( 'Model_Currency' )->listAll();
-			$this->getView()->_exportVariableToView('aCurrencies', $aCurrencies);
+			$this->getView()->assign('aCurrencies', $aCurrencies);
 			$this->doView('settings/currencies.php');
 			break;
 		}

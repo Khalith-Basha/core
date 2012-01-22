@@ -60,8 +60,11 @@ class Rewrite
 		if( empty( $_SERVER['REQUEST_URI'] ) )
 			return;
 
+		$generalConfig = ClassLoader::getInstance()->getClassInstance( 'Config' )->getConfig( 'general' );
+		$relativeWebUrl = $generalConfig['relativeWebUrl'];
+
 		$serverName = $_SERVER['SERVER_NAME'];
-		$request_uri = urldecode( preg_replace( '@^' . REL_WEB_URL . '@', '', $_SERVER['REQUEST_URI'] ) );
+		$request_uri = urldecode( preg_replace( '@^' . $relativeWebUrl. '@', '', $_SERVER['REQUEST_URI'] ) );
 		if( osc_rewrite_enabled() )
 		{
 			$this->extractParams( $request_uri );

@@ -39,11 +39,11 @@ class CWebItem extends Controller
 	function doModel() 
 	{
 		$locales = ClassLoader::getInstance()->getClassInstance( 'Model_Locale' )->listAllEnabled();
-		$this->getView()->_exportVariableToView('locales', $locales);
+		$this->getView()->assign('locales', $locales);
 		$secret = Params::getParam('secret');
 		$id = Params::getParam('id');
 		$item = $this->itemManager->listWhere("i.pk_i_id = '%s' AND ((i.s_secret = '%s') OR (i.fk_i_user_id = '%d'))", $id, $secret, $this->userId);
-		View::newInstance()->_exportVariableToView('item', $item[0]);
+		View::newInstance()->assign('item', $item[0]);
 		if ($item[0]['b_active'] == 0) 
 		{
 			// ACTIVETE ITEM

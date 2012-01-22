@@ -47,7 +47,7 @@ class CAdminAdmins extends AdministrationController
 		$this->redirectTo(osc_admin_base_url(true).'?page=admins');
 	    }
 
-	    $this->_exportVariableToView("admin", $adminEdit);
+	    $this->assign("admin", $adminEdit);
 	    $this->doView('admins/edit.php') ;
 	}
 

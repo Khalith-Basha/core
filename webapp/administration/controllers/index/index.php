@@ -25,12 +25,12 @@ class CAdminIndex extends AdministrationController
 	{
 		require 'osc/feeds.php';
 
-		$this->getView()->_exportVariableToView("numUsers", $this->getClassLoader()->getClassInstance( 'Model_User' )->count());
-		$this->getView()->_exportVariableToView("numAdmins", $this->getClassLoader()->getClassInstance( 'Model_Admin' )->count());
-		$this->getView()->_exportVariableToView("numItems", $this->getClassLoader()->getClassInstance( 'Model_Item' )->count());
-		$this->getView()->_exportVariableToView("numItemsPerCategory", osc_get_non_empty_categories());
-		$this->getView()->_exportVariableToView("newsList", osc_listNews());
-		$this->getView()->_exportVariableToView("comments", $this->getClassLoader()->getClassInstance( 'Model_ItemComment' )->getLastComments(5));
+		$this->getView()->assign("numUsers", $this->getClassLoader()->getClassInstance( 'Model_User' )->count());
+		$this->getView()->assign("numAdmins", $this->getClassLoader()->getClassInstance( 'Model_Admin' )->count());
+		$this->getView()->assign("numItems", $this->getClassLoader()->getClassInstance( 'Model_Item' )->count());
+		$this->getView()->assign("numItemsPerCategory", osc_get_non_empty_categories());
+		$this->getView()->assign("newsList", osc_listNews());
+		$this->getView()->assign("comments", $this->getClassLoader()->getClassInstance( 'Model_ItemComment' )->getLastComments(5));
 
 		$this->doView('main/index.php');
 	}

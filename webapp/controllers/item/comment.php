@@ -39,47 +39,9 @@ class CWebItem extends Controller
 	function doModel() 
 	{
 		$locales = ClassLoader::getInstance()->getClassInstance( 'Model_Locale' )->listAllEnabled();
-		$this->getView()->_exportVariableToView('locales', $locales);
+		$this->getView()->assign('locales', $locales);
 		switch ($this->action) 
 		{
-		case 'add_comment':
-			$mItem = new ItemActions(false);
-			$status = $mItem->add_comment();
-			switch ($status) 
-			{
-			case -1:
-				$msg = _m('Sorry, we could not save your comment. Try again later');
-				osc_add_flash_error_message($msg);
-				break;
-
-			case 1:
-				$msg = _m('Your comment is awaiting moderation');
-				osc_add_flash_info_message($msg);
-				break;
-
-			case 2:
-				$msg = _m('Your comment has been approved');
-				osc_add_flash_ok_message($msg);
-				break;
-
-			case 3:
-				$msg = _m('Please fill the required fields (name, email)');
-				osc_add_flash_warning_message($msg);
-				break;
-
-			case 4:
-				$msg = _m('Please type a comment');
-				osc_add_flash_warning_message($msg);
-				break;
-
-			case 5:
-				$msg = _m('Your comment has been marked as spam');
-				osc_add_flash_error_message($msg);
-				break;
-			}
-			$this->redirectTo(osc_item_url());
-			break;
-
 		case 'delete_comment':
 			$mItem = new ItemActions(false);
 			$status = $mItem->add_comment();
@@ -91,7 +53,7 @@ class CWebItem extends Controller
 				osc_add_flash_error_message(_m('This item doesn\'t exist'));
 				$this->redirectTo(osc_base_url(true));
 			}
-			View::newInstance()->_exportVariableToView('item', $item);
+			View::newInstance()->assign('item', $item);
 			if ($this->userId == null) 
 			{
 				osc_add_flash_error_message(_m('You must be logged in to delete a comment'));

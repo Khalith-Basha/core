@@ -89,7 +89,7 @@ abstract class Controller
 
 		$this->classLoader = ClassLoader::getInstance();
 		$this->server = $this->classLoader->getClassInstance( 'Server' );
-		$this->view = $this->classLoader->getClassInstance( 'View' );
+		$this->view = $this->classLoader->getClassInstance( 'HtmlView' );
 		$this->session = $this->classLoader->getClassInstance( 'Session' );
 		$this->cookie = $this->classLoader->getClassInstance( 'Cookie' );
 	}
@@ -108,9 +108,9 @@ abstract class Controller
 		return $this->server;
 	}
 
-	protected function _exportVariableToView($key, $value) 
+	protected function assign($key, $value) 
 	{
-		$this->getView()->_exportVariableToView($key, $value);
+		$this->getView()->assign($key, $value);
 	}
 	protected function _view($key = null) 
 	{

@@ -24,7 +24,6 @@ class CWebItem extends Controller
 	{
 		parent::__construct();
 		$this->itemManager = ClassLoader::getInstance()->getClassInstance( 'Model_Item' );
-		// here allways userId == ''
 		if (osc_is_web_user_logged_in()) 
 		{
 			$this->userId = osc_logged_user_id();
@@ -36,47 +35,45 @@ class CWebItem extends Controller
 			$this->user = null;
 		}
 	}
-
 	function doModel() 
 	{
-		//calling the view...
-		$locales = ClassLoader::getInstance()->getClassInstance( 'Model_Locale' )->listAllEnabled();
+		$locales = $this->getClassLoader()->getClassInstance( 'Model_Locale' )->listAllEnabled();
 		$this->getView()->assign('locales', $locales);
-		$secret = Params::getParam('secret');
-		$id = Params::getParam('id');
-		$item = $this->itemManager->listWhere("i.pk_i_id = '%s' AND ((i.s_secret = '%s') OR (i.fk_i_user_id = '%d'))", $id, $secret, $this->userId);
-		if (count($item) == 1) 
+		$mItem = $this->getClassLoader()->getClassInstance( 'ItemActions', true, array( false ) );
+		$itemUrl = '/'; // @TODO FIX $this->getClassLoader()->getClassInstance( 'Url_Item' )->getDetailsUrl( $item );
+		$status = $mItem->add_comment();
+		switch ($status) 
 		{
-			$mItems = new ItemActions(false);
-			$success = $mItems->delete($item[0]['s_secret'], $item[0]['pk_i_id']);
-			if ($success) 
-			{
-				osc_add_flash_ok_message(_m('Your item has been deleted'));
-			}
-			else
-			{
-				osc_add_flash_error_message(_m('The item you are trying to delete couldn\'t be deleted'));
-			}
-			if ($this->user != null) 
-			{
-				$this->redirectTo(osc_user_list_items_url());
-			}
-			else
-			{
-				$this->redirectTo(osc_base_url());
-			}
+		case -1:
+			$msg = _m('Sorry, we could not save your comment. Try again later');
+			osc_add_flash_error_message($msg);
+			break;
+
+		case 1:
+			$msg = _m('Your comment is awaiting moderation');
+			osc_add_flash_info_message($msg);
+			break;
+
+		case 2:
+			$msg = _m('Your comment has been approved');
+			osc_add_flash_ok_message($msg);
+			break;
+
+		case 3:
+			$msg = _m('Please fill the required fields (name, email)');
+			osc_add_flash_warning_message($msg);
+			break;
+
+		case 4:
+			$msg = _m('Please type a comment');
+			osc_add_flash_warning_message($msg);
+			break;
+
+		case 5:
+			$msg = _m('Your comment has been marked as spam');
+			osc_add_flash_error_message($msg);
+			break;
 		}
-		else
-		{
-			osc_add_flash_error_message(_m('The item you are trying to delete couldn\'t be deleted'));
-			$this->redirectTo(osc_base_url());
-		}
-	}
-	function doView($file) 
-	{
-		osc_run_hook("before_html");
-		osc_current_web_theme_path($file);
-		$this->getSession()->_clearVariables();
-		osc_run_hook("after_html");
+		$this->redirectTo( $itemUrl );
 	}
 }

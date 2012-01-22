@@ -98,48 +98,10 @@ class CAdminComment extends AdministrationController
 			$this->redirectTo(osc_admin_base_url(true) . "?page=comment");
 			break;
 
-		case 'status':
-			$id = Params::getParam('id');
-			$value = Params::getParam('value');
-			if (!$id) return false;
-			$id = (int)$id;
-			if (!is_numeric($id)) return false;
-			if (!in_array($value, array('ACTIVE', 'INACTIVE', 'ENABLE', 'DISABLE'))) return false;
-			if ($value == 'ACTIVE') 
-			{
-				$iUpdated = $this->itemCommentManager->update(array('b_active' => 1), array('pk_i_id' => $id));
-				if ($iUpdated) 
-				{
-					$this->sendCommentActivated($id);
-				}
-				osc_add_hook("activate_comment", $id);
-				osc_add_flash_ok_message(_m('The comment has been approved'), 'admin');
-			}
-			else if ($value == 'INACTIVE') 
-			{
-				$iUpdated = $this->itemCommentManager->update(array('b_active' => 1), array('pk_i_id' => $id));
-				osc_add_hook("deactivate_comment", $id);
-				osc_add_flash_ok_message(_m('The comment has been disapproved'), 'admin');
-			}
-			else if ($value == 'ENABLE') 
-			{
-				$iUpdated = $this->itemCommentManager->update(array('b_enabled' => 1), array('pk_i_id' => $id));
-				osc_add_hook("enable_comment", $id);
-				osc_add_flash_ok_message(_m('The comment has been enabled'), 'admin');
-			}
-			else if ($value == 'DISABLE') 
-			{
-				$iUpdated = $this->itemCommentManager->update(array('b_enabled' => 0), array('pk_i_id' => $id));
-				osc_add_hook("disable_comment", $id);
-				osc_add_flash_ok_message(_m('The comment has been disabled'), 'admin');
-			}
-			$this->redirectTo(osc_admin_base_url(true) . "?page=comment");
-			break;
-
 		case 'comment_edit':
 			$id = Params::getParam('id');
 			$comment = ClassLoader::getInstance()->getClassInstance( 'Model_ItemComment' )->findByPrimaryKey($id);
-			$this->getView()->_exportVariableToView('comment', $comment);
+			$this->getView()->assign('comment', $comment);
 			$this->doView('comments/frm.php');
 			break;
 
@@ -166,7 +128,7 @@ class CAdminComment extends AdministrationController
 			{
 				$comments = $this->itemCommentManager->getAllComments();
 			}
-			$this->getView()->_exportVariableToView('comments', $comments);
+			$this->getView()->assign('comments', $comments);
 			//calling the view...
 			$this->doView('comments/index.php');
 		}
@@ -176,7 +138,7 @@ class CAdminComment extends AdministrationController
 	{
 		$aComment = $this->itemCommentManager->findByPrimaryKey($commentId);
 		$aItem = ClassLoader::getInstance()->getClassInstance( 'Model_Item' )->findByPrimaryKey($aComment['fk_i_item_id']);
-		View::newInstance()->_exportVariableToView('item', $aItem);
+		View::newInstance()->assign('item', $aItem);
 		osc_run_hook('hook_email_comment_validated', $aComment);
 	}
 }

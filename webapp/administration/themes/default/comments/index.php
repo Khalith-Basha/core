@@ -35,46 +35,32 @@ $last_id = $last['pk_i_id'];
                     }
                     return anRows;
                 };
-                sSearchName = "<?php
-_e('Search'); ?>...";
+                sSearchName = "<?php _e('Search'); ?>...";
                 oTable = $('#datatables_list').dataTable({
                     "bAutoWidth": false,
                     "sDom": '<"top"fl>rt<"bottom"ip<"clear">',
                     "oLanguage": {
-                            "sProcessing":   "<?php
-_e('Processing'); ?>...",
-                            "sLengthMenu":   "<?php
-_e('Show _MENU_ entries'); ?>",
-                            "sZeroRecords":  "<?php
-_e('No matching records found'); ?>",
-                            "sInfo":         "<?php
-_e('Showing _START_ to _END_ of _TOTAL_ entries'); ?>",
-                            "sInfoEmpty":    "<?php
-_e('Showing 0 to 0 of 0 entries'); ?>",
-                            "sInfoFiltered": "(<?php
-_e('filtered from _MAX_ total entries'); ?>)",
+                            "sProcessing":   "<?php _e('Processing'); ?>...",
+                            "sLengthMenu":   "<?php _e('Show _MENU_ entries'); ?>",
+                            "sZeroRecords":  "<?php _e('No matching records found'); ?>",
+                            "sInfo":         "<?php _e('Showing _START_ to _END_ of _TOTAL_ entries'); ?>",
+                            "sInfoEmpty":    "<?php _e('Showing 0 to 0 of 0 entries'); ?>",
+                            "sInfoFiltered": "(<?php _e('filtered from _MAX_ total entries'); ?>)",
                             "sInfoPostFix":  "",
-                            "sSearch":       "<?php
-_e('Search'); ?>:",
+                            "sSearch":       "<?php _e('Search'); ?>:",
                             "sUrl":          "",
                             "oPaginate": {
-                                "sFirst":    "<?php
-_e('First'); ?>",
-                                "sPrevious": "<?php
-_e('Previous'); ?>",
-                                "sNext":     "<?php
-_e('Next'); ?>",
-                                "sLast":     "<?php
-_e('Last'); ?>"
+                                "sFirst":    "<?php _e('First'); ?>",
+                                "sPrevious": "<?php _e('Previous'); ?>",
+                                "sNext":     "<?php _e('Next'); ?>",
+                                "sLast":     "<?php _e('Last'); ?>"
                             },
-                            "sLengthMenu": '<div style="float:left;"><?php
-_e('Show'); ?> <select class="display" id="select_range">'+
+                            "sLengthMenu": '<div style="float:left;"><?php _e('Show'); ?> <select class="display" id="select_range">'+
                             '<option value="10">10</option>'+
                             '<option value="15">15</option>'+
                             '<option value="20">20</option>'+
                             '<option value="100">100</option>'+
-                            '</select> <?php
-_e('entries'); ?>'
+                            '</select> <?php _e('entries'); ?>'
                             ,"sSearch": '<span class="ui-icon ui-icon-search" style="display: inline-block;"></span>'
                      }
                     ,"sPaginationType": "full_numbers"
@@ -83,15 +69,8 @@ _e('entries'); ?>'
 foreach (__get('comments') as $c) 
 { ?>
                             [
-                                "<input type='checkbox' name='id[]' value='<?php
-	echo $c['pk_i_id']; ?>' />"
-                                ,"<?php
-	echo addcslashes($c['s_author_name'], '"'); ?> (<a target='_blank' href='<?php
-	echo osc_item_url_ns($c['fk_i_item_id']); ?>'><?php
-	echo $c['s_title']; ?></a>)<div id='datatables_quick_edit'><a href='<?php
-	echo osc_admin_base_url(true); ?>?page=comment&action=comment_edit&id=<?php
-	echo $c['pk_i_id']; ?>' id='dt_link_edit'><?php
-	_e('Edit'); ?></a><?php
+                                "<input type='checkbox' name='id[]' value='<?php echo $c['pk_i_id']; ?>' />"
+                                ,"<?php echo addcslashes($c['s_author_name'], '"'); ?> (<a target='_blank' href='<?php echo osc_item_url_ns($c['fk_i_item_id']); ?>'><?php echo $c['s_title']; ?></a>)<div id='datatables_quick_edit'><a href='<?php echo osc_admin_base_url(true); ?>?page=comment&action=comment_edit&id=<?php echo $c['pk_i_id']; ?>' id='dt_link_edit'><?php _e('Edit'); ?></a><?php
 	if (isset($c['b_active']) && ($c['b_active'] == 1)) 
 	{
 		echo ' | <a href=\'' . osc_admin_base_url(true) . '?page=comment&action=status&id=' . $c['pk_i_id'] . '&value=INACTIVE\'>' . __('Deactivate') . '</a>';
@@ -108,17 +87,10 @@ foreach (__get('comments') as $c)
 	{
 		echo ' | <a href=\'' . osc_admin_base_url(true) . '?page=comment&action=status&id=' . $c['pk_i_id'] . '&value=ENABLE\'>' . __('Enable') . '</a>';
 	}
-?> | <a onclick=\"javascript:return confirm('<?php
-	_e('This action can\'t be undone. Are you sure you want to continue?'); ?>')\" href='<?php
-	echo osc_admin_base_url(true); ?>?page=comment&action=delete&id=<?php
-	echo $c['pk_i_id']; ?>' id='dt_link_delete'><?php
-	_e('Delete'); ?></a></div>"
-                                ,"<?php
-	echo addcslashes(preg_replace('|\s+|', ' ', $c['s_body']), '"'); ?>"
-                                ,"<?php
-	echo $c['pub_date']; ?>"
-                            ] <?php
-	echo $last_id != $c['pk_i_id'] ? ',' : ''; ?>
+?> | <a onclick=\"javascript:return confirm('<?php _e('This action can\'t be undone. Are you sure you want to continue?'); ?>')\" href='<?php echo osc_admin_base_url(true); ?>?page=comment&action=delete&id=<?php echo $c['pk_i_id']; ?>' id='dt_link_delete'><?php _e('Delete'); ?></a></div>"
+                                ,"<?php echo addcslashes(preg_replace('|\s+|', ' ', $c['s_body']), '"'); ?>"
+                                ,"<?php echo $c['dt_pub_date']; ?>"
+                            ] <?php echo $last_id != $c['pk_i_id'] ? ',' : ''; ?>
                         <?php
 } ?>
                     ]
@@ -130,14 +102,11 @@ foreach (__get('comments') as $c)
                          ,"sWidth": "10px"
                          ,"bSearchable": false
                          }
-                        ,{"sTitle": "<?php
-_e('Author'); ?>"
+                        ,{"sTitle": "<?php _e('Author'); ?>"
                          ,"sWidth": "auto"
                         }
-                        ,{"sTitle": "<?php
-_e('Comment'); ?>"}
-                        ,{"sTitle": "<?php
-_e('Date'); ?>"
+                        ,{"sTitle": "<?php _e('Comment'); ?>"}
+                        ,{"sTitle": "<?php _e('Date'); ?>"
                          ,"sWidth": "100px"
                          ,"sClass": "center"
                          ,"bSearchable": false
@@ -146,12 +115,10 @@ _e('Date'); ?>"
                 });
             });
         </script>
-        <script type="text/javascript" src="<?php
-echo osc_current_admin_theme_js_url('datatables.post_init.js'); ?>"></script>
+        <script type="text/javascript" src="<?php echo osc_current_admin_theme_js_url('datatables.post_init.js'); ?>"></script>
                 <div id="content_header" class="content_header">
                     <div style="float: left;">
-                        <img src="<?php
-echo osc_current_admin_theme_url('images/comments-icon2.png'); ?>" title="" alt=""/>
+                        <img src="<?php echo osc_current_admin_theme_url('images/comments-icon2.png'); ?>" title="" alt=""/>
                     </div>
                     <div id="content_header_arrow">&raquo; <?php
 _e('Manage Comments'); ?></div>

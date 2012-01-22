@@ -20,14 +20,14 @@
 */
 class Form_Page extends Form
 {
-	static public function primary_input_hidden($page = null) 
+	public function primary_input_hidden($page = null) 
 	{
 		if (isset($page['pk_i_id'])) 
 		{
 			parent::generic_input_hidden("id", $page["pk_i_id"]);
 		}
 	}
-	static public function internal_name_input_text($page = null) 
+	public function internal_name_input_text($page = null) 
 	{
 		$internal_name = '';
 		if (is_array($page) && isset($page['s_internal_name'])) 
@@ -40,7 +40,7 @@ class Form_Page extends Form
 		}
 		parent::generic_input_text('s_internal_name', $internal_name, null, (isset($page['b_indelible']) && $page['b_indelible'] == 1) ? true : false);
 	}
-	static public function multilanguage_name_description($locales, $category = null) 
+	public function multilanguage_name_description($locales, $category = null) 
 	{
 		$num_locales = count($locales);
 		if ($num_locales > 1) echo '<div class="tabber">';

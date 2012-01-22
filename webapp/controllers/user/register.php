@@ -31,12 +31,14 @@ class CWebUser extends Controller
 			$this->redirectTo(osc_base_url(true));
 		}
 	}
-	function doModel() 
+
+	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
-		osc_run_hook('before_html');
-		osc_current_web_theme_path( 'user/register.php' );
+		$view = $this->getView();
+		$view->addJavaScript( osc_current_web_theme_js_url( 'jquery.validate.min.js' ) );
+		$view->addJavaScript( '/static/scripts/user-register.js' );
+		echo $view->render( 'user/register' );
 		$this->getSession()->_clearVariables();
-		osc_run_hook('after_html');
 	}
 }
 

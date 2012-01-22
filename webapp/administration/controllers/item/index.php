@@ -231,12 +231,12 @@ class CAdminItem extends AdministrationController
 				$cities = City::newInstance()->findByRegion($regions[0]['pk_i_id']);
 			}
 			//preparing variables for the view
-			$this->getView()->_exportVariableToView("users", $this->getClassLoader()->getClassInstance( 'Model_User' )->listAll());
-			$this->getView()->_exportVariableToView("catId", $catId);
-			$this->getView()->_exportVariableToView("stat", Params::getParam('stat'));
-			$this->getView()->_exportVariableToView("countries", $countries);
-			$this->getView()->_exportVariableToView("regions", $regions);
-			$this->getView()->_exportVariableToView("cities", $cities);
+			$this->getView()->assign("users", $this->getClassLoader()->getClassInstance( 'Model_User' )->listAll());
+			$this->getView()->assign("catId", $catId);
+			$this->getView()->assign("stat", Params::getParam('stat'));
+			$this->getView()->assign("countries", $countries);
+			$this->getView()->assign("regions", $regions);
+			$this->getView()->assign("cities", $cities);
 			//calling the view...
 			$this->doView('items/index.php');
 		}

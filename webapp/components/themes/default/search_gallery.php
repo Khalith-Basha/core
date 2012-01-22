@@ -17,7 +17,8 @@
  *
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
+$itemUrls = ClassLoader::getInstance()->getClassInstance( 'Url_Item' );
 osc_get_premiums();
 if (osc_count_premiums() > 0) 
 {
@@ -87,7 +88,9 @@ if (osc_count_premiums() > 0)
 $class = "even"; ?>
         <?php
 while (osc_has_items()) 
-{ ?>
+{
+	$item = osc_item();
+?>
             <tr class="<?php
 	echo $class; ?>">
                 <?php
@@ -98,7 +101,7 @@ while (osc_has_items())
 		if (osc_count_item_resources()) 
 		{ ?>
                         <a href="<?php
-			echo osc_item_url(); ?>"><img src="<?php
+			echo $itemUrls->getDetailsUrl( $item ); ?>"><img src="<?php
 			echo osc_resource_thumbnail_url(); ?>" width="75px" height="56px" title="" alt="" /></a>
                     <?php
 		}
@@ -114,7 +117,7 @@ while (osc_has_items())
                  <td class="text">
                      <h3>
                          <a href="<?php
-	echo osc_item_url(); ?>"><?php
+	echo $itemUrls->getDetailsUrl( $item ); ?>"><?php
 	echo osc_item_title(); ?></a>
                      </h3>
                      <p>

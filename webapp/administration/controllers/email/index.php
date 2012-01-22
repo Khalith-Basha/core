@@ -29,8 +29,8 @@ class CAdminEmail extends AdministrationController
 	public function doModel() 
 	{
 		parent::doModel();
-		$this->getView()->_exportVariableToView("prefLocale", osc_current_admin_locale());
-		$this->getView()->_exportVariableToView("emails", $this->emailManager->listAll(1));
+		$this->getView()->assign("prefLocale", osc_current_admin_locale());
+		$this->getView()->assign("emails", $this->emailManager->listAll(1));
 
 		$this->doView( 'emails/index.php' );
 	}

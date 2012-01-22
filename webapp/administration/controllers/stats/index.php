@@ -106,8 +106,8 @@ class CAdminStats extends AdministrationController
 				$max['other'] = $report['expired'];
 			}
 		}
-		$this->getView()->_exportVariableToView("reports", $reports);
-		$this->getView()->_exportVariableToView("max", $max);
+		$this->getView()->assign("reports", $reports);
+		$this->getView()->assign("max", $max);
 		$this->doView("stats/reports.php");
 	}
 }

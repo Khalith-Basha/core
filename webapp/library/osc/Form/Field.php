@@ -20,24 +20,24 @@
 */
 class Form_Field extends Form
 {
-	static public function primary_input_hidden($field = null) 
+	public function primary_input_hidden($field = null) 
 	{
 		if (isset($field['pk_i_id'])) 
 		{
 			parent::generic_input_hidden("id", $field["pk_i_id"]);
 		}
 	}
-	static public function name_input_text($field = null) 
+	public function name_input_text($field = null) 
 	{
 		parent::generic_input_text("s_name", (isset($field) && isset($field["s_name"])) ? $field["s_name"] : "", null, false);
 		return true;
 	}
-	static public function options_input_text($field = null) 
+	public function options_input_text($field = null) 
 	{
 		parent::generic_input_text("s_options", (isset($field) && isset($field["s_options"])) ? $field["s_options"] : "", null, false);
 		return true;
 	}
-	static public function type_select($field = null) 
+	public function type_select($field = null) 
 	{
 ?>
             <select name="field_type" id="field_type">
@@ -65,7 +65,7 @@ class Form_Field extends Form
             <?php
 		return true;
 	}
-	static public function meta($field = null) 
+	public function meta($field = null) 
 	{
 		if ($field != null) 
 		{
@@ -117,7 +117,7 @@ class Form_Field extends Form
 			}
 		}
 	}
-	static public function meta_fields_input($catId = null, $itemId = null) 
+	public function meta_fields_input($catId = null, $itemId = null) 
 	{
 		$fields = Field::newInstance()->findByCategoryItem($catId, $itemId);
 		if (count($fields) > 0) 

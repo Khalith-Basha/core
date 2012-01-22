@@ -1,9 +1,9 @@
 <?php
-osc_current_web_theme_path( 'htmlHeader.php' );
 $item = osc_item();
 $itemUrls = $classLoader->getClassInstance( 'Url_Item' );
 $commentForm = $classLoader->getClassInstance( 'Form_Comment' );
 $contactForm = $classLoader->getClassInstance( 'Form_Contact' );
+echo $view->render( 'header' );
 ?>
 <script type="text/javascript" src="<?php echo osc_current_web_theme_js_url('fancybox/jquery.fancybox-1.3.4.js'); ?>"></script>
 <link href="<?php echo osc_current_web_theme_js_url('fancybox/jquery.fancybox-1.3.4.css'); ?>" rel="stylesheet" type="text/css" />
@@ -23,13 +23,7 @@ else
         <?php
 } ?>
         <script type="text/javascript" src="<?php echo osc_current_web_theme_js_url('jquery.validate.min.js'); ?>"></script>
-    <body>
-        <div class="container">
-            <?php osc_current_web_theme_path('header.php'); ?>
 	    <div class="content item">
-		<?php if( osc_itemIsOld( $item ) ): ?>
-			<p class="ItemOld"><?php echo _e( 'Beware the item is old and may not be available.' ); ?></p>
-		<?php endif; ?>
                 <div id="item_head">
                     <div class="inner">
                         <h1><?php
@@ -176,8 +170,6 @@ if (osc_comments_enabled())
 		_e('Comments', 'modern'); ?></h2>
                             <ul id="comment_error_list"></ul>
                             <?php
-		$commentForm->js_validation(); ?>
-                            <?php
 		if (osc_count_item_comments() >= 1) 
 		{ ?>
                                 <div class="comments_list">
@@ -306,14 +298,11 @@ else if ((osc_logged_user_id() == osc_item_user_id()) && osc_logged_user_id() !=
 else if (osc_reg_user_can_contact() && !osc_is_web_user_logged_in()) 
 { ?>
                             <p>
-                                <?php
-	_e("You must login or register a new free account in order to contact the advertiser", 'modern'); ?>
+                                <?php _e("You must login or register a new free account in order to contact the advertiser", 'modern'); ?>
                             </p>
                             <p class="contact_button">
-                                <strong><a href="<?php echo osc_user_login_url(); ?>"><?php
-	_e('Login', 'modern'); ?></a></strong>
-                                <strong><a href="<?php echo osc_register_account_url(); ?>"><?php
-	_e('Register for a free account', 'modern'); ?></a></strong>
+                                <strong><a href="<?php echo osc_user_login_url(); ?>"><?php _e('Login', 'modern'); ?></a></strong>
+                                <strong><a href="<?php echo osc_register_account_url(); ?>"><?php _e('Register for a free account', 'modern'); ?></a></strong>
                             </p>
                         <?php
 }
@@ -322,49 +311,39 @@ else
                             <?php
 	if (osc_item_user_id() != null) 
 	{ ?>
-                                <p class="name"><?php
-		_e('Name', 'modern') ?>: <a href="<?php
+                                <p class="name"><?php _e('Name', 'modern') ?>: <a href="<?php
 		echo osc_user_public_profile_url(osc_item_user_id()); ?>" ><?php
 		echo osc_item_contact_name(); ?></a></p>
                             <?php
 	}
 	else
 	{ ?>
-                                <p class="name"><?php _e('Name', 'modern') ?>: <?php
-		echo osc_item_contact_name(); ?></p>
+                                <p class="name"><?php _e('Name', 'modern') ?>: <?php echo osc_item_contact_name(); ?></p>
                             <?php
 	} ?>
                             <?php
 	if (osc_item_show_email()) 
 	{ ?>
-                                <p class="email"><?php _e('E-mail', 'modern'); ?>: <?php
-		echo osc_item_contact_email(); ?></p>
+                                <p class="email"><?php _e('E-mail', 'modern'); ?>: <?php echo osc_item_contact_email(); ?></p>
                             <?php
 	} ?>
                             <?php
 	if (osc_user_phone() != '') 
 	{ ?>
-                                <p class="phone"><?php _e("Tel", 'modern'); ?>.: <?php
-		echo osc_user_phone(); ?></p>
+                                <p class="phone"><?php _e("Tel", 'modern'); ?>.: <?php echo osc_user_phone(); ?></p>
                             <?php
 	} ?>
                             <ul id="error_list"></ul>
-                            <?php $contactForm->js_validation(); ?>
-                            <form action="<?php
-	echo osc_base_url(true); ?>" method="post" name="contact_form" id="contact_form">
+                            <form action="<?php echo osc_base_url(true); ?>" method="post" name="contact_form" id="contact_form">
                                 <?php osc_prepare_user_info(); ?>
                                 <fieldset>
-                                    <label for="yourName"><?php
-	_e('Your name', 'modern'); ?>:</label> <?php $contactForm->your_name(); ?>
-                                    <label for="yourEmail"><?php
-	_e('Your e-mail address', 'modern'); ?>:</label> <?php $contactForm->your_email(); ?>
-                                    <label for="phoneNumber"><?php
-	_e('Phone number', 'modern'); ?> (<?php _e('optional', 'modern'); ?>):</label> <?php $contactForm->your_phone_number(); ?>
+                                    <label for="yourName"><?php _e('Your name', 'modern'); ?>:</label> <?php $contactForm->your_name(); ?>
+                                    <label for="yourEmail"><?php _e('Your e-mail address', 'modern'); ?>:</label> <?php $contactForm->your_email(); ?>
+                                    <label for="phoneNumber"><?php _e('Phone number', 'modern'); ?> (<?php _e('optional', 'modern'); ?>):</label> <?php $contactForm->your_phone_number(); ?>
                                     <label for="message"><?php _e('Message', 'modern'); ?>:</label> <?php $contactForm->your_message(); ?>
                                     <input type="hidden" name="action" value="contact" />
                                     <input type="hidden" name="page" value="item" />
-                                    <input type="hidden" name="id" value="<?php
-	echo osc_item_id(); ?>" />
+                                    <input type="hidden" name="id" value="<?php echo osc_item_id(); ?>" />
                                     <?php
 	if (osc_recaptcha_public_key()) 
 	{ ?>
@@ -377,18 +356,14 @@ else
                                     <style type="text/css"> div#recaptcha_widget, div#recaptcha_image > img { width:280px; } </style>
                                     <div id="recaptcha_widget">
                                         <div id="recaptcha_image"><img /></div>
-                                        <span class="recaptcha_only_if_image"><?php
-		_e('Enter the words above', 'modern'); ?>:</span>
+                                        <span class="recaptcha_only_if_image"><?php _e('Enter the words above', 'modern'); ?>:</span>
                                         <input type="text" id="recaptcha_response_field" name="recaptcha_response_field" />
-                                        <div><a href="javascript:Recaptcha.showhelp()"><?php
-		_e('Help', 'modern'); ?></a></div>
+                                        <div><a href="javascript:Recaptcha.showhelp()"><?php _e('Help', 'modern'); ?></a></div>
                                     </div>
                                     <?php
 	} ?>
-                                    <?php
-	osc_show_recaptcha(); ?>
-                                    <button type="submit"><?php
-	_e('Send', 'modern'); ?></button>
+                                    <?php osc_show_recaptcha(); ?>
+                                    <button type="submit"><?php _e('Send', 'modern'); ?></button>
                                 </fieldset>
                             </form>
                         <?php
@@ -396,12 +371,6 @@ else
                     </div>
                 </div>
             </div>
-            <?php
-osc_current_web_theme_path('footer.php'); ?>
-        </div>
-        <?php
-osc_show_flash_message(); ?>
-        <?php
-osc_run_hook('footer'); ?>
-    </body>
-</html>
+<?php
+echo $view->render( 'footer' );
+

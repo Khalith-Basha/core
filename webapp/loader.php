@@ -13,24 +13,22 @@ define( 'LIBRARY_PATH', ABS_PATH . '/library' );
 
 set_include_path( get_include_path() . PATH_SEPARATOR . LIBRARY_PATH );
 
-require 'osc/config.php';
-$currentConfig = getCurrentConfig();
-$configPath = implode(DIRECTORY_SEPARATOR, array(ABS_PATH, 'config', $currentConfig, 'general.php'));
-if (!file_exists($configPath)) 
-{
-	require_once 'osc/helpers/hErrors.php';
-	$title = 'OpenSourceClassifieds &raquo; Error';
-	$message = 'There doesn\'t seem to be a <code>' . $configPath . '</code> file. OpenSourceClassifieds isn\'t installed. <a href="http://forums.opensourceclassifieds.org/">Need more help?</a></p>';
-	$message.= '<p><a class="button" href="' . osc_get_absolute_url() . 'installer/index.php">Install</a></p>';
-	osc_die($title, $message);
-}
-require $configPath;
-
 require 'osc/ClassLoader.php';
 
 $classLoader = ClassLoader::getInstance();
 $classLoader->addSearchPath( OVERRIDE_LIBRARY_PATH . '/osc', 'Override_' );
 $classLoader->addSearchPath( LIBRARY_PATH . '/osc' );
+
+$config = $classLoader->getClassInstance( 'Config' );
+if( false === $config->hasConfig( 'database' ) )
+{
+	$configPath = $config->getConfigPath( 'database' );
+	require_once 'osc/helpers/hErrors.php';
+	$title = 'OpenSourceClassifieds &raquo; Error';
+	$message = 'There doesn\'t seem to be a <code>' . $configPath . '</code> file. OpenSourceClassifieds isn\'t installed. <a href="http://forums.opensourceclassifieds.org/">Need more help?</a></p>';
+	$message.= '<p><a class="button" href="' . osc_get_absolute_url() . '/installer/index.php">Install</a></p>';
+	osc_die($title, $message);
+}
 
 $classLoader->loadFile( 'plugins' );
 $classLoader->loadFile( 'helpers/hCategories' );
@@ -55,7 +53,17 @@ require_once 'osc/helpers/hPage.php';
 require_once 'osc/helpers/hUsers.php';
 require_once 'osc/helpers/hMessages.php';
 
-$dbConnection = $classLoader->getClassInstance( 'Database_Connection', true, array( DB_HOST, DB_USER, DB_PASSWORD, DB_NAME ) );
+$generalConfig = $config->getConfig( 'general' );
+define( 'WEB_PATH', $generalConfig['webUrl'] );
+
+$dbConfig = $config->getConfig( 'database' );
+define( 'DB_TABLE_PREFIX', $dbConfig['tablePrefix'] );
+
+$dbConnection = $classLoader->getClassInstance(
+	'Database_Connection',
+	true,
+	array( $dbConfig['host'], $dbConfig['user'], $dbConfig['password'], $dbConfig['name'], $dbConfig['tablePrefix'] )
+);
 
 $pluginManager = $classLoader->getClassInstance( 'PluginManager' );
 $pluginManager->init();

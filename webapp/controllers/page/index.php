@@ -17,14 +17,9 @@
  */
 class CWebPage extends Controller
 {
-	var $pageManager;
-	function __construct() 
+	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
-		parent::__construct();
 		$this->pageManager = ClassLoader::getInstance()->getClassInstance( 'Model_Page' );
-	}
-	function doModel() 
-	{
 		$id = Params::getParam('id');
 		$page = $this->pageManager->findByPrimaryKey($id);
 		if ($page == false) 
@@ -51,15 +46,12 @@ class CWebPage extends Controller
 			{
 				$this->getSession()->_set('userLocale', Params::getParam('lang'));
 			}
-			$this->getView()->_exportVariableToView('page', $page);
-			$this->doView('page.php');
+
+			$view = $this->getView();
+			$view->setTitle( $page['locale'][osc_current_user_locale()]['s_title'] );
+			$view->assign('page', $page);
+			echo $view->render( 'page' );
 		}
 	}
-	function doView($file) 
-	{
-		osc_run_hook("before_html");
-		osc_current_web_theme_path($file);
-		$this->getSession()->_clearVariables();
-		osc_run_hook("after_html");
-	}
 }
+

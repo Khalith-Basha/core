@@ -80,11 +80,11 @@ class CAdminStats extends AdministrationController
 				$max_views = $report['views'];
 			}
 		}
-		$this->getView()->_exportVariableToView("reports", $reports);
-		$this->getView()->_exportVariableToView("items", $items);
-		$this->getView()->_exportVariableToView("latest_items", ClassLoader::getInstance()->getClassInstance( 'Stats' )->latest_items());
-		$this->getView()->_exportVariableToView("max", $max);
-		$this->getView()->_exportVariableToView("max_views", $max_views);
+		$this->getView()->assign("reports", $reports);
+		$this->getView()->assign("items", $items);
+		$this->getView()->assign("latest_items", ClassLoader::getInstance()->getClassInstance( 'Stats' )->latest_items());
+		$this->getView()->assign("max", $max);
+		$this->getView()->assign("max_views", $max_views);
 		$this->doView("stats/items.php");
 	}
 }

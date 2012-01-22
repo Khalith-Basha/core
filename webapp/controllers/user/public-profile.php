@@ -36,17 +36,20 @@ class CWebUser extends Controller
 			$this->redirectTo(osc_base_url());
 		}
 		$itemUrls = $this->getClassLoader()->getClassInstance( 'Url_Item' );
-		$this->getView()->_exportVariableToView( 'itemUrls', $itemUrls );
-		$this->getView()->_exportVariableToView('user', $user);
+		$view = $this->getView();
+		$view->setTitle( $user['s_name'] );
+		$this->getView()->addJavaScript( '/static/scrips/contact-form.js' );
+		$this->getView()->assign( 'itemUrls', $itemUrls );
+		$this->getView()->assign('user', $user);
 		$items = $this->getClassLoader()->getClassInstance( 'Model_Item' )->findByUserIDEnabled($user['pk_i_id'], 0, 3);
-		$this->getView()->_exportVariableToView('items', $items);
-		$this->doView('user/public-profile.php');
+		$this->getView()->assign('items', $items);
+		$this->doView('user/public-profile');
 	}
 
 	function doView($file) 
 	{
 		osc_run_hook("before_html");
-		osc_current_web_theme_path($file);
+		echo $this->getView()->render( $file );
 		$this->getSession()->_clearVariables();
 		osc_run_hook("after_html");
 	}

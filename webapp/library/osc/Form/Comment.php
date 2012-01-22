@@ -20,7 +20,7 @@
 */
 class Form_Comment extends Form
 {
-	static public function primary_input_hidden($comment = null) 
+	public function primary_input_hidden($comment = null) 
 	{
 		$session = ClassLoader::getInstance()->getClassInstance( 'Session' );
 		$commentId = null;
@@ -37,7 +37,7 @@ class Form_Comment extends Form
 			parent::generic_input_hidden("id", $commentId);
 		}
 	}
-	static public function title_input_text($comment = null) 
+	public function title_input_text($comment = null) 
 	{
 		$commentTitle = '';
 		if (isset($comment['s_title'])) 
@@ -51,7 +51,7 @@ class Form_Comment extends Form
 		}
 		parent::generic_input_text("title", $commentTitle, null, false);
 	}
-	static public function author_input_text($comment = null) 
+	public function author_input_text($comment = null) 
 	{
 		$commentAuthorName = '';
 		if (isset($comment['s_author_name'])) 
@@ -65,7 +65,7 @@ class Form_Comment extends Form
 		}
 		parent::generic_input_text("authorName", $commentAuthorName, null, false);
 	}
-	static public function email_input_text($comment = null) 
+	public function email_input_text($comment = null) 
 	{
 		$commentAuthorEmail = '';
 		if (isset($comment['s_author_email'])) 
@@ -79,7 +79,7 @@ class Form_Comment extends Form
 		}
 		parent::generic_input_text("authorEmail", $commentAuthorEmail, null, false);
 	}
-	static public function body_input_textarea($comment = null) 
+	public function body_input_textarea($comment = null) 
 	{
 		$commentBody = '';
 		if (isset($comment['s_body'])) 
@@ -92,53 +92,5 @@ class Form_Comment extends Form
 			$commentBody = $session->_getForm('commentBody');
 		}
 		parent::generic_textarea("body", $commentBody);
-	}
-	static public function js_validation() 
-	{
-?>
-<script type="text/javascript">
-    $(document).ready(function(){
-        // Code for form validation
-        $("form[name=comment_form]").validate({
-            rules: {
-                message: {
-                    required: true,
-                    minlength: 1
-                },
-                authorEmail: {
-                    required: true,
-                    email: true
-                },
-                authorName: {
-                    required: true
-                }
-            },
-            messages: {
-                authorEmail: {
-                    required: "<?php
-		_e("Email: this field is required"); ?>.",
-                    email: "<?php
-		_e("Invalid email address"); ?>."
-                },
-                authorName: {
-                    required: "<?php
-		_e("Name: this field is required"); ?>."
-                },
-                message: {
-                    required: "<?php
-		_e("Message: this field is required"); ?>.",
-                    minlength: "<?php
-		_e("Message: this field is required"); ?>."
-                }
-            },
-            errorLabelContainer: "#comment_error_list",
-            wrapper: "li",
-            invalidHandler: function(form, validator) {
-                $('html,body').animate({ scrollTop: $('h2').offset().top }, { duration: 250, easing: 'swing'});
-            }
-        });
-    });
-</script>
-<?php
 	}
 }

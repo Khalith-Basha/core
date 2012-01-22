@@ -26,7 +26,7 @@ class CWebCustom extends Controller
 
 	function doModel() 
 	{
-		$this->getView()->_exportVariableToView('file', Params::getParam('file'));
+		$this->getView()->assign('file', Params::getParam('file'));
 		$this->doView('custom.php');
 	}
 

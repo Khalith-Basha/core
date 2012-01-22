@@ -21,7 +21,7 @@ class CWebIndex extends Controller
 	{
 		require 'osc/functions.php';
 		osc_run_hook("before_html");
-		osc_current_web_theme_path( 'main.php' );
+		echo $this->getView()->render( 'main' );
 		$this->getSession()->_clearVariables();
 		osc_run_hook("after_html");
 	}

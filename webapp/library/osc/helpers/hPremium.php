@@ -32,13 +32,13 @@ function osc_get_premiums($max = 2)
 	}
 	else
 	{
-		$mSearch = Search::newInstance();
-		ClassLoader::getInstance()->getClassInstance( 'View' )->_exportVariableToView('search', $mSearch);
+		$mSearch = ClassLoader::getInstance()->getClassInstance( 'Model_Search' );
+		ClassLoader::getInstance()->getClassInstance( 'View' )->assign('search', $mSearch);
 	}
 	// santiagolizardo: it should be fixed, little hack to get alerts work in search layout
 	$mSearch->reconnect();
 	$premiums = $mSearch->getPremiums($max);
-	ClassLoader::getInstance()->getClassInstance( 'View' )->_exportVariableToView('premiums', $premiums);
+	ClassLoader::getInstance()->getClassInstance( 'View' )->assign('premiums', $premiums);
 	return $premiums;
 }
 /**
@@ -160,7 +160,7 @@ function osc_premium_category($locale = "")
 	if ($locale == "") $locale = osc_current_user_locale();
 	if (!ClassLoader::getInstance()->getClassInstance( 'View' )->_exists('premium_category')) 
 	{
-		ClassLoader::getInstance()->getClassInstance( 'View' )->_exportVariableToView('premium_category', Category::newInstance()->findByPrimaryKey(osc_premium_category_id()));
+		ClassLoader::getInstance()->getClassInstance( 'View' )->assign('premium_category', Category::newInstance()->findByPrimaryKey(osc_premium_category_id()));
 	}
 	$category = ClassLoader::getInstance()->getClassInstance( 'View' )->_get('premium_category');
 	return (string)osc_field($category, "s_name", $locale);
@@ -176,7 +176,7 @@ function osc_premium_category_description($locale = "")
 	if ($locale == "") $locale = osc_current_user_locale();
 	if (!ClassLoader::getInstance()->getClassInstance( 'View' )->_exists('premium_category')) 
 	{
-		ClassLoader::getInstance()->getClassInstance( 'View' )->_exportVariableToView('premium_category', Category::newInstance()->findByPrimaryKey(osc_premium_category_id()));
+		ClassLoader::getInstance()->getClassInstance( 'View' )->assign('premium_category', Category::newInstance()->findByPrimaryKey(osc_premium_category_id()));
 	}
 	$category = ClassLoader::getInstance()->getClassInstance( 'View' )->_get('premium_category');
 	return osc_field($category, "s_description", $locale);
@@ -496,7 +496,7 @@ function osc_count_premium_resources()
 {
 	if (!ClassLoader::getInstance()->getClassInstance( 'View' )->_exists('resources')) 
 	{
-		ClassLoader::getInstance()->getClassInstance( 'View' )->_exportVariableToView('resources', ClassLoader::getInstance()->getClassInstance( 'Model_ItemResource' )->getAllResources(osc_premium_id()));
+		ClassLoader::getInstance()->getClassInstance( 'View' )->assign('resources', ClassLoader::getInstance()->getClassInstance( 'Model_ItemResource' )->getAllResources(osc_premium_id()));
 	}
 	return osc_priv_count_item_resources();
 }
@@ -509,7 +509,7 @@ function osc_has_premium_resources()
 {
 	if (!ClassLoader::getInstance()->getClassInstance( 'View' )->_exists('resources')) 
 	{
-		ClassLoader::getInstance()->getClassInstance( 'View' )->_exportVariableToView('resources', ClassLoader::getInstance()->getClassInstance( 'Model_ItemResource' )->getAllResources(osc_premium_id()));
+		ClassLoader::getInstance()->getClassInstance( 'View' )->assign('resources', ClassLoader::getInstance()->getClassInstance( 'Model_ItemResource' )->getAllResources(osc_premium_id()));
 	}
 	return ClassLoader::getInstance()->getClassInstance( 'View' )->_next('resources');
 }
@@ -522,7 +522,7 @@ function osc_get_premium_resources()
 {
 	if (!ClassLoader::getInstance()->getClassInstance( 'View' )->_exists('resources')) 
 	{
-		ClassLoader::getInstance()->getClassInstance( 'View' )->_exportVariableToView('resources', ClassLoader::getInstance()->getClassInstance( 'Model_ItemResource' )->getAllResources(osc_premium_id()));
+		ClassLoader::getInstance()->getClassInstance( 'View' )->assign('resources', ClassLoader::getInstance()->getClassInstance( 'Model_ItemResource' )->getAllResources(osc_premium_id()));
 	}
 	return ClassLoader::getInstance()->getClassInstance( 'View' )->_get('resources');
 }
@@ -535,7 +535,7 @@ function osc_count_premium_comments()
 {
 	if (!ClassLoader::getInstance()->getClassInstance( 'View' )->_exists('comments')) 
 	{
-		ClassLoader::getInstance()->getClassInstance( 'View' )->_exportVariableToView('comments', ClassLoader::getInstance()->getClassInstance( 'Model_ItemComment' )->findBypremiumID(osc_premium_id(), osc_premium_comments_page(), osc_comments_per_page()));
+		ClassLoader::getInstance()->getClassInstance( 'View' )->assign('comments', ClassLoader::getInstance()->getClassInstance( 'Model_ItemComment' )->findBypremiumID(osc_premium_id(), osc_premium_comments_page(), osc_comments_per_page()));
 	}
 	return ClassLoader::getInstance()->getClassInstance( 'View' )->_count('comments');
 }
@@ -548,7 +548,7 @@ function osc_has_premium_comments()
 {
 	if (!ClassLoader::getInstance()->getClassInstance( 'View' )->_exists('comments')) 
 	{
-		ClassLoader::getInstance()->getClassInstance( 'View' )->_exportVariableToView('comments', ClassLoader::getInstance()->getClassInstance( 'Model_ItemComment' )->findBypremiumID(osc_premium_id(), osc_premium_comments_page(), osc_comments_per_page()));
+		ClassLoader::getInstance()->getClassInstance( 'View' )->assign('comments', ClassLoader::getInstance()->getClassInstance( 'Model_ItemComment' )->findBypremiumID(osc_premium_id(), osc_premium_comments_page(), osc_comments_per_page()));
 	}
 	return ClassLoader::getInstance()->getClassInstance( 'View' )->_next('comments');
 }
@@ -574,7 +574,7 @@ function osc_count_premium_meta()
 {
 	if (!ClassLoader::getInstance()->getClassInstance( 'View' )->_exists('metafields')) 
 	{
-		ClassLoader::getInstance()->getClassInstance( 'View' )->_exportVariableToView('metafields', ClassLoader::getInstance()->getClassInstance( 'Model_Item' )->metaFields(osc_premium_id()));
+		ClassLoader::getInstance()->getClassInstance( 'View' )->assign('metafields', ClassLoader::getInstance()->getClassInstance( 'Model_Item' )->metaFields(osc_premium_id()));
 	}
 	return ClassLoader::getInstance()->getClassInstance( 'View' )->_count('metafields');
 }
@@ -587,7 +587,7 @@ function osc_has_premium_meta()
 {
 	if (!ClassLoader::getInstance()->getClassInstance( 'View' )->_exists('metafields')) 
 	{
-		ClassLoader::getInstance()->getClassInstance( 'View' )->_exportVariableToView('metafields', ClassLoader::getInstance()->getClassInstance( 'Model_Item' )->metaFields(osc_premium_id()));
+		ClassLoader::getInstance()->getClassInstance( 'View' )->assign('metafields', ClassLoader::getInstance()->getClassInstance( 'Model_Item' )->metaFields(osc_premium_id()));
 	}
 	return ClassLoader::getInstance()->getClassInstance( 'View' )->_next('metafields');
 }
@@ -600,7 +600,7 @@ function osc_get_premium_meta()
 {
 	if (!ClassLoader::getInstance()->getClassInstance( 'View' )->_exists('metafields')) 
 	{
-		ClassLoader::getInstance()->getClassInstance( 'View' )->_exportVariableToView('metafields', ClassLoader::getInstance()->getClassInstance( 'Model_Item' )->metaFields(osc_premium_id()));
+		ClassLoader::getInstance()->getClassInstance( 'View' )->assign('metafields', ClassLoader::getInstance()->getClassInstance( 'Model_Item' )->metaFields(osc_premium_id()));
 	}
 	return ClassLoader::getInstance()->getClassInstance( 'View' )->_get('metafields');
 }

@@ -40,7 +40,7 @@ class CWebItem extends Controller
 	function doModel() 
 	{
 		$locales = $this->getClassLoader()->getClassInstance( 'Model_Locale' )->listAllEnabled();
-		$this->view->_exportVariableToView('locales', $locales);
+		$this->view->assign('locales', $locales);
 		if (Params::getParam('id') == '') 
 		{
 			$this->redirectTo(osc_base_url());
@@ -82,16 +82,14 @@ class CWebItem extends Controller
 				$item['locale'][$k]['s_title'] = osc_apply_filter('item_title', $v['s_title']);
 				$item['locale'][$k]['s_description'] = nl2br(osc_apply_filter('item_description', $v['s_description']));
 			}
-			$this->view->_exportVariableToView('items', array($item));
+			$this->view->assign('items', array($item));
 			osc_run_hook('show_item', $item);
-			$this->doView( 'item/index.php' );
+
+			require 'osc/helpers/hPagination.php';
+			$this->view->setTitle( $item['locale'][osc_current_user_locale()]['s_title'] );
+			$this->view->addJavaScript( '/static/scripts/contact-form.js' );
+			$this->view->addJavaScript( '/static/scripts/comment-form.js' );
+			echo $this->view->render( 'item/index' );
 		}
-	}
-	function doView($file) 
-	{
-		osc_run_hook("before_html");
-		osc_current_web_theme_path($file);
-		$this->getSession()->_clearVariables();
-		osc_run_hook("after_html");
 	}
 }

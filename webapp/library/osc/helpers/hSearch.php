@@ -40,7 +40,7 @@ function osc_search()
 	else
 	{
 		$search = $classLoader->getClassInstance( 'Model_Search' );
-		$view->_exportVariableToView('search', $search);
+		$view->assign('search', $search);
 		return $search;
 	}
 }
@@ -288,7 +288,7 @@ function osc_alert_form()
 		$search = osc_search();
 		$search->order();
 		$search->limit();
-		$view->_exportVariableToView('search_alert', base64_encode(serialize($search)));
+		$view->assign('search_alert', base64_encode(serialize($search)));
 	}
 	osc_current_web_theme_path('alert-form.php');
 }
@@ -398,7 +398,7 @@ function osc_has_list_countries()
 	$view = $classLoader->getClassInstance( 'View' );
 	if (!$view->_exists('list_countries')) 
 	{
-		$view->_exportVariableToView('list_countries', $classLoader->getClassInstance( 'Model_Search' )->listCountries('>='));
+		$view->assign('list_countries', $classLoader->getClassInstance( 'Model_Search' )->listCountries('>='));
 	}
 	return $view->_next('list_countries');
 }
@@ -414,7 +414,7 @@ function osc_has_list_regions($country = '%%%%')
 	$view = $classLoader->getClassInstance( 'View' );
 	if (!$view->_exists('list_regions')) 
 	{
-		$view->_exportVariableToView('list_regions', $classLoader->getClassInstance( 'Model_Search' )->listRegions($country, '>'));
+		$view->assign('list_regions', $classLoader->getClassInstance( 'Model_Search' )->listRegions($country, '>'));
 	}
 	return $view->_next('list_regions');
 }
@@ -430,7 +430,7 @@ function osc_has_list_cities($region = '%%%%')
 	$view = $classLoader->getClassInstance( 'View' );
 	if (!$view->_exists('list_cities')) 
 	{
-		$view->_exportVariableToView('list_cities', $classLoader->getClassInstance( 'Model_Search' )->listCities($region, '>='));
+		$view->assign('list_cities', $classLoader->getClassInstance( 'Model_Search' )->listCities($region, '>='));
 	}
 	$result = $view->_next('list_cities');
 	if (!$result) $view->_erase('list_cities');
@@ -447,7 +447,7 @@ function osc_count_list_countries()
 	$view = $classLoader->getClassInstance( 'View' );
 	if (!$view->_exists('list_countries')) 
 	{
-		$view->_exportVariableToView('list_countries', $classLoader->getClassInstance( 'Model_Search' )->listCountries());
+		$view->assign('list_countries', $classLoader->getClassInstance( 'Model_Search' )->listCountries());
 	}
 	return $view->_count('list_countries');
 }
@@ -463,7 +463,7 @@ function osc_count_list_regions($country = '%%%%')
 	$view = $classLoader->getClassInstance( 'View' );
 	if (!$view->_exists('list_regions')) 
 	{
-		$view->_exportVariableToView('list_regions', $classLoader->getClassInstance( 'Model_Search' )->listRegions($country));
+		$view->assign('list_regions', $classLoader->getClassInstance( 'Model_Search' )->listRegions($country));
 	}
 	return $view->_count('list_regions');
 }
@@ -479,7 +479,7 @@ function osc_count_list_cities($region = '%%%%')
 	$view = $classLoader->getClassInstance( 'View' );
 	if (!$view->_exists('list_cities')) 
 	{
-		$view->_exportVariableToView('list_cities', $classLoader->getClassInstance( 'Model_Search' )->listCities($region));
+		$view->assign('list_cities', $classLoader->getClassInstance( 'Model_Search' )->listCities($region));
 	}
 	return $view->_count('list_cities');
 }
@@ -560,7 +560,7 @@ function osc_get_latest_searches($limit = 20)
 	$view = ClassLoader::getInstance()->getClassInstance( 'View' );
 	if (!$view->_exists('latest_searches')) 
 	{
-		$view->_exportVariableToView('latest_searches', LatestSearches::newInstance()->getSearches($limit));
+		$view->assign('latest_searches', LatestSearches::newInstance()->getSearches($limit));
 	}
 	return $view->_count('latest_searches');
 }
@@ -574,7 +574,7 @@ function osc_count_latest_searches()
 	$view = ClassLoader::getInstance()->getClassInstance( 'View' );
 	if (!$view->_exists('latest_searches')) 
 	{
-		$view->_exportVariableToView('latest_searches', LatestSearches::newInstance()->getSearches());
+		$view->assign('latest_searches', LatestSearches::newInstance()->getSearches());
 	}
 	return $view->_count('latest_searches');
 }
@@ -588,7 +588,7 @@ function osc_has_latest_searches()
 	$view = ClassLoader::getInstance()->getClassInstance( 'View' );
 	if (!$view->_exists('latest_searches')) 
 	{
-		$view->_exportVariableToView('latest_searches', LatestSearches::newInstance()->getSearches());
+		$view->assign('latest_searches', LatestSearches::newInstance()->getSearches());
 	}
 	return $view->_next('latest_searches');
 }

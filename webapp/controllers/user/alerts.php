@@ -36,9 +36,9 @@ class CWebUser extends WebSecBaseModel
 			$search->limit(0, 3);
 			$aAlerts[$k]['items'] = $search->doSearch();
 		}
-		$this->getView()->_exportVariableToView('alerts', $aAlerts);
+		$this->getView()->assign('alerts', $aAlerts);
 		View::newInstance()->_reset('alerts');
-		$this->getView()->_exportVariableToView('user', $user);
+		$this->getView()->assign('user', $user);
 		$this->doView('user/alerts.php');
 	}
 	public function doView($file) 

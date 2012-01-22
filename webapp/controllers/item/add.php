@@ -38,7 +38,7 @@ class CWebItem extends Controller
 	function doModel() 
 	{
 		$locales = $this->getClassLoader()->getClassInstance( 'Model_Locale' )->listAllEnabled();
-		$this->getView()->_exportVariableToView('locales', $locales);
+		$this->getView()->assign('locales', $locales);
 		if (osc_reg_user_post() && $this->user == null) 
 		{
 			osc_add_flash_warning_message(_m('Only registered users are allowed to post items'));
@@ -63,9 +63,9 @@ class CWebItem extends Controller
 		{
 			$cities = City::newInstance()->findByRegion($regions[0]['pk_i_id']);
 		}
-		$this->getView()->_exportVariableToView('countries', $countries);
-		$this->getView()->_exportVariableToView('regions', $regions);
-		$this->getView()->_exportVariableToView('cities', $cities);
+		$this->getView()->assign('countries', $countries);
+		$this->getView()->assign('regions', $regions);
+		$this->getView()->assign('cities', $cities);
 		$form = count($this->getSession()->_getForm());
 		$keepForm = count($this->getSession()->_getKeepForm());
 		if ($form == 0 || $form == $keepForm) 
@@ -76,15 +76,15 @@ class CWebItem extends Controller
 		{
 			$countryId = $this->getSession()->_getForm('countryId');
 			$regions = $this->getClassLoader()->getClassInstance( 'Model_Region' )->findByCountry($countryId);
-			$this->getView()->_exportVariableToView('regions', $regions);
+			$this->getView()->assign('regions', $regions);
 			if ($this->getSession()->_getForm('regionId') != "") 
 			{
 				$regionId = $this->getSession()->_getForm('regionId');
 				$cities = City::newInstance()->findByRegion($regionId);
-				$this->getView()->_exportVariableToView('cities', $cities);
+				$this->getView()->assign('cities', $cities);
 			}
 		}
-		$this->getView()->_exportVariableToView('user', $this->user);
+		$this->getView()->assign('user', $this->user);
 		osc_run_hook('post_item');
 		$this->doView('item/post.php');
 	}

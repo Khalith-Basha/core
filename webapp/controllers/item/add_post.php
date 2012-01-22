@@ -39,7 +39,7 @@ class CWebItem extends Controller
 	function doModel() 
 	{
 		$locales = ClassLoader::getInstance()->getClassInstance( 'Model_Locale' )->listAllEnabled();
-		$this->getView()->_exportVariableToView('locales', $locales);
+		$this->getView()->assign('locales', $locales);
 		if (osc_reg_user_post() && $this->user == null) 
 		{
 			osc_add_flash_warning_message(_m('Only registered users are allowed to post items'));
@@ -92,7 +92,7 @@ class CWebItem extends Controller
 			$item = $this->itemManager->findByPrimaryKey($itemId);
 			osc_run_hook('posted_item', $item);
 			$category = Category::newInstance()->findByPrimaryKey(Params::getParam('catId'));
-			View::newInstance()->_exportVariableToView('category', $category);
+			View::newInstance()->assign('category', $category);
 			$this->redirectTo(osc_search_category_url());
 		}
 	}

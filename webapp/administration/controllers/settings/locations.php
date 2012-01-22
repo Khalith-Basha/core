@@ -261,7 +261,7 @@ class CAdminSettings extends AdministrationController
 			break;
 		}
 		$aCountries = $mCountries->listAllAdmin();
-		$this->getView()->_exportVariableToView('aCountries', $aCountries);
+		$this->getView()->assign('aCountries', $aCountries);
 		$this->doView('settings/locations.php');
 	}
 

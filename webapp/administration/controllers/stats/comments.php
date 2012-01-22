@@ -64,9 +64,9 @@ class CAdminStats extends AdministrationController
 				$max = $comment['num'];
 			}
 		}
-		$this->getView()->_exportVariableToView("comments", $comments);
-		$this->getView()->_exportVariableToView("latest_comments", ClassLoader::getInstance()->getClassInstance( 'Stats' )->latest_comments());
-		$this->getView()->_exportVariableToView("max", $max);
+		$this->getView()->assign("comments", $comments);
+		$this->getView()->assign("latest_comments", ClassLoader::getInstance()->getClassInstance( 'Stats' )->latest_comments());
+		$this->getView()->assign("max", $max);
 		$this->doView("stats/comments.php");
 	}
 }

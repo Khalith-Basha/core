@@ -32,8 +32,14 @@
  */
 function __get($key) 
 {
-	$view = ClassLoader::getInstance()->getClassInstance( 'View' );
-	return $view->_get($key);
+	$classLoader = ClassLoader::getInstance();
+	$view = $classLoader->getClassInstance( 'View' );
+	$value = $view->_get( $key );
+	if( is_null( $value ) )
+	{
+		$value = $classLoader->getClassInstance( 'HtmlView' )->_get( $key );
+	}
+	return $value;
 }
 /**
  * Get variable from $_REQUEST[$key]
@@ -56,9 +62,9 @@ function osc_get_param($key)
  */
 function osc_field($item, $field, $locale) 
 {
-	if (!is_null($item)) 
+	if( !is_null( $item ) ) 
 	{
-		if ($locale == "") 
+		if( empty( $locale ) )
 		{
 			if (isset($item[$field])) 
 			{
@@ -86,7 +92,7 @@ function osc_field($item, $field, $locale)
 			}
 		}
 	}
-	return '';
+	return null;
 }
 /**
  * Print all widgets belonging to $location

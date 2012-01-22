@@ -39,12 +39,12 @@ class CWebItem extends Controller
 	function doModel() 
 	{
 		$locales = ClassLoader::getInstance()->getClassInstance( 'Model_Locale' )->listAllEnabled();
-		$this->getView()->_exportVariableToView('locales', $locales);
+		$this->getView()->assign('locales', $locales);
 		$mItem = new ItemActions(false);
 		$id = Params::getParam('id');
 		$as = Params::getParam('as');
 		$item = ClassLoader::getInstance()->getClassInstance( 'Model_Item' )->findByPrimaryKey($id);
-		View::newInstance()->_exportVariableToView('item', $item);
+		View::newInstance()->assign('item', $item);
 		$mItem->mark($id, $as);
 		osc_add_flash_ok_message(_m('Thanks! That\'s very helpful'));
 		$this->redirectTo(osc_item_url());

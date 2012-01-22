@@ -33,8 +33,8 @@ class CAdminAppearance extends AdministrationController
 		default:
 			$themes = ClassLoader::getInstance()->getClassInstance( 'WebThemes' )->getListThemes();
 			$info = ClassLoader::getInstance()->getClassInstance( 'WebThemes' )->loadThemeInfo(osc_theme());
-			$this->getView()->_exportVariableToView("themes", $themes);
-			$this->getView()->_exportVariableToView("info", $info);
+			$this->getView()->assign("themes", $themes);
+			$this->getView()->assign("info", $info);
 			$this->doView('appearance/index.php');
 		}
 	}

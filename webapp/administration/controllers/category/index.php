@@ -31,7 +31,7 @@ class CAdminCategory extends AdministrationController
 	function doModel() 
 	{
 		parent::doModel();
-		$this->getView()->_exportVariableToView("categories", $this->categoryManager->toTreeAll());
+		$this->getView()->assign("categories", $this->categoryManager->toTreeAll());
 		$this->doView("categories/index.php");
 	}
 }

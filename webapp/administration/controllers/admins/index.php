@@ -65,7 +65,7 @@ class CAdminAdmins extends AdministrationController
 	default:            // calling manage admins view
 			    $admins = $this->adminManager->listAll();
 
-			    $this->_exportVariableToView("admins", $admins);
+			    $this->assign("admins", $admins);
 			    $this->doView('admins/index.php');
 	break;
     }

@@ -112,19 +112,21 @@ class Database_Connection
 	 * @param string $user MySQL user name
 	 * @param string $password MySQL password
 	 */
-	public function __construct($server = null, $user = null, $password = null, $database = null ) 
+	public function __construct($server = null, $user = null, $password = null, $database = null, $tablePrefix = null ) 
 	{
-		if( empty( $server ) && defined( DB_HOST ) ) $server = DB_HOST;
-		if( empty( $user ) && defined( DB_USER ) ) $user = DB_USER;
-		if( empty( $password ) && defined( DB_PASSWORD ) ) $password = DB_PASSWORD;
-		if( empty( $database ) && defined( DB_NAME ) ) $database = DB_NAME;
-
 		$this->dbHost = $server;
 		$this->dbName = $database;
 		$this->dbUser = $user;
 		$this->dbPassword = $password;
+		$this->tablePrefix = $tablePrefix;
 		$this->connectToOsclassDb();
 	}
+
+	public function getTablePrefix()
+	{
+		return $this->tablePrefix;
+	}
+
 	/**
 	 * Connection destructor and print debug
 	 */

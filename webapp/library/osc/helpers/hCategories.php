@@ -66,7 +66,7 @@ function osc_get_categories()
 	$classLoader = ClassLoader::getInstance();
 	$view = $classLoader->getClassInstance( 'View' );
 	$category = $classLoader->getClassInstance( 'Model_Category' );
-	$view->_exportVariableToView('categories', $category->toTree());
+	$view->assign('categories', $category->toTree());
 	return $view->_get('categories');
 }
 /* #dev.conquer: review that. If the result of toTree had the same format as items or comments, it would be the same as osc_field */
@@ -119,7 +119,7 @@ function osc_count_categories()
 	if (!$view->_exists('categories')) 
 	{
 		$category = $classLoader->getClassInstance( 'Model_Category' );
-		$view->_exportVariableToView('categories', $category->toTree());
+		$view->assign('categories', $category->toTree());
 	}
 	return osc_priv_count_categories();
 }
@@ -135,7 +135,7 @@ function osc_has_categories()
 	if (!$view->_exists('categories')) 
 	{
 		$category = $classLoader->getClassInstance( 'Model_Category' );
-		$view->_exportVariableToView('categories', $category->toTree());
+		$view->assign('categories', $category->toTree());
 	}
 	return $view->_next('categories');
 }
@@ -155,7 +155,7 @@ function osc_count_subcategories()
 	if (count($category['categories']) == 0) return 0;
 	if (!$view->_exists('subcategories')) 
 	{
-		$view->_exportVariableToView('subcategories', $category['categories']);
+		$view->assign('subcategories', $category['categories']);
 	}
 	return osc_priv_count_subcategories();
 }
@@ -173,7 +173,7 @@ function osc_has_subcategories()
 	if (!isset($category['categories'])) return false;
 	if (!$view->_exists('subcategories')) 
 	{
-		$view->_exportVariableToView('subcategories', $category['categories']);
+		$view->assign('subcategories', $category['categories']);
 	}
 	$ret = $view->_next('subcategories');
 	//we have to delete for next iteration
@@ -254,7 +254,7 @@ function osc_get_non_empty_categories()
 	$view = $classLoader->getClassInstance( 'View' );
 	$category = $classLoader->getClassInstance( 'Model_Category' );
 	$aCategories = $category->toTree(false);
-	$view->_exportVariableToView('categories', $aCategories);
+	$view->assign('categories', $aCategories);
 	return $view->_get('categories');
 }
 /**

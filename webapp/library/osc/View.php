@@ -4,11 +4,11 @@ class View
 {
 	private $name;
 	private $variables;
+	private $aCurrent;
 
 	public function __construct()
 	{
 		$this->variables = array();
-		$this->aExported = array();
 	}
 
 	public function setName( $name )
@@ -21,57 +21,60 @@ class View
 		$this->variables[ $name ] = $value;
 	}
 
-	public function render()
+	public function render( $name = null )
 	{
-		$fileName = $this->name . '.php';
-		osc_run_hook('before_html');
-		$content = osc_render_view( $fileName, $this->variables, $this );
-		ClassLoader::getInstance()->getClassInstance( 'Session' )->_clearVariables();
-		osc_run_hook('after_html');
+		if( is_null( $name ) )
+			$name = $this->name;
 
-		echo $content;
+		if( is_null( $name ) )
+			throw new Exception( 'Missing template name with setName() or render(name).' );
+
+		$classLoader = ClassLoader::getInstance();
+		extract( $this->variables );
+		$view = $this;
+		$file = $name . '.php';
+		$themes = $classLoader->getClassInstance( 'WebThemes' );
+		$viewContent = null;
+		$webThemes = $themes;
+		$filePath = $webThemes->getCurrentThemePath() . $file;
+		if (!file_exists($filePath)) 
+		{
+			$webThemes->setGuiTheme();
+			$filePath = $webThemes->getCurrentThemePath() . DIRECTORY_SEPARATOR . $file;
+		}
+		if (file_exists($filePath)) 
+		{
+			ob_start();
+			osc_run_hook('before_html');
+			require $filePath;
+			$viewContent = ob_get_contents();
+			osc_run_hook('after_html');
+			ob_end_clean();
+		}
+		else
+		{
+			trigger_error('File not found: ' . $filePath, E_USER_NOTICE);
+		}
+		return $viewContent;
 	}
 
-	/* @TODO: REMOVE */
-	private $aExported;
-	private $aCurrent;
-	//to export variables at the business layer
-	function _exportVariableToView($key, $value) 
-	{
-		$this->aExported[$key] = $value;
-	}
-	//to get the exported variables for the view
 	function _get($key) 
 	{
 		if ($this->_exists($key)) 
 		{
-			return ($this->aExported[$key]);
+			return ($this->variables[$key]);
 		}
-		else
-		{
-			return '';
-		}
-	}
-	//only for debug
-	function _view($key = null) 
-	{
-		if ($key) 
-		{
-			print_r($this->aExported[$key]);
-		}
-		else
-		{
-			print_r($this->aExported);
-		}
+
+		return null;
 	}
 	function _next($key) 
 	{
-		if (is_array($this->aExported[$key])) 
+		if (is_array($this->variables[$key])) 
 		{
-			$this->aCurrent[$key] = current($this->aExported[$key]);
+			$this->aCurrent[$key] = current($this->variables[$key]);
 			if ($this->aCurrent[$key]) 
 			{
-				next($this->aExported[$key]);
+				next($this->variables[$key]);
 				return true;
 			}
 		}
@@ -83,43 +86,41 @@ class View
 		{
 			return $this->aCurrent[$key];
 		}
-		elseif (is_array($this->aExported[$key])) 
+		elseif (is_array($this->variables[$key])) 
 		{
-			$this->aCurrent[$key] = current($this->aExported[$key]);
+			$this->aCurrent[$key] = current($this->variables[$key]);
 			return $this->aCurrent[$key];
 		}
-		return '';
+		return null;
 	}
 	function _reset($key) 
 	{
-		if (!array_key_exists($key, $this->aExported)) 
+		if (!array_key_exists($key, $this->variables)) 
 		{
 			return array();
 		}
-		if (!is_array($this->aExported[$key])) 
+		if (!is_array($this->variables[$key])) 
 		{
 			return array();
 		}
-		return reset($this->aExported[$key]);
+		return reset($this->variables[$key]);
 	}
 	function _exists($key) 
 	{
-		return (isset($this->aExported[$key]) ? true : false);
+		return isset( $this->variables[$key] );
 	}
 	function _count($key) 
 	{
-		if (is_array($this->aExported[$key])) 
+		if (is_array($this->variables[$key])) 
 		{
-			return count($this->aExported[$key]);
+			return count($this->variables[$key]);
 		}
 		return -1;
 	}
 	function _erase($key) 
 	{
-		unset($this->aExported[$key]);
+		unset($this->variables[$key]);
 		unset($this->aCurrent[$key]);
 	}
-
 }
-
 

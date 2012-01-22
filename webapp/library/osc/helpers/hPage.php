@@ -32,7 +32,7 @@
 function osc_static_page() 
 {
 	$classLoader = ClassLoader::getInstance();
-	$view = $classLoader->getClassInstance( 'View' );
+	$view = $classLoader->getClassInstance( 'HtmlView' );
 	if ($view->_exists('pages')) 
 	{
 		$page = $view->_current('pages');
@@ -54,7 +54,7 @@ function osc_static_page()
  * @param string $locale
  * @return string
  */
-function osc_static_page_field($field, $locale = '') 
+function osc_static_page_field( $field, $locale = null ) 
 {
 	return osc_field(osc_static_page(), $field, $locale);
 }
@@ -64,9 +64,10 @@ function osc_static_page_field($field, $locale = '')
  * @param string $locale
  * @return string
  */
-function osc_static_page_title($locale = '') 
+function osc_static_page_title( $locale = null ) 
 {
-	if ($locale == "") $locale = osc_current_user_locale();
+	if( empty( $locale ) )
+		$locale = osc_current_user_locale();
 	return osc_static_page_field("s_title", $locale);
 }
 /**
@@ -75,9 +76,11 @@ function osc_static_page_title($locale = '')
  * @param string $locale
  * @return string
  */
-function osc_static_page_text($locale = '') 
+function osc_static_page_text( $locale = null ) 
 {
-	if ($locale == "") $locale = osc_current_user_locale();
+	if( empty( $locale ) )
+		$locale = osc_current_user_locale();
+
 	return osc_static_page_field("s_text", $locale);
 }
 /**
@@ -128,7 +131,7 @@ function osc_static_page_url($locale = '')
 	{
 		if (osc_rewrite_enabled()) 
 		{
-			return osc_base_url() . osc_static_page_field("s_internal_name") . "-p" . osc_static_page_field("pk_i_id") . "-" . $locale;
+			return osc_base_url() . '/' . osc_static_page_field("s_internal_name") . "-p" . osc_static_page_field("pk_i_id") . "-" . $locale;
 		}
 		else
 		{
@@ -139,7 +142,7 @@ function osc_static_page_url($locale = '')
 	{
 		if (osc_rewrite_enabled()) 
 		{
-			return osc_base_url() . osc_static_page_field("s_internal_name") . "-p" . osc_static_page_field("pk_i_id");
+			return osc_base_url() . '/' . osc_static_page_field("s_internal_name") . "-p" . osc_static_page_field("pk_i_id");
 		}
 		else
 		{
@@ -157,10 +160,10 @@ function osc_static_page_url($locale = '')
 function osc_get_static_page($internal_name, $locale = '') 
 {
 	$classLoader = ClassLoader::getInstance();
-	$view = $classLoader->getClassInstance( 'View' );
+	$view = $classLoader->getClassInstance( 'HtmlView' );
 	if ($locale == "")
 		$locale = osc_current_user_locale();
-	return $view->_exportVariableToView('page', $classLoader->getClassInstance( 'Model_Page' )->findByInternalName($internal_name, $locale));
+	return $view->assign('page', $classLoader->getClassInstance( 'Model_Page' )->findByInternalName($internal_name, $locale));
 }
 /**
  * Gets the total of static pages. If static pages are not loaded, this function will load them.
@@ -170,11 +173,11 @@ function osc_get_static_page($internal_name, $locale = '')
 function osc_count_static_pages() 
 {
 	$classLoader = ClassLoader::getInstance();
-	$view = $classLoader->getClassInstance( 'View' );
+	$view = $classLoader->getClassInstance( 'HtmlView' );
 
 	if (!$view->_exists('pages')) 
 	{
-		$view->_exportVariableToView('pages', $classLoader->getClassInstance( 'Model_Page' )->listAll(false));
+		$view->assign('pages', $classLoader->getClassInstance( 'Model_Page' )->listAll(false));
 	}
 	return $view->_count('pages');
 }
@@ -187,11 +190,11 @@ function osc_count_static_pages()
 function osc_has_static_pages() 
 {
 	$classLoader = ClassLoader::getInstance();
-	$view = $classLoader->getClassInstance( 'View' );
+	$view = $classLoader->getClassInstance( 'HtmlView' );
 
 	if (!$view->_exists('pages')) 
 	{
-		$view->_exportVariableToView('pages', $classLoader->getClassInstance( 'Model_Page' )->listAll(false));
+		$view->assign('pages', $classLoader->getClassInstance( 'Model_Page' )->listAll(false));
 	}
 	return $view->_next('pages');
 }
@@ -205,7 +208,7 @@ function osc_has_static_pages()
 function osc_reset_static_pages() 
 {
 	$classLoader = ClassLoader::getInstance();
-	$view = $classLoader->getClassInstance( 'View' );
+	$view = $classLoader->getClassInstance( 'HtmlView' );
 
 	return $view->_erase('pages');
 }

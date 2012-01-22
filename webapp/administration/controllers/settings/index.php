@@ -100,8 +100,8 @@ class CAdminSettings extends AdministrationController
 		default: // calling the view
 			$aLanguages = ClassLoader::getInstance()->getClassInstance( 'Model_Locale' )->listAllEnabled();
 			$aCurrencies = ClassLoader::getInstance()->getClassInstance( 'Model_Currency' )->listAll();
-			$this->getView()->_exportVariableToView('aLanguages', $aLanguages);
-			$this->getView()->_exportVariableToView('aCurrencies', $aCurrencies);
+			$this->getView()->assign('aLanguages', $aLanguages);
+			$this->getView()->assign('aCurrencies', $aCurrencies);
 			$this->doView('settings/index.php');
 			break;
 		}

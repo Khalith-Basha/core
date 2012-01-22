@@ -21,6 +21,32 @@
 
 $userForm = $classLoader->getClassInstance( 'Form_User' );
 ?>
+<!DOCTYPE HTML>
+<html lang="<?php echo str_replace( '_', '-', osc_current_user_locale() ); ?>">
+<head>
+<meta charset="UTF-8" />
+<meta http-equiv="Content-type" content="text/html; charset=UTF-8" />
+<meta name="description" content="<?php echo meta_description(); ?>" />
+<?php if( $view->hasMetaRobots() ): ?>
+<meta name="robots" content="<?php echo $view->getMetaRobots(); ?>" />
+<?php endif; ?>
+<meta http-equiv="Cache-Control" content="no-cache" />
+<meta http-equiv="Expires" content="Fri, Jan 01 1970 00:00:00 GMT" />
+<title><?php echo $view->getTitle(); ?></title>
+<link href="<?php echo osc_current_web_theme_url('combine.php?type=css&files=style.css,tabs.css'); ?>" rel="stylesheet" type="text/css" />
+<script type="text/javascript">
+var fileDefaultText = '<?php _e('No file selected', 'modern'); ?>';
+var fileBtnText     = '<?php _e('Choose File', 'modern'); ?>';
+</script>
+<script type="text/javascript" src="/static/scripts/jquery.js"></script>
+<script type="text/javascript" src="<?php echo osc_current_web_theme_url('combine.php?type=js&files=js/jquery-ui.js,js/jquery.uniform.js,js/global.js,js/tabber-minimized.js'); ?>"></script>
+<?php foreach( $view->getJavaScripts() as $js ): ?>
+<script type="text/javascript" src="<?php echo $js; ?>"></script>
+<?php endforeach; ?>
+
+</head>
+<body>
+       <div class="container">
 <div id="header">
     <a id="logo" href="<?php echo osc_base_url(); ?>"><strong><?php echo osc_page_title(); ?></strong></a>
     <div id="user_menu">

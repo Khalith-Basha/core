@@ -1,10 +1,8 @@
 <?php
 
-require_once 'osc/model/BadWord.php';
-
 function getBadWordsList( mysqli $conn )
 {
-	$badWordModel = new BadWordModel;
+	$badWordModel = ClassLoader::getInstance()->getClassInstance( 'Model_BadWord' );
 
 	$bwList = array(
 		'STRONG_BAD_WORD' => $badWordModel->getWordsBySeverity( 'STRONG' ),

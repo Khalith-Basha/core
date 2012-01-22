@@ -24,67 +24,65 @@ class CAdminPage extends AdministrationController
 	function __construct() 
 	{
 		parent::__construct();
-		//specific things for this class
-		$this->pageManager = ClassLoader::getInstance()->getClassInstance( 'Model_Page' );
+		$this->pageManager = $this->getClassLoader()->getClassInstance( 'Model_Page' );
 	}
 
 	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
-		$this->getView()->assign("page", array());
+		if (Params::getParam("id") == '') 
+		{
+			$this->redirectTo(osc_admin_base_url(true) . "?page=page");
+		}
+		$page = $this->pageManager->findByPrimaryKey(Params::getParam("id"));
+		$this->getView()->assign("page", $page );
 		$this->doView("pages/frm.php");
 	}
-	
+
 	public function doPost( HttpRequest $req, HttpResponse $res )
 	{
-		// setForm just in case the form fails
-		foreach (Params::getParamsAsArray() as $k => $v) 
-		{
-		$this->getSession()->_setForm($k, $v);
-		}
+		$id = Params::getParam("id");
 		$s_internal_name = Params::getParam("s_internal_name");
-		if ($s_internal_name == '') 
-		{
-			osc_add_flash_error_message(_m('You have to set an internal name'), 'admin');
-			$this->redirectTo(osc_admin_base_url(true) . "?page=page&action=add");
-		}
 		if (!ClassLoader::getInstance()->getClassInstance( 'WebThemes' )->isValidPage($s_internal_name)) 
 		{
 			osc_add_flash_error_message(_m('You have to set a different internal name'), 'admin');
-			$this->redirectTo(osc_admin_base_url(true) . "?page=page&action=add");
+			$this->redirectTo(osc_admin_base_url(true) . "?page=page?action=edit&id=" . $id);
 		}
-		$page = $this->pageManager->findByInternalName($s_internal_name);
-		if (!isset($page['pk_i_id'])) 
+		$aFieldsDescription = array();
+		$postParams = Params::getParamsAsArray();
+		$not_empty = false;
+		foreach ($postParams as $k => $v) 
 		{
-			$aFields = array('s_internal_name' => $s_internal_name, 'b_indelible' => '0');
-			$aFieldsDescription = array();
-			$postParams = Params::getParamsAsArray();
-			$not_empty = false;
-			foreach ($postParams as $k => $v) 
+			if (preg_match('|(.+?)#(.+)|', $k, $m)) 
 			{
-				if (preg_match('|(.+?)#(.+)|', $k, $m)) 
+				if ($m[2] == 's_title' && $v != '') 
 				{
-					if ($m[2] == 's_title' && $v != '') 
-					{
-						$not_empty = true;
-					}
-					$aFieldsDescription[$m[1]][$m[2]] = $v;
+					$not_empty = true;
+				};
+				$aFieldsDescription[$m[1]][$m[2]] = $v;
+			}
+		}
+		if ($not_empty) 
+		{
+			foreach ($aFieldsDescription as $k => $_data) 
+			{
+				$this->pageManager->updateDescription($id, $k, $_data['s_title'], $_data['s_text']);
+			}
+			if (!$this->pageManager->internalNameExists($id, $s_internal_name)) 
+			{
+				if (!$this->pageManager->isIndelible($id)) 
+				{
+					$this->pageManager->updateInternalName($id, $s_internal_name);
 				}
+				osc_add_flash_ok_message(_m('The page has been updated'), 'admin');
+				$this->redirectTo(osc_admin_base_url(true) . "?page=page");
 			}
-			if ($not_empty) 
-			{
-				$result = $this->pageManager->insert($aFields, $aFieldsDescription);
-				osc_add_flash_ok_message(_m('The page has been added'), 'admin');
-			}
-			else
-			{
-				osc_add_flash_error_message(_m('The page couldn\'t be added, at least one title should not be empty'), 'admin');
-			}
+			osc_add_flash_error_message(_m('You can\'t repeat internal name'), 'admin');
 		}
 		else
 		{
-			osc_add_flash_error_message(_m('Oops! That internal name is already in use. We can\'t made the changes'), 'admin');
+			osc_add_flash_error_message(_m('The page couldn\'t be updated, at least one title should not be empty'), 'admin');
 		}
-		$this->redirectTo(osc_admin_base_url(true) . "?page=page");
+		$this->redirectTo(osc_admin_base_url(true) . "?page=page?action=edit&id=" . $id);
 	}
 }
 

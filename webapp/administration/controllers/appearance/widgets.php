@@ -25,7 +25,7 @@ class CAdminAppearance extends AdministrationController
 		{
 		case 'widgets':
 			$info = ClassLoader::getInstance()->getClassInstance( 'WebThemes' )->loadThemeInfo(osc_theme());
-			$this->getView()->_exportVariableToView("info", $info);
+			$this->getView()->assign("info", $info);
 			$this->doView('appearance/widgets.php');
 			break;
 
@@ -36,7 +36,7 @@ class CAdminAppearance extends AdministrationController
 		case 'edit_widget':
 			$id = Params::getParam('id');
 			$widget = Widget::newInstance()->findByPrimaryKey($id);
-			$this->getView()->_exportVariableToView("widget", $widget);
+			$this->getView()->assign("widget", $widget);
 			$this->doView('appearance/add_widget.php');
 			break;
 

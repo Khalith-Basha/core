@@ -36,7 +36,7 @@ class CAdminItem extends AdministrationController
 		{
 			$this->getSession()->_dropKeepForm();
 		}
-		$this->getView()->_exportVariableToView("new_item", TRUE);
+		$this->getView()->assign("new_item", TRUE);
 		$this->doView('items/frm.php');
 	}
 

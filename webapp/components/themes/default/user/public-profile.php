@@ -51,19 +51,10 @@ if (osc_user_country() != '')
 }
 $location = implode(", ", $location_array);
 unset($location_array);
+
+echo $view->render( 'header' );
 ?>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="<?php
-echo str_replace('_', '-', osc_current_user_locale()); ?>">
-    <head>
-        <?php
-osc_current_web_theme_path('head.php'); ?>
-    </head>
-    <body>
-        <div class="container">
-            <?php
-osc_current_web_theme_path('header.php'); ?>
             <div class="content item">
                 <div id="item_head">
                     <div class="inner">
@@ -181,8 +172,6 @@ if (osc_logged_user_id() != osc_user_id())
                         <?php
 		} ?>
                         <ul id="error_list"></ul>
-                        <?php
-		$contactForm->js_validation(); ?>
                         <form action="<?php echo osc_base_url(true); ?>" method="post" name="contact_form" id="contact_form">
                             <input type="hidden" name="action" value="contact" />
                             <input type="hidden" name="page" value="user" />
@@ -235,12 +224,6 @@ if (osc_logged_user_id() != osc_user_id())
 } ?>
                 </div>
             </div>
-            <?php
-osc_current_web_theme_path('footer.php'); ?>
-        </div>
-        <?php
-osc_show_flash_message(); ?>
-        <?php
-osc_run_hook('footer'); ?>
-    </body>
-</html>
+<?php
+echo $view->render( 'footer' );
+

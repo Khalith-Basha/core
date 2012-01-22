@@ -17,7 +17,7 @@
  *
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 ?>
 <?php osc_show_widgets('footer'); ?>
 <div id="footer">
@@ -30,3 +30,10 @@
         <?php _e('This website is proudly using an <a title="OpenSourceClassifieds project" href="http://www.opensourceclassifieds.org/">open source classifieds</a> software.', 'modern'); ?>
     </div>
 </div>
+
+</div>
+<?php osc_show_flash_message(); ?>
+<?php osc_run_hook('footer'); ?>
+
+</body>
+</html>

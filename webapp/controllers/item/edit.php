@@ -39,7 +39,7 @@ class CWebItem extends Controller
 	function doModel() 
 	{
 		$locales = ClassLoader::getInstance()->getClassInstance( 'Model_Locale' )->listAllEnabled();
-		$this->getView()->_exportVariableToView('locales', $locales);
+		$this->getView()->assign('locales', $locales);
 		switch ($this->action) 
 		{
 		case 'item_edit': // edit item
@@ -55,7 +55,7 @@ class CWebItem extends Controller
 				{
 					$this->getSession()->_dropKeepForm();
 				}
-				$this->getView()->_exportVariableToView('item', $item);
+				$this->getView()->assign('item', $item);
 				osc_run_hook("before_item_edit", $item);
 				$this->doView('item-edit.php');
 			}
@@ -81,7 +81,7 @@ class CWebItem extends Controller
 			$item = $this->itemManager->listWhere("i.pk_i_id = '%s' AND ((i.s_secret = '%s' AND i.fk_i_user_id IS NULL) OR (i.fk_i_user_id = '%d'))", $id, $secret, $this->userId);
 			if (count($item) == 1) 
 			{
-				$this->getView()->_exportVariableToView('item', $item[0]);
+				$this->getView()->assign('item', $item[0]);
 				$mItems = new ItemActions(false);
 				// prepare data for ADD ITEM
 				$mItems->prepareData(false);

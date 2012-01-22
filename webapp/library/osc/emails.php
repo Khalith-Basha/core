@@ -337,7 +337,7 @@ function fn_email_item_inquiry($aItem)
 	$message = $aItem['message'];
 	$path = NULL;
 	$item = ClassLoader::getInstance()->getClassInstance( 'Model_Item' )->findByPrimaryKey($id);
-	View::newInstance()->_exportVariableToView('item', $item);
+	View::newInstance()->assign('item', $item);
 	$mPages = new Page();
 	$aPage = $mPages->findByInternalName('email_item_inquiry');
 	$locale = osc_current_user_locale();
@@ -405,7 +405,7 @@ function fn_email_new_comment_admin($aItem)
 	$admin_email = osc_contact_email();
 	$prefLocale = osc_language();
 	$item = ClassLoader::getInstance()->getClassInstance( 'Model_Item' )->findByPrimaryKey($itemId);
-	View::newInstance()->_exportVariableToView('item', $item);
+	View::newInstance()->assign('item', $item);
 	$itemURL = osc_item_url();
 	$itemURL = '<a href="' . $itemURL . '" >' . $itemURL . '</a>';
 	$mPages = new Page();
@@ -433,7 +433,7 @@ function fn_email_new_comment_admin($aItem)
 osc_add_hook('hook_email_new_comment_admin', 'fn_email_new_comment_admin');
 function fn_email_item_validation($item) 
 {
-	View::newInstance()->_exportVariableToView('item', $item);
+	View::newInstance()->assign('item', $item);
 	$title = osc_item_title();
 	$contactEmail = $item['s_contact_email'];
 	$contactName = $item['s_contact_name'];
@@ -489,7 +489,7 @@ function fn_email_item_validation($item)
 osc_add_hook('hook_email_item_validation', 'fn_email_item_validation');
 function fn_email_admin_new_item($item) 
 {
-	View::newInstance()->_exportVariableToView('item', $item);
+	View::newInstance()->assign('item', $item);
 	$title = osc_item_title();
 	$contactEmail = $item['s_contact_email'];
 	$contactName = $item['s_contact_name'];
@@ -548,7 +548,7 @@ function fn_email_admin_new_item($item)
 osc_add_hook('hook_email_admin_new_item', 'fn_email_admin_new_item');
 function fn_email_item_validation_non_register_user($item) 
 {
-	View::newInstance()->_exportVariableToView('item', $item);
+	View::newInstance()->assign('item', $item);
 	$mPages = new Page();
 	$aPage = $mPages->findByInternalName('email_item_validation_non_register_user');
 	$locale = osc_current_user_locale();
@@ -675,7 +675,7 @@ function fn_email_new_comment_user($aItem)
 	$admin_email = osc_contact_email();
 	$prefLocale = osc_language();
 	$item = ClassLoader::getInstance()->getClassInstance( 'Model_Item' )->findByPrimaryKey($itemId);
-	View::newInstance()->_exportVariableToView('item', $item);
+	View::newInstance()->assign('item', $item);
 	$itemURL = osc_item_url();
 	$itemURL = '<a href="' . $itemURL . '" >' . $itemURL . '</a>';
 	$mPages = new Page();

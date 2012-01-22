@@ -9,6 +9,9 @@
 
     var ts = parseInt((jQuery(window).height() - 270) / 22.9);
 
+    if( 'undefined' === typeof sSearchName )
+    	sSearchName = '';
+
     $(".dataTables_filter > input").attr("value", sSearchName);
     $(".dataTables_filter > input").css("color", "#777");
  

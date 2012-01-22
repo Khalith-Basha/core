@@ -40,9 +40,9 @@ class CAdminField extends AdministrationController
 				$selected[] = $cc['pk_i_id'];
 			}
 		}
-		$this->getView()->_exportVariableToView("categories", $categories);
-		$this->getView()->_exportVariableToView("default_selected", $selected);
-		$this->getView()->_exportVariableToView("fields", $this->fieldManager->listAll());
+		$this->getView()->assign("categories", $categories);
+		$this->getView()->assign("default_selected", $selected);
+		$this->getView()->assign("fields", $this->fieldManager->listAll());
 		$this->doView("fields/index.php");
 	}
 }
