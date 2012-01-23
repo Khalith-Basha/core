@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Affero General Public
  * License along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-class CWebUser extends WebSecBaseModel
+class CWebUser extends UserController
 {
 	function __construct() 
 	{
@@ -31,79 +31,13 @@ class CWebUser extends WebSecBaseModel
 	{
 		switch ($this->action) 
 		{
-		case ('dashboard'): //dashboard...
+		case ('dashboard'):
 			$max_items = (Params::getParam('max_items') != '') ? Params::getParam('max_items') : 5;
 			$aItems = ClassLoader::getInstance()->getClassInstance( 'Model_Item' )->findByUserIDEnabled($this->getSession()->_get('userId'), 0, $max_items);
 			//calling the view...
 			$this->getView()->assign('items', $aItems);
 			$this->getView()->assign('max_items', $max_items);
 			$this->doView('user/index.php');
-			break;
-
-		case ('change_email'): //change email
-			$this->doView('user-change_email.php');
-			break;
-
-		case ('change_email_post'): //change email post
-			if (!preg_match("/^[_a-z0-9-\+]+(\.[_a-z0-9-\+]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/", Params::getParam('new_email'))) 
-			{
-				osc_add_flash_error_message(_m('The specified e-mail is not valid'));
-				$this->redirectTo(osc_change_user_email_url());
-			}
-			else
-			{
-				$user = ClassLoader::getInstance()->getClassInstance( 'Model_User' )->findByEmail(Params::getParam('new_email'));
-				if (!isset($user['pk_i_id'])) 
-				{
-					$userEmailTmp = array();
-					$userEmailTmp['fk_i_user_id'] = $this->getSession()->_get('userId');
-					$userEmailTmp['s_new_email'] = Params::getParam('new_email');
-					UserEmailTmp::newInstance()->insertOrUpdate($userEmailTmp);
-					$code = osc_genRandomPassword(30);
-					$date = date('Y-m-d H:i:s');
-					$userManager = new User();
-					$userManager->update(array('s_pass_code' => $code, 's_pass_date' => $date, 's_pass_ip' => $_SERVER['REMOTE_ADDR']), array('pk_i_id' => $this->getSession()->_get('userId')));
-					$validation_url = osc_change_user_email_confirm_url($this->getSession()->_get('userId'), $code);
-					osc_run_hook('hook_email_new_email', Params::getParam('new_email'), $validation_url);
-					$this->redirectTo(osc_user_profile_url());
-				}
-				else
-				{
-					osc_add_flash_error_message(_m('The specified e-mail is already in use'));
-					$this->redirectTo(osc_change_user_email_url());
-				}
-			}
-			break;
-
-		case ('change_password'): //change password
-			$this->doView('user-change_password.php');
-			break;
-
-		case 'change_password_post': //change password post
-			$user = ClassLoader::getInstance()->getClassInstance( 'Model_User' )->findByPrimaryKey($this->getSession()->_get('userId'));
-			if ((Params::getParam('password') == '') || (Params::getParam('new_password') == '') || (Params::getParam('new_password2') == '')) 
-			{
-				osc_add_flash_warning_message(_m('Password cannot be blank'));
-				$this->redirectTo(osc_change_user_password_url());
-			}
-			if ($user['s_password'] != sha1(Params::getParam('password'))) 
-			{
-				osc_add_flash_error_message(_m('Current password doesn\'t match'));
-				$this->redirectTo(osc_change_user_password_url());
-			}
-			if (!Params::getParam('new_password')) 
-			{
-				osc_add_flash_error_message(_m('Passwords can\'t be empty'));
-				$this->redirectTo(osc_change_user_password_url());
-			}
-			if (Params::getParam('new_password') != Params::getParam('new_password2')) 
-			{
-				osc_add_flash_error_message(_m('Passwords don\'t match'));
-				$this->redirectTo(osc_change_user_password_url());
-			}
-			ClassLoader::getInstance()->getClassInstance( 'Model_User' )->update(array('s_password' => sha1(Params::getParam('new_password'))), array('pk_i_id' => $this->getSession()->_get('userId')));
-			osc_add_flash_ok_message(_m('Password has been changed'));
-			$this->redirectTo(osc_user_profile_url());
 			break;
 
 		case 'activate_alert':

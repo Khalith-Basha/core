@@ -30,7 +30,7 @@ class CAdminAjax extends AdministrationController
 		$error = 0;
 		try
 		{
-			$categoryManager = Category::newInstance();
+			$categoryManager = ClassLoader::getInstance()->getClassInstance( 'Model_Category' );
 			$categoryManager->deleteByPrimaryKey($id);
 			$message = __('The categories have been deleted');
 		}

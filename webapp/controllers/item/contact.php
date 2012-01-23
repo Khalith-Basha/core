@@ -49,7 +49,10 @@ class CWebItem extends Controller
 		}
 		else
 		{
-			$this->getView()->assign('item', $item);
+			$view = $this->getView();
+			$view->assign( 'item', $item );
+			$view->addJavaScript( osc_current_web_theme_js_url('jquery.validate.min.js') );
+			$view->addJavaScript( '/static/scripts/contact.js' );
 			if (osc_item_is_expired()) 
 			{
 				osc_add_flash_error_message(_m('We\'re sorry, but the item has expired. You can\'t contact the seller'));
@@ -57,7 +60,7 @@ class CWebItem extends Controller
 			}
 			if (osc_reg_user_can_contact() && osc_is_web_user_logged_in() || !osc_reg_user_can_contact()) 
 			{
-				$this->doView('item-contact.php');
+				echo $view->render( 'item/contact' );
 			}
 			else
 			{
@@ -85,7 +88,7 @@ class CWebItem extends Controller
 				
 			}
 		}
-		$category = Category::newInstance()->findByPrimaryKey($item['fk_i_category_id']);
+		$category = ClassLoader::getInstance()->getClassInstance( 'Model_Category' )->findByPrimaryKey($item['fk_i_category_id']);
 		if ($category['i_expiration_days'] > 0) 
 		{
 			$item_date = strtotime($item['pub_date']) + ($category['i_expiration_days'] * (24 * 3600));

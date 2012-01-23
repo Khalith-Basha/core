@@ -160,7 +160,7 @@ function osc_premium_category($locale = "")
 	if ($locale == "") $locale = osc_current_user_locale();
 	if (!ClassLoader::getInstance()->getClassInstance( 'View' )->_exists('premium_category')) 
 	{
-		ClassLoader::getInstance()->getClassInstance( 'View' )->assign('premium_category', Category::newInstance()->findByPrimaryKey(osc_premium_category_id()));
+		ClassLoader::getInstance()->getClassInstance( 'View' )->assign('premium_category', ClassLoader::getInstance()->getClassInstance( 'Model_Category' )->findByPrimaryKey(osc_premium_category_id()));
 	}
 	$category = ClassLoader::getInstance()->getClassInstance( 'View' )->_get('premium_category');
 	return (string)osc_field($category, "s_name", $locale);
@@ -176,7 +176,7 @@ function osc_premium_category_description($locale = "")
 	if ($locale == "") $locale = osc_current_user_locale();
 	if (!ClassLoader::getInstance()->getClassInstance( 'View' )->_exists('premium_category')) 
 	{
-		ClassLoader::getInstance()->getClassInstance( 'View' )->assign('premium_category', Category::newInstance()->findByPrimaryKey(osc_premium_category_id()));
+		ClassLoader::getInstance()->getClassInstance( 'View' )->assign('premium_category', ClassLoader::getInstance()->getClassInstance( 'Model_Category' )->findByPrimaryKey(osc_premium_category_id()));
 	}
 	$category = ClassLoader::getInstance()->getClassInstance( 'View' )->_get('premium_category');
 	return osc_field($category, "s_description", $locale);

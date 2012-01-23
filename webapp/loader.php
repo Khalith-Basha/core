@@ -31,27 +31,28 @@ if( false === $config->hasConfig( 'database' ) )
 }
 
 $classLoader->loadFile( 'plugins' );
-$classLoader->loadFile( 'helpers/hCategories' );
 $classLoader->loadFile( 'formatting' );
 $classLoader->loadFile( 'Form/Form' );
 $classLoader->loadFile( 'core/Controller' );
-
-require_once 'osc/Database/DAO.php';
-require_once 'osc/utils.php';
-require_once 'osc/Model/Preference.php';
-require_once 'osc/Model/Locale.php';
-require_once 'osc/core/Params.php';
-require_once 'osc/helpers/hPreference.php';
-require_once 'osc/helpers/hLocale.php';
-require_once 'osc/helpers/hTranslations.php';
-require_once 'osc/helpers/hDefines.php';
-require_once 'osc/helpers/hPlugins.php';
-require_once 'osc/helpers/hItems.php';
-require_once 'osc/helpers/hUtils.php';
-require_once 'osc/helpers/hSearch.php';
-require_once 'osc/helpers/hPage.php';
-require_once 'osc/helpers/hUsers.php';
-require_once 'osc/helpers/hMessages.php';
+$classLoader->loadFile( 'core/SecureController' );
+$classLoader->loadFile( 'core/UserController' );
+$classLoader->loadFile( 'core/Params' );
+$classLoader->loadFile( 'Database/DAO' );
+$classLoader->loadFile( 'utils' );
+$classLoader->loadFile( 'Model/Preference' );
+$classLoader->loadFile( 'Model/Locale' );
+$classLoader->loadFile( 'helpers/hCategories' );
+$classLoader->loadFile( 'helpers/hPreference' );
+$classLoader->loadFile( 'helpers/hLocale' );
+$classLoader->loadFile( 'helpers/hTranslations' );
+$classLoader->loadFile( 'helpers/hDefines' );
+$classLoader->loadFile( 'helpers/hPlugins' );
+$classLoader->loadFile( 'helpers/hItems' );
+$classLoader->loadFile( 'helpers/hUtils' );
+$classLoader->loadFile( 'helpers/hSearch' );
+$classLoader->loadFile( 'helpers/hPage' );
+$classLoader->loadFile( 'helpers/hUsers' );
+$classLoader->loadFile( 'helpers/hMessages' );
 
 $generalConfig = $config->getConfig( 'general' );
 define( 'WEB_PATH', $generalConfig['webUrl'] );

@@ -263,6 +263,12 @@ class Database_Connection
 
 	public function getConnection()
 	{
+		trigger_error( 'This function has been deprecated. Use getResource instead.', E_USER_NOTICE );
+		return $this->getResource();
+	}
+
+	public function getResource()
+	{
 		return $this->db;
 	}
 

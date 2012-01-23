@@ -110,7 +110,7 @@ class CAdminAjax extends AdministrationController
 			$orderParent = 0;
 			$orderSub = 0;
 			$catParent = 0;
-			$catManager = Category::newInstance();
+			$catManager = ClassLoader::getInstance()->getClassInstance( 'Model_Category' );
 			foreach ($aIds as $id => $parent) 
 			{
 				if ($parent == 'root') 
@@ -164,7 +164,7 @@ class CAdminAjax extends AdministrationController
 			break;
 
 		case 'category_edit_iframe':
-			$this->getView()->assign('category', Category::newInstance()->findByPrimaryKey(Params::getParam("id")));
+			$this->getView()->assign('category', ClassLoader::getInstance()->getClassInstance( 'Model_Category' )->findByPrimaryKey(Params::getParam("id")));
 			$this->getView()->assign('languages', ClassLoader::getInstance()->getClassInstance( 'Model_Locale' )->listAllEnabled());
 			$this->doView("categories/iframe.php");
 			break;
@@ -177,7 +177,7 @@ class CAdminAjax extends AdministrationController
 			};
 			$this->getView()->assign("selected", $selected);
 			$this->getView()->assign("field", Field::newInstance()->findByPrimaryKey(Params::getParam("id")));
-			$this->getView()->assign("categories", Category::newInstance()->toTreeAll());
+			$this->getView()->assign("categories", ClassLoader::getInstance()->getClassInstance( 'Model_Category' )->toTreeAll());
 			$this->doView("fields/iframe.php");
 			break;
 
@@ -258,7 +258,7 @@ class CAdminAjax extends AdministrationController
 			$error = 0;
 			$result = array();
 			$aUpdated = array();
-			$mCategory = Category::newInstance();
+			$mCategory = ClassLoader::getInstance()->getClassInstance( 'Model_Category' );
 			$aCategory = $mCategory->findByPrimaryKey($id);
 			if ($aCategory == false) 
 			{
@@ -315,7 +315,7 @@ class CAdminAjax extends AdministrationController
 			$error = 0;
 			try
 			{
-				$categoryManager = Category::newInstance();
+				$categoryManager = ClassLoader::getInstance()->getClassInstance( 'Model_Category' );
 				$categoryManager->deleteByPrimaryKey($id);
 				$message = __('The categories have been deleted');
 			}
@@ -374,7 +374,7 @@ class CAdminAjax extends AdministrationController
 			{
 				try
 				{
-					$categoryManager = Category::newInstance();
+					$categoryManager = ClassLoader::getInstance()->getClassInstance( 'Model_Category' );
 					$categoryManager->updateByPrimaryKey(array('fields' => $fields, 'aFieldsDescription' => $aFieldsDescription), $id);
 				}
 				catch(Exception $e) 

@@ -190,7 +190,7 @@ class CAdminSettings extends AdministrationController
 				if ($regionId != '') 
 				{
 					$mRegions->update(array('s_name' => $newRegion), array('pk_i_id' => $regionId));
-					ItemLocation::newInstance()->update(array('s_region' => $newRegion), array('fk_i_region_id' => $regionId));
+					ClassLoader::getInstance()->getClassInstance( 'Model_ItemLocation' )->update(array('s_region' => $newRegion), array('fk_i_region_id' => $regionId));
 					osc_add_flash_ok_message(sprintf(_m('%s has been edited'), $newRegion), 'admin');
 				}
 			}
@@ -241,7 +241,7 @@ class CAdminSettings extends AdministrationController
 			if (!isset($exists['pk_i_id']) || $exists['pk_i_id'] == $cityId) 
 			{
 				$mCities->update(array('s_name' => $newCity), array('pk_i_id' => $cityId));
-				ItemLocation::newInstance()->update(array('s_city' => $newCity), array('fk_i_city_id' => $cityId));
+				ClassLoader::getInstance()->getClassInstance( 'Model_ItemLocation' )->update(array('s_city' => $newCity), array('fk_i_city_id' => $cityId));
 				osc_add_flash_ok_message(sprintf(_m('%s has been edited'), $newCity), 'admin');
 			}
 			else

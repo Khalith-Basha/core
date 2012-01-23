@@ -205,7 +205,7 @@ function osc_validate_category($value)
 {
 	if (osc_validate_nozero($value)) 
 	{
-		$data = Category::newInstance()->findByPrimaryKey($value);
+		$data = ClassLoader::getInstance()->getClassInstance( 'Model_Category' )->findByPrimaryKey($value);
 		if (isset($data['b_enabled']) && $data['b_enabled'] == 1) 
 		{
 			if (osc_selectable_parent_categories()) 
@@ -278,7 +278,7 @@ function osc_validate_spam_delay($type = 'item')
 		$saved_as = 'last_submit_comment';
 	}
 	// check $_SESSION
-	if ((ClassLoader::getInstance()->getClassInstance( 'Session' )->_get($saved_as) + $delay) > time() || (Cookie::newInstance()->get_value($saved_as) + $delay) > time()) 
+	if ((ClassLoader::getInstance()->getClassInstance( 'Session' )->_get($saved_as) + $delay) > time() || (ClassLoader::getInstance()->getClassInstance( 'Cookie' )->get_value($saved_as) + $delay) > time()) 
 	{
 		return false;
 	}

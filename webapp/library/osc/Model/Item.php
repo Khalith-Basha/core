@@ -525,7 +525,7 @@ class Model_Item extends DAO
 		}
 		else
 		{
-			$aCategory = Category::newInstance()->findByPrimaryKey($item['fk_i_category_id']);
+			$aCategory = ClassLoader::getInstance()->getClassInstance( 'Model_Category' )->findByPrimaryKey($item['fk_i_category_id']);
 			$title = sprintf(__('%s in'), $aCategory['s_name']);
 			if (isset($item['s_city'])) 
 			{

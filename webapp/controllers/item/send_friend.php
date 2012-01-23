@@ -36,55 +36,50 @@ class CWebItem extends Controller
 			$this->user = null;
 		}
 	}
-	function doModel() 
+
+	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
 		$locales = ClassLoader::getInstance()->getClassInstance( 'Model_Locale' )->listAllEnabled();
-		$this->getView()->assign('locales', $locales);
-		switch ($this->action) 
-		{
-		case 'send_friend':
-			$item = $this->itemManager->findByPrimaryKey(Params::getParam('id'));
-			$this->getView()->assign('item', $item);
-			$this->doView('item/send-friend.php');
-			break;
+		$item = $this->itemManager->findByPrimaryKey(Params::getParam('id'));
 
-		case 'send_friend_post':
-			$item = $this->itemManager->findByPrimaryKey(Params::getParam('id'));
-			$this->getView()->assign('item', $item);
-			$this->getSession()->_setForm("yourEmail", Params::getParam('yourEmail'));
-			$this->getSession()->_setForm("yourName", Params::getParam('yourName'));
-			$this->getSession()->_setForm("friendName", Params::getParam('friendName'));
-			$this->getSession()->_setForm("friendEmail", Params::getParam('friendEmail'));
-			$this->getSession()->_setForm("message_body", Params::getParam('message'));
-			if ((osc_recaptcha_private_key() != '') && Params::existParam("recaptcha_challenge_field")) 
+		$view = $this->getView();
+		$view->assign('locales', $locales);
+		$view->assign('item', $item);
+		$view->addJavaScript( osc_current_web_theme_js_url('jquery.validate.min.js') );
+		$view->addJavaScript( '/static/scripts/send-friend.js' );
+		echo $view->render( 'item/send-friend' );
+	}
+
+	public function doPost( HttpRequest $req, HttpResponse $res )
+	{
+		$item = $this->itemManager->findByPrimaryKey(Params::getParam('id'));
+		$this->getView()->assign('item', $item);
+		$this->getSession()->_setForm("yourEmail", Params::getParam('yourEmail'));
+		$this->getSession()->_setForm("yourName", Params::getParam('yourName'));
+		$this->getSession()->_setForm("friendName", Params::getParam('friendName'));
+		$this->getSession()->_setForm("friendEmail", Params::getParam('friendEmail'));
+		$this->getSession()->_setForm("message_body", Params::getParam('message'));
+		if ((osc_recaptcha_private_key() != '') && Params::existParam("recaptcha_challenge_field")) 
+		{
+			if (!osc_check_recaptcha()) 
 			{
-				if (!osc_check_recaptcha()) 
-				{
-					osc_add_flash_error_message(_m('The Recaptcha code is wrong'));
-					$this->redirectTo(osc_item_send_friend_url());
-					return false; // BREAK THE PROCESS, THE RECAPTCHA IS WRONG
-					
-				}
-			}
-			$mItem = new ItemActions(false);
-			$success = $mItem->send_friend();
-			if ($success) 
-			{
-				$this->getSession()->_clearVariables();
-				$this->redirectTo(osc_item_url());
-			}
-			else
-			{
+				osc_add_flash_error_message(_m('The Recaptcha code is wrong'));
 				$this->redirectTo(osc_item_send_friend_url());
+				return false; // BREAK THE PROCESS, THE RECAPTCHA IS WRONG
+				
 			}
-			break;
+		}
+		$mItem = new ItemActions(false);
+		$success = $mItem->send_friend();
+		if ($success) 
+		{
+			$this->getSession()->_clearVariables();
+			$this->redirectTo(osc_item_url());
+		}
+		else
+		{
+			$this->redirectTo(osc_item_send_friend_url());
 		}
 	}
-	function doView($file) 
-	{
-		osc_run_hook("before_html");
-		osc_current_web_theme_path($file);
-		$this->getSession()->_clearVariables();
-		osc_run_hook("after_html");
-	}
 }
+

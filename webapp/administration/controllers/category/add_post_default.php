@@ -25,7 +25,7 @@ class CAdminCategory extends AdministrationController
 	{
 		parent::__construct();
 		//specific things for this class
-		$this->categoryManager = Category::newInstance();
+		$this->categoryManager = ClassLoader::getInstance()->getClassInstance( 'Model_Category' );
 	}
 
 	function doModel() 

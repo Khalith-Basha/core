@@ -110,7 +110,7 @@ class CAdminAjax extends AdministrationController
 			$orderParent = 0;
 			$orderSub = 0;
 			$catParent = 0;
-			$catManager = Category::newInstance();
+			$catManager = ClassLoader::getInstance()->getClassInstance( 'Model_Category' );
 			foreach ($aIds as $id => $parent) 
 			{
 				if ($parent == 'root') 
@@ -171,7 +171,7 @@ class CAdminAjax extends AdministrationController
 			};
 			$this->getView()->assign("selected", $selected);
 			$this->getView()->assign("field", Field::newInstance()->findByPrimaryKey(Params::getParam("id")));
-			$this->getView()->assign("categories", Category::newInstance()->toTreeAll());
+			$this->getView()->assign("categories", ClassLoader::getInstance()->getClassInstance( 'Model_Category' )->toTreeAll());
 			$this->doView("fields/iframe.php");
 			break;
 
@@ -252,7 +252,7 @@ class CAdminAjax extends AdministrationController
 			$error = 0;
 			$result = array();
 			$aUpdated = array();
-			$mCategory = Category::newInstance();
+			$mCategory = ClassLoader::getInstance()->getClassInstance( 'Model_Category' );
 			$aCategory = $mCategory->findByPrimaryKey($id);
 			if ($aCategory == false) 
 			{

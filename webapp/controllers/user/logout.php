@@ -17,28 +17,20 @@
  */
 class CWebUser extends Controller
 {
-	function __construct() 
-	{
-		parent::__construct();
-	}
-	function doModel() 
+	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
 		$session = $this->getSession();
 		$session->_drop('userId');
 		$session->_drop('userName');
 		$session->_drop('userEmail');
 		$session->_drop('userPhone');
-		Cookie::newInstance()->pop('oc_userId');
-		Cookie::newInstance()->pop('oc_userSecret');
-		Cookie::newInstance()->set();
-		$this->redirectTo(osc_base_url());
-	}
+		
+		$cookie = $this->getCookie();
+		$cookie->pop('oc_userId');
+		$cookie->pop('oc_userSecret');
+		$cookie->set();
 
-	function doView($file) 
-	{
-		osc_run_hook("before_html");
-		osc_current_web_theme_path($file);
-		$this->getSession()->_clearVariables();
-		osc_run_hook("after_html");
+		$this->redirectTo( osc_base_url() );
 	}
 }
+

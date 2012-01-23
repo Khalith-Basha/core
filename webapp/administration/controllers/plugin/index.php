@@ -56,8 +56,8 @@ class CAdminPlugin extends AdministrationController
 			if ($plugin != '') 
 			{
 				$plugin_data = $pluginManager->getInfo($plugin);
-				$this->getView()->assign("categories", Category::newInstance()->toTreeAll());
-				$this->getView()->assign("selected", PluginCategory::newInstance()->listSelected($plugin_data['short_name']));
+				$this->getView()->assign("categories", ClassLoader::getInstance()->getClassInstance( 'Model_Category' )->toTreeAll());
+				$this->getView()->assign("selected", PluginClassLoader::getInstance()->getClassInstance( 'Model_Category' )->listSelected($plugin_data['short_name']));
 				$this->getView()->assign("plugin_data", $plugin_data);
 				$this->doView("plugins/configuration.php");
 			}

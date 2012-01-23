@@ -18,11 +18,8 @@
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-abstract class Log
+abstract class Abstract_Logging_Logger
 {
-	private function __construct() 
-	{
-	}
 	/**
 	 * Log a message with the INFO level.
 	 * @param <type> $message
@@ -49,3 +46,26 @@ abstract class Log
 	 */
 	abstract function fatal($message = '', $caller = null);
 }
+
+class Logging_Logger extends Abstract_Logging_Logger
+{
+	public function info( $message = '', $caller = null )
+	{
+	}
+	public function warn( $message = '', $caller = null )
+	{
+	}
+	public function error( $message = '', $caller = null )
+	{
+	}
+	public function debug( $message = '', $caller = null )
+	{
+	}
+	public function fatal( $message = '', $caller = null )
+	{
+	}
+	public function insertLog()
+	{
+	}
+}
+

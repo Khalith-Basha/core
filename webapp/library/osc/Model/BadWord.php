@@ -2,7 +2,7 @@
 
 require_once 'osc/core/model.php';
 
-class Model_BadWordModel extends Model
+class Model_BadWord extends Model
 {
 	public function getWordsBySeverity( $severity )
 	{

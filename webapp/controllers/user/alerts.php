@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Affero General Public
  * License along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-class CWebUser extends WebSecBaseModel
+class CWebUser extends UserController
 {
 	function __construct() 
 	{
@@ -28,24 +28,22 @@ class CWebUser extends WebSecBaseModel
 	}
 	public function doModel() 
 	{
-		$aAlerts = Alerts::newInstance()->findByUser($this->getSession()->_get('userId'));
-		$user = ClassLoader::getInstance()->getClassInstance( 'Model_User' )->findByPrimaryKey($this->getSession()->_get('userId'));
+		$classLoader = ClassLoader::getInstance();
+		$aAlerts = $classLoader->getClassInstance( 'Model_Alerts' )->findByUser($this->getSession()->_get('userId'));
+		$user = $classLoader->getClassInstance( 'Model_User' )->findByPrimaryKey($this->getSession()->_get('userId'));
 		foreach ($aAlerts as $k => $a) 
 		{
 			$search = osc_unserialize(base64_decode($a['s_search']));
 			$search->limit(0, 3);
 			$aAlerts[$k]['items'] = $search->doSearch();
 		}
-		$this->getView()->assign('alerts', $aAlerts);
-		View::newInstance()->_reset('alerts');
-		$this->getView()->assign('user', $user);
-		$this->doView('user/alerts.php');
-	}
-	public function doView($file) 
-	{
-		osc_run_hook("before_html");
-		osc_current_web_theme_path($file);
+
+		$view = $this->getView();
+		$view->assign('alerts', $aAlerts);
+		$view->_reset('alerts');
+		$view->assign('user', $user);
+		echo $view->render( 'user/alerts' );
 		$this->getSession()->_clearVariables();
-		osc_run_hook("after_html");
 	}
 }
+

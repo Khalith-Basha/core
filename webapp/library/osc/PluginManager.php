@@ -347,7 +347,7 @@ class PluginManager
 
 	public function isThisCategory($name, $id) 
 	{
-		return PluginCategory::newInstance()->isThisCategory($name, $id);
+		return PluginClassLoader::getInstance()->getClassInstance( 'Model_Category' )->isThisCategory($name, $id);
 	}
 
 	public function getInfo($plugin) 

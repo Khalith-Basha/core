@@ -63,6 +63,9 @@ class CWebItem extends Controller
 		{
 			$cities = City::newInstance()->findByRegion($regions[0]['pk_i_id']);
 		}
+
+		$view = $this->getView();
+		$view->addJavaScript( osc_current_web_theme_js_url('jquery.validate.min.js') );
 		$this->getView()->assign('countries', $countries);
 		$this->getView()->assign('regions', $regions);
 		$this->getView()->assign('cities', $cities);

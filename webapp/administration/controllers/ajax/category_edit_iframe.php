@@ -26,7 +26,7 @@ class CAdminAjax extends AdministrationController
 
 	function doModel() 
 	{
-		$this->getView()->assign('category', Category::newInstance()->findByPrimaryKey(Params::getParam("id")));
+		$this->getView()->assign('category', ClassLoader::getInstance()->getClassInstance( 'Model_Category' )->findByPrimaryKey(Params::getParam("id")));
 		$this->getView()->assign('languages', ClassLoader::getInstance()->getClassInstance( 'Model_Locale' )->listAllEnabled());
 		osc_current_admin_theme_path("categories/iframe.php");
 	}

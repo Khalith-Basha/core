@@ -38,14 +38,18 @@ class CWebItem extends Controller
 	}
 	function doModel() 
 	{
-		$locales = ClassLoader::getInstance()->getClassInstance( 'Model_Locale' )->listAllEnabled();
+		$classLoader = ClassLoader::getInstance();
+		$classLoader->loadFile( 'helpers/hSecurity' );
+		$classLoader->loadFile( 'helpers/hSanitize' );
+		$classLoader->loadFile( 'helpers/hValidate' );
+		$locales = $classLoader->getClassInstance( 'Model_Locale' )->listAllEnabled();
 		$this->getView()->assign('locales', $locales);
 		if (osc_reg_user_post() && $this->user == null) 
 		{
 			osc_add_flash_warning_message(_m('Only registered users are allowed to post items'));
 			$this->redirectTo(osc_base_url(true));
 		}
-		$mItems = new ItemActions(false);
+		$mItems = $classLoader->getClassInstance( 'ItemActions', false, array( false ) );
 		$mItems->prepareData(true);
 		// set all parameters into session
 		foreach ($mItems->getData() as $key => $value) 
@@ -91,9 +95,11 @@ class CWebItem extends Controller
 			$itemId = Params::getParam('itemId');
 			$item = $this->itemManager->findByPrimaryKey($itemId);
 			osc_run_hook('posted_item', $item);
-			$category = Category::newInstance()->findByPrimaryKey(Params::getParam('catId'));
-			View::newInstance()->assign('category', $category);
-			$this->redirectTo(osc_search_category_url());
+			$category = ClassLoader::getInstance()->getClassInstance( 'Model_Category' )->findByPrimaryKey(Params::getParam('catId'));
+
+			$this->getView()->assign('category', $category);
+			$url = osc_search_category_url();
+			$this->redirectTo( $url );
 		}
 	}
 }

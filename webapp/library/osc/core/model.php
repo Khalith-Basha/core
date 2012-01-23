@@ -6,7 +6,9 @@ class Model
 
 	public function __construct()
 	{
-		$this->conn = ClassLoader::getInstance()->getClassInstance( 'Database_Connection' );
+		$this->conn = ClassLoader::getInstance()
+			->getClassInstance( 'Database_Connection' )
+			->getResource();
 	}
 
 	public function __destruct()

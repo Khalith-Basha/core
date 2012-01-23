@@ -52,7 +52,8 @@ function osc_user()
  */
 function osc_is_web_user_logged_in() 
 {
-	$session = ClassLoader::getInstance()->getClassInstance( 'Session' );
+	$classLoader = ClassLoader::getInstance();
+	$session = $classLoader->getClassInstance( 'Session' );
 	if ( $session->_get("userId") != '') 
 	{
 		$user = $classLoader->getClassInstance( 'Model_User' )->findByPrimaryKey( $session->_get("userId"));

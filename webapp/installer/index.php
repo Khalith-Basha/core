@@ -107,7 +107,7 @@ elseif ($step == 3)
 elseif ($step == 4) 
 {
 	require_once 'osc/model/Category.php';
-	$categories = Category::newInstance()->toTreeAll();
+	$categories = ClassLoader::getInstance()->getClassInstance( 'Model_Category' )->toTreeAll();
 	$numCols = 3;
 	$catsPerCol = ceil(count($categories) / $numCols);
 	require 'views/categories.php';

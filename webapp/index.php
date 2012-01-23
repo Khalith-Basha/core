@@ -52,9 +52,9 @@ if (!osc_users_enabled() && osc_is_web_user_logged_in())
 	$classLoader->getClassInstance( 'Session' )->_drop('userName');
 	$classLoader->getClassInstance( 'Session' )->_drop('userEmail');
 	$classLoader->getClassInstance( 'Session' )->_drop('userPhone');
-	Cookie::newInstance()->pop('oc_userId');
-	Cookie::newInstance()->pop('oc_userSecret');
-	Cookie::newInstance()->set();
+	ClassLoader::getInstance()->getClassInstance( 'Cookie' )->pop('oc_userId');
+	ClassLoader::getInstance()->getClassInstance( 'Cookie' )->pop('oc_userSecret');
+	ClassLoader::getInstance()->getClassInstance( 'Cookie' )->set();
 }
 
 $rewrite = $classLoader->getClassInstance( 'Rewrite' );

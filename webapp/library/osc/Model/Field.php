@@ -201,7 +201,7 @@ class Model_Field extends DAO
 			foreach ($categories as $c) 
 			{
 				$this->dao->insert(sprintf('%st_meta_categories', DB_TABLE_PREFIX), array('fk_i_category_id' => $c, 'fk_i_field_id' => $id));
-				$subcategories = Category::newInstance()->findSubcategories($c);
+				$subcategories = ClassLoader::getInstance()->getClassInstance( 'Model_Category' )->findSubcategories($c);
 				if (count($subcategories) > 0) 
 				{
 					foreach ($subcategories as $k => $v) 

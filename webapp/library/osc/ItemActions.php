@@ -144,18 +144,18 @@ class ItemActions
 				// Track spam delay: Session
 				ClassLoader::getInstance()->getClassInstance( 'Session' )->_set('last_submit_item', time());
 				// Track spam delay: Cookie
-				Cookie::newInstance()->set_expires(osc_time_cookie());
-				Cookie::newInstance()->push('last_submit_item', time());
-				Cookie::newInstance()->set();
+				ClassLoader::getInstance()->getClassInstance( 'Cookie' )->set_expires(osc_time_cookie());
+				ClassLoader::getInstance()->getClassInstance( 'Cookie' )->push('last_submit_item', time());
+				ClassLoader::getInstance()->getClassInstance( 'Cookie' )->set();
 			}
 			$itemId = $this->manager->dao->insertedId();
-			Log::newInstance()->insertLog('item', 'add', $itemId, current(array_values($aItem['title'])), $this->is_admin ? 'admin' : 'user', $this->is_admin ? osc_logged_admin_id() : osc_logged_user_id());
+			ClassLoader::getInstance()->getClassInstance( 'Logging_Logger' )->insertLog('item', 'add', $itemId, current(array_values($aItem['title'])), $this->is_admin ? 'admin' : 'user', $this->is_admin ? osc_logged_admin_id() : osc_logged_user_id());
 			Params::setParam('itemId', $itemId);
 			// INSERT title and description locales
 			$this->insertItemLocales('ADD', $aItem['title'], $aItem['description'], $itemId);
 			// INSERT location item
 			$location = array('fk_i_item_id' => $itemId, 'fk_c_country_code' => $aItem['countryId'], 's_country' => $aItem['countryName'], 'fk_i_region_id' => $aItem['regionId'], 's_region' => $aItem['regionName'], 'fk_i_city_id' => $aItem['cityId'], 's_city' => $aItem['cityName'], 's_city_area' => $aItem['cityArea'], 's_address' => $aItem['address']);
-			$locationManager = ItemLocation::newInstance();
+			$locationManager = ClassLoader::getInstance()->getClassInstance( 'Model_ItemLocation' );
 			$locationManager->insert($location);
 			$this->uploadItemResources($aItem['photos'], $itemId);
 			/**
@@ -171,7 +171,7 @@ class ItemActions
 			}
 			osc_run_hook('item_form_post', $aItem['catId'], $itemId);
 			// We need at least one record in t_item_stats
-			$mStats = new ItemStats();
+			$mStats = ClassLoader::getInstance()->getClassInstance( 'Model_ItemStats' );
 			$mStats->emptyRow($itemId);
 			$item = $this->manager->findByPrimaryKey($itemId);
 			$aItem['item'] = $item;
@@ -195,7 +195,7 @@ class ItemActions
 						ClassLoader::getInstance()->getClassInstance( 'Model_User' )->update(array('i_items' => $user['i_items'] + 1), array('pk_i_id' => $user['pk_i_id']));
 					}
 				}
-				CategoryClassLoader::getInstance()->getClassInstance( 'Stats' )->increaseNumItems($aItem['catId']);
+				ClassLoader::getInstance()->getClassInstance( 'Model_CategoryStats' )->increaseNumItems($aItem['catId']);
 				return 2;
 			}
 		}
@@ -209,7 +209,7 @@ class ItemActions
 	{
 		$conn = ClassLoader::getInstance()->getClassInstance( 'Database_Connection' );
 
-		$bwList = getBadWordsList( $conn );
+		$bwList = getBadWordsList( $conn->getResource() );
 
 		$item['status'] = null;
 
@@ -313,7 +313,7 @@ class ItemActions
 		else
 		{
 			$location = array('fk_c_country_code' => $aItem['countryId'], 's_country' => $aItem['countryName'], 'fk_i_region_id' => $aItem['regionId'], 's_region' => $aItem['regionName'], 'fk_i_city_id' => $aItem['cityId'], 's_city' => $aItem['cityName'], 's_city_area' => $aItem['cityArea'], 's_address' => $aItem['address']);
-			$locationManager = ItemLocation::newInstance();
+			$locationManager = ClassLoader::getInstance()->getClassInstance( 'Model_ItemLocation' );
 			$locationManager->update($location, array('fk_i_item_id' => $aItem['idItem']));
 			// Update category numbers
 			$old_item = $this->manager->findByPrimaryKey($aItem['idItem']);
@@ -328,7 +328,7 @@ class ItemActions
 			$this->insertItemLocales('EDIT', $aItem['title'], $aItem['description'], $aItem['idItem']);
 			// UPLOAD item resources
 			$this->uploadItemResources($aItem['photos'], $aItem['idItem']);
-			Log::newInstance()->insertLog('item', 'edit', $aItem['idItem'], current(array_values($aItem['title'])), $this->is_admin ? 'admin' : 'user', $this->is_admin ? osc_logged_admin_id() : osc_logged_user_id());
+			ClassLoader::getInstance()->getClassInstance( 'Logging_Logger' )->insertLog('item', 'edit', $aItem['idItem'], current(array_values($aItem['title'])), $this->is_admin ? 'admin' : 'user', $this->is_admin ? osc_logged_admin_id() : osc_logged_user_id());
 			/**
 			 * META FIELDS
 			 */
@@ -443,7 +443,7 @@ class ItemActions
 		if ($item['s_secret'] == $secret) 
 		{
 			$this->deleteResourcesFromHD($itemId);
-			Log::newInstance()->insertLog('item', 'delete', $itemId, $item['s_title'], $this->is_admin ? 'admin' : 'user', $this->is_admin ? osc_logged_admin_id() : osc_logged_user_id());
+			ClassLoader::getInstance()->getClassInstance( 'Logging_Logger' )->insertLog('item', 'delete', $itemId, $item['s_title'], $this->is_admin ? 'admin' : 'user', $this->is_admin ? osc_logged_admin_id() : osc_logged_user_id());
 			return $this->manager->deleteByPrimaryKey($itemId);
 		}
 		return false;
@@ -1005,7 +1005,7 @@ class ItemActions
 	{
 		if ($aResources != '') 
 		{
-			$wat = new Watermark();
+			$wat = ClassLoader::getInstance()->getClassInstance( 'Watermark' );
 			$itemResourceManager = ClassLoader::getInstance()->getClassInstance( 'Model_ItemResource' );
 			$numImagesItems = osc_max_images_per_item();
 			$numImages = $itemResourceManager->countResources($itemId);

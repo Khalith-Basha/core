@@ -502,7 +502,7 @@ function osc_premium_url($locale = '')
 	{
 		$sanitized_title = osc_sanitizeString(osc_premium_title());
 		$sanitized_category = '';
-		$cat = Category::newInstance()->hierarchy(osc_premium_category_id());
+		$cat = ClassLoader::getInstance()->getClassInstance( 'Model_Category' )->hierarchy(osc_premium_category_id());
 		for ($i = (count($cat)); $i > 0; $i--) 
 		{
 			$sanitized_category.= $cat[$i - 1]['s_slug'] . '/';
@@ -888,11 +888,11 @@ function osc_get_regions($country = '')
 	{
 		if ($country == '') 
 		{
-			return Region::newInstance()->listAll();
+			return ClassLoader::getInstance()->getClassInstance( 'Model_Region' )->listAll();
 		}
 		else
 		{
-			return Region::newInstance()->findByCountry($country);
+			return ClassLoader::getInstance()->getClassInstance( 'Model_Region' )->findByCountry($country);
 		}
 	}
 }
@@ -912,11 +912,11 @@ function osc_get_cities($region = '')
 	{
 		if ($region == '') 
 		{
-			return City::newInstance()->listAll();
+			return ClassLoader::getInstance()->getClassInstance( 'Model_City' )->listAll();
 		}
 		else
 		{
-			return City::newInstance()->findByRegion($region);
+			return ClassLoader::getInstance()->getClassInstance( 'Model_City' )->findByRegion($region);
 		}
 	}
 }

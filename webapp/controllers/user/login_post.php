@@ -117,10 +117,10 @@ class CWebUser extends Controller
 				require_once 'osc/helpers/hSecurity.php';
 				$secret = osc_genRandomPassword();
 				ClassLoader::getInstance()->getClassInstance( 'Model_User' )->update(array('s_secret' => $secret), array('pk_i_id' => $user['pk_i_id']));
-				Cookie::newInstance()->set_expires(osc_time_cookie());
-				Cookie::newInstance()->push('oc_userId', $user['pk_i_id']);
-				Cookie::newInstance()->push('oc_userSecret', $secret);
-				Cookie::newInstance()->set();
+				ClassLoader::getInstance()->getClassInstance( 'Cookie' )->set_expires(osc_time_cookie());
+				ClassLoader::getInstance()->getClassInstance( 'Cookie' )->push('oc_userId', $user['pk_i_id']);
+				ClassLoader::getInstance()->getClassInstance( 'Cookie' )->push('oc_userSecret', $secret);
+				ClassLoader::getInstance()->getClassInstance( 'Cookie' )->set();
 			}
 
 			$res->sendRedirection( $url_redirect );

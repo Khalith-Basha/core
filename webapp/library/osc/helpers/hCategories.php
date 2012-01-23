@@ -31,7 +31,7 @@
  */
 function osc_category() 
 {
-	$view = ClassLoader::getInstance()->getClassInstance( 'View' );
+	$view = ClassLoader::getInstance()->getClassInstance( 'HtmlView' );
 	if ($view->_exists('subcategories')) 
 	{
 		$category = $view->_current('subcategories');
@@ -64,7 +64,7 @@ function osc_category()
 function osc_get_categories() 
 {
 	$classLoader = ClassLoader::getInstance();
-	$view = $classLoader->getClassInstance( 'View' );
+	$view = $classLoader->getClassInstance( 'HtmlView' );
 	$category = $classLoader->getClassInstance( 'Model_Category' );
 	$view->assign('categories', $category->toTree());
 	return $view->_get('categories');
@@ -94,7 +94,7 @@ function osc_category_field($field, $locale = '')
  */
 function osc_priv_count_categories() 
 {
-	$view = ClassLoader::getInstance()->getClassInstance( 'View' );
+	$view = ClassLoader::getInstance()->getClassInstance( 'HtmlView' );
 	return $view->_count('categories');
 }
 /**
@@ -104,7 +104,7 @@ function osc_priv_count_categories()
  */
 function osc_priv_count_subcategories() 
 {
-	$view = ClassLoader::getInstance()->getClassInstance( 'View' );
+	$view = ClassLoader::getInstance()->getClassInstance( 'HtmlView' );
 	return $view->_count('subcategories');
 }
 /**
@@ -115,7 +115,7 @@ function osc_priv_count_subcategories()
 function osc_count_categories() 
 {
 	$classLoader = ClassLoader::getInstance();
-	$view = $classLoader->getClassInstance( 'View' );
+	$view = $classLoader->getClassInstance( 'HtmlView' );
 	if (!$view->_exists('categories')) 
 	{
 		$category = $classLoader->getClassInstance( 'Model_Category' );
@@ -131,7 +131,7 @@ function osc_count_categories()
 function osc_has_categories() 
 {
 	$classLoader = ClassLoader::getInstance();
-	$view = $classLoader->getClassInstance( 'View' );
+	$view = $classLoader->getClassInstance( 'HtmlView' );
 	if (!$view->_exists('categories')) 
 	{
 		$category = $classLoader->getClassInstance( 'Model_Category' );
@@ -147,7 +147,7 @@ function osc_has_categories()
  */
 function osc_count_subcategories() 
 {
-	$view = ClassLoader::getInstance()->getClassInstance( 'View' );
+	$view = ClassLoader::getInstance()->getClassInstance( 'HtmlView' );
 	$category = $view->_current('categories');
 	if ($category == '') return -1;
 	if (!isset($category['categories'])) return 0;
@@ -167,7 +167,7 @@ function osc_count_subcategories()
  */
 function osc_has_subcategories() 
 {
-	$view = ClassLoader::getInstance()->getClassInstance( 'View' );
+	$view = ClassLoader::getInstance()->getClassInstance( 'HtmlView' );
 	$category = $view->_current('categories');
 	if ($category == '') return -1;
 	if (!isset($category['categories'])) return false;
@@ -240,7 +240,7 @@ function osc_category_total_items()
  */
 function osc_goto_first_category() 
 {
-	$view = ClassLoader::getInstance()->getClassInstance( 'View' );
+	$view = ClassLoader::getInstance()->getClassInstance( 'HtmlView' );
 	$view->_reset('categories');
 }
 /**
@@ -251,7 +251,7 @@ function osc_goto_first_category()
 function osc_get_non_empty_categories() 
 {
 	$classLoader = ClassLoader::getInstance();
-	$view = $classLoader->getClassInstance( 'View' );
+	$view = $classLoader->getClassInstance( 'HtmlView' );
 	$category = $classLoader->getClassInstance( 'Model_Category' );
 	$aCategories = $category->toTree(false);
 	$view->assign('categories', $aCategories);

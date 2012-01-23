@@ -60,7 +60,7 @@ class CAdminAjax extends AdministrationController
 			{
 				try
 				{
-					$categoryManager = Category::newInstance();
+					$categoryManager = ClassLoader::getInstance()->getClassInstance( 'Model_Category' );
 					$categoryManager->updateByPrimaryKey(array('fields' => $fields, 'aFieldsDescription' => $aFieldsDescription), $id);
 				}
 				catch(Exception $e) 

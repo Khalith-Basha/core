@@ -49,7 +49,7 @@ class Model_CategoryStats extends DAO
 	{
 		$sql = sprintf('INSERT INTO %s (fk_i_category_id, i_num_items) VALUES (%d, 1) ON DUPLICATE KEY UPDATE i_num_items = i_num_items + 1', $this->getTableName(), $categoryId);
 		$return = $this->dao->query($sql);
-		$result = Category::newInstance()->findByPrimaryKey($categoryId);
+		$result = ClassLoader::getInstance()->getClassInstance( 'Model_Category' )->findByPrimaryKey($categoryId);
 		if ($return !== false) 
 		{
 			if ($result['fk_i_parent_id'] != NULL) 
@@ -102,7 +102,7 @@ class Model_CategoryStats extends DAO
 		}
 		if ($return !== false) 
 		{
-			$result = Category::newInstance()->findByPrimaryKey($categoryId);
+			$result = ClassLoader::getInstance()->getClassInstance( 'Model_Category' )->findByPrimaryKey($categoryId);
 			if ($result['fk_i_parent_id'] != NULL) 
 			{
 				$parent_res = $this->decreaseNumItems($result['fk_i_parent_id']);
@@ -194,18 +194,18 @@ class Model_CategoryStats extends DAO
 		$map = array();
 		$all = $this->listAll();
 		if (empty($all)) return array();
-		$roots = Category::newInstance()->findRootCategories();
+		$roots = ClassLoader::getInstance()->getClassInstance( 'Model_Category' )->findRootCategories();
 		foreach ($all as $a) $map[$a['fk_i_category_id']] = $a['i_num_items'];
 		$new_map = array();
 		foreach ($roots as $root) 
 		{
-			$root_description = Category::newInstance()->findByPrimaryKey($root['pk_i_id']);
+			$root_description = ClassLoader::getInstance()->getClassInstance( 'Model_Category' )->findByPrimaryKey($root['pk_i_id']);
 			$new_map['parent'][$root['pk_i_id']] = array('numItems' => @$map[$root['pk_i_id']], 's_name' => @$root_description['s_name']);
-			$subcategories = Category::newInstance()->findSubcategories($root['pk_i_id']);
+			$subcategories = ClassLoader::getInstance()->getClassInstance( 'Model_Category' )->findSubcategories($root['pk_i_id']);
 			$aux = array();
 			foreach ($subcategories as $sub) 
 			{
-				$sub_description = Category::newInstance()->findByPrimaryKey($sub['pk_i_id']);
+				$sub_description = ClassLoader::getInstance()->getClassInstance( 'Model_Category' )->findByPrimaryKey($sub['pk_i_id']);
 				$aux[$sub['pk_i_id']] = array('numItems' => $map[$sub['pk_i_id']], 's_name' => $sub_description['s_name']);
 			}
 			$new_map['subcategories'][$root['pk_i_id']] = $aux;
