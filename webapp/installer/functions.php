@@ -19,13 +19,12 @@
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 define( 'DEFAULT_TABLE_PREFIX', 'osc_');
+
 define( 'DEFAULT_CONFIG_FOLDER_PATH', implode(DIRECTORY_SEPARATOR, array(ABS_PATH, 'config', 'default')));
-define( 'DEFAULT_CONFIG_PATH', implode(DIRECTORY_SEPARATOR, array(DEFAULT_CONFIG_FOLDER_PATH, 'general.php')));
-define( 'SAMPLE_CONFIG_PATH', implode(DIRECTORY_SEPARATOR, array(ABS_PATH, 'installer', 'data', 'config-sample.php')));
+define( 'SAMPLE_CONFIG_FOLDER_PATH', implode(DIRECTORY_SEPARATOR, array(ABS_PATH, 'installer', 'data', 'config' )));
 
 function basic_info() 
 {
-	require_once 'osc/model/Admin.php';
 	require_once 'osc/helpers/hSecurity.php';
 	$admin = Params::getParam('s_name');
 	if ($admin == '') 
@@ -39,12 +38,21 @@ function basic_info()
 	}
 	$email = Params::getParam('email');
 	$webtitle = Params::getParam('webtitle');
-	Admin::newInstance()->insert(array('s_name' => 'Administrator', 's_username' => $admin, 's_password' => sha1($password), 's_email' => $email));
-	$mPreference = Preference::newInstance();
+
+	$classLoader = ClassLoader::getInstance();
+	$classLoader->getClassInstance( 'Model_Admin' )
+		->insert( array('s_name' => 'Administrator', 's_username' => $admin, 's_password' => sha1($password), 's_email' => $email) );
+
+	$mPreference = $classLoader->getClassInstance( 'Model_Preference' );
 	$mPreference->insert(array('s_section' => 'osclass', 's_name' => 'pageTitle', 's_value' => $webtitle, 'e_type' => 'STRING'));
 	$mPreference->insert(array('s_section' => 'osclass', 's_name' => 'contactEmail', 's_value' => $email, 'e_type' => 'STRING'));
+
+	$config = ClassLoader::getInstance()->getClassInstance( 'Config' );
+	$generalConfig = $config->getConfig( 'general' );
+	$webPath = $generalConfig['webUrl'];
+
 	$body = 'Welcome ' . $webtitle . ',<br/><br/>';
-	$body.= 'Your OpenSourceClassifieds installation at ' . WEB_PATH . ' is up and running. You can access to the administration panel with this data access:<br/>';
+	$body.= 'Your OpenSourceClassifieds installation at ' . $webPath . ' is up and running. You can access to the administration panel with this data access:<br/>';
 	$body.= '<ul>';
 	$body.= '<li>username: ' . $admin . '</li>';
 	$body.= '<li>password: ' . $password . '</li>';
@@ -77,8 +85,8 @@ function basic_info()
 	{
 		throw new Exception($email . ' - ' . $exception->errorMessage());
 	}
-	$return = array($admin, $password);
-	return $return;
+
+	return array( $admin, $password );
 }
 /*
  * The url of the site
@@ -88,8 +96,8 @@ function basic_info()
 function get_absolute_url() 
 {
 	$protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https' : 'http';
-	$pos = strpos($_SERVER['REQUEST_URI'], 'library');
-	return $protocol . '://' . $_SERVER['HTTP_HOST'] . substr($_SERVER['REQUEST_URI'], 0, $pos);
+	$pos = strpos( $_SERVER['REQUEST_URI'], '/installer' );
+	return $protocol . '://' . $_SERVER['HTTP_HOST'] . substr( $_SERVER['REQUEST_URI'], 0, $pos );
 }
 /*
  * The relative url on the domain url
@@ -99,7 +107,7 @@ function get_absolute_url()
 function get_relative_url() 
 {
 	$url = $_SERVER['REQUEST_URI'];
-	return substr($url, 0, strpos($url, '/library')) . "/";
+	return substr( $url, 0, strpos( $url, '/installer' ) );
 }
 /*
  * Get the requirements to install OpenSourceClassifieds
@@ -138,34 +146,26 @@ function get_requirements()
 	$config_writable = false;
 	$root_writable = false;
 	$config_sample = false;
-	if (file_exists( DEFAULT_CONFIG_PATH ) ) 
+
+	$configGeneralPath = DEFAULT_CONFIG_FOLDER_PATH . '/general.php';
+	$configDatabasePath = DEFAULT_CONFIG_FOLDER_PATH . '/database.php';
+
+	if( file_exists( $configGeneralPath ) || file_exists( $configDatabasePath ) )
 	{
-		if (is_writable( DEFAULT_CONFIG_PATH ) ) 
-		{
-			$config_writable = true;
-		}
-		$array['File <code>' . DEFAULT_CONFIG_PATH . '</code> is writable'] = array(
-			'check' => $config_writable,
-			'solution' => 'File <code>' . DEFAULT_CONFIG_PATH . '</code> has to be writable, i.e.: <code>chmod a+w ' . DEFAULT_CONFIG_PATH . '</code>'
+		$array['File <code>' . $configGeneralPath . '</code> is writable'] = array(
+			'check' => file_exists( $configGeneralPath ) && is_writable( $configGeneralPath ),
+			'solution' => 'File <code>' . $configGeneralPath . '</code> has to be writable, i.e.: <code>chmod a+w ' . $configGeneralPath . '</code>'
+		);
+		$array['File <code>' . $configDatabasePath . '</code> is writable'] = array(
+			'check' => file_exists( $configDatabasePath ) && is_writable( $configDatabasePath ),
+			'solution' => 'File <code>' . $configDatabasePath . '</code> has to be writable, i.e.: <code>chmod a+w ' . $configDatabasePath . '</code>'
 		);
 	}
 	else
 	{
-		if (is_writable( DEFAULT_CONFIG_FOLDER_PATH )) 
-		{
-			$root_writable = true;
-		}
-		$array['Config directory is writable'] = array(
-			'check' => $root_writable,
-			'solution' => 'Config folder has to be writable, i.e.: <code>chmod a+w ' . DEFAULT_CONFIG_FOLDER_PATH . '</code>'
-		);
-		if (file_exists( SAMPLE_CONFIG_PATH )) 
-		{
-			$config_sample = true;
-		}
-		$array['File <code>' . SAMPLE_CONFIG_PATH . '</code> exists'] = array(
-			'check' => $config_sample,
-			'solution' => 'File <code>' . SAMPLE_CONFIG_PATH . '</code> is required, you should download OpenSourceClassifieds again.'
+		$array['Config directory "' . DEFAULT_CONFIG_FOLDER_PATH . '" is writable'] = array(
+			'check' => is_dir( DEFAULT_CONFIG_FOLDER_PATH ) && is_writable( DEFAULT_CONFIG_FOLDER_PATH ),
+			'solution' => 'Config folder "' . DEFAULT_CONFIG_FOLDER_PATH . '" has to be writable, i.e.: <code>chmod a+w ' . DEFAULT_CONFIG_FOLDER_PATH . '</code>'
 		);
 	}
 	return $array;
@@ -249,7 +249,9 @@ function oc_install()
 		unset($comm);
 		unset($master_conn);
 	}
-	$conn = new Database_Connection($dbhost, $username, $password, $dbname);
+	if( !defined( 'DB_TABLE_PREFIX' ) )
+		define( 'DB_TABLE_PREFIX', $tableprefix );
+	$conn = ClassLoader::getInstance()->getClassInstance( 'Database_Connection', true, array( $dbhost, $username, $password, $dbname, $tableprefix ) );
 	$error_num = $conn->getErrorLevel();
 	if ($error_num > 0) 
 	{
@@ -276,13 +278,14 @@ function oc_install()
 			break;
 		}
 	}
+	/*
 	if (!is_writable(DEFAULT_CONFIG_PATH)) 
 	{
 		return array('error' => 'Cannot write in ' . DEFAULT_CONFIG_PATH . ' file. Check if the file is writable.');
 	}
+	*/
 	create_config_file($dbname, $username, $password, $dbhost, $tableprefix);
 
-	require DEFAULT_CONFIG_PATH;
 	$sql = file_get_contents(ABS_PATH . '/installer/data/struct.sql');
 	$c_db = $conn->getOsclassDb();
 	$comm = new Database_Command($c_db);
@@ -356,52 +359,34 @@ function oc_install()
 */
 function create_config_file($dbname, $username, $password, $dbhost, $tableprefix) 
 {
-	$abs_url = get_absolute_url();
-	$rel_url = get_relative_url();
-	$config_text = <<<CONFIG
-<?php
+	$config = ClassLoader::getInstance()->getClassInstance( 'Config' );
+	$configDatabasePath = $config->getConfigPath( 'database' );
+	$configDatabase = file_get_contents( ABS_PATH . '/installer/data/config/database.php' );
+	$configDatabase = str_replace(
+		array( '##DB_HOST##', '##DB_USER##', '##DB_PASSWORD##', '##DB_NAME##', '##DB_TABLE_PREFIX##' ),
+		array( $dbhost, $username, $password, $dbname, $tableprefix ),
+		$configDatabase
+	);
+	file_put_contents( $configDatabasePath, $configDatabase );
 
-/** MySQL database name */
-define('DB_NAME', '$dbname');
-
-/** MySQL database username */
-define('DB_USER', '$username');
-
-/** MySQL database password */
-define('DB_PASSWORD', '$password');
-
-/** MySQL hostname */
-define('DB_HOST', '$dbhost');
-
-/** Database Table prefix */
-define('DB_TABLE_PREFIX', '$tableprefix');
-
-define('REL_WEB_URL', '$rel_url');
-
-define('WEB_PATH', '$abs_url');
-
-CONFIG;
-	$ds = DIRECTORY_SEPARATOR;
-	$configPath = ABS_PATH . $ds . 'config' . $ds . 'default' . $ds . 'general.php';
-	file_put_contents( $configPath, $config_text );
+	$configGeneralPath = $config->getConfigPath( 'general' );
+	$configGeneral = file_get_contents( ABS_PATH . '/installer/data/config/general.php' );
+	$configGeneral = str_replace(
+		array( '##RELATIVE_WEB_URL##', '##WEB_URL##' ),
+		array( get_absolute_url(), get_relative_url() ),
+		$configGeneral
+	);
+	file_put_contents( $configGeneralPath, $configGeneral);
 }
+
 function is_osclass_installed() 
 {
-	if( file_exists( DEFAULT_CONFIG_PATH ) ) 
-	{
-		require DEFAULT_CONFIG_PATH;
-		
-		if( !defined( 'DB_HOST' ) )
-			return false;
-
-		return true;
-	}
-
+	/** TODO: FIX THIS! */
 	return false;
 }
 function ping_search_engines($bool) 
 {
-	$mPreference = Preference::newInstance();
+	$mPreference = ClassLoader::getInstance()->getClassInstance( 'Model_Preference' );
 	if ($bool == 1) 
 	{
 		$mPreference->insert(array('s_section' => 'osclass', 's_name' => 'ping_search_engines', 's_value' => '1', 'e_type' => 'BOOLEAN'));
@@ -419,17 +404,16 @@ function ping_search_engines($bool)
 }
 function display_finish($password) 
 {
-	require_once 'osc/model/Admin.php';
-	require_once 'osc/model/Category.php';
-	require_once 'osc/model/Item.php';
+	$classLoader = ClassLoader::getInstance();
+	require_once 'osc/Model/Item.php';
 	require_once 'osc/helpers/hPlugins.php';
 	require_once 'osc/plugins.php';
 	$data = array();
-	$mAdmin = new Admin();
-	$mPreference = Preference::newInstance();
+	$mAdmin = $classLoader->getClassInstance( 'Model_Admin' );
+	$mPreference = $classLoader->getClassInstance( 'Model_Preference' );
 	$mPreference->insert(array('s_section' => 'osclass', 's_name' => 'osclass_installed', 's_value' => '1', 'e_type' => 'BOOLEAN'));
 	// update categories
-	$mCategories = new Category();
+	$mCategories = $classLoader->getClassInstance( 'Model_Category' );
 	if (Params::getParam('submit') != '') 
 	{
 		$categories = Params::getParam('categories');

@@ -55,6 +55,21 @@ if (is_osclass_installed()&&false)
 	$message = 'You appear to have already installed OpenSourceClassifieds. To reinstall please clear your old database tables first.';
 	osc_die('OpenSourceClassifieds &raquo; Error', $message);
 }
+
+if( $step >= 4 )
+{
+	$config = ClassLoader::getInstance()->getClassInstance( 'Config' );
+	$databaseConfig = $config->getConfig( 'database' );
+	if( !defined( 'DB_TABLE_PREFIX' ) )
+		define( 'DB_TABLE_PREFIX', $databaseConfig['tablePrefix'] );
+	$conn = ClassLoader::getInstance()
+		->getClassInstance(
+			'Database_Connection',
+			true,
+			array( $databaseConfig['host'], $databaseConfig['user'], $databaseConfig['password'], $databaseConfig['name'], $databaseConfig['tablePrefix'] )
+		);
+}
+
 switch ($step) 
 {
 case 1:
@@ -113,7 +128,6 @@ elseif ($step == 3)
 }
 elseif ($step == 4) 
 {
-	require_once 'osc/model/Category.php';
 	$categories = ClassLoader::getInstance()->getClassInstance( 'Model_Category' )->toTreeAll();
 	$numCols = 3;
 	$catsPerCol = ceil(count($categories) / $numCols);
