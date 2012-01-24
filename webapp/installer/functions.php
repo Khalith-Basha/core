@@ -285,7 +285,7 @@ function oc_install()
 	require DEFAULT_CONFIG_PATH;
 	$sql = file_get_contents(ABS_PATH . '/installer/data/struct.sql');
 	$c_db = $conn->getOsclassDb();
-	$comm = new DBCommandClass($c_db);
+	$comm = new Database_Command($c_db);
 	$comm->importSQL($sql);
 	$error_num = $comm->getErrorLevel();
 	if ($error_num > 0) 
@@ -302,8 +302,8 @@ function oc_install()
 		}
 	}
 	require_once 'osc/locales.php';
-	require_once 'osc/model/Locale.php';
-	$localeManager = ClassLoader::getInstance()->getClassInstance( 'Model_Locale' );
+	require_once 'osc/Model/Locale.php';
+	$localeManager = new Model_Locale;
 	$locales = osc_listLocales();
 	foreach ($locales as $locale) 
 	{

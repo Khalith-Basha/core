@@ -20,10 +20,6 @@
 */
 class CAdminTool extends AdministrationController
 {
-	function __construct() 
-	{
-		parent::__construct();
-	}
 	function doModel() 
 	{
 		switch ($this->action) 
@@ -38,9 +34,9 @@ class CAdminTool extends AdministrationController
 			if (isset($sql['size']) && $sql['size'] != 0) 
 			{
 				$content_file = file_get_contents($sql['tmp_name']);
-				$conn = Database_Connection::newInstance();
+				$conn = $this->getClassLoader()->getClassInstance( 'Database_Connection' );
 				$c_db = $conn->getOsclassDb();
-				$comm = new DBCommandClass($c_db);
+				$comm = $this->getClassLoader()->getClassInstance( 'Database_Command', false, array( $c_db ) );
 				if ($comm->importSQL($content_file)) 
 				{
 					osc_add_flash_ok_message(_m('Import complete'), 'admin');

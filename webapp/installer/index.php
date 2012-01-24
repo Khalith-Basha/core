@@ -21,15 +21,22 @@
 define('ABS_PATH', dirname(dirname(__FILE__)));
 define('CONTENT_PATH', ABS_PATH . '/components');
 define('TRANSLATIONS_PATH', CONTENT_PATH . '/languages');
-set_include_path(get_include_path() . PATH_SEPARATOR . ABS_PATH . '/library');
-require_once 'osc/Logger/Logger.php';
-require_once 'osc/classes/database/Database_Connection.php';
-require_once 'osc/classes/database/DBCommandClass.php';
-require_once 'osc/classes/database/Database_Collection.php';
-require_once 'osc/classes/database/DAO.php';
-require_once 'osc/core/Session.php';
+define( 'LIBRARY_PATH', ABS_PATH . '/library' );
+set_include_path(get_include_path() . PATH_SEPARATOR . LIBRARY_PATH );
+
+require 'osc/ClassLoader.php';
+
+$classLoader = ClassLoader::getInstance();
+$classLoader->addSearchPath( LIBRARY_PATH . '/osc' );
+
+require_once 'osc/Logging/Logger.php';
+require_once 'osc/Database/Connection.php';
+require_once 'osc/Database/Command.php';
+require_once 'osc/Database/Collection.php';
+require_once 'osc/Database/DAO.php';
+require_once 'osc/Session.php';
 require_once 'osc/core/Params.php';
-require_once 'osc/model/Preference.php';
+require_once 'osc/Model/Preference.php';
 require_once 'osc/helpers/hDefines.php';
 require_once 'osc/helpers/hErrors.php';
 require_once 'osc/helpers/hLocale.php';
