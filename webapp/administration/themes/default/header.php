@@ -15,35 +15,45 @@
  * You should have received a copy of the GNU Affero General Public
  * License along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+$styleSheets = array(
+	'backoffice.css',
+	'jquery-ui.css',
+	'demo_table.css',
+	'admins_list_layout.css',
+	'new_item_layout.css',
+	'item_list_layout.css',
+	'tabs.css',
+	'appearance_layout.css',
+	'languages_layout.css',
+	'settings_layout.css',
+	'location_layout.css',
+	'cat_list_layout.css'
+);
+$javaScripts = array(
+	'jquery-ui.js',
+	'jquery.cookie.js',
+	'jquery.json.js',
+	'jquery.uniform.js',
+	'osclass_datatables.js',
+	'tabber-minimized.js',
+	'tiny_mce/tiny_mce.js',
+	'jquery.validate.min.js',
+	'jquery.dataTables.min.js'
+);
 ?>
 <!DOCTYPE HTML>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title><?php _e('OpenSourceClassifieds Admin Panel'); ?></title>
 
-	<link href="<?php echo osc_current_admin_theme_styles_url('backoffice.css'); ?>" rel="stylesheet" type="text/css" />
-	<link href="<?php echo osc_current_admin_theme_styles_url('jquery-ui.css'); ?>" rel="stylesheet" type="text/css" />
-	<link href="<?php echo osc_current_admin_theme_styles_url('demo_table.css'); ?>" rel="stylesheet" type="text/css" />
-	<link href="<?php echo osc_current_admin_theme_styles_url('admins_list_layout.css'); ?>" rel="stylesheet" type="text/css" />
-	<link href="<?php echo osc_current_admin_theme_styles_url('new_item_layout.css'); ?>" rel="stylesheet" type="text/css" />
-	<link href="<?php echo osc_current_admin_theme_styles_url('item_list_layout.css'); ?>" rel="stylesheet" type="text/css" />
-	<link href="<?php echo osc_current_admin_theme_styles_url('tabs.css'); ?>" rel="stylesheet" type="text/css" />
-	<link href="<?php echo osc_current_admin_theme_styles_url('appearance_layout.css'); ?>" rel="stylesheet" type="text/css" />
-	<link href="<?php echo osc_current_admin_theme_styles_url('languages_layout.css'); ?>" rel="stylesheet" type="text/css" />
-	<link href="<?php echo osc_current_admin_theme_styles_url('settings_layout.css'); ?>" rel="stylesheet" type="text/css" />
-	<link href="<?php echo osc_current_admin_theme_styles_url('location_layout.css'); ?>" rel="stylesheet" type="text/css" />
-	<link href="<?php echo osc_current_admin_theme_styles_url('cat_list_layout.css'); ?>" rel="stylesheet" type="text/css" />
+	<?php foreach( $styleSheets as $ss ): ?>
+	<link href="<?php echo osc_current_admin_theme_styles_url( $ss ); ?>" rel="stylesheet" type="text/css" />
+	<?php endforeach; ?>
 
 	<script type="text/javascript" src="/static/scripts/jquery-1.7.1.min.js"></script>
-	<script type="text/javascript" src="<?php echo osc_current_admin_theme_js_url('jquery-ui.js'); ?>"></script>
-	<script type="text/javascript" src="<?php echo osc_current_admin_theme_js_url('jquery.cookie.js'); ?>"></script>
-	<script type="text/javascript" src="<?php echo osc_current_admin_theme_js_url('jquery.json.js'); ?>"></script>
-	<script type="text/javascript" src="<?php echo osc_current_admin_theme_js_url('jquery.uniform.js'); ?>"></script>
-	<script type="text/javascript" src="<?php echo osc_current_admin_theme_js_url('osclass_datatables.js'); ?>"></script>
-	<script type="text/javascript" src="<?php echo osc_current_admin_theme_js_url('tabber-minimized.js'); ?>"></script>
-	<script type="text/javascript" src="<?php echo osc_current_admin_theme_js_url('tiny_mce/tiny_mce.js'); ?>"></script>
-	<script type="text/javascript" src="<?php echo osc_current_admin_theme_js_url('jquery.validate.min.js'); ?>"></script>
-	<script type="text/javascript" src="<?php echo osc_current_admin_theme_js_url('jquery.dataTables.min.js'); ?>"></script>
+	<?php foreach( $javaScripts as $js ): ?>
+	<script type="text/javascript" src="<?php echo osc_current_admin_theme_js_url( $js ); ?>"></script>
+	<?php endforeach; ?>
 
 	<script type="text/javascript">
 	    $(function() {
@@ -65,7 +75,7 @@
 	    });
 	</script>
 
-	<script>
+	<script type="text/javascript">
 	    var fileDefaultText = '<?php _e('No file selected', 'modern'); ?>';
 	    var fileBtnText     = '<?php _e('Choose File', 'modern'); ?>';
 	</script>
@@ -83,8 +93,7 @@
 	<div id="content">
             <div id="separator"></div>
 
-            <?php
-osc_current_admin_theme_path('include/backoffice_menu.php'); ?>
+            <?php osc_current_admin_theme_path('include/backoffice_menu.php'); ?>
             
             <div id="right_column">
 

@@ -22,6 +22,17 @@
 class Session
 {
 	private $session;
+	private $config;
+
+	public function __construct()
+	{
+		$this->session = $this->config = null;
+	}
+
+	public function setConfig( Config $config )
+	{
+		$this->config = $config;
+	}
 
 	public function start() 
 	{
@@ -43,9 +54,12 @@ class Session
 		}
 	}
 
+	/**
+	 * @return boolean
+	 */
 	public function destroy() 
 	{
-		session_destroy();
+		return session_destroy();
 	}
 
 	function _set($key, $value) 

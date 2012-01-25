@@ -17,36 +17,20 @@
  *
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
+
+echo $view->render( 'header' );
 ?>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="<?php
-echo str_replace('_', '-', osc_current_user_locale()); ?>">
-    <head>
-        <?php
-osc_current_web_theme_path('head.php'); ?>
-        <meta name="robots" content="noindex, nofollow" />
-        <meta name="googlebot" content="noindex, nofollow" />
-    </head>
-    <body>
-        <div class="container">
-            <?php
-osc_current_web_theme_path('header.php'); ?>
             <div class="content user_account">
                 <h1>
-                    <strong><?php
-_e('User account manager', 'modern'); ?></strong>
+                    <strong><?php _e('User account manager', 'modern'); ?></strong>
                 </h1>
                 <div id="sidebar">
-                    <?php
-echo osc_private_user_menu(); ?>
+                    <?php echo osc_private_user_menu(); ?>
                 </div>
                 <div id="main">
-                    <h2><?php
-_e('Your items', 'modern'); ?> <a href="<?php
-echo osc_item_post_url(); ?>">+ <?php
-_e('Post a new item', 'modern'); ?></a></h2>
+                    <h2><?php _e('Your items', 'modern'); ?> <a href="<?php echo osc_item_post_url(); ?>">+ <?php _e('Post a new item', 'modern'); ?></a></h2>
                     <?php
 if (osc_count_items() == 0) 
 { ?>
@@ -118,12 +102,6 @@ else
 } ?>
                 </div>
             </div>
-            <?php
-osc_current_web_theme_path('footer.php'); ?>
-        </div>
-        <?php
-osc_show_flash_message(); ?>
-        <?php
-osc_run_hook('footer'); ?>
-    </body>
-</html>
+<?php
+echo $view->render( 'footer' );
+

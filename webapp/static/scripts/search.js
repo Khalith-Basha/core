@@ -37,3 +37,29 @@ function doSearch()
         return true;
 }
 
+                    $(function() {
+                        function log( message ) {
+                            $( "<div/>" ).text( message ).prependTo( "#log" );
+                            $( "#log" ).attr( "scrollTop", 0 );
+                        }
+
+                        $( "#sCity" ).autocomplete({
+                            source: "<?php echo osc_base_url(true); ?>?page=ajax&action=location",
+                            minLength: 2,
+                            select: function( event, ui ) {
+                                log( ui.item ?
+                                    "<?php _e('Selected', 'modern'); ?>: " + ui.item.value + " aka " + ui.item.id :
+                                    "<?php _e('Nothing selected, input was', 'modern'); ?> " + this.value );
+                            }
+                        });
+                    });
+                    
+                    function checkEmptyCategories() {
+                        var n = $("input[id*=cat]:checked").length;
+                        if(n>0) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }
+

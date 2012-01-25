@@ -28,7 +28,6 @@ class Form_Item extends Form
 		};
 		parent::generic_input_hidden("id", $item["pk_i_id"]);
 	}
-	// OK
 	public function category_select($categories = null, $item = null, $default_item = null, $parent_selectable = false) 
 	{
 		// Did user select a specific category to post in?
@@ -88,7 +87,6 @@ class Form_Item extends Form
 		echo '</select>';
 		return true;
 	}
-	// OK
 	public function subcategory_select($categories, $item, $default_item = null, $deep = 0) 
 	{
 		// Did user select a specific category to post in?
@@ -114,7 +112,6 @@ class Form_Item extends Form
 			}
 		}
 	}
-	// OK
 	public function user_select($users = null, $item = null, $default_item = null) 
 	{
 		if ($users == null) 
@@ -154,19 +151,16 @@ class Form_Item extends Form
 		echo '</select>';
 		return true;
 	}
-	// OK
 	public function title_input($name, $locale = 'en_US', $value = '') 
 	{
 		parent::generic_input_text($name . '[' . $locale . ']', $value);
 		return true;
 	}
-	// OK
 	public function description_textarea($name, $locale = 'en_US', $value = '') 
 	{
 		parent::generic_textarea($name . '[' . $locale . ']', $value);
 		return true;
 	}
-	// OK
 	public function multilanguage_title_description($locales = null, $item = null) 
 	{
 		if ($locales == null) 
@@ -234,7 +228,6 @@ class Form_Item extends Form
 			echo '</div>';
 		};
 	}
-	// OK
 	public function price_input_text($item = null) 
 	{
 		if ($item == null) 
@@ -247,7 +240,6 @@ class Form_Item extends Form
 		}
 		parent::generic_input_text('price', (isset($item['i_price'])) ? osc_prepare_price($item['i_price']) : null);
 	}
-	// OK
 	public function currency_select($currencies = null, $item = null) 
 	{
 		if ($currencies == null) 
@@ -285,7 +277,6 @@ class Form_Item extends Form
 			echo $currencies[0]['s_description'];
 		}
 	}
-	// OK
 	public function country_select($countries = null, $item = null) 
 	{
 		if ($countries == null) 
@@ -315,7 +306,6 @@ class Form_Item extends Form
 			return true;
 		}
 	}
-	// OK
 	public function country_text($item = null) 
 	{
 		if ($item == null) 
@@ -341,7 +331,6 @@ class Form_Item extends Form
 		parent::generic_input_hidden('countryId', (isset($item['fk_c_country_code']) && $item['fk_c_country_code'] != null) ? $item['fk_c_country_code'] : '');
 		return true;
 	}
-	// OK
 	public function region_select($regions = null, $item = null) 
 	{
 		// if have input text instead of select
@@ -383,7 +372,6 @@ class Form_Item extends Form
 			return true;
 		}
 	}
-	// OK
 	public function city_select($cities = null, $item = null) 
 	{
 		if (ClassLoader::getInstance()->getClassInstance( 'Session' )->_getForm('city') != '') 
@@ -452,7 +440,6 @@ class Form_Item extends Form
 		parent::generic_input_hidden('cityId', (isset($item['fk_i_city_id']) && $item['fk_i_city_id'] != null) ? $item['fk_i_city_id'] : '');
 		return true;
 	}
-	// OK
 	public function city_area_text($item = null) 
 	{
 		if ($item == null) 
@@ -467,7 +454,6 @@ class Form_Item extends Form
 		parent::generic_input_hidden('cityAreaId', (isset($item['fk_i_city_area_id']) && $item['fk_i_city_area_id'] != null) ? $item['fk_i_city_area_id'] : '');
 		return true;
 	}
-	// OK
 	public function address_text($item = null) 
 	{
 		if ($item == null) 
@@ -481,7 +467,6 @@ class Form_Item extends Form
 		parent::generic_input_text('address', (isset($item['s_address'])) ? $item['s_address'] : null);
 		return true;
 	}
-	// OK
 	public function contact_name_text($item = null) 
 	{
 		if ($item == null) 
@@ -508,7 +493,6 @@ class Form_Item extends Form
 		parent::generic_input_text('contactEmail', (isset($item['s_contact_email'])) ? $item['s_contact_email'] : null);
 		return true;
 	}
-	// NOTHING TO DO
 	public function user_data_hidden() 
 	{
 		if (isset($_SESSION['userId']) && $_SESSION['userId'] != null) 
@@ -523,7 +507,6 @@ class Form_Item extends Form
 			return false;
 		}
 	}
-	// OK
 	public function show_email_checkbox($item = null) 
 	{
 		if ($item == null) 
@@ -536,565 +519,6 @@ class Form_Item extends Form
 		}
 		parent::generic_input_checkbox('showEmail', '1', (isset($item['b_show_email'])) ? $item['b_show_email'] : false);
 		return true;
-	}
-	public function location_javascript_new($path = "front") 
-	{
-?>
-<script type="text/javascript">
-    $(document).ready(function(){
-
-        $('#region').attr( "autocomplete", "off" );
-        $('#city').attr( "autocomplete", "off" );
-
-        $('#countryId').change(function(){
-            $('#regionId').val('');
-            $('#region').val('');
-            $('#cityId').val('');
-            $('#city').val('');            
-        });
-
-
-        $('#region').live('keyup.autocomplete', function(){
-            $('#regionId').val('');
-            $( this ).autocomplete({
-                source: "<?php
-		echo osc_base_url(true); ?>?page=ajax&action=location_regions&country="+$('#countryId').val(),
-                minLength: 2,
-                select: function( event, ui ) {
-                    $('#cityId').val('');
-                    $('#city').val('');
-                    $('#regionId').val(ui.item.id);
-                }
-            });
-        });
-
-        $('#city').live('keyup.autocomplete', function(){
-            $('#cityId').val('');
-            $( this ).autocomplete({
-                source: "<?php
-		echo osc_base_url(true); ?>?page=ajax&action=location_cities&region="+$('#regionId').val(),
-                minLength: 2,
-                select: function( event, ui ) {
-                    $('#cityId').val(ui.item.id);
-                }
-            });
-        });
-
-
-
-        /**
-         * Validate form
-         */
-
-        // Validate description without HTML.
-        $.validator.addMethod(
-            "minstriptags",
-            function(value, element) {
-                altered_input = strip_tags(value);
-                if (altered_input.length < 3) {
-                    return false;
-                } else {
-                    return true;
-                }
-            },
-            "<?php
-		_e("Description: needs to be longer"); ?>."
-        );
-
-        // Code for form validation
-        $("form[name=item]").validate({
-            rules: {
-                catId: {
-                    required: true,
-                    digits: true
-                },
-                <?php
-		if (osc_price_enabled_at_items()) 
-		{ ?>
-                price: {                   
-                    maxlength: 50
-                },
-                currency: "required",
-                <?php
-		} ?>
-                <?php
-		if (osc_images_enabled_at_items()) 
-		{ ?>
-                "photos[]": {
-                    accept: "<?php
-			echo osc_allowed_extension(); ?>"
-                },
-                <?php
-		} ?>
-                <?php
-		if ($path == 'front') 
-		{ ?>
-                contactName: {
-                    minlength: 3,
-                    maxlength: 35
-                },
-                contactEmail: {
-                    required: true,
-                    email: true
-                },
-                <?php
-		} ?>
-                address: {
-                    minlength: 3,
-                    maxlength: 100
-                }
-            },
-            messages: {
-                catId: "<?php
-		_e('Choose one category'); ?>.",
-                <?php
-		if (osc_price_enabled_at_items()) 
-		{ ?>
-                price: {
-                    maxlength: "<?php
-			_e("Price: no more than 50 characters"); ?>."
-                },
-                currency: "<?php
-			_e("Currency: make your selection"); ?>.",
-                <?php
-		} ?>
-                <?php
-		if (osc_images_enabled_at_items()) 
-		{ ?>
-                "photos[]": {
-                    accept: "<?php
-			printf(__("Photo: must be %s"), osc_allowed_extension()); ?>."
-                },
-                <?php
-		} ?>
-                <?php
-		if ($path == 'front') 
-		{ ?>
-                contactName: {
-                    minlength: "<?php
-			_e("Name: enter at least 3 characters"); ?>.",
-                    maxlength: "<?php
-			_e("Name: no more than 35 characters"); ?>."
-                },
-                contactEmail: {
-                    required: "<?php
-			_e("Email: this field is required"); ?>.",
-                    email: "<?php
-			_e("Invalid email address"); ?>."
-                },
-                <?php
-		} ?>
-                address: {
-                    minlength: "<?php
-		_e("Address: enter at least 3 characters"); ?>.",
-                    maxlength: "<?php
-		_e("Address: no more than 100 characters"); ?>."
-                }
-            },
-            errorLabelContainer: "#error_list",
-            wrapper: "li",
-            invalidHandler: function(form, validator) {
-                $('html,body').animate({ scrollTop: $('h1').offset().top }, { duration: 250, easing: 'swing'});
-            }
-        });
-    });
-
-    /**
-     * Strip HTML tags to count number of visible characters.
-     */
-    function strip_tags(html) {
-        if (arguments.length < 3) {
-            html=html.replace(/<\/?(?!\!)[^>]*>/gi, '');
-        } else {
-            var allowed = arguments[1];
-            var specified = eval("["+arguments[2]+"]");
-            if (allowed){
-                var regex='</?(?!(' + specified.join('|') + '))\b[^>]*>';
-                html=html.replace(new RegExp(regex, 'gi'), '');
-            } else{
-                var regex='</?(' + specified.join('|') + ')\b[^>]*>';
-                html=html.replace(new RegExp(regex, 'gi'), '');
-            }
-        }
-        return html;
-    }
-    
-    function delete_image(id, item_id,name, secret) {
-        //alert(id + " - "+ item_id + " - "+name+" - "+secret);
-        var result = confirm('<?php
-		_e('This action can\\\'t be undone. Are you sure you want to continue?'); ?>');
-        if(result) {
-            $.ajax({
-                type: "POST",
-                url: '<?php
-		echo osc_base_url(true); ?>?page=ajax&action=delete_image&id='+id+'&item='+item_id+'&code='+name+'&secret='+secret,
-                dataType: 'json',
-                success: function(data){
-                    var class_type = "error";
-                    if(data.success) {
-                        $("div[name="+name+"]").remove();
-                        class_type = "ok";
-                    }
-                    var flash = $("#flash_js");
-                    var message = $('<div>').addClass('pubMessages').addClass(class_type).attr('id', 'FlashMessage').html(data.msg);
-                    flash.html(message);
-                    $("#FlashMessage").slideDown('slow').delay(3000).slideUp('slow');
-                }
-            });
-        }
-    }
-    
-    
-</script>
-<?php
-	}
-	public function location_javascript($path = "front") 
-	{
-?>
-<script type="text/javascript">
-    $(document).ready(function(){
-        $("#countryId").live("change",function(){
-            var pk_c_code = $(this).val();
-            <?php
-		if ($path == "admin") 
-		{ ?>
-                var url = '<?php
-			echo osc_admin_base_url(true) . "?page=ajax&action=regions&countryId="; ?>' + pk_c_code;
-            <?php
-		}
-		else
-		{ ?>
-                var url = '<?php
-			echo osc_base_url(true) . "?page=ajax&action=regions&countryId="; ?>' + pk_c_code;
-            <?php
-		}; ?>
-            var result = '';
-
-            if(pk_c_code != '') {
-
-                $("#regionId").attr('disabled',false);
-                $("#cityId").attr('disabled',true);
-
-                $.ajax({
-                    type: "POST",
-                    url: url,
-                    dataType: 'json',
-                    success: function(data){
-                        var length = data.length;
-                        
-                        if(length > 0) {
-
-                            result += '<option value=""><?php
-		_e("Select a region..."); ?></option>';
-                            for(key in data) {
-                                result += '<option value="' + data[key].pk_i_id + '">' + data[key].s_name + '</option>';
-                            }
-
-                            $("#region").before('<select name="regionId" id="regionId" ></select>');
-                            $("#region").remove();
-
-                            $("#city").before('<select name="cityId" id="cityId" ></select>');
-                            $("#city").remove();
-                            
-                            $("#regionId").val("");
-
-                        } else {
-
-                            $("#regionId").before('<input type="text" name="region" id="region" />');
-                            $("#regionId").remove();
-                            
-                            $("#cityId").before('<input type="text" name="city" id="city" />');
-                            $("#cityId").remove();
-                            
-                        }
-
-                        $("#regionId").html(result);
-                        $("#cityId").html('<option selected value=""><?php
-		_e("Select a city..."); ?></option>');
-                    }
-                 });
-
-             } else {
-
-                 // add empty select
-                 $("#region").before('<select name="regionId" id="regionId" ><option value=""><?php
-		_e("Select a region..."); ?></option></select>');
-                 $("#region").remove();
-                 
-                 $("#city").before('<select name="cityId" id="cityId" ><option value=""><?php
-		_e("Select a city..."); ?></option></select>');
-                 $("#city").remove();
-
-                 if( $("#regionId").length > 0 ){
-                     $("#regionId").html('<option value=""><?php
-		_e("Select a region..."); ?></option>');
-                 } else {
-                     $("#region").before('<select name="regionId" id="regionId" ><option value=""><?php
-		_e("Select a region..."); ?></option></select>');
-                     $("#region").remove();
-                 }
-                 if( $("#cityId").length > 0 ){
-                     $("#cityId").html('<option value=""><?php
-		_e("Select a city..."); ?></option>');
-                 } else {
-                     $("#city").before('<select name="cityId" id="cityId" ><option value=""><?php
-		_e("Select a city..."); ?></option></select>');
-                     $("#city").remove();
-                 }
-                 $("#regionId").attr('disabled',true);
-                 $("#cityId").attr('disabled',true);
-             }
-        });
-
-        $("#regionId").live("change",function(){
-            var pk_c_code = $(this).val();
-            <?php
-		if ($path == "admin") 
-		{ ?>
-                var url = '<?php
-			echo osc_admin_base_url(true) . "?page=ajax&action=cities&regionId="; ?>' + pk_c_code;
-            <?php
-		}
-		else
-		{ ?>
-                var url = '<?php
-			echo osc_base_url(true) . "?page=ajax&action=cities&regionId="; ?>' + pk_c_code;
-            <?php
-		}; ?>
-
-            var result = '';
-
-            if(pk_c_code != '') {
-                
-                $("#cityId").attr('disabled',false);
-                $.ajax({
-                    type: "POST",
-                    url: url,
-                    dataType: 'json',
-                    success: function(data){
-                        var length = data.length;
-                        if(length > 0) {
-                            result += '<option selected value=""><?php
-		_e("Select a city..."); ?></option>';
-                            for(key in data) {
-                                result += '<option value="' + data[key].pk_i_id + '">' + data[key].s_name + '</option>';
-                            }
-
-                            $("#city").before('<select name="cityId" id="cityId" ></select>');
-                            $("#city").remove();
-                        } else {
-                            result += '<option value=""><?php
-		_e('No results') ?></option>';
-                            $("#cityId").before('<input type="text" name="city" id="city" />');
-                            $("#cityId").remove();
-                        }
-                        $("#cityId").html(result);
-                    }
-                 });
-             } else {
-                $("#cityId").attr('disabled',true);
-             }
-        });
-
-        if( $("#regionId").attr('value') == "")  {
-            $("#cityId").attr('disabled',true);
-        }
-
-        if($("#countryId").length != 0) {
-            if( $("#countryId").attr('type').match(/select-one/) ) {
-                if( $("#countryId").attr('value') == "")  {
-                    $("#regionId").attr('disabled',true);
-                }
-            }
-        }
-
-        /**
-         * Validate form
-         */
-
-        // Validate description without HTML.
-        $.validator.addMethod(
-            "minstriptags",
-            function(value, element) {
-                altered_input = strip_tags(value);
-                if (altered_input.length < 3) {
-                    return false;
-                } else {
-                    return true;
-                }
-            },
-            "<?php
-		_e("Description: needs to be longer"); ?>."
-        );
-
-        // Code for form validation
-        $("form[name=item]").validate({
-            rules: {
-                catId: {
-                    required: true,
-                    digits: true
-                },
-                <?php
-		if (osc_price_enabled_at_items()) 
-		{ ?>
-                price: {
-                    maxlength: 15
-                },
-                currency: "required",
-                <?php
-		} ?>
-                <?php
-		if (osc_images_enabled_at_items()) 
-		{ ?>
-                "photos[]": {
-                    accept: "<?php
-			echo osc_allowed_extension(); ?>"
-                },
-                <?php
-		} ?>
-                <?php
-		if ($path == 'front') 
-		{ ?>
-                contactName: {
-                    minlength: 3,
-                    maxlength: 35
-                },
-                contactEmail: {
-                    required: true,
-                    email: true
-                },
-                <?php
-		} ?>
-                regionId: {
-                    required: true,
-                    digits: true
-                },
-                cityId: {
-                    required: true,
-                    digits: true
-                },
-                cityArea: {
-                    minlength: 3,
-                    maxlength: 50
-                },
-                address: {
-                    minlength: 3,
-                    maxlength: 100
-                }
-            },
-            messages: {
-                catId: "<?php
-		_e('Choose one category'); ?>.",
-                <?php
-		if (osc_price_enabled_at_items()) 
-		{ ?>
-                price: {
-                    maxlength: "<?php
-			_e("Price: no more than 50 characters"); ?>."
-                },
-                currency: "<?php
-			_e("Currency: make your selection"); ?>.",
-                <?php
-		} ?>
-                <?php
-		if (osc_images_enabled_at_items()) 
-		{ ?>
-                "photos[]": {
-                    accept: "<?php
-			printf(__("Photo: must be %s"), osc_allowed_extension()); ?>."
-                },
-                <?php
-		} ?>
-                <?php
-		if ($path == 'front') 
-		{ ?>
-                contactName: {
-                    minlength: "<?php
-			_e("Name: enter at least 3 characters"); ?>.",
-                    maxlength: "<?php
-			_e("Name: no more than 35 characters"); ?>."
-                },
-                contactEmail: {
-                    required: "<?php
-			_e("Email: this field is required"); ?>.",
-                    email: "<?php
-			_e("Invalid email address"); ?>."
-                },
-                <?php
-		} ?>
-                regionId: "<?php
-		_e("Select a region"); ?>.",
-                cityId: "<?php
-		_e("Select a city"); ?>.",
-                cityArea: {
-                    minlength: "<?php
-		_e("City area: enter at least 3 characters"); ?>.",
-                    maxlength: "<?php
-		_e("City area: no more than 50 characters"); ?>."
-                },
-                address: {
-                    minlength: "<?php
-		_e("Address: enter at least 3 characters"); ?>.",
-                    maxlength: "<?php
-		_e("Address: no more than 100 characters"); ?>."
-                }
-            },
-            errorLabelContainer: "#error_list",
-            wrapper: "li",
-            invalidHandler: function(form, validator) {
-                $('html,body').animate({ scrollTop: $('h1').offset().top }, { duration: 250, easing: 'swing'});
-            }
-        });
-    });
-
-    /**
-     * Strip HTML tags to count number of visible characters.
-     */
-    function strip_tags(html) {
-        if (arguments.length < 3) {
-            html=html.replace(/<\/?(?!\!)[^>]*>/gi, '');
-        } else {
-            var allowed = arguments[1];
-            var specified = eval("["+arguments[2]+"]");
-            if (allowed){
-                var regex='</?(?!(' + specified.join('|') + '))\b[^>]*>';
-                html=html.replace(new RegExp(regex, 'gi'), '');
-            } else{
-                var regex='</?(' + specified.join('|') + ')\b[^>]*>';
-                html=html.replace(new RegExp(regex, 'gi'), '');
-            }
-        }
-        return html;
-    }
-    
-    function delete_image(id, item_id,name, secret) {
-        //alert(id + " - "+ item_id + " - "+name+" - "+secret);
-        var result = confirm('<?php
-		_e('This action can\\\'t be undone. Are you sure you want to continue?'); ?>');
-        if(result) {
-            $.ajax({
-                type: "POST",
-                url: '<?php
-		echo osc_base_url(true); ?>?page=ajax&action=delete_image&id='+id+'&item='+item_id+'&code='+name+'&secret='+secret,
-                dataType: 'json',
-                success: function(data){
-                    var class_type = "error";
-                    if(data.success) {
-                        $("div[name="+name+"]").remove();
-                        class_type = "ok";
-                    }
-                    var flash = $("#flash_js");
-                    var message = $('<div>').addClass('pubMessages').addClass(class_type).attr('id', 'FlashMessage').html(data.msg);
-                    flash.html(message);
-                    $("#FlashMessage").slideDown('slow').delay(3000).slideUp('slow');
-                }
-            });
-        }
-    }
-    
-    
-</script>
-<?php
 	}
 	public function photos($resources = null) 
 	{
@@ -1118,120 +542,6 @@ class Form_Item extends Form
                 <?php
 			}
 		}
-	}
-	public function photos_javascript() 
-	{
-?>
-<script type="text/javascript">
-    var photoIndex = 0;
-    function gebi(id) { return document.getElementById(id); }
-    function ce(name) { return document.createElement(name); }
-    function re(id) {
-        var e = gebi(id);
-        e.parentNode.removeChild(e);
-    }
-    function addNewPhoto() {
-        var max = <?php
-		echo osc_max_images_per_item(); ?>;
-        var num_img = $('input[name="photos[]"]').size() + $("a.delete").size();
-        if((max!=0 && num_img<max) || max==0) {
-            var id = 'p-' + photoIndex++;
-
-            var i = ce('input');
-            i.setAttribute('type', 'file');
-            i.setAttribute('name', 'photos[]');
-
-            var a = ce('a');
-            a.style.fontSize = 'x-small';
-            a.style.paddingLeft = '10px';
-            a.setAttribute('href', '#');
-            a.setAttribute('divid', id);
-            a.onclick = function() { re(this.getAttribute('divid')); return false; }
-            a.appendChild(document.createTextNode('<?php
-		_e('Remove'); ?>'));
-
-            var d = ce('div');
-            d.setAttribute('id', id);
-            d.setAttribute('style','padding: 4px 0;')
-
-            d.appendChild(i);
-            d.appendChild(a);
-
-            gebi('photos').appendChild(d);
-
-        } else {
-            alert('<?php
-		_e('Sorry, you have reached the maximum number of images per ad'); ?>');
-        }
-    }
-    // Listener: automatically add new file field when the visible ones are full.
-    setInterval("add_file_field()", 250);
-    /**
-     * Timed: if there are no empty file fields, add new file field.
-     */
-    function add_file_field() {
-        var count = 0;
-        $('input[name="photos[]"]').each(function(index) {
-            if ( $(this).val() == '' ) {
-                count++;
-            }
-        });
-        var max = <?php
-		echo osc_max_images_per_item(); ?>;
-        var num_img = $('input[name="photos[]"]').size() + $("a.delete").size();
-        if (count == 0 && (max==0 || (max!=0 && num_img<max))) {
-            addNewPhoto();
-        }
-    }
-</script>
-<?php
-	}
-	public function plugin_post_item($case = 'form') 
-	{
-?>
-<script type="text/javascript">
-    $("#catId").change(function(){
-        var cat_id = $(this).val();
-        var url = '<?php
-		echo osc_base_url(true); ?>';
-        var result = '';
-
-        if(cat_id != '') {
-            $.ajax({
-                type: "POST",
-                url: url,
-                data: 'page=ajax&action=runhook&hook=item_<?php
-		echo $case; ?>&catId=' + cat_id,
-                dataType: 'html',
-                success: function(data){
-                    $("#plugin-hook").html(data);
-                }
-            });
-        }
-    });
-    $(document).ready(function(){
-        var cat_id = $("#catId").val();
-        var url = '<?php
-		echo osc_base_url(true); ?>';
-        var result = '';
-
-        if(cat_id != '') {
-            $.ajax({
-                type: "POST",
-                url: url,
-                data: 'page=ajax&action=runhook&hook=item_<?php
-		echo $case; ?>&catId=' + cat_id,
-                dataType: 'html',
-                success: function(data){
-                    $("#plugin-hook").html(data);
-                }
-            });
-        }
-    });
-</script>
-<div id="plugin-hook">
-</div>
-<?php
 	}
 	public function plugin_edit_item() 
 	{

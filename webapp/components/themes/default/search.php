@@ -17,45 +17,21 @@
  *
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
+
+echo $view->render( 'header' );
 ?>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="<?php
-echo str_replace('_', '-', osc_current_user_locale()); ?>">
-    <head>
-        <?php
-osc_current_web_theme_path( 'head.php', $view ); ?>
-        <?php
-if (osc_count_items() == 0) 
-{ ?>
-            <meta name="robots" content="noindex, nofollow" />
-            <meta name="googlebot" content="noindex, nofollow" />
-        <?php
-}
-else
-{ ?>
-            <meta name="robots" content="index, follow" />
-            <meta name="googlebot" content="index, follow" />
-        <?php
-} ?>
-    </head>
-    <body>
-        <div class="container">
-            <?php
-osc_current_web_theme_path('header.php'); ?>
             <div class="content list">
                 <div id="main">
                     <div class="ad_list">
                         <div id="list_head">
                             <div class="inner">
                                 <h1>
-                                    <strong><?php
-_e('Search results', 'modern'); ?></strong>
+                                    <strong><?php _e('Search results', 'modern'); ?></strong>
                                 </h1>
                                 <p class="see_by">
-                                    <?php
-_e('Sort by', 'modern'); ?>:
+                                    <?php _e('Sort by', 'modern'); ?>:
                                     <?php
 $i = 0; ?>
                                     <?php
@@ -133,8 +109,7 @@ echo osc_search_pattern(); ?>" />
 
                             <fieldset class="box show_only">
                                 <?php if (osc_images_enabled_at_items()): ?>
-                                <h3><strong><?php
-	_e('Show only', 'modern'); ?></strong></h3>
+                                <h3><strong><?php _e('Show only', 'modern'); ?></strong></h3>
                                 <div class="row checkboxes">
                                     <ul>
                                         <li>
@@ -148,16 +123,12 @@ echo osc_search_pattern(); ?>" />
 if (osc_price_enabled_at_items()) 
 { ?>
                                 <div class="row two_input">
-                                    <h6><?php
-	_e('Price', 'modern'); ?></h6>
-                                    <div><?php
-	_e('Min', 'modern'); ?>.</div>
-                                    <input type="text" id="priceMin" name="sPriceMin" value="<?php
-	echo osc_search_price_min(); ?>" size="6" maxlength="6" />
+                                    <h6><?php _e('Price', 'modern'); ?></h6>
+                                    <div><?php _e('Min', 'modern'); ?>.</div>
+                                    <input type="text" id="priceMin" name="sPriceMin" value="<?php echo osc_search_price_min(); ?>" size="6" maxlength="6" />
                                     <div><?php
 	_e('Max', 'modern'); ?>.</div>
-                                    <input type="text" id="priceMax" name="sPriceMax" value="<?php
-	echo osc_search_price_max(); ?>" size="6" maxlength="6" />
+                                    <input type="text" id="priceMax" name="sPriceMax" value="<?php echo osc_search_price_max(); ?>" size="6" maxlength="6" />
                                 </div>
                                 <?php
 } ?>
@@ -167,8 +138,7 @@ osc_get_non_empty_categories(); ?>
 if (osc_count_categories()) 
 { ?>
                                     <div class="row checkboxes">
-                                        <h6><?php
-	_e('Category', 'modern'); ?></h6>
+                                        <h6><?php _e('Category', 'modern'); ?></h6>
                                         <ul>
                                             <?php // RESET CATEGORIES IF WE USED THEN IN THE HEADER
 	 ?>
@@ -204,50 +174,12 @@ else
 }
 ?>
 
-                            <button type="submit"><?php
-_e('Apply', 'modern'); ?></button>
+                            <button type="submit"><?php _e('Apply', 'modern'); ?></button>
                         </form>
-                        <?php
-osc_alert_form(); ?>
+                        <?php osc_alert_form(); ?>
                     </div>
                 </div>
-                <script type="text/javascript">
-                    $(function() {
-                        function log( message ) {
-                            $( "<div/>" ).text( message ).prependTo( "#log" );
-                            $( "#log" ).attr( "scrollTop", 0 );
-                        }
-
-                        $( "#sCity" ).autocomplete({
-                            source: "<?php
-echo osc_base_url(true); ?>?page=ajax&action=location",
-                            minLength: 2,
-                            select: function( event, ui ) {
-                                log( ui.item ?
-                                    "<?php
-_e('Selected', 'modern'); ?>: " + ui.item.value + " aka " + ui.item.id :
-                                    "<?php
-_e('Nothing selected, input was', 'modern'); ?> " + this.value );
-                            }
-                        });
-                    });
-                    
-                    function checkEmptyCategories() {
-                        var n = $("input[id*=cat]:checked").length;
-                        if(n>0) {
-                            return true;
-                        } else {
-                            return false;
-                        }
-                    }
-                </script>
             </div>
-            <?php
-osc_current_web_theme_path('footer.php'); ?>
-        </div>
-        <?php
-osc_show_flash_message(); ?>
-        <?php
-osc_run_hook('footer'); ?>
-    </body>
-</html>
+<?php
+echo $view->render( 'footer' );
+
