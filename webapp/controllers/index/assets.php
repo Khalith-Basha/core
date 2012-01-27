@@ -24,24 +24,31 @@
 */
 $cache = true;
 $cachedir = '../../uploads';
-$base = dirname(__FILE__);
+
 $type = $_GET['type'];
 $elements = explode(',', $_GET['files']);
+
+$suffix = 'javaScript' === $type ? '.js' : '.css';
+$folder = 'javaScript' === $type ? 'scripts' : 'styles';
 
 // Determine last modification date of the files
 $lastmodified = 0;
 while (list(, $element) = each($elements)) 
 {
-	$path = realpath($base . '/' . $element);
-	if (($type == 'js' && substr($path, -3) != '.js') || ($type == 'css' && substr($path, -4) != '.css')) 
+	if( empty( $element ) )
+		continue;
+
+	if( strstr( $element, '..' ) )
 	{
-		header("HTTP/1.0 403 Forbidden");
-		die( 'Forbidden' );
+		header( 'HTTP/1.0 403 Forbidden' );
+		die( 'Forbidden: ' . $element );
 	}
-	if (substr($path, 0, strlen($base)) != $base || !file_exists($path)) 
+
+	$path = osc_current_web_theme_path( 'static/'. $folder . '/' . $element . $suffix );
+	if( !file_exists( $path ) )
 	{
-		header("HTTP/1.0 404 Not Found");
-		die( 'Not Found' );
+		header( 'HTTP/1.0 404 Not Found' );
+		die( 'Not found: ' . $path );
 	}
 	$lastmodified = max($lastmodified, filemtime($path));
 }

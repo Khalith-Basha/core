@@ -42,9 +42,7 @@ foreach ($orders as $label => $params)
                                         <?php
 	if (osc_search_order() == $params['sOrder'] && osc_search_order_type() == $orderType) 
 	{ ?>
-                                            <a class="current" href="<?php
-		echo osc_update_search_url($params); ?>"><?php
-		echo $label; ?></a>
+                                            <a class="current" href="<?php echo osc_update_search_url($params); ?>"><?php echo $label; ?></a>
                                         <?php
 	}
 	else
@@ -81,22 +79,18 @@ else
                         <?php
 } ?>
                         <div class="paginate" >
-                        <?php
-echo osc_search_pagination(); ?>
+                        <?php echo osc_search_pagination(); ?>
                         </div>
                     </div>
                 </div>
                 <div id="sidebar">
                     <div class="filters">
-                        <form action="<?php
-echo osc_base_url(true); ?>" method="get" onSubmit="return checkEmptyCategories()">
+                        <form action="<?php echo osc_base_url(true); ?>" method="get" onSubmit="return checkEmptyCategories()">
                             <input type="hidden" name="page" value="search" />
                             <fieldset class="box location">
-                                <h3><strong><?php
-_e('Your search', 'modern'); ?></strong></h3>
+                                <h3><strong><?php _e('Your search', 'modern'); ?></strong></h3>
                                 <div class="row one_input">
-                                    <input type="text" name="sPattern"  id="query" value="<?php
-echo osc_search_pattern(); ?>" />
+                                    <input type="text" name="sPattern"  id="query" value="<?php echo osc_search_pattern(); ?>" />
                                 </div>
                                 <h3><strong><?php _e('Location', 'modern'); ?></strong></h3>
                                 <div class="row one_input">
@@ -148,12 +142,7 @@ if (osc_count_categories())
 	while (osc_has_categories()) 
 	{ ?>
                                                 <li>
-                                                    <input type="checkbox" id="cat<?php
-		echo osc_category_id(); ?>" name="sCategory[]" value="<?php
-		echo osc_category_id(); ?>" <?php
-		echo ((in_array(osc_category_id(), osc_search_category()) || in_array(osc_category_slug() . "/", osc_search_category()) || count(osc_search_category()) == 0) ? 'checked' : ''); ?> /> <label for="cat<?php
-		echo osc_category_id(); ?>"><strong><?php
-		echo osc_category_name(); ?></strong></label>
+                                                    <input type="checkbox" id="cat<?php echo osc_category_id(); ?>" name="sCategory[]" value="<?php echo osc_category_id(); ?>" <?php echo ((in_array(osc_category_id(), osc_search_category()) || in_array(osc_category_slug() . "/", osc_search_category()) || count(osc_search_category()) == 0) ? 'checked' : ''); ?> /> <label for="cat<?php echo osc_category_id(); ?>"><strong><?php echo osc_category_name(); ?></strong></label>
                                                 </li>
                                             <?php
 	} ?>

@@ -65,9 +65,9 @@ class Rewrite
 
 		$serverName = $_SERVER['SERVER_NAME'];
 		$request_uri = urldecode( preg_replace( '@^' . $relativeWebUrl. '@', '', $_SERVER['REQUEST_URI'] ) );
+		$this->extractParams( $request_uri );
 		if( osc_rewrite_enabled() )
 		{
-			$this->extractParams( $request_uri );
 			$tmp_ar = explode( '?', $request_uri );
 			$request_uri = $tmp_ar[0];
 			foreach( $this->rules as $rule )
@@ -87,7 +87,6 @@ class Rewrite
 				}
 			}
 		}
-		$this->extractParams($request_uri);
 
 		$page = Params::getParam( 'page' );
 		if( !empty( $page ) )
@@ -119,6 +118,7 @@ class Rewrite
 	{
 		$this->clearRules();
 
+		$this->addRule('assets', 'index.php?page=index&action=assets&$1');
 		// Contact rules
 		$this->addRule('^contact/?$', 'index.php?page=contact');
 		// Feed rules
