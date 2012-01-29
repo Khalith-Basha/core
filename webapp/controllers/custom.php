@@ -17,13 +17,6 @@
  */
 class CWebCustom extends Controller
 {
-	function __construct() 
-	{
-		parent::__construct();
-		//specific things for this class
-		
-	}
-
 	function doModel() 
 	{
 		$this->getView()->assign('file', Params::getParam('file'));

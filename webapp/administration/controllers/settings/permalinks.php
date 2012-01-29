@@ -22,23 +22,25 @@ class CAdminSettings extends AdministrationController
 {
 	public function doGet( HttpRequest $req, HttpResponse $res ) 
 	{
-			$htaccess = Params::getParam('htaccess_status');
-			$file = Params::getParam('file_status');
-			$this->getView()->assign('htaccess', $htaccess);
-			$this->getView()->assign('file', $file);
-			$this->doView('settings/permalinks.php');
+		$htaccess = $this->getInput()->getString( 'htaccess_status' );
+		$file = $this->getInput()->getString( 'file_status' );
+
+		$this->getView()->assign( 'htaccess', $htaccess );
+		$this->getView()->assign( 'file', $file );
+
+		$this->doView('settings/permalinks.php');
 	}
 
 	public function doPost( HttpRequest $req, HttpResponse $res )
 	{
-			$htaccess_status = 0;
-			$file_status = 0;
-			$rewriteEnabled = Params::getParam('rewrite_enabled');
-			$rewriteEnabled = ($rewriteEnabled ? true : false);
-			if ($rewriteEnabled) 
-			{
-				Preference::newInstance()->update(array('s_value' => '1'), array('s_name' => 'rewriteEnabled'));
-				$htaccess = '
+		$preference = $this->getClassLoader()->getClassInstance( 'Model_Preference' );	
+		$htaccess_status = 0;
+		$file_status = 0;
+		$rewriteEnabled = $this->getInput()->getString( 'rewrite_enabled' );
+		if ($rewriteEnabled) 
+		{
+			$preference->update(array('s_value' => '1'), array('s_name' => 'rewriteEnabled'));
+			$htaccess = '
     <IfModule mod_rewrite.c>
         RewriteEngine On
         RewriteBase ' . REL_WEB_URL . '
@@ -47,38 +49,38 @@ class CAdminSettings extends AdministrationController
         RewriteCond %{REQUEST_FILENAME} !-d
         RewriteRule . ' . REL_WEB_URL . 'index.php [L]
     </IfModule>';
-				if (file_exists(osc_base_path() . '.htaccess')) 
-				{
-					$file_status = 1;
-				}
-				else if (file_put_contents(osc_base_path() . '.htaccess', $htaccess)) 
-				{
-					$file_status = 2;
-				}
-				else
-				{
-					$file_status = 3;
-				}
-				if (apache_mod_loaded('mod_rewrite')) 
-				{
-					$htaccess_status = 1;
-					Preference::newInstance()->update(array('s_value' => '1'), array('s_name' => 'mod_rewrite_loaded'));
-				}
-				else
-				{
-					$htaccess_status = 2;
-					Preference::newInstance()->update(array('s_value' => '0'), array('s_name' => 'mod_rewrite_loaded'));
-				}
+			if (file_exists(osc_base_path() . '.htaccess')) 
+			{
+				$file_status = 1;
+			}
+			else if (file_put_contents(osc_base_path() . '.htaccess', $htaccess)) 
+			{
+				$file_status = 2;
 			}
 			else
 			{
-				$modRewrite = apache_mod_loaded('mod_rewrite');
-				Preference::newInstance()->update(array('s_value' => '0'), array('s_name' => 'rewriteEnabled'));
-				Preference::newInstance()->update(array('s_value' => '0'), array('s_name' => 'mod_rewrite_loaded'));
+				$file_status = 3;
 			}
-			$redirectUrl = osc_admin_base_url(true) . '?page=settings&action=permalinks&htaccess_status=';
-			$redirectUrl.= $htaccess_status . '&file_status=' . $file_status;
-			$this->redirectTo($redirectUrl);
+			if (apache_mod_loaded('mod_rewrite')) 
+			{
+				$htaccess_status = 1;
+				$preference->update(array('s_value' => '1'), array('s_name' => 'mod_rewrite_loaded'));
+			}
+			else
+			{
+				$htaccess_status = 2;
+				$preference->update(array('s_value' => '0'), array('s_name' => 'mod_rewrite_loaded'));
+			}
+		}
+		else
+		{
+			$modRewrite = apache_mod_loaded('mod_rewrite');
+			$preference->update(array('s_value' => '0'), array('s_name' => 'rewriteEnabled'));
+			$preference->update(array('s_value' => '0'), array('s_name' => 'mod_rewrite_loaded'));
+		}
+		$redirectUrl = osc_admin_base_url(true) . '?page=settings&action=permalinks&htaccess_status=';
+		$redirectUrl.= $htaccess_status . '&file_status=' . $file_status;
+		$this->redirectTo($redirectUrl);
 	}
 }
 

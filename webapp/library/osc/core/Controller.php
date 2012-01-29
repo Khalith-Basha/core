@@ -92,6 +92,9 @@ abstract class Controller
 		$this->view = $this->classLoader->getClassInstance( 'HtmlView' );
 		$this->session = $this->classLoader->getClassInstance( 'Session' );
 		$this->cookie = $this->classLoader->getClassInstance( 'Cookie' );
+
+		$inputClass = 'POST' === $_SERVER['REQUEST_METHOD'] ? 'Input_Post' : 'Input_Get';
+		$this->input = $this->classLoader->getClassInstance( $inputClass );
 	}
 
 	public function __destruct() 
@@ -162,6 +165,11 @@ abstract class Controller
 	public function getCookie()
 	{
 		return $this->cookie;
+	}
+
+	public function getInput()
+	{
+		return $this->input;
 	}
 }
 abstract class BaseModel extends Controller

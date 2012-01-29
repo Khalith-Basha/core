@@ -35,12 +35,12 @@ class TypedArray
 		return null;
 	}
 
-	public function getString( $name )
+	public function getString( $name, $default = null )
 	{
 		if( $this->exists( $name ) )
 			return strval( $this->getValue( $name ) );
 
-		return null;
+		return $default;
 	}
 }
 

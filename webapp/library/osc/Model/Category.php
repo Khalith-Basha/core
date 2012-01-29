@@ -441,6 +441,10 @@ class Model_Category extends DAO
 			}
 			$category = $result->row();
 		}
+		if( empty( $category['pk_i_id'] ) )
+		{
+			throw new Exception( 'Category does not have a primary key: ' . var_export( $category, true ) );
+		}
 		$this->dao->select();
 		$this->dao->from($this->getTablePrefix() . 't_category_description');
 		$this->dao->where('fk_i_category_id', $category['pk_i_id']);

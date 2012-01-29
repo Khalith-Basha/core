@@ -32,6 +32,8 @@ if( false === $config->hasConfig( 'database' ) )
 
 $classLoader->loadFile( 'plugins' );
 $classLoader->loadFile( 'formatting' );
+$classLoader->loadFile( 'TypedArray' );
+$classLoader->loadFile( 'Url/Abstract' );
 $classLoader->loadFile( 'Form/Form' );
 $classLoader->loadFile( 'core/Controller' );
 $classLoader->loadFile( 'core/SecureController' );

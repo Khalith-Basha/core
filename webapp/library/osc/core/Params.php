@@ -20,13 +20,12 @@
 */
 class Params
 {
-	function __construct() 
-	{
-	}
 	static function getParam($param, $htmlencode = false) 
 	{
-		if ($param == "") return '';
-		if (!isset($_REQUEST[$param])) return '';
+		if( empty( $param ) )
+			return null;
+		if (!isset($_REQUEST[$param]))
+			return null;
 		$value = $_REQUEST[$param];
 		if (!is_array($value)) 
 		{
@@ -39,12 +38,14 @@ class Params
 		{
 			$value = strip_slashes_extended($value);
 		}
-		return ($value);
+		return $value;
 	}
 	static function existParam($param) 
 	{
-		if ($param == "") return false;
-		if (!isset($_REQUEST[$param])) return false;
+		if( empty( $param ) )
+			return false;
+		if (!isset($_REQUEST[$param]))
+			return false;
 		return true;
 	}
 	static function getFiles($param) 
@@ -55,11 +56,10 @@ class Params
 		}
 		else
 		{
-			return "";
+			return null;
 		}
 	}
-	//$what = "post, get, cookie"
-	static function getParamsAsArray($what = "") 
+	static function getParamsAsArray( $what = null ) 
 	{
 		switch ($what) 
 		{
@@ -86,8 +86,5 @@ class Params
 		$_GET[$key] = $value;
 		$_POST[$key] = $value;
 	}
-	static function _view() 
-	{
-		print_r(self::getParamsAsArray());
-	}
 }
+

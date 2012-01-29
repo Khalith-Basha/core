@@ -35,8 +35,9 @@ class CWebUser extends Controller
 	public function doPost( HttpRequest $req, HttpResponse $res )
 	{
 		require_once 'osc/UserActions.php';
-		// e-mail is incorrect
-		if (!preg_match('|^[a-z0-9\.\_\+\-]+@[a-z0-9\.\-]+\.[a-z]{2,3}$|i', Params::getParam('s_email'))) 
+
+		$email = $this->getInput()->getString( 's_email' );
+		if (!preg_match('|^[a-z0-9\.\_\+\-]+@[a-z0-9\.\-]+\.[a-z]{2,3}$|i', $email )) 
 		{
 			osc_add_flash_error_message(_m('Invalid email address'));
 			$this->redirectTo(osc_recover_user_password_url());

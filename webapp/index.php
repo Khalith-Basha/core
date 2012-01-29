@@ -48,23 +48,28 @@ if( file_exists( ABS_PATH . '/.maintenance' ) )
 }
 if (!osc_users_enabled() && osc_is_web_user_logged_in()) 
 {
-	$classLoader->getClassInstance( 'Session' )->_drop('userId');
-	$classLoader->getClassInstance( 'Session' )->_drop('userName');
-	$classLoader->getClassInstance( 'Session' )->_drop('userEmail');
-	$classLoader->getClassInstance( 'Session' )->_drop('userPhone');
-	ClassLoader::getInstance()->getClassInstance( 'Cookie' )->pop('oc_userId');
-	ClassLoader::getInstance()->getClassInstance( 'Cookie' )->pop('oc_userSecret');
-	ClassLoader::getInstance()->getClassInstance( 'Cookie' )->set();
+	$session = $classLoader->getClassInstance( 'Session' );
+	$session->_drop('userId');
+	$session->_drop('userName');
+	$session->_drop('userEmail');
+	$session->_drop('userPhone');
+
+	$cookie = $classLoader->getClassInstance( 'Cookie' );
+	$cookie->pop('oc_userId');
+	$cookie->pop('oc_userSecret');
+	$cookie->set();
 }
 
 $rewrite = $classLoader->getClassInstance( 'Rewrite' );
 $rewrite->loadRules();
 $rewrite->init();
 
-$page = Params::getParam('page');
-if (empty($page)) $page = 'index';
-$action = Params::getParam('action');
-if (empty($action)) $action = 'index';
+$classLoader->loadFile( 'TypedArray' );
+
+$input = $classLoader->getClassInstance( 'Input_Request' );
+$page = $input->getString( 'page', 'index' );
+$action = $input->getString( 'action', 'index' );
+
 $req = new HttpRequest;
 $resp = new HttpResponse;
 $controllerPath = "controllers/$page/$action.php";

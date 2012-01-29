@@ -51,9 +51,8 @@ if (!function_exists('meta_title'))
 {
 	function meta_title() 
 	{
-		$rewrite = ClassLoader::getInstance()->getClassInstance( 'Rewrite' );
-		$location = $rewrite->get_location();
-		$section = $rewrite->get_section();
+		$location = '@TODO LOCATION';
+		$section = '@TODO SECTION';
 		switch ($location) 
 		{
 		case ('item'):
@@ -212,9 +211,8 @@ if (!function_exists('meta_description'))
 {
 	function meta_description() 
 	{
-		$rewrite = ClassLoader::getInstance()->getClassInstance( 'Rewrite' );
-		$location = $rewrite->get_location();
-		$section = $rewrite->get_section();
+		$location = '@TODO LOCATION';
+		$section = '@TODO SECTION';
 		$text = '';
 		switch ($location) 
 		{

@@ -1,17 +1,8 @@
 <?php
 
-class Url_Item
+class Url_Item extends Url_Abstract
 {
-	private $urls;
-
-	public function __construct()
-	{
-		$this->urls = array();
-
-		$this->loadUrls();
-	}
-
-	protected function loadUrls()
+	public function loadUrls()
 	{
 		$this->urls['mark-spam'] = array(
 			'default' => osc_base_url( true ) . '?page=item&action=mark&as=spam&id=%d'
@@ -20,27 +11,6 @@ class Url_Item
 			'default' => 'xxx',
 			'friendly' => 'xxx'
 		);
-	}
-
-	public function create( $name )
-	{
-		$arguments = func_get_args();
-		if( count( $arguments ) > 0 )
-		{
-			$name = $arguments[0];
-			$arguments = array_slice( $arguments, 1 );
-		}
-		$url = null;
-
-		if( !empty( $this->urls[ $name ]['friendly'] ) )
-			$url = $this->urls[ $name ]['friendly'];
-		if( !empty( $this->urls[ $name ]['default'] ) )
-			$url = $this->urls[ $name ]['default'];
-
-		if( is_null( $url ) )
-			throw new Exception( 'URL not found: ' . $name );
-
-		return vsprintf( $url, $arguments );
 	}
 
 	public function getDetailsUrl( array $item, $locale = null )
