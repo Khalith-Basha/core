@@ -27,15 +27,15 @@ class CWebUser extends Controller
 		}
 	}
 
-	public function doModel() 
+	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
 		if (osc_logged_user_id() != '') 
 		{
 			$this->redirectTo(osc_user_dashboard_url());
 		}
-		osc_run_hook("before_html");
-		osc_current_web_theme_path( 'user/login.php' );
-		osc_run_hook("after_html");
+
+		$view = $this->getView();
+		echo $view->render( 'user/login' );
 	}
 }
 

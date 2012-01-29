@@ -29,7 +29,7 @@ class CWebUser extends Controller
 
 	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
-		$this->doView('user/recover.php');
+		echo $this->getView()->render( 'user/recover' );
 	}
 
 	public function doPost( HttpRequest $req, HttpResponse $res )
@@ -60,13 +60,6 @@ class CWebUser extends Controller
 			$this->redirectTo(osc_recover_user_password_url());
 			break;
 		}
-	}
-
-	function doView($file) 
-	{
-		osc_run_hook("before_html");
-		osc_current_web_theme_path($file);
-		osc_run_hook("after_html");
 	}
 }
 

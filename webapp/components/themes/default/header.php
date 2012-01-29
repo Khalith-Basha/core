@@ -33,13 +33,13 @@ $userForm = $classLoader->getClassInstance( 'Form_User' );
 	<meta http-equiv="Cache-Control" content="no-cache" />
 	<meta http-equiv="Expires" content="Fri, Jan 01 1970 00:00:00 GMT" />
 	<title><?php echo $view->getTitle(); ?></title>
-	<link href="<?php echo osc_base_url( false ) . '/assets?type=styleSheet&files=style,tabs'; ?>" rel="stylesheet" type="text/css" />
+	<link href="<?php echo osc_base_url( false ) . '/?action=assets&type=styleSheet&files=style,tabs'; ?>" rel="stylesheet" type="text/css" />
 	<script type="text/javascript">
 	var fileDefaultText = '<?php _e('No file selected', 'modern'); ?>';
 	var fileBtnText     = '<?php _e('Choose File', 'modern'); ?>';
 	</script>
 	<script type="text/javascript" src="/static/scripts/jquery.js"></script>
-	<script type="text/javascript" src="<?php echo osc_base_url( false ) . '/assets?type=javaScript&files=jquery-ui,jquery.uniform,global,tabber-minimized'; ?>"></script>
+	<script type="text/javascript" src="<?php echo osc_base_url( false ) . '/?action=assets&type=javaScript&files=jquery-ui,jquery.uniform,global,tabber-minimized'; ?>"></script>
 	<?php foreach( $view->getJavaScripts() as $js ): ?>
 	<script type="text/javascript" src="<?php echo $js; ?>"></script>
 	<?php endforeach; ?>

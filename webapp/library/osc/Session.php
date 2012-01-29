@@ -36,6 +36,22 @@ class Session
 
 	public function start() 
 	{
+		// @TODO Use DI here.
+		$config = ClassLoader::getInstance()
+			->getClassInstance( 'Config' );
+		if( $config->hasConfig( 'session' ) )
+		{
+			$sessionConfig = $config->getConfig( 'session' );
+			if( !empty( $sessionConfig['saveHandler'] ) )
+			{
+				ini_set( 'session.save_handler', $sessionConfig['saveHandler'] );
+			}
+			if( !empty( $sessionConfig['savePath'] ) )
+			{
+				ini_set( 'session.save_path', $sessionConfig['savePath'] );
+			}
+		}
+
 		session_name( APP_NAME );
 		session_start();
 
@@ -72,7 +88,7 @@ class Session
 	{
 		if (!isset($this->session[$key])) 
 		{
-			return '';
+			return null;
 		}
 		return ($this->session[$key]);
 	}

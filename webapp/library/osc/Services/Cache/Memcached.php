@@ -32,7 +32,7 @@ class Services_Cache_Memcached implements CacheService
 		$memcachedConfig = $config->getConfig( 'memcached' );
 		foreach( $memcachedConfig['servers'] as $server )
 		{
-			$this->service->addServer( $server['host'], $server['ip'] );
+			$this->service->addServer( $server['host'], $server['port'] );
 		}
 	}
 	public function read($key) 

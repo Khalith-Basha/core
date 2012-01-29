@@ -174,15 +174,11 @@ function osc_current_web_theme()
 function osc_current_web_theme_url($file = '') 
 {
 	$themes = ClassLoader::getInstance()->getClassInstance( 'WebThemes' );
-	return $themes->getCurrentThemeUrl() . $file;
+	$url = $themes->getCurrentThemeUrl() . $file;
+	return $url;
 }
-/**
- * Gets the complete path of a given file using the theme path as a root
- *
- * @param string $file
- * @return string
- */
-function osc_current_web_theme_path( $file, View $view = null ) 
+
+function osc_get_current_web_theme_path( $file, View $view = null ) 
 {
 	$classLoader = ClassLoader::getInstance();
 	$themes = $classLoader->getClassInstance( 'WebThemes' );
@@ -192,7 +188,7 @@ function osc_current_web_theme_path( $file, View $view = null )
 	$filePath = $webThemes->getCurrentThemePath() . DIRECTORY_SEPARATOR . $file;
 	if (file_exists($filePath)) 
 	{
-		require $filePath;
+		return $filePath;
 	}
 	else
 	{
@@ -200,13 +196,29 @@ function osc_current_web_theme_path( $file, View $view = null )
 		$filePath = $webThemes->getCurrentThemePath() . DIRECTORY_SEPARATOR . $file;
 		if (file_exists($filePath)) 
 		{
-			require $filePath;
+			return $filePath;
 		}
 		else
 		{
 			trigger_error('File not found: ' . $filePath, E_USER_NOTICE);
+			return null;
 		}
 	}
+}
+
+/**
+ * Gets the complete path of a given file using the theme path as a root
+ *
+ * @param string $file
+ * @return string
+ */
+function osc_current_web_theme_path( $file, View $view = null ) 
+{
+	$path = osc_get_current_web_theme_path( $file, $view );
+	if( !is_null( $path ) )
+		require $path;
+	else
+		trigger_error( 'Path not found: ' . $path );
 }
 /**
  * Gets the complete path of a given file using the theme path as a root

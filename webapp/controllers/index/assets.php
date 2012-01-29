@@ -22,18 +22,20 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-$cache = true;
+$cache = false;
 $cachedir = '../../uploads';
 
 $type = $_GET['type'];
-$elements = explode(',', $_GET['files']);
+$elements = explode( ',', $_GET['files'] );
 
+$contentType = 'javaScript' == $type ? 'javascript' : 'css';
 $suffix = 'javaScript' === $type ? '.js' : '.css';
 $folder = 'javaScript' === $type ? 'scripts' : 'styles';
+$elementsPath = array();
 
 // Determine last modification date of the files
 $lastmodified = 0;
-while (list(, $element) = each($elements)) 
+foreach( $elements as $element )
 {
 	if( empty( $element ) )
 		continue;
@@ -44,12 +46,13 @@ while (list(, $element) = each($elements))
 		die( 'Forbidden: ' . $element );
 	}
 
-	$path = osc_current_web_theme_path( 'static/'. $folder . '/' . $element . $suffix );
+	$path = osc_get_current_web_theme_path( 'static/'. $folder . '/' . $element . $suffix );
 	if( !file_exists( $path ) )
 	{
 		header( 'HTTP/1.0 404 Not Found' );
 		die( 'Not found: ' . $path );
 	}
+	$elementsPath[] = $path;
 	$lastmodified = max($lastmodified, filemtime($path));
 }
 // Send Etag hash
@@ -98,14 +101,12 @@ else
 	}
 	// Get contents of the files
 	$contents = '';
-	reset($elements);
-	while (list(, $element) = each($elements)) 
+	foreach( $elementsPath as $path )
 	{
-		$path = realpath($base . '/' . $element);
 		$contents.= "\n\n" . file_get_contents($path);
 	}
-	// Send Content-Type
-	header("Content-Type: text/" . $type);
+
+	header("Content-Type: text/" . $contentType);
 	if (isset($encoding) && $encoding != 'none') 
 	{
 		// Send compressed contents
@@ -130,3 +131,4 @@ else
 		}
 	}
 }
+

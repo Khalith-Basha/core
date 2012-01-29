@@ -96,7 +96,7 @@ function osc_is_web_user_logged_in()
 function osc_logged_user_id() 
 {
 	$session = ClassLoader::getInstance()->getClassInstance( 'Session' );
-	return (int)$session->_get("userId");
+	return $session->_get("userId");
 }
 /**
  * Gets logged user mail
