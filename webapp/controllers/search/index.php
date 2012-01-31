@@ -241,11 +241,8 @@ class CWebSearch extends Controller
 			{
 				$view->setMetaRobots( array( 'noindex', 'nofollow' ) );
 			}
-			
-			osc_run_hook("before_html");
-			echo $view->render( 'search' );
-			$this->getSession()->_clearVariables();
-			osc_run_hook("after_html");
+
+			echo $this->getView()->render( 'search/results' );	
 		}
 		else
 		{

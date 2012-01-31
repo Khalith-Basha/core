@@ -23,7 +23,7 @@ $itemUrls = $classLoader->getClassInstance( 'Url_Item' );
 echo $view->render( 'header' );
 ?>
             <div id="form_publish">
-                <?php osc_current_web_theme_path('inc.search.php'); ?>
+                <?php osc_current_web_theme_path('search/form.php'); ?>
             </div>
             <div class="content home">
                 <div id="main">

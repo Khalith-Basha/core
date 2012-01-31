@@ -24,7 +24,6 @@ $itemForm = ClassLoader::getInstance()->getClassInstance( 'Form_Item' );
 echo $view->render( 'header' );
 ?>
 
-        <?php if (osc_images_enabled_at_items()) $itemForm->photos_javascript(); ?>
             <div class="content add_item">
                 <h1><strong><?php _e('Publish an item', 'modern'); ?></strong></h1>
                 <ul id="error_list"></ul>
@@ -42,25 +41,16 @@ echo $view->render( 'header' );
                                 <?php $itemForm->multilanguage_title_description(); ?>
                             </div>
                         </div>
-                        <?php
-if (osc_price_enabled_at_items()) 
-{ ?>
+			<?php if (osc_price_enabled_at_items()): ?>
                         <div class="box price">
-                            <label for="price"><?php
-	_e('Price', 'modern'); ?></label>
-                            <?php
-	$itemForm->price_input_text(); ?>
-                            <?php
-	$itemForm->currency_select(); ?>
+                            <label for="price"><?php _e('Price', 'modern'); ?></label>
+                            <?php $itemForm->price_input_text(); ?>
+                            <?php $itemForm->currency_select(); ?>
                         </div>
-                        <?php
-} ?>
-                        <?php
-if (osc_images_enabled_at_items()) 
-{ ?>
+			<?php endif; ?>
+			<?php if (osc_images_enabled_at_items()): ?>
                         <div class="box photos">
-                            <h2><?php
-	_e('Photos', 'modern'); ?></h2>
+                            <h2><?php _e('Photos', 'modern'); ?></h2>
                             <div id="photos">
                                 <div class="row">
                                     <input type="file" name="photos[]" />
@@ -68,8 +58,7 @@ if (osc_images_enabled_at_items())
                             </div>
                             <a href="#" onclick="addNewPhoto(); uniform_input_file(); return false;"><?php _e('Add new photo', 'modern'); ?></a>
                         </div>
-                        <?php
-} ?>
+			<?php endif; ?>
                     
                         <div class="box location">
                             <h2><?php _e('Item Location', 'modern'); ?></h2>
@@ -95,9 +84,7 @@ if (osc_images_enabled_at_items())
                             </div>
                         </div>
                         <!-- seller info -->
-                        <?php
-if (!osc_is_web_user_logged_in()) 
-{ ?>
+			<?php if (!osc_is_web_user_logged_in()): ?>
                         <div class="box seller_info">
                             <h2><?php _e('Seller\'s information', 'modern'); ?></h2>
                             <div class="row">
@@ -112,29 +99,20 @@ if (!osc_is_web_user_logged_in())
                                 <div style="width: 120px;text-align: right;float:left;">
                                     <?php $itemForm->show_email_checkbox(); ?>
                                 </div>
-                                <label for="showEmail" style="width: 250px;"><?php
-	_e('Show e-mail on the item page', 'modern'); ?></label>
+                                <label for="showEmail" style="width: 250px;"><?php _e('Show e-mail on the item page', 'modern'); ?></label>
                             </div>
                         </div>
-                        <?php
-}; ?>
-                        <?php
-$itemForm->plugin_post_item(); ?>
-                        <?php
-if (osc_recaptcha_items_enabled()) 
-{ ?>
+			<?php endif; ?>
+			<?php if (osc_recaptcha_items_enabled()): ?>
                         <div class="box">
                             <div class="row">
-                                <?php
-	osc_show_recaptcha(); ?>
+                                <?php osc_show_recaptcha(); ?>
                             </div>
                         </div>
-                        <?php
-} ?>
+			<?php endif; ?>
                         
                     <div class="clear"></div>
-                    <button  type="submit"><?php
-_e('Publish', 'modern'); ?></button>
+                    <button  type="submit"><?php _e('Publish', 'modern'); ?></button>
                     </fieldset>
              </form>
             </div>

@@ -101,12 +101,4 @@ class CWebUserNonSecure extends Controller
 			break;
 		}
 	}
-
-	function doView($file) 
-	{
-		osc_run_hook("before_html");
-		osc_current_web_theme_path($file);
-		$this->getSession()->_clearVariables();
-		osc_run_hook("after_html");
-	}
 }

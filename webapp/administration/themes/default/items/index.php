@@ -61,7 +61,6 @@ $cities = __get("cities");
                 width: 40px;
             }
        </style>
-        <?php $itemForm->location_javascript('admin'); ?>
         <script type="text/javascript">
             $(function() {
                 oTable = new osc_datatable();

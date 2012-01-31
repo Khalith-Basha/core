@@ -54,7 +54,7 @@ class CWebUser extends UserController
 		$this->getView()->assign('regions', $aRegions);
 		$this->getView()->assign('cities', $aCities);
 		$this->getView()->assign('user', $user);
-		$this->doView('user/profile.php');
+		echo $this->getView()->render( 'user/profile' );
 	}
 
 	public function doPost( HttpRequest $req, HttpResponse $res )
@@ -65,13 +65,5 @@ class CWebUser extends UserController
 		$success = $userActions->edit($userId);
 		osc_add_flash_ok_message(_m('Your profile has been updated successfully'));
 		$this->redirectTo(osc_user_profile_url());
-	}
-	
-	public function doView($file) 
-	{
-		osc_run_hook("before_html");
-		osc_current_web_theme_path($file);
-		$this->getSession()->_clearVariables();
-		osc_run_hook("after_html");
 	}
 }

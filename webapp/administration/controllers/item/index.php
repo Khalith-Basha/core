@@ -237,6 +237,7 @@ class CAdminItem extends AdministrationController
 			$this->getView()->assign("countries", $countries);
 			$this->getView()->assign("regions", $regions);
 			$this->getView()->assign("cities", $cities);
+			$this->getView()->addJavaScript( '/static/scripts/location.js' );
 			//calling the view...
 			$this->doView('items/index.php');
 		}

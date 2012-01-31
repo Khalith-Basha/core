@@ -30,7 +30,7 @@ class CWebUser extends Controller
 		$cookie->pop('oc_userSecret');
 		$cookie->set();
 
-		$this->redirectTo( osc_base_url() );
+		$this->redirectTo( osc_base_url() . '/' );
 	}
 }
 

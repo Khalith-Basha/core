@@ -84,9 +84,17 @@ class CWebContact extends Controller
 		{
 			$params['attachment'] = $path;
 		}
-		osc_sendMail($params);
-		osc_add_flash_ok_message(_m('Your e-mail has been sent properly. Thank your for contacting us!'));
-		$this->redirectTo(osc_base_url());
+
+		try
+		{
+			osc_sendMail($params);
+			osc_add_flash_ok_message(_m('Your e-mail has been sent properly. Thank your for contacting us!'));
+		}
+		catch( Exception $e )
+		{
+			osc_add_flash_ok_message(_m('There was a problem trying to send contact form.'));
+		}
+		$this->redirectTo(osc_base_url() . '/' );
 	}
 }
 

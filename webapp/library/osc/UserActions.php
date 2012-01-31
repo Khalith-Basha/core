@@ -43,6 +43,8 @@ Class UserActions
 			return 7;
 		}
 		$input = $this->prepareData(true);
+
+		ClassLoader::getInstance()->loadFile( 'helpers/hValidate' );
 		if (!osc_validate_email($input['s_email'])) 
 		{
 			return 5;
@@ -166,6 +168,7 @@ Class UserActions
 	}
 	function prepareData($is_add) 
 	{
+		ClassLoader::getInstance()->loadFile( 'helpers/hSecurity' );
 		$input = array();
 		if ($is_add) 
 		{

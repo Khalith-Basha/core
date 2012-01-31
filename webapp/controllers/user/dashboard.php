@@ -37,7 +37,7 @@ class CWebUser extends UserController
 			//calling the view...
 			$this->getView()->assign('items', $aItems);
 			$this->getView()->assign('max_items', $max_items);
-			$this->doView('user/index.php');
+			echo $this->getView()->render( 'user/index' );
 			break;
 
 		case 'activate_alert':
@@ -83,13 +83,5 @@ class CWebUser extends UserController
 			$this->redirectTo(osc_base_url(true) . "?page=item&action=item_edit&id=" . $fkid);
 			break;
 		}
-	}
-
-	function doView($file) 
-	{
-		osc_run_hook("before_html");
-		osc_current_web_theme_path($file);
-		$this->getSession()->_clearVariables();
-		osc_run_hook("after_html");
 	}
 }

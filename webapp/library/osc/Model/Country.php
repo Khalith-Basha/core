@@ -44,6 +44,11 @@ class Model_Country extends DAO
 	 */
 	public function findByCode($code) 
 	{
+		if( empty( $code ) )
+		{
+			trigger_error( 'Empty primary key' );
+			return null;
+		}
 		$this->dao->select('*');
 		$this->dao->from($this->getTableName());
 		$this->dao->where('pk_c_code', $code);

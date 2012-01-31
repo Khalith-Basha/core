@@ -75,7 +75,7 @@ if (osc_count_items() == 0)
 else
 { ?>
                             <?php
-	require (osc_search_show_as() == 'list' ? 'search_list.php' : 'search_gallery.php'); ?>
+	require (osc_search_show_as() == 'list' ? 'list.php' : 'gallery.php'); ?>
                         <?php
 } ?>
                         <div class="paginate" >

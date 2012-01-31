@@ -36,40 +36,27 @@ _e('Search'); ?>...";
 	               	"bAutoWidth": false
 			        ,"sDom": '<"top"fl>rt<"bottom"ip<"clear">'
 			        ,"oLanguage": {
-					        "sProcessing":   "<?php
-_e('Processing'); ?>..."
-					        ,"sLengthMenu":   "<?php
-_e('Show _MENU_ entries'); ?>"
-					        ,"sZeroRecords":  "<?php
-_e('No matching records found'); ?>"
-					        ,"sInfo":         "<?php
-_e('Showing _START_ to _END_ of _TOTAL_ entries'); ?>"
-					        ,"sInfoEmpty":    "<?php
-_e('Showing 0 to 0 of 0 entries'); ?>"
-					        ,"sInfoFiltered": "(<?php
-_e('filtered from _MAX_ total entries'); ?>)"
-					        ,"sInfoPostFix":  ""
-					        ,"sSearch":       "<?php
-_e('Search'); ?>:"
+					        "sProcessing":   "<?php _e('Processing'); ?>..."
+					        ,"sLengthMenu":   "<?php _e('Show _MENU_ entries'); ?>"
+					        ,"sZeroRecords":  "<?php _e('No matching records found'); ?>"
+					        ,"sInfo":         "<?php _e('Showing _START_ to _END_ of _TOTAL_ entries'); ?>"
+					        ,"sInfoEmpty":    "<?php _e('Showing 0 to 0 of 0 entries'); ?>"
+					        ,"sInfoFiltered": "(<?php _e('filtered from _MAX_ total entries'); ?>)"
+					        ,"sInfoPostFix":  "",
+						"sSearch":       "<?php _e('Search'); ?>:"
 					        ,"sUrl":          ""
 					        ,"oPaginate": {
-						        "sFirst":    "<?php
-_e('First'); ?>",
-						        "sPrevious": "<?php
-_e('Previous'); ?>",
-						        "sNext":     "<?php
-_e('Next'); ?>",
-						        "sLast":     "<?php
-_e('Last'); ?>"
+						        "sFirst":    "<?php _e('First'); ?>",
+						        "sPrevious": "<?php _e('Previous'); ?>",
+						        "sNext":     "<?php _e('Next'); ?>",
+						        "sLast":     "<?php _e('Last'); ?>"
 					        }
-			                ,"sLengthMenu": '<div style="float:left;"><?php
-_e('Show'); ?> <select class="display" id="select_range">'+
+			                ,"sLengthMenu": '<div style="float:left;"><?php _e('Show'); ?> <select class="display" id="select_range">'+
 			                '<option value="10">10</option>'+
 			                '<option value="15">15</option>'+
 			                '<option value="20">20</option>'+
 			                '<option value="100">100</option>'+
-					        '</select> <?php
-_e('entries'); ?>',
+					        '</select> <?php _e('entries'); ?>',
 			                "sSearch": '<span class="ui-icon ui-icon-search" style="display: inline-block;"></span>'
 			         }
 			        ,"sPaginationType": "full_numbers"
@@ -118,7 +105,7 @@ foreach ($users as $u)
 	_e('Delete'); ?></a></div>"
 						        ,"<?php echo addcslashes($u['s_name'], '"'); ?>"
 						        ,"<?php echo $u['reg_date']; ?>"
-                                ,"<?php echo $u['_mod_date']; ?>"
+                                ,"<?php echo $u['mod_date']; ?>"
 					        ] <?php
 	echo $last_id != $u['pk_i_id'] ? ',' : ''; ?>
 				        <?php

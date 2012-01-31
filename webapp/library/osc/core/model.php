@@ -29,7 +29,10 @@ class Model
 
 	public function prepareStatement( $sql )
 	{
-		return $this->conn->prepare( $this->replacePrefix( $sql ) ); 
+		$result = $this->conn->prepare( $this->replacePrefix( $sql ) ); 
+		if( false === $result )
+			throw new Exception( $this->conn->error );
+		return $result;
 	}
 
         public function fetchAll( mysqli_stmt $stmt )

@@ -275,13 +275,12 @@ CREATE  TABLE IF NOT EXISTS `osc_db`.`item` (
   `s_contact_name` VARCHAR(100) NULL DEFAULT NULL ,
   `s_contact_email` VARCHAR(140) NULL DEFAULT NULL ,
   `b_premium` TINYINT(1) NOT NULL DEFAULT '0' ,
-  `b_enabled` TINYINT(1) NOT NULL DEFAULT '1' ,
-  `b_active` TINYINT(1) NOT NULL DEFAULT '0' ,
-  `b_spam` TINYINT(1) NOT NULL DEFAULT '0' ,
+  `b_enabled` TINYINT(1)  NOT NULL DEFAULT TRUE ,
+  `b_active` TINYINT(1)  NOT NULL DEFAULT FALSE ,
+  `b_spam` TINYINT(1) NOT NULL DEFAULT FALSE ,
   `s_secret` VARCHAR(40) NULL DEFAULT NULL ,
   `b_show_email` TINYINT(1) NULL DEFAULT NULL ,
-  `status` ENUM('ACTIVE','INACTIVE','MODERATION') NULL ,
-  `status_detail` ENUM('ON_MODERATION','SPAM','STRONG_BAD_WORD','MEDIUM_BAD_WORD','OLD') NULL ,
+  `status` ENUM('MODERATION','SPAM','STRONG_BAD_WORD','SOFT_BAD_WORD','OLD') NULL ,
   PRIMARY KEY (`pk_i_id`) ,
   INDEX `fk_i_user_id` (`fk_i_user_id` ASC) ,
   INDEX `fk_i_category_id` (`fk_i_category_id` ASC) ,
@@ -641,6 +640,23 @@ CREATE  TABLE IF NOT EXISTS `osc_db`.`t_widget` (
   PRIMARY KEY (`pk_i_id`) )
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `osc_db`.`bad_word`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `osc_db`.`bad_word` (
+  `word` VARCHAR(50) NOT NULL ,
+  `severity` ENUM('STRONG','SOFT') NOT NULL ,
+  `locale_code` CHAR(5) NULL ,
+  PRIMARY KEY (`word`) ,
+  INDEX `fk_bad_word_locale` (`locale_code` ASC) ,
+  CONSTRAINT `fk_bad_word_t_locale1`
+    FOREIGN KEY (`locale_code` )
+    REFERENCES `osc_db`.`t_locale` (`pk_c_code` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
 
 
 

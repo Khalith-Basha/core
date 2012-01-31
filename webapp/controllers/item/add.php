@@ -89,13 +89,10 @@ class CWebItem extends Controller
 		}
 		$this->getView()->assign('user', $this->user);
 		osc_run_hook('post_item');
-		$this->doView('item/post.php');
-	}
-	function doView($file) 
-	{
-		osc_run_hook("before_html");
-		osc_current_web_theme_path($file);
-		$this->getSession()->_clearVariables();
-		osc_run_hook("after_html");
+
+		if( osc_images_enabled_at_items())
+			$this->getView()->addJavaScript( '/static/scripts/photos.js' );
+		$this->getView()->addJavaScript( '/static/scripts/plugin-post-item.js' );
+		echo $this->getView()->render( 'item/post' );
 	}
 }

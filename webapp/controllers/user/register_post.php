@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Affero General Public
  * License along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-class CWebRegister extends Controller
+class CWebUser extends Controller
 {
 	function __construct() 
 	{
@@ -56,37 +56,33 @@ class CWebRegister extends Controller
 
 		case 3:
 			osc_add_flash_warning_message(_m('The specified e-mail is already in use'));
-			$this->doView('user-register.php');
+			$this->doView('user/register');
 			break;
 
 		case 4:
 			osc_add_flash_error_message(_m('The reCAPTCHA was not introduced correctly'));
-			$this->doView('user-register.php');
+			$this->doView('user/register');
 			break;
 
 		case 5:
 			osc_add_flash_warning_message(_m('The email is not valid'));
-			$this->doView('user-register.php');
+			$this->doView('user/register');
 			break;
 
 		case 6:
 			osc_add_flash_warning_message(_m('The password cannot be empty'));
-			$this->doView('user-register.php');
+			$this->doView('user/register');
 			break;
 
 		case 7:
 			osc_add_flash_warning_message(_m("Passwords don't match"));
-			$this->doView('user-register.php');
+			$this->doView('user/register');
 			break;
 		}
 	}
 	function doView($file) 
 	{
-		osc_run_hook('before_html');
-		osc_current_web_theme_path($file);
-		$this->getSession()->_clearVariables();
-		osc_run_hook('after_html');
+		echo $this->getView()->render( $file );
 	}
 }
-$do = new CWebRegister();
-$do->doModel();
+
