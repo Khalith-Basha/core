@@ -35,6 +35,7 @@ class CWebUser extends Controller
 		}
 
 		$view = $this->getView();
+		$view->setTitle( __('Login', 'modern') . ' - ' . osc_page_title() );
 		echo $view->render( 'user/login' );
 	}
 }

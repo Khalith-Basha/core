@@ -29,7 +29,9 @@ class CWebUser extends Controller
 
 	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
-		echo $this->getView()->render( 'user/recover' );
+		$view = $this->getView();
+		$view->setTitle( __('Recover your password', 'modern') . ' - ' . osc_page_title() );
+		echo $view->render( 'user/recover' );
 	}
 
 	public function doPost( HttpRequest $req, HttpResponse $res )

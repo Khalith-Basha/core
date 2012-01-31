@@ -60,6 +60,7 @@ class CWebItem extends Controller
 			}
 			if (osc_reg_user_can_contact() && osc_is_web_user_logged_in() || !osc_reg_user_can_contact()) 
 			{
+				$view->setTitle( __('Contact seller', 'modern') . ' - ' . osc_item_title() . ' - ' . osc_page_title() );
 				echo $view->render( 'item/contact' );
 			}
 			else
@@ -111,13 +112,5 @@ class CWebItem extends Controller
 			osc_add_flash_ok_message(_m('We\'ve just sent an e-mail to the seller'));
 		}
 		$this->redirectTo(osc_item_url());
-	}
-
-	function doView($file) 
-	{
-		osc_run_hook("before_html");
-		osc_current_web_theme_path($file);
-		$this->getSession()->_clearVariables();
-		osc_run_hook("after_html");
 	}
 }

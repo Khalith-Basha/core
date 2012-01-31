@@ -5,7 +5,8 @@ class Url_Item extends Url_Abstract
 	public function loadUrls()
 	{
 		$this->urls['mark-spam'] = array(
-			'default' => osc_base_url( true ) . '?page=item&action=mark&as=spam&id=%d'
+			'default' => osc_base_url( true ) . '?page=item&action=mark&as=spam&id=%d',
+			'friendly' => osc_base_url( false ) . '/item/mark/spam'
 		);
 		$this->urls['item-details'] = array(
 			'default' => 'xxx',

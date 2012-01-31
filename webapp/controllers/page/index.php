@@ -49,6 +49,7 @@ class CWebPage extends Controller
 
 			$view = $this->getView();
 			$view->setTitle( $page['locale'][osc_current_user_locale()]['s_title'] );
+			$view->setTitle( osc_static_page_title() . ' - ' . osc_page_title() );
 			$view->assign('page', $page);
 			echo $view->render( 'page' );
 		}

@@ -18,24 +18,6 @@
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-if (!function_exists('add_logo_header')) 
-{
-	function add_logo_header() 
-	{
-		$html = '<img border="0" alt="' . osc_page_title() . '" src="' . osc_current_web_theme_url('images/logo.jpg') . '">';
-		$js = "<script>
-                          $(document).ready(function () {
-                              $('#logo').html('" . $html . "');
-                          });
-                      </script>";
-		$themes = ClassLoader::getInstance()->getClassInstance( 'WebThemes' );
-		if (file_exists( $themes->getCurrentThemePath() . "images/logo.jpg")) 
-		{
-			echo $js;
-		}
-	}
-	osc_add_hook("header", "add_logo_header");
-}
 if (!function_exists('modern_admin_menu')) 
 {
 	function modern_admin_menu() 
@@ -58,9 +40,6 @@ if (!function_exists('meta_title'))
 		case ('item'):
 			switch ($section) 
 			{
-			case 'item_add':
-				$text = __('Publish an item', 'modern') . ' - ' . osc_page_title();
-				break;
 
 			case 'item_edit':
 				$text = __('Edit your item', 'modern') . ' - ' . osc_page_title();
@@ -70,18 +49,10 @@ if (!function_exists('meta_title'))
 				$text = __('Send to a friend', 'modern') . ' - ' . osc_item_title() . ' - ' . osc_page_title();
 				break;
 
-			case 'contact':
-				$text = __('Contact seller', 'modern') . ' - ' . osc_item_title() . ' - ' . osc_page_title();
-				break;
-
 			default:
 				$text = osc_item_title() . ' - ' . osc_page_title();
 				break;
 			}
-			break;
-
-		case ('page'):
-			$text = osc_static_page_title() . ' - ' . osc_page_title();
 			break;
 
 		case ('error'):
@@ -142,20 +113,6 @@ if (!function_exists('meta_title'))
 				$result = __('Search', 'modern');
 			}
 			$text = $result . ' - ' . $s_page . osc_page_title();
-			break;
-
-		case ('login'):
-			switch ($section) 
-			{
-			case ('recover'):
-				$text = __('Recover your password', 'modern') . ' - ' . osc_page_title();
-			default:
-				$text = __('Login', 'modern') . ' - ' . osc_page_title();
-			}
-			break;
-
-		case ('register'):
-			$text = __('Create a new account', 'modern') . ' - ' . osc_page_title();
 			break;
 
 		case ('user'):

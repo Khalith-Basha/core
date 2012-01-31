@@ -93,6 +93,8 @@ class CWebItem extends Controller
 		if( osc_images_enabled_at_items())
 			$this->getView()->addJavaScript( '/static/scripts/photos.js' );
 		$this->getView()->addJavaScript( '/static/scripts/plugin-post-item.js' );
+
+		$this->getView()->setTitle( __('Publish an item', 'modern') . ' - ' . osc_page_title() );
 		echo $this->getView()->render( 'item/post' );
 	}
 }

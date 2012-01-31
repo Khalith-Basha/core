@@ -37,6 +37,7 @@ class CWebUser extends Controller
 		$view = $this->getView();
 		$view->addJavaScript( osc_current_web_theme_js_url( 'jquery.validate.min.js' ) );
 		$view->addJavaScript( '/static/scripts/user-register.js' );
+		$view->setTitle( __('Create a new account', 'modern') . ' - ' . osc_page_title() );
 		echo $view->render( 'user/register' );
 		$this->getSession()->_clearVariables();
 	}
