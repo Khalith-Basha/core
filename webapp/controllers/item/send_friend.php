@@ -47,6 +47,7 @@ class CWebItem extends Controller
 		$view->assign('item', $item);
 		$view->addJavaScript( osc_current_web_theme_js_url('jquery.validate.min.js') );
 		$view->addJavaScript( '/static/scripts/send-friend.js' );
+		$view->setTitle( __('Send to a friend', 'modern') . ' - ' . osc_item_title() . ' - ' . osc_page_title() );
 		echo $view->render( 'item/send-friend' );
 	}
 

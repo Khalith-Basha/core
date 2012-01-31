@@ -242,7 +242,14 @@ class CWebSearch extends Controller
 				$view->setMetaRobots( array( 'noindex', 'nofollow' ) );
 			}
 
-			echo $this->getView()->render( 'search/results' );	
+			$view = $this->getView();
+			$this->setViewTitle( $view );
+			if (osc_has_items()) 
+			{
+				$view->setMetaDescription( osc_item_category() . ', ' . osc_highlight(strip_tags(osc_item_description()), 140) . '..., ' . osc_item_category() );
+			}
+
+			echo $view->render( 'search/results' );	
 		}
 		else
 		{
@@ -282,6 +289,64 @@ class CWebSearch extends Controller
 				osc_run_hook('feed_' . $p_sFeed, $aItems);
 			}
 		}
+	}
+
+	protected function setViewTitle( View $view )
+	{
+		$region = Params::getParam('sRegion');
+		$city = Params::getParam('sCity');
+		$pattern = Params::getParam('sPattern');
+		$category = osc_search_category_id();
+		$category = ((count($category) == 1) ? $category[0] : '');
+		$s_page = '';
+		$i_page = Params::getParam('iPage');
+		if ($i_page != '' && $i_page > 0) 
+		{
+			$s_page = __('page', 'modern') . ' ' . ($i_page + 1) . ' - ';
+		}
+		$b_show_all = ($region == '' && $city == '' & $pattern == '' && $category == '');
+		$b_category = ($category != '');
+		$b_pattern = ($pattern != '');
+		$b_city = ($city != '');
+		$b_region = ($region != '');
+		if ($b_show_all) 
+		{
+			$text = __('Show all items', 'modern') . ' - ' . $s_page . osc_page_title();
+		}
+		$result = '';
+		if ($b_pattern) 
+		{
+			$result.= $pattern . ' &raquo; ';
+		}
+		if ($b_category) 
+		{
+			$list = array();
+			$categoryModel = ClassLoader::getInstance()->getClassInstance( 'Model_Category' );
+			$aCategories = $categoryModel->toRootTree($category);
+			if (count($aCategories) > 0) 
+			{
+				foreach ($aCategories as $single) 
+				{
+					$list[] = $single['s_name'];
+				}
+				$result.= implode(' &raquo; ', $list) . ' &raquo; ';
+			}
+		}
+		if ($b_city) 
+		{
+			$result.= $city . ' &raquo; ';
+		}
+		if ($b_region) 
+		{
+			$result.= $region . ' &raquo; ';
+		}
+		$result = preg_replace('|\s?&raquo;\s$|', '', $result);
+		if ($result == '') 
+		{
+			$result = __('Search', 'modern');
+		}
+		$text = $result . ' - ' . $s_page . osc_page_title();
+		$view->setTitle( $text );
 	}
 }
 

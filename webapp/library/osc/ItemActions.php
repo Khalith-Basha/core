@@ -824,9 +824,9 @@ class ItemActions
 		$aItem['title'] = Params::getParam('title');
 		$aItem['description'] = Params::getParam('description');
 		$aItem['photos'] = Params::getFiles('photos');
-		// check params
-		// ---------
-		$country = ClassLoader::getInstance()->getClassInstance( 'Model_Country' )->findByCode($aItem['countryId']);
+
+		$classLoader = ClassLoader::getInstance();
+		$country = $classLoader->getClassInstance( 'Model_Country' )->findByCode($aItem['countryId']);
 		if (count($country) > 0) 
 		{
 			$countryId = $country['pk_c_code'];
@@ -843,7 +843,8 @@ class ItemActions
 		{
 			if (intval($aItem['regionId'])) 
 			{
-				$region = Region::newInstance()->findByPrimaryKey($aItem['regionId']);
+				$modelRegion = $classLoader->getClassInstance( 'Model_Region' );
+				$region = $modelRegion->findByPrimaryKey($aItem['regionId']);
 				if (count($region) > 0) 
 				{
 					$regionId = $region['pk_i_id'];
@@ -857,7 +858,8 @@ class ItemActions
 			$regionName = $aItem['region'];
 			if ($aItem['countryId'] != '') 
 			{
-				$auxRegion = Region::newInstance()->findByName($aItem['region'], $aItem['countryId']);
+				$modelRegion = $classLoader->getClassInstance( 'Model_Region' );
+				$auxRegion = $modelRegion->findByName($aItem['region'], $aItem['countryId']);
 				if ($auxRegion) 
 				{
 					$regionId = $auxRegion['pk_i_id'];
@@ -871,7 +873,8 @@ class ItemActions
 		{
 			if (intval($aItem['cityId'])) 
 			{
-				$city = City::newInstance()->findByPrimaryKey($aItem['cityId']);
+				$modelCity = $classLoader->getClassInstance( 'Model_City' );
+				$city = $modelCity->findByPrimaryKey($aItem['cityId']);
 				if (count($city) > 0) 
 				{
 					$cityId = $city['pk_i_id'];
@@ -885,7 +888,8 @@ class ItemActions
 			$cityName = $aItem['city'];
 			if ($aItem['countryId'] != '') 
 			{
-				$auxCity = City::newInstance()->findByName($aItem['city'], $aItem['regionId']);
+				$modelCity = $classLoader->getClassInstance( 'Model_City' );
+				$auxCity = $modelCity->findByName($aItem['city'], $aItem['regionId']);
 				if ($auxCity) 
 				{
 					$cityId = $auxCity['pk_i_id'];

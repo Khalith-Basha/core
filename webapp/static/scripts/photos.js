@@ -6,8 +6,7 @@
         e.parentNode.removeChild(e);
     }
     function addNewPhoto() {
-        var max = <?php
-		echo osc_max_images_per_item(); ?>;
+        var max = <?php echo osc_max_images_per_item(); ?>;
         var num_img = $('input[name="photos[]"]').size() + $("a.delete").size();
         if((max!=0 && num_img<max) || max==0) {
             var id = 'p-' + photoIndex++;
@@ -22,8 +21,7 @@
             a.setAttribute('href', '#');
             a.setAttribute('divid', id);
             a.onclick = function() { re(this.getAttribute('divid')); return false; }
-            a.appendChild(document.createTextNode('<?php
-		_e('Remove'); ?>'));
+            a.appendChild(document.createTextNode('Remove'));
 
             var d = ce('div');
             d.setAttribute('id', id);
@@ -35,8 +33,7 @@
             gebi('photos').appendChild(d);
 
         } else {
-            alert('<?php
-		_e('Sorry, you have reached the maximum number of images per ad'); ?>');
+            alert('Sorry, you have reached the maximum number of images per ad');
         }
     }
     // Listener: automatically add new file field when the visible ones are full.

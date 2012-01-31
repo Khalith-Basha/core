@@ -49,11 +49,12 @@ class CWebUser extends UserController
 		{
 			$aCities = City::newInstance()->findByRegion($aRegions[0]['pk_i_id']);
 		}
-		//calling the view...
+		$view = $this->getView();
 		$this->getView()->assign('countries', $aCountries);
 		$this->getView()->assign('regions', $aRegions);
 		$this->getView()->assign('cities', $aCities);
 		$this->getView()->assign('user', $user);
+		$view->setTitle( __('Update my profile', 'modern') . ' - ' . osc_page_title() );
 		echo $this->getView()->render( 'user/profile' );
 	}
 

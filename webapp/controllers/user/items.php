@@ -39,14 +39,7 @@ class CWebUser extends UserController
 		$this->getView()->assign('list_total_items', $total_items);
 		$this->getView()->assign('items_per_page', $itemsPerPage);
 		$this->getView()->assign('list_page', $page);
-		$this->doView('user/items.php');
-	}
-
-	function doView($file) 
-	{
-		osc_run_hook("before_html");
-		osc_current_web_theme_path($file);
-		$this->getSession()->_clearVariables();
-		osc_run_hook("after_html");
+		$view->setTitle( __('Manage my items', 'modern') . ' - ' . osc_page_title() );
+		echo $view->render( 'user/items' );
 	}
 }

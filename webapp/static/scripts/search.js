@@ -48,8 +48,8 @@ function doSearch()
                             minLength: 2,
                             select: function( event, ui ) {
                                 log( ui.item ?
-                                    "<?php _e('Selected', 'modern'); ?>: " + ui.item.value + " aka " + ui.item.id :
-                                    "<?php _e('Nothing selected, input was', 'modern'); ?> " + this.value );
+                                    "Selected: " + ui.item.value + " aka " + ui.item.id :
+                                    "Nothing selected, input was " + this.value );
                             }
                         });
                     });

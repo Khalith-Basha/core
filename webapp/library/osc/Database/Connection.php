@@ -20,7 +20,6 @@
  *
  * @package OpenSourceClassifieds
  * @subpackage Database
- * @since 2.3
  */
 class Database_Connection 
 {
@@ -28,7 +27,6 @@ class Database_Connection
 	 * Host name or IP address where it is located the database
 	 *
 	 * @access private
-	 * @since 2.3
 	 * @var string
 	 */
 	private $dbHost;
@@ -36,7 +34,6 @@ class Database_Connection
 	 * Database name where it's installed OpenSourceClassifieds
 	 *
 	 * @access private
-	 * @since 2.3
 	 * @var string
 	 */
 	private $dbName;
@@ -44,7 +41,6 @@ class Database_Connection
 	 * Database user
 	 *
 	 * @access private
-	 * @since 2.3
 	 * @var string
 	 */
 	private $dbUser;
@@ -52,7 +48,6 @@ class Database_Connection
 	 * Database user password
 	 *
 	 * @access private
-	 * @since 2.3
 	 * @var string
 	 */
 	private $dbPassword;
@@ -60,7 +55,6 @@ class Database_Connection
 	 * Database connection object to OpenSourceClassifieds database
 	 *
 	 * @access private
-	 * @since 2.3
 	 * @var mysqli
 	 */
 	private $db = 0;
@@ -68,7 +62,6 @@ class Database_Connection
 	 * Database connection object to metadata database
 	 *
 	 * @access private
-	 * @since 2.3
 	 * @var mysqli
 	 */
 	private $metadataDb = 0;
@@ -76,7 +69,6 @@ class Database_Connection
 	 * Database error number
 	 *
 	 * @access private
-	 * @since 2.3
 	 * @var int
 	 */
 	private $errorLevel = 0;
@@ -84,7 +76,6 @@ class Database_Connection
 	 * Database error description
 	 *
 	 * @access private
-	 * @since 2.3
 	 * @var string
 	 */
 	private $errorDesc = "";
@@ -92,7 +83,6 @@ class Database_Connection
 	 * Database connection error number
 	 *
 	 * @access private
-	 * @since 2.3
 	 * @var int
 	 */
 	private $connErrorLevel = 0;
@@ -100,7 +90,6 @@ class Database_Connection
 	 * Database connection error description
 	 *
 	 * @access private
-	 * @since 2.3
 	 * @var string
 	 */
 	private $connErrorDesc = 0;
@@ -119,7 +108,7 @@ class Database_Connection
 		$this->dbUser = $user;
 		$this->dbPassword = $password;
 		$this->tablePrefix = $tablePrefix;
-		$this->connectToOsclassDb();
+		$this->connectToMainDb();
 	}
 
 	public function getTablePrefix()
@@ -140,7 +129,6 @@ class Database_Connection
 	 * Set error num error and error description
 	 *
 	 * @access private
-	 * @since 2.3
 	 */
 	function errorReport() 
 	{
@@ -151,7 +139,6 @@ class Database_Connection
 	 * Set connection error num error and connection error description
 	 *
 	 * @access private
-	 * @since 2.3
 	 */
 	function errorConnection() 
 	{
@@ -162,7 +149,6 @@ class Database_Connection
 	 * Return the mysqli connection error number
 	 *
 	 * @access public
-	 * @since 2.3
 	 * @return type
 	 */
 	function getErrorConnectionLevel() 
@@ -173,7 +159,6 @@ class Database_Connection
 	 * Return the mysqli connection error description
 	 *
 	 * @access public
-	 * @since 2.3
 	 * @return type
 	 */
 	function getErrorConnectionDesc() 
@@ -184,7 +169,6 @@ class Database_Connection
 	 * Return the mysqli error number
 	 *
 	 * @access public
-	 * @since 2.3
 	 * @return type
 	 */
 	function getErrorLevel() 
@@ -195,7 +179,6 @@ class Database_Connection
 	 * Return the mysqli error description
 	 *
 	 * @access public
-	 * @since 2.3
 	 * @return string
 	 */
 	function getErrorDesc() 
@@ -206,10 +189,9 @@ class Database_Connection
 	 * Connect to OpenSourceClassifieds database
 	 *
 	 * @access public
-	 * @since 2.3
 	 * @return boolean It returns true if the connection has been successful or false if not
 	 */
-	function connectToOsclassDb() 
+	function connectToMainDb() 
 	{
 		$conn = $this->_connectToDb($this->dbHost, $this->dbUser, $this->dbPassword, $this->db);
 		if ($conn == false) 
@@ -236,7 +218,6 @@ class Database_Connection
 	 * Connect to metadata database
 	 *
 	 * @access public
-	 * @since 2.3
 	 * @return boolean It returns true if the connection has been successful or false if not
 	 */
 	function connectToMetadataDb() 
@@ -276,7 +257,6 @@ class Database_Connection
 	 * Select OpenSourceClassifieds database in $db var
 	 *
 	 * @access private
-	 * @since 2.3
 	 * @return boolean It returns true if the database has been selected sucessfully or false if not
 	 */
 	function selectOsclassDb() 
@@ -287,7 +267,6 @@ class Database_Connection
 	 * Select metadata database in $metadata_db var
 	 *
 	 * @access private
-	 * @since 2.3
 	 * @return boolean It returns true if the database has been selected sucessfully or false if not
 	 */
 	function selectMetadataDb() 
@@ -298,18 +277,16 @@ class Database_Connection
 	 * It reconnects to OpenSourceClassifieds database. First, it releases the database link connection and it connects again
 	 *
 	 * @access private
-	 * @since 2.3
 	 */
 	function reconnectOsclassDb() 
 	{
 		$this->releaseOsclassDb();
-		$this->connectToOsclassDb();
+		$this->connectToMainDb();
 	}
 	/**
 	 * It reconnects to metadata database. First, it releases the database link connection and it connects again
 	 *
 	 * @access private
-	 * @since 2.3
 	 */
 	function reconnectMetadataDb() 
 	{
@@ -320,7 +297,6 @@ class Database_Connection
 	 * Release the OpenSourceClassifieds database connection
 	 *
 	 * @access private
-	 * @since 2.3
 	 * @return boolean
 	 */
 	private function releaseOsclassDb() 
@@ -336,7 +312,6 @@ class Database_Connection
 	 * Release the metadata database connection
 	 *
 	 * @access private
-	 * @since 2.3
 	 * @return boolean
 	 */
 	private function releaseMetadataDb() 
@@ -347,7 +322,6 @@ class Database_Connection
 	 * It returns the osclass database link connection
 	 *
 	 * @access public
-	 * @since 2.3
 	 */
 	function getOsclassDb() 
 	{
@@ -357,7 +331,6 @@ class Database_Connection
 	 * It returns the metadata database link connection
 	 *
 	 * @access public
-	 * @since 2.3
 	 */
 	function getMetadataDb() 
 	{
@@ -384,7 +357,6 @@ class Database_Connection
 	/**
 	 * At the end of the execution it prints the database debug if it's necessary
 	 *
-	 * @since 2.3
 	 * @access private
 	 */
 	function debug() 
@@ -394,7 +366,6 @@ class Database_Connection
 	/**
 	 * It selects the database of a connector database link
 	 *
-	 * @since 2.3
 	 * @access private
 	 * @param string $dbName Database name. If you leave blank this field, it will
 	 * select the database set in the init method
@@ -416,7 +387,6 @@ class Database_Connection
 	/**
 	 * Set charset of the database passed per parameter
 	 *
-	 * @since 2.3
 	 * @access private
 	 * @param string $charset The charset to be set
 	 * @param mysqli $connId Database link connector
@@ -428,7 +398,6 @@ class Database_Connection
 	/**
 	 * Release the database connection passed per parameter
 	 *
-	 * @since 2.3
 	 * @access private
 	 * @param mysqli $connId Database connection to be released
 	 * @return boolean It returns true if the database connection is released and false

@@ -52,8 +52,7 @@
                     return true;
                 }
             },
-            "<?php
-		_e("Description: needs to be longer"); ?>."
+            "<?php _e("Description: needs to be longer"); ?>."
         );
 
         // Code for form validation
@@ -100,17 +99,14 @@
                 }
             },
             messages: {
-                catId: "<?php
-		_e('Choose one category'); ?>.",
+                catId: "<?php _e('Choose one category'); ?>.",
                 <?php
 		if (osc_price_enabled_at_items()) 
 		{ ?>
                 price: {
-                    maxlength: "<?php
-			_e("Price: no more than 50 characters"); ?>."
+                    maxlength: "<?php _e("Price: no more than 50 characters"); ?>."
                 },
-                currency: "<?php
-			_e("Currency: make your selection"); ?>.",
+                currency: "<?php _e("Currency: make your selection"); ?>.",
                 <?php
 		} ?>
                 <?php
@@ -126,24 +122,18 @@
 		if ($path == 'front') 
 		{ ?>
                 contactName: {
-                    minlength: "<?php
-			_e("Name: enter at least 3 characters"); ?>.",
-                    maxlength: "<?php
-			_e("Name: no more than 35 characters"); ?>."
+                    minlength: "<?php _e("Name: enter at least 3 characters"); ?>.",
+                    maxlength: "<?php _e("Name: no more than 35 characters"); ?>."
                 },
                 contactEmail: {
-                    required: "<?php
-			_e("Email: this field is required"); ?>.",
-                    email: "<?php
-			_e("Invalid email address"); ?>."
+                    required: "<?php _e("Email: this field is required"); ?>.",
+                    email: "<?php _e("Invalid email address"); ?>."
                 },
                 <?php
 		} ?>
                 address: {
-                    minlength: "<?php
-		_e("Address: enter at least 3 characters"); ?>.",
-                    maxlength: "<?php
-		_e("Address: no more than 100 characters"); ?>."
+                    minlength: "<?php _e("Address: enter at least 3 characters"); ?>.",
+                    maxlength: "<?php _e("Address: no more than 100 characters"); ?>."
                 }
             },
             errorLabelContainer: "#error_list",
@@ -176,8 +166,7 @@
     
     function delete_image(id, item_id,name, secret) {
         //alert(id + " - "+ item_id + " - "+name+" - "+secret);
-        var result = confirm('<?php
-		_e('This action can\\\'t be undone. Are you sure you want to continue?'); ?>');
+        var result = confirm('<?php _e('This action can\\\'t be undone. Are you sure you want to continue?'); ?>');
         if(result) {
             $.ajax({
                 type: "POST",

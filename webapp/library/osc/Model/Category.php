@@ -350,7 +350,7 @@ class Model_Category extends DAO
 	 * @param string $slug
 	 * @return array
 	 */
-	public function findBySlug($slug) 
+	public function findBySlug( $slug )
 	{
 		$results = $this->listWhere("b.s_slug = '" . $slug . "'");
 		if (isset($results[0])) 

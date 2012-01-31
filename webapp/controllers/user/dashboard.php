@@ -34,9 +34,11 @@ class CWebUser extends UserController
 		case ('dashboard'):
 			$max_items = (Params::getParam('max_items') != '') ? Params::getParam('max_items') : 5;
 			$aItems = ClassLoader::getInstance()->getClassInstance( 'Model_Item' )->findByUserIDEnabled($this->getSession()->_get('userId'), 0, $max_items);
-			//calling the view...
+
+			$view = $this->getView();
 			$this->getView()->assign('items', $aItems);
 			$this->getView()->assign('max_items', $max_items);
+			$view->setTitle( __('Dashboard', 'modern') . ' - ' . osc_page_title() );
 			echo $this->getView()->render( 'user/index' );
 			break;
 

@@ -252,11 +252,6 @@ function osc_get_current_user_locale()
  */
 function osc_current_user_locale() 
 {
-	$session = ClassLoader::getInstance()->getClassInstance( 'Session' );
-	if ( $session->_get('userLocale') != '') 
-	{
-		return $session->_get('userLocale');
-	}
 	return osc_language();
 }
 /**

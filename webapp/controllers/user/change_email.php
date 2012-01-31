@@ -30,6 +30,7 @@ class CWebUser extends UserController
 	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
 		$view = $this->getView();
+		$view->setTitle( __('Change my email', 'modern') . ' - ' . osc_page_title() );
 		echo $view->render( 'user/change-email' );
 	}
 

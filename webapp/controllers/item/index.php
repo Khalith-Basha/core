@@ -86,10 +86,12 @@ class CWebItem extends Controller
 			osc_run_hook('show_item', $item);
 
 			require 'osc/helpers/hPagination.php';
+			$view = $this->getView();
 			$this->view->setTitle( $item['locale'][osc_current_user_locale()]['s_title'] );
 			$this->view->addJavaScript( '/static/scripts/contact-form.js' );
 			$this->view->addJavaScript( '/static/scripts/comment-form.js' );
-			echo $this->view->render( 'item/index' );
+			$view->setMetaDescription( osc_item_category() . ', ' . osc_highlight(strip_tags(osc_item_description()), 140) . '..., ' . osc_item_category() );
+			echo $view->render( 'item/index' );
 		}
 	}
 }

@@ -18,7 +18,7 @@
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-$contactForm = ClassLoader::getInstance()->getClassInstance( 'Form_Contact' );
+$contactForm = $classLoader->getClassInstance( 'Form_Contact' );
 
 echo $view->render( 'header' );
 ?>

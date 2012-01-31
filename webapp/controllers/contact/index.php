@@ -25,7 +25,7 @@ class CWebContact extends Controller
 		if( false === $viewContent )
 		{
 			$view = $this->getView();
-			$view->setTitle( _m( 'Contact form' ) );
+			$view->setTitle( __('Contact', 'modern') . ' - ' . osc_page_title() );
 			$view->addJavaScript( osc_current_web_theme_js_url('jquery.validate.min.js') );
 			$view->addJavaScript( '/static/scripts/contact-form.js' );
 			$viewContent = $view->render( 'contact' );

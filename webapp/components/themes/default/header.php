@@ -23,13 +23,12 @@ $userForm = $classLoader->getClassInstance( 'Form_User' );
 $urlStatic = $classLoader->getClassInstance( 'Url_Static' );
 ?>
 <!DOCTYPE HTML>
-<html lang="<?php echo str_replace( '_', '-', osc_current_user_locale() ); ?>">
+<html lang="<?php echo str_replace( '_', '-', osc_locale() ); ?>">
 <head>
 	<meta charset="UTF-8" />
-	<meta name="description" content="<?php echo meta_description(); ?>" />
-	<?php if( $view->hasMetaRobots() ): ?>
-	<meta name="robots" content="<?php echo $view->getMetaRobots(); ?>" />
-	<?php endif; ?>
+	<?php foreach( $view->getMetas() as $metaName => $metaContent ): ?>
+	<meta name="<?php echo $metaName; ?>" content="<?php echo $metaContent; ?>" />
+	<?php endforeach; ?>
 	<meta http-equiv="Content-type" content="text/html; charset=UTF-8" />
 	<meta http-equiv="Cache-Control" content="no-cache" />
 	<meta http-equiv="Expires" content="Fri, Jan 01 1970 00:00:00 GMT" />

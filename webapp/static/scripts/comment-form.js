@@ -16,20 +16,15 @@
             },
             messages: {
                 authorEmail: {
-                    required: "<?php
-		_e("Email: this field is required"); ?>.",
-                    email: "<?php
-		_e("Invalid email address"); ?>."
+                    required: "Email: this field is required.",
+                    email: "Invalid email address."
                 },
                 authorName: {
-                    required: "<?php
-		_e("Name: this field is required"); ?>."
+                    required: "Name: this field is required."
                 },
                 message: {
-                    required: "<?php
-		_e("Message: this field is required"); ?>.",
-                    minlength: "<?php
-		_e("Message: this field is required"); ?>."
+                    required: "Message: this field is required.",
+                    minlength: "Message: this field is required."
                 }
             },
             errorLabelContainer: "#comment_error_list",

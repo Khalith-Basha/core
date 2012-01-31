@@ -22,27 +22,20 @@
             },
             messages: {
                 yourName: {
-                    required: "<?php
-		_e("Your name: this field is required"); ?>."
+                    required: "Your name: this field is required."
                 },
                 yourEmail: {
-                    email: "<?php
-		_e("Invalid email address"); ?>.",
-                    required: "<?php
-		_e("Email: this field is required"); ?>."
+                    email: "Invalid email address.",
+                    required: "Email: this field is required."
                 },
                 friendName: {
-                    required: "<?php
-		_e("Friend's name: this field is required"); ?>."
+                    required: "Friend's name: this field is required."
                 },
                 friendEmail: {
-                    required: "<?php
-		_e("Friend's email: this field is required"); ?>.",
-                    email: "<?php
-		_e("Invalid friend's email address"); ?>."
+                    required: "Friend's email: this field is required.",
+                    email: "Invalid friend's email address."
                 },
-                message: "<?php
-		_e("Message: this field is required"); ?>."
+                message: "Message: this field is required."
                 
             },
             //onfocusout: function(element) { $(element).valid(); },

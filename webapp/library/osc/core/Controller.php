@@ -89,9 +89,10 @@ abstract class Controller
 
 		$this->classLoader = ClassLoader::getInstance();
 		$this->server = $this->classLoader->getClassInstance( 'Server' );
-		$this->view = $this->classLoader->getClassInstance( 'HtmlView' );
-		$this->session = $this->classLoader->getClassInstance( 'Session' );
 		$this->cookie = $this->classLoader->getClassInstance( 'Cookie' );
+		
+		$this->view = $this->classLoader->getClassInstance( 'HtmlView' );
+		$this->view->setTitle( osc_page_title() );
 
 		$inputClass = 'POST' === $_SERVER['REQUEST_METHOD'] ? 'Input_Post' : 'Input_Get';
 		$this->input = $this->classLoader->getClassInstance( $inputClass );
@@ -159,6 +160,12 @@ abstract class Controller
 
 	public function getSession()
 	{
+		if( is_null( $this->session ) )
+		{
+			$this->session = $this->getClassLoader()
+				->getClassInstance( 'Session' );
+		}
+
 		return $this->session;
 	}
 

@@ -27,15 +27,7 @@ class Session
 	public function __construct()
 	{
 		$this->session = $this->config = null;
-	}
 
-	public function setConfig( Config $config )
-	{
-		$this->config = $config;
-	}
-
-	public function start() 
-	{
 		// @TODO Use DI here.
 		$config = ClassLoader::getInstance()
 			->getClassInstance( 'Config' );
@@ -68,6 +60,11 @@ class Session
 		{
 			$this->_set('form', array());
 		}
+	}
+
+	public function setConfig( Config $config )
+	{
+		$this->config = $config;
 	}
 
 	/**

@@ -25,10 +25,10 @@ class HtmlView extends View
 
 	public function getTitle()
 	{
-		return empty( $this->title ) ? meta_title() : $this->title;
+		return $this->title;
 	}
 
-	public function addMeta( $name, $content )
+	public function setMeta( $name, $content )
 	{
 		$this->metas[ $name ] = $content;
 	}
@@ -38,19 +38,19 @@ class HtmlView extends View
 		return $this->metas;
 	}
 
-	public function hasMetaRobots()
-	{
-		return count( $this->robots );
-	}
-
-	public function getMetaRobots()
-	{
-		return implode( ',', $this->robots );
-	}
-
 	public function setMetaRobots( array $robots )
 	{
-		$this->robots = $robots;
+		$this->setMeta( 'robots', implode( ',', $robots ) );
+	}
+
+	public function setMetaDescription( $description )
+	{
+		$this->setMeta( 'description', $description );
+	}
+
+	public function setMetaKeywords( $keywords )
+	{
+		$this->setMetaContent( 'keywords', $keywords );
 	}
 
 	public function addJavaScript( $javaScript )

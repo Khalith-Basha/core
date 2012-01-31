@@ -57,7 +57,8 @@ class CWebItem extends Controller
 				}
 				$this->getView()->assign('item', $item);
 				osc_run_hook("before_item_edit", $item);
-				$this->doView('item-edit.php');
+				$view->setTitle( __('Edit your item', 'modern') . ' - ' . osc_page_title() );
+				echo $view->render( 'item/edit' );
 			}
 			else
 			{
@@ -124,12 +125,5 @@ class CWebItem extends Controller
 			}
 			break;
 		}
-	}
-	function doView($file) 
-	{
-		osc_run_hook("before_html");
-		osc_current_web_theme_path($file);
-		$this->getSession()->_clearVariables();
-		osc_run_hook("after_html");
 	}
 }

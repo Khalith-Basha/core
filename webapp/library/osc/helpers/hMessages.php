@@ -25,17 +25,6 @@
  * @author OpenSourceClassifieds
  */
 /**
- * Adds an ephemeral message to the session. (error style)
- *
- * @param $msg
- * @param $section
- * @return string
- */
-function osc_add_flash_message($msg, $section = 'pubMessages') 
-{
-	ClassLoader::getInstance()->getClassInstance( 'Session' )->_setMessage($section, $msg, 'error');
-}
-/**
  * Adds an ephemeral message to the session. (ok style)
  *
  * @param $msg

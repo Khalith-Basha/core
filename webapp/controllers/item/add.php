@@ -37,14 +37,15 @@ class CWebItem extends Controller
 	}
 	function doModel() 
 	{
-		$locales = $this->getClassLoader()->getClassInstance( 'Model_Locale' )->listAllEnabled();
+		$classLoader = $this->getClassLoader();
+		$locales = $classLoader->getClassInstance( 'Model_Locale' )->listAllEnabled();
 		$this->getView()->assign('locales', $locales);
 		if (osc_reg_user_post() && $this->user == null) 
 		{
 			osc_add_flash_warning_message(_m('Only registered users are allowed to post items'));
 			$this->redirectTo(osc_user_login_url());
 		}
-		$countries = $this->getClassLoader()->getClassInstance( 'Model_Country' )->listAll();
+		$countries = $classLoader->getClassInstance( 'Model_Country' )->listAll();
 		$regions = array();
 		if (isset($this->user['fk_c_country_code']) && $this->user['fk_c_country_code'] != '') 
 		{
@@ -57,11 +58,13 @@ class CWebItem extends Controller
 		$cities = array();
 		if (isset($this->user['fk_i_region_id']) && $this->user['fk_i_region_id'] != '') 
 		{
-			$cities = City::newInstance()->findByRegion($this->user['fk_i_region_id']);
+			$cities = $classLoader->getClassInstance( 'Model_City' )
+				->findByRegion( $this->user['fk_i_region_id'] );
 		}
 		else if (count($regions) > 0) 
 		{
-			$cities = City::newInstance()->findByRegion($regions[0]['pk_i_id']);
+			$cities = $classLoader->getClassInstance( 'Model_City' )
+				->findByRegion( $regions[0]['pk_i_id'] );
 		}
 
 		$view = $this->getView();

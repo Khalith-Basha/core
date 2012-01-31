@@ -71,6 +71,3 @@ $dbConnection = $classLoader->getClassInstance(
 $pluginManager = $classLoader->getClassInstance( 'PluginManager' );
 $pluginManager->init();
 
-$session = $classLoader->getClassInstance( 'Session' );
-$session->start();
-

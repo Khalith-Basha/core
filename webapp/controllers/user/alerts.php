@@ -42,6 +42,7 @@ class CWebUser extends UserController
 		$view->assign('alerts', $aAlerts);
 		$view->_reset('alerts');
 		$view->assign('user', $user);
+		$view->setTitle( __('Manage my alerts', 'modern') . ' - ' . osc_page_title() );
 		echo $view->render( 'user/alerts' );
 		$this->getSession()->_clearVariables();
 	}

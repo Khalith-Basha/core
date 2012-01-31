@@ -29,7 +29,9 @@ class CWebUser extends UserController
 
 	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
-		echo $this->getView()->render( 'user/change-password' );
+		$view = $this->getView();
+		$view->setTitle( __('Change my password', 'modern') . ' - ' . osc_page_title() );
+		echo $view->render( 'user/change-password' );
 	}
 
 	public function doPost( HttpRequest $req, HttpResponse $res )
