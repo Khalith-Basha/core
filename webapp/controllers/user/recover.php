@@ -15,7 +15,8 @@
  * You should have received a copy of the GNU Affero General Public
  * License along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-class CWebUser extends Controller
+
+class CWebUser extends Controller_Cacheable
 {
 	function __construct() 
 	{
@@ -27,11 +28,21 @@ class CWebUser extends Controller
 		}
 	}
 
-	public function doGet( HttpRequest $req, HttpResponse $res )
+	public function getCacheKey()
+	{
+		return 'page-user-recover';
+	}
+
+	public function getCacheExpiration()
+	{
+		return 10800;
+	}
+
+	public function renderView( HttpRequest $req, HttpResponse $res )
 	{
 		$view = $this->getView();
 		$view->setTitle( __('Recover your password', 'modern') . ' - ' . osc_page_title() );
-		echo $view->render( 'user/recover' );
+		return $view->render( 'user/recover' );
 	}
 
 	public function doPost( HttpRequest $req, HttpResponse $res )

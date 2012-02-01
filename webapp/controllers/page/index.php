@@ -15,9 +15,21 @@
  * You should have received a copy of the GNU Affero General Public
  * License along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-class CWebPage extends Controller
+
+class CWebPage extends Controller_Cacheable
 {
-	public function doGet( HttpRequest $req, HttpResponse $res )
+	public function getCacheKey()
+	{
+		$pageId = $this->getInput()->getInteger( 'id' );
+		return 'page-' . $pageId;
+	}
+
+	public function getCacheExpiration()
+	{
+		return 10800;
+	}
+
+	public function renderView( HttpRequest $req, HttpResponse $res )
 	{
 		$this->pageManager = ClassLoader::getInstance()->getClassInstance( 'Model_Page' );
 		$id = Params::getParam('id');
@@ -48,11 +60,10 @@ class CWebPage extends Controller
 			}
 
 			$view = $this->getView();
-			$view->setTitle( $page['locale'][osc_current_user_locale()]['s_title'] );
 			$view->setTitle( osc_static_page_title() . ' - ' . osc_page_title() );
 			$view->setMetaDescription( osc_highlight(strip_tags(osc_static_page_text()), 140) );
 			$view->assign('page', $page);
-			echo $view->render( 'page' );
+			return $view->render( 'page' );
 		}
 	}
 }

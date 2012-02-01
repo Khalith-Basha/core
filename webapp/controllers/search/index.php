@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Affero General Public
  * License along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-class CWebSearch extends Controller
+class CWebSearch extends Controller_Default
 {
 	private $mSearch;
 
@@ -25,7 +25,7 @@ class CWebSearch extends Controller
 		$this->mSearch = $this->getClassLoader()->getClassInstance( 'Model_Search' );
 	}
 
-	public function doModel() 
+	public function doGet( HttpRequest $req, HttpResponse $res ) 
 	{
 		require 'osc/helpers/hPremium.php';
 		require 'osc/helpers/hPagination.php';

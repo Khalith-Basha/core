@@ -18,7 +18,7 @@
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-class UserController extends SecureController
+class Controller_User extends Controller_Secure
 {
 	public function isLogged() 
 	{

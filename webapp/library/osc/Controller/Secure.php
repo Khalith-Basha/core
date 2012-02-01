@@ -19,7 +19,7 @@
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class SecureController extends Controller
+class Controller_Secure extends Controller_Default
 {
 	public function __construct() 
 	{

@@ -24,6 +24,7 @@ require_once 'osc/Services/Cache/Interface.php';
 class Services_Cache_Memcached implements CacheService
 {
 	private $service;
+
 	public function __construct() 
 	{
 		$this->service = new Memcached;
@@ -34,17 +35,25 @@ class Services_Cache_Memcached implements CacheService
 			$memcachedConfig = $config->getConfig( 'memcached' );
 			foreach( $memcachedConfig['servers'] as $server )
 			{
-				$this->service->addServer( $server['host'], $server['port'] );
+				if( false === $this->service->addServer( $server['host'], $server['port'] ) )
+				{
+					trigger_error( $this->service->getResultMessage(), E_USER_ERROR );
+				}
 			}
 		}
 	}
-	public function read($key) 
+
+	public function read( $key )
 	{
-		return $this->service->get($key);
+		return $this->service->get( $key );
 	}
-	public function write($key, $content) 
+
+	public function write( $key, $content, $expiration = 3600 )
 	{
-		$this->service->set($key, $content, 3600);
+		if( false === $this->service->set( $key, $content, $expiration ) )
+		{
+			trigger_error( $this->service->getResultMessage(), E_USER_ERROR );
+		}
 	}
 }
 

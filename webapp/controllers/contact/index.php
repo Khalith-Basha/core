@@ -15,25 +15,27 @@
  * You should have received a copy of the GNU Affero General Public
  * License along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-class CWebContact extends Controller
+class CWebContact extends Controller_Cacheable
 {
-	public function doGet(HttpRequest $req, HttpResponse $resp) 
+	public function getCacheKey()
 	{
-		$cacheKey = 'page-contact';
-		$cacheService = $this->getClassLoader()->getClassInstance( 'Services_Cache_Memcached' );
-		$viewContent = $cacheService->read( $cacheKey );
-		if( false === $viewContent )
-		{
-			$view = $this->getView();
-			$view->setTitle( __('Contact', 'modern') . ' - ' . osc_page_title() );
-			$view->addJavaScript( osc_current_web_theme_js_url('jquery.validate.min.js') );
-			$view->addJavaScript( '/static/scripts/contact-form.js' );
-			$viewContent = $view->render( 'contact' );
-			$this->getSession()->_clearVariables();
-			$cacheService->write($cacheKey, $viewContent);
-		}
-		echo $viewContent;
+		return 'page-contact';
 	}
+
+	public function getCacheExpiration()
+	{
+		return 10800;
+	}
+
+	public function renderView( HttpRequest $req, HttpResponse $res ) 
+	{
+		$view = $this->getView();
+		$view->setTitle( __('Contact', 'modern') . ' - ' . osc_page_title() );
+		$view->addJavaScript( osc_current_web_theme_js_url('jquery.validate.min.js') );
+		$view->addJavaScript( '/static/scripts/contact-form.js' );
+		return $view->render( 'contact' );
+	}
+
 	public function doPost(HttpRequest $req, HttpResponse $resp) 
 	{
 		$yourName = Params::getParam('yourName');

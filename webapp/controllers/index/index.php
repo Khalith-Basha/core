@@ -15,14 +15,23 @@
  * You should have received a copy of the GNU Affero General Public
  * License along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-class CWebIndex extends Controller
+
+class CWebIndex extends Controller_Cacheable
 {
-	public function doModel() 
+	public function getCacheKey()
 	{
-		require 'osc/functions.php';
-		osc_run_hook("before_html");
-		echo $this->getView()->render( 'main' );
-		$this->getSession()->_clearVariables();
-		osc_run_hook("after_html");
+		return 'page-main';
+	}
+
+	public function getCacheExpiration()
+	{
+		return 1800;
+	}
+
+	public function renderView( HttpRequest $req, HttpResponse $res )
+	{
+		$view = $this->getView();
+		return $view->render( 'main' );
 	}
 }
+

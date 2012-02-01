@@ -27,7 +27,7 @@ if( file_exists( ABS_PATH . '/installer' ) )
 	trigger_error( __('The "installer" folder should be removed for security reasons.'), E_USER_WARNING );
 }
 
-if (osc_timezone() != '') 
+if( osc_timezone() != '' )
 {
 	date_default_timezone_set(osc_timezone());
 }
@@ -73,11 +73,11 @@ $action = $input->getString( 'action', 'index' );
 $req = new HttpRequest;
 $resp = new HttpResponse;
 $controllerPath = "controllers/$page/$action.php";
-if (file_exists($controllerPath)) 
+if( file_exists($controllerPath) )
 {
 	require $controllerPath;
-	$className = 'CWeb' . ucfirst($page);
-	if (class_exists($className)) 
+	$className = 'CWeb' . ucfirst( $page );
+	if( class_exists($className) )
 	{
 		$classInstance = new $className;
 		$classInstance->processRequest($req, $resp);

@@ -72,7 +72,7 @@ class HttpResponse
 	{
 	}
 }
-abstract class Controller
+abstract class Controller_Default
 {
 	protected $action;
 	protected $ajax;
@@ -179,6 +179,4 @@ abstract class Controller
 		return $this->input;
 	}
 }
-abstract class BaseModel extends Controller
-{
-}
+
