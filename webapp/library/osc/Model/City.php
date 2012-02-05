@@ -129,14 +129,19 @@ class Model_City extends DAO
 	 */
 	function listAll() 
 	{
-		$this->dao->select($this->getFields());
-		$this->dao->from($this->getTableName());
-		$this->dao->orderBy('s_name', 'ASC');
-		$result = $this->dao->get();
-		if ($result == false) 
-		{
-			return array();
-		}
-		return $result->result();
+		$sql = <<<SQL
+SELECT
+	pk_i_id, fk_i_region_id, s_name, fk_c_country_code, b_active
+FROM
+	/*TABLE_PREFIX*/t_city
+ORDER BY
+	s_name ASC
+SQL;
+
+		$stmt = $this->prepareStatement( $sql );
+		$cities = $this->fetchAll( $stmt );
+		$stmt->close();
+
+		return $cities;
 	}
 }

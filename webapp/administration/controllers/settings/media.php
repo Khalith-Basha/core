@@ -18,7 +18,7 @@
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-class CAdminSettings extends AdministrationController
+class CAdminSettings extends Controller_Administration
 {
 	public function doGet( HttpRequest $req, HttpResponse $res )
 	{

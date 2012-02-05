@@ -18,10 +18,7 @@
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-class CAdminTool extends AdministrationController
+class CAdminTool extends Controller_Administration
 {
-	function doModel() 
-	{
-	}
 }
 

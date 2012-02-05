@@ -15,7 +15,8 @@
  * You should have received a copy of the GNU Affero General Public
  * License along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-class CWebItem extends Controller
+
+class CWebItem extends Controller_Default
 {
 	private $itemManager;
 	private $user;
@@ -37,9 +38,8 @@ class CWebItem extends Controller
 		}
 	}
 
-	function doModel() 
+	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
-		//calling the view...
 		$locales = ClassLoader::getInstance()->getClassInstance( 'Model_Locale' )->listAllEnabled();
 		$this->getView()->assign('locales', $locales);
 		$secret = Params::getParam('secret');
@@ -72,11 +72,5 @@ class CWebItem extends Controller
 			$this->redirectTo(osc_base_url());
 		}
 	}
-	function doView($file) 
-	{
-		osc_run_hook("before_html");
-		osc_current_web_theme_path($file);
-		$this->getSession()->_clearVariables();
-		osc_run_hook("after_html");
-	}
 }
+

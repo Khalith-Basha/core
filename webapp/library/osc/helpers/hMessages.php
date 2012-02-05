@@ -76,22 +76,15 @@ function osc_add_flash_warning_message($msg, $section = 'pubMessages')
  * @param $id
  * @return void
  */
-function osc_show_flash_message($section = 'pubMessages', $class = "FlashMessage", $id = "FlashMessage") 
+function osc_show_flash_message( $section = 'pubMessages', $class = "FlashMessage", $id = "FlashMessage" )
 {
 	$session = ClassLoader::getInstance()->getClassInstance( 'Session' );
-	$message = $session->_getMessage($section);
-	echo '<div id="flash_js"></div>';
-	if (isset($message['msg']) && $message['msg'] != '') 
+	$message = $session->_getMessage( $section );
+
+	if( !empty( $message['msg'] ) )
 	{
 		echo '<div id="' . $id . '" class="' . $class . ' ' . $message['type'] . '">';
 		echo $message['msg'];
-		echo '</div>';
-		$session->_dropMessage($section);
-	}
-	else if ($message != '') 
-	{
-		echo '<div id="' . $id . '" class="' . $class . '">';
-		echo $message;
 		echo '</div>';
 		$session->_dropMessage($section);
 	}

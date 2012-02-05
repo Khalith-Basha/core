@@ -15,7 +15,8 @@
  * You should have received a copy of the GNU Affero General Public
  * License along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-class CWebUser extends UserController
+
+class CWebUser extends Controller_User
 {
 	function __construct() 
 	{
@@ -27,7 +28,7 @@ class CWebUser extends UserController
 		}
 	}
 
-	function doModel() 
+	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
 		switch ($this->action) 
 		{

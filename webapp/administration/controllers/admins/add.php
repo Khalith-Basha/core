@@ -20,7 +20,7 @@
 * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-class CAdminAdmins extends AdministrationController
+class CAdminAdmins extends Controller_Administration
 {
 	private $adminManager ;
 

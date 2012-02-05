@@ -31,18 +31,15 @@ class Controller_Secure extends Controller_Default
 			$this->showAuthFailPage();
 		}
 	}
+
 	public function setGranting($grant) 
 	{
 		$this->grant = $grant;
 	}
+
 	public function logout() 
 	{
 		$this->getSession()->destroy();
 	}
-	public function doModel() 
-	{
-	}
-	public function doView($file) 
-	{
-	}
 }
+

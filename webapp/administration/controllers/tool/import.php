@@ -18,41 +18,36 @@
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-class CAdminTool extends AdministrationController
+class CAdminTool extends Controller_Administration
 {
-	function doModel() 
+	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
-		switch ($this->action) 
-		{
-		case 'import':
-			$this->doView('tools/import.php');
-			break;
+		$this->doView('tools/import.php');
+	}
 
-		case 'import_post':
-			// calling
-			$sql = Params::getFiles('sql');
-			if (isset($sql['size']) && $sql['size'] != 0) 
+	public function doPost( HttpRequest $req, HttpResponse $res )
+	{
+		$sql = Params::getFiles('sql');
+		if (isset($sql['size']) && $sql['size'] != 0) 
+		{
+			$content_file = file_get_contents($sql['tmp_name']);
+			$conn = $this->getClassLoader()->getClassInstance( 'Database_Connection' );
+			$c_db = $conn->getOsclassDb();
+			$comm = $this->getClassLoader()->getClassInstance( 'Database_Command', false, array( $c_db ) );
+			if ($comm->importSQL($content_file)) 
 			{
-				$content_file = file_get_contents($sql['tmp_name']);
-				$conn = $this->getClassLoader()->getClassInstance( 'Database_Connection' );
-				$c_db = $conn->getOsclassDb();
-				$comm = $this->getClassLoader()->getClassInstance( 'Database_Command', false, array( $c_db ) );
-				if ($comm->importSQL($content_file)) 
-				{
-					osc_add_flash_ok_message(_m('Import complete'), 'admin');
-				}
-				else
-				{
-					osc_add_flash_error_message(_m('There was a problem importing data to the database'), 'admin');
-				}
+				osc_add_flash_ok_message(_m('Import complete'), 'admin');
 			}
 			else
 			{
-				osc_add_flash_error_message(_m('No file was uploaded'), 'admin');
+				osc_add_flash_error_message(_m('There was a problem importing data to the database'), 'admin');
 			}
-			$this->redirectTo(osc_admin_base_url(true) . '?page=tool&action=import');
-			break;
 		}
+		else
+		{
+			osc_add_flash_error_message(_m('No file was uploaded'), 'admin');
+		}
+		$this->redirectTo(osc_admin_base_url(true) . '?page=tool&action=import');
 	}
 }
 

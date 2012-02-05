@@ -22,6 +22,7 @@ define('DB_CONST_NULL', 'NULL');
 define('DB_CUSTOM_COND', 'DB_CUSTOM_COND');
 
 require_once 'osc/Database/Command.php';
+require_once 'osc/Model/Default.php';
 
 /**
  * DAO base model
@@ -30,7 +31,7 @@ require_once 'osc/Database/Command.php';
  * @subpackage Model
  * @since 2.3
  */
-class DAO
+class DAO extends Model
 {
 	/**
 	 * DBCommandClass object
@@ -77,6 +78,7 @@ class DAO
 	 */
 	function __construct()
 	{
+		parent::__construct();
 		$conn = ClassLoader::getInstance()->getClassInstance( 'Database_Connection' ); 
 		$data = $conn->getOsclassDb();
 		$this->dao = new Database_Command($data);
@@ -348,18 +350,30 @@ class DAO
 	 */
 	public function count() 
 	{
-		$this->dao->select('COUNT(*) AS count');
-		$this->dao->from($this->getTableName());
-		$result = $this->dao->get();
-		if ($result == false) 
+		$total = 0;
+		$tableName = $this->getTableName();
+
+		$sql = <<<SQL
+SELECT
+	COUNT( * )
+FROM
+	$tableName
+LIMIT
+	1
+SQL;
+
+		$stmt = $this->prepareStatement( $sql );
+		$result = $stmt->execute();
+		if( false === $result )
+			$total = 0;
+		else
 		{
-			return 0;
+			$stmt->bind_result( $total );
+			$stmt->fetch();
 		}
-		if ($result->numRows() == 0) 
-		{
-			return 0;
-		}
-		$row = $result->row();
-		return $row['count'];
+		$stmt->close();
+
+		return $total;
 	}
 }
+

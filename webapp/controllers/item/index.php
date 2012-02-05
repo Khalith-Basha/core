@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Affero General Public
  * License along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-class CWebItem extends Controller
+class CWebItem extends Controller_Default
 {
 	private $itemModel;
 	private $user;
@@ -37,7 +37,7 @@ class CWebItem extends Controller
 		}
 	}
 
-	function doModel() 
+	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
 		$locales = $this->getClassLoader()->getClassInstance( 'Model_Locale' )->listAllEnabled();
 		$this->view->assign('locales', $locales);

@@ -32,6 +32,11 @@ class HttpResponse
 {
 	private $headers;
 
+	private $statusCodes = array(
+		404 => 'Not Found',
+		500 => 'Internal Server Error'
+	);
+
 	public function __construct()
 	{
 		$this->headers = array();
@@ -68,8 +73,13 @@ class HttpResponse
 		$this->sendRedirect( $referer, $permanent );
 	}
 
-	public function sendStatus()
+	public function sendStatusCode( $statusCode )
 	{
+		if( false === isset( $this->statusCodes[ $statusCode ] ) )
+			$statusCode = 500;
+
+		$header = sprintf( 'HTTP/1.1 %d %s', $statusCode, $this->statusCodes[ $statusCode ] );
+		$this->addHeader( $header );
 	}
 }
 abstract class Controller_Default
@@ -116,10 +126,12 @@ abstract class Controller_Default
 	{
 		$this->getView()->assign($key, $value);
 	}
+
 	protected function _view($key = null) 
 	{
 		$this->_view($key);
 	}
+
 	public function processRequest(HttpRequest $req, HttpResponse $resp) 
 	{
 		if ('POST' == $req->getMethod() && method_exists($this, 'doPost')) 
@@ -130,23 +142,10 @@ abstract class Controller_Default
 		{
 			$this->doGet($req, $resp);
 		}
-		else
-		{
-			$this->doModel();
-		}
+
+		$resp->sendStatusCode( 500 );
 	}
-	protected function doModel() 
-	{
-	}
-	protected function doView($file) 
-	{
-	}
-	public function do404() 
-	{
-		$this->classLoader->getClassInstance( 'Rewrite' )->set_location('error');
-		header('HTTP/1.1 404 Not Found');
-		osc_current_web_theme_path('404.php');
-	}
+
 	public function redirectTo($url) 
 	{
 		header('Location: ' . $url);

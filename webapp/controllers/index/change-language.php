@@ -15,11 +15,11 @@
  * You should have received a copy of the GNU Affero General Public
  * License along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-class CWebIndex extends Controller
-{
-	public function doModel() 
-	{
 
+class CWebIndex extends Controller_Default
+{
+	public function doGet( HttpRequest $req, HttpResponse $res ) 
+	{
 		$locale = Params::getParam('locale');
 		if (preg_match('/.{2}_.{2}/', $locale)) 
 		{
@@ -33,3 +33,4 @@ class CWebIndex extends Controller
 		$this->redirectTo( $redirectUrl );
 	}
 }
+

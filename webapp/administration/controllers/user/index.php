@@ -18,20 +18,11 @@
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-class CAdminUser extends AdministrationController
+class CAdminUser extends Controller_Administration
 {
-	private $userManager;
-	function __construct() 
+	public function doGet( HttpRequest $req, HttpResponse $res ) 
 	{
-		parent::__construct();
-		//specific things for this class
 		$this->userManager = ClassLoader::getInstance()->getClassInstance( 'Model_User' );
-	}
-
-	function doModel() 
-	{
-		parent::doModel();
-		//specific things for this class
 		switch ($this->action) 
 		{
 		case 'edit': // calling the edit view

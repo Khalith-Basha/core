@@ -31,38 +31,28 @@ class CWebPage extends Controller_Cacheable
 
 	public function renderView( HttpRequest $req, HttpResponse $res )
 	{
-		$this->pageManager = ClassLoader::getInstance()->getClassInstance( 'Model_Page' );
-		$id = Params::getParam('id');
-		$page = $this->pageManager->findByPrimaryKey($id);
-		if ($page == false) 
+		$pagesModel = $this->getClassLoader()->getClassInstance( 'Model_Page' );
+		$id = $this->getInput()->getInteger( 'id' );
+		$locale = osc_current_user_locale();
+		$page = $pagesModel->findByIdLocale( $id, $locale );
+		$view = $this->getView();
+
+		if( is_null( $page ) || 1 == $page['b_indelible'] )
 		{
-			$this->do404();
-			return;
+			return array(
+				'statusCode' => 404,
+				'viewContent' => $this->getView()->render( 'error/404' )
+			);
 		}
-		if ($page['b_indelible'] == 1) 
+		else if( file_exists( osc_themes_path() . osc_theme() . '/pages/' . $page['s_internal_name'] . '.php' ) )
 		{
-			$this->do404();
-			return;
-		}
-		if (file_exists(osc_themes_path() . osc_theme() . '/' . $page['s_internal_name'] . ".php")) 
-		{
-			$this->doView($page['s_internal_name'] . ".php");
-		}
-		else if (file_exists(osc_themes_path() . osc_theme() . '/pages/' . $page['s_internal_name'] . ".php")) 
-		{
-			$this->doView("pages/" . $page['s_internal_name'] . ".php");
+			return $view->render( 'pages/' . $page['s_internal_name'] );
 		}
 		else
 		{
-			if (Params::getParam('lang') != '') 
-			{
-				$this->getSession()->_set('userLocale', Params::getParam('lang'));
-			}
-
-			$view = $this->getView();
-			$view->setTitle( osc_static_page_title() . ' - ' . osc_page_title() );
-			$view->setMetaDescription( osc_highlight(strip_tags(osc_static_page_text()), 140) );
-			$view->assign('page', $page);
+			$view->setTitle( $page['s_title'] . ' - ' . osc_page_title() );
+			$view->setMetaDescription( osc_highlight( strip_tags( $page['s_text'] ), 140 ) );
+			$view->assign( 'page', $page );
 			return $view->render( 'page' );
 		}
 	}

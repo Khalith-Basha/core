@@ -18,7 +18,7 @@
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-class CAdminIndex extends Controller
+class CAdminIndex extends Controller_Default
 {
 	public function doPost( HttpRequest $req, HttpResponse $res )
 	{
@@ -55,7 +55,6 @@ class CAdminIndex extends Controller
 		{
 			osc_add_flash_error_message(_m('That username does not exist'), 'admin');
 		}
-		//returning logged in to the main page...
 		$this->redirectTo(osc_admin_base_url());
 	}
 
@@ -67,7 +66,7 @@ class CAdminIndex extends Controller
 			$admin = $this->getClassLoader()->getClassInstance( 'Model_Admin' )->findByIdSecret(Params::getParam('adminId'), Params::getParam('code'));
 			if ($admin) 
 			{
-				$this->doView('gui/forgot_password.php');
+				require osc_admin_base_path() . 'gui/forgot_password.php';
 			}
 			else
 			{
@@ -99,10 +98,5 @@ class CAdminIndex extends Controller
 			$this->redirectTo(osc_admin_base_url());
 			break;
 		}
-	}
-
-	public function doView($file) 
-	{
-		require osc_admin_base_path() . $file;
 	}
 }

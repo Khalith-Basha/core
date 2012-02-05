@@ -60,7 +60,7 @@ function osc_get_param($key)
  * @param string $locale
  * @return string
  */
-function osc_field($item, $field, $locale) 
+function osc_field( array $item, $field, $locale = null ) 
 {
 	if( !is_null( $item ) ) 
 	{

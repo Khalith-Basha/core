@@ -18,25 +18,30 @@
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-class Controller_Administration extends SecBaseModel
+class Controller_Administration extends Controller_Secure 
 {
 	public function isLogged() 
 	{
 		return osc_is_admin_user_logged_in();
 	}
+
 	public function logout() 
 	{
-		$this->getSession()->destroy();
-		$this->getSession()->_drop('adminId');
-		$this->getSession()->_drop('adminUserName');
-		$this->getSession()->_drop('adminName');
-		$this->getSession()->_drop('adminEmail');
-		$this->getSession()->_drop('adminLocale');
-		$this->getCookie()->pop('oc_adminId');
-		$this->getCookie()->pop('oc_adminSecret');
-		$this->getCookie()->pop('oc_adminLocale');
-		$this->getCookie()->set();
+		$session = $this->getSession();
+		$session->destroy();
+		$session->_drop('adminId');
+		$session->_drop('adminUserName');
+		$session->_drop('adminName');
+		$session->_drop('adminEmail');
+		$session->_drop('adminLocale');
+
+		$cookie = $this->getCookie();
+		$cookie->pop('oc_adminId');
+		$cookie->pop('oc_adminSecret');
+		$cookie->pop('oc_adminLocale');
+		$cookie->set();
 	}
+
 	public function showAuthFailPage() 
 	{
 		osc_current_admin_theme_path( 'login.php' );

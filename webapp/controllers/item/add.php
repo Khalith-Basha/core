@@ -15,12 +15,13 @@
  * You should have received a copy of the GNU Affero General Public
  * License along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-class CWebItem extends Controller
+class CWebItem extends Controller_Default
 {
 	private $itemManager;
 	private $user;
 	private $userId;
-	function __construct() 
+
+	public function __construct() 
 	{
 		parent::__construct();
 		$this->itemManager = $this->getClassLoader()->getClassInstance( 'Model_Item' );
@@ -35,7 +36,8 @@ class CWebItem extends Controller
 			$this->user = null;
 		}
 	}
-	function doModel() 
+
+	public function doGet( HttpRequest $req, HttpResponse $res ) 
 	{
 		$classLoader = $this->getClassLoader();
 		$locales = $classLoader->getClassInstance( 'Model_Locale' )->listAllEnabled();

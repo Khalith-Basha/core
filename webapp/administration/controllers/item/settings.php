@@ -18,18 +18,10 @@
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-class CAdminItem extends AdministrationController
+class CAdminItem extends Controller_Administration
 {
-	private $itemManager;
-	function __construct() 
-	{
-		parent::__construct();
-		//specific things for this class
-		$this->itemManager = ClassLoader::getInstance()->getClassInstance( 'Model_Item' );
-	}
 	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
-		parent::doModel();
 		$this->doView('items/settings.php');
 	}
 

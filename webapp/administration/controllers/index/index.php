@@ -19,9 +19,9 @@
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-class CAdminIndex extends AdministrationController
+class CAdminIndex extends Controller_Administration 
 {
-	public function doModel() 
+	public function doGet( HttpRequest $req, HttpResponse $res ) 
 	{
 		require 'osc/feeds.php';
 

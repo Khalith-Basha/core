@@ -30,10 +30,8 @@ $urlStatic = $classLoader->getClassInstance( 'Url_Static' );
 	<meta name="<?php echo $metaName; ?>" content="<?php echo $metaContent; ?>" />
 	<?php endforeach; ?>
 	<meta http-equiv="Content-type" content="text/html; charset=UTF-8" />
-	<meta http-equiv="Cache-Control" content="no-cache" />
-	<meta http-equiv="Expires" content="Fri, Jan 01 1970 00:00:00 GMT" />
 	<title><?php echo $view->getTitle(); ?></title>
-	<link href="<?php echo $urlStatic->create( 'assets-stylesheets', 'style,tabs' ); ?>" rel="stylesheet" type="text/css" />
+	<link href="<?php echo $urlStatic->create( 'assets-stylesheets', 'html5,style,tabs' ); ?>" rel="stylesheet" type="text/css" />
 	<script type="text/javascript">
 	var fileDefaultText = '<?php _e('No file selected', 'modern'); ?>';
 	var fileBtnText     = '<?php _e('Choose File', 'modern'); ?>';
@@ -45,6 +43,7 @@ $urlStatic = $classLoader->getClassInstance( 'Url_Static' );
 	<?php endforeach; ?>
 </head>
 <body>
+<?php osc_show_flash_message(); ?>
        <div class="container">
 <div id="header">
     <a id="logo" href="<?php echo osc_base_url(); ?>/"><strong><?php echo osc_page_title(); ?></strong></a>

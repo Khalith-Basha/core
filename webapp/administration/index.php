@@ -28,8 +28,8 @@ if (file_exists(ABS_PATH . '.maintenance'))
 	define('__OSC_MAINTENANCE__', true);
 }
 
-require 'osc/core/SecBaseModel.php';
-require 'osc/core/AdministrationController.php';
+require_once 'osc/Controller/Secure.php';
+require_once 'osc/Controller/Administration.php';
 require 'osc/AdminThemes.php';
 
 $page = Params::getParam('page');

@@ -18,19 +18,11 @@
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-class CAdminCategory extends AdministrationController
+class CAdminCategory extends Controller_Administration
 {
-	private $categoryManager;
-	function __construct() 
+	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
-		parent::__construct();
-		//specific things for this class
 		$this->categoryManager = ClassLoader::getInstance()->getClassInstance( 'Model_Category' );
-	}
-
-	function doModel() 
-	{
-		parent::doModel();
 		$this->getView()->assign("categories", $this->categoryManager->toTreeAll());
 		$this->doView("categories/index.php");
 	}

@@ -138,7 +138,7 @@ class Model_Page extends DAO
 	 * @return array Return all the pages that have been found with the criteria selected. If there's no pages, the
 	 * result is an empty array.
 	 */
-	public function listAll($indelible = null, $locale = null, $start = null, $limit = null) 
+	public function listAll( $indelible = null, $locale = null, $start = null, $limit = null) 
 	{
 		$this->dao->select();
 		$this->dao->from($this->getTableName());
@@ -425,4 +425,55 @@ class Model_Page extends DAO
 	{
 		return $this->getTablePrefix() . 't_pages_description';
 	}
+
+	public function findByIdLocale( $id, $locale )
+	{
+		$sql = <<<SQL
+SELECT
+	p.pk_i_id, p.s_internal_name, p.b_indelible, p.dt_pub_date, p.dt_mod_date, p.i_order,
+	pd.s_title, pd.s_text
+FROM
+	/*TABLE_PREFIX*/t_pages p
+INNER JOIN
+	/*TABLE_PREFIX*/t_pages_description pd ON ( pd.fk_i_pages_id = p.pk_i_id )
+WHERE
+	p.pk_i_id = ?
+AND
+	pd.fk_c_locale_code = ?
+SQL;
+
+		$stmt = $this->prepareStatement( $sql );
+		$stmt->bind_param( 'is', $id, $locale );
+		$page = $this->fetch( $stmt );
+		$stmt->close();
+
+		return $page;
+	}
+
+	public function findUserPagesByLocale( $locale )
+	{
+		$sql = <<<SQL
+SELECT
+	p.pk_i_id, p.s_internal_name, p.b_indelible, p.dt_pub_date, p.dt_mod_date, p.i_order,
+	pd.s_title, pd.s_text
+FROM
+	/*TABLE_PREFIX*/t_pages p
+INNER JOIN
+	/*TABLE_PREFIX*/t_pages_description pd ON ( pd.fk_i_pages_id = p.pk_i_id )
+WHERE
+	p.b_indelible = FALSE
+AND
+	pd.fk_c_locale_code = ?
+ORDER BY
+	p.i_order ASC
+SQL;
+
+		$stmt = $this->prepareStatement( $sql );
+		$stmt->bind_param( 's', $locale );
+		$pages = $this->fetchAll( $stmt );
+		$stmt->close();
+
+		return $pages;
+	}
 }
+

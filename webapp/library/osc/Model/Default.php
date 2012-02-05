@@ -35,6 +35,15 @@ class Model
 		return $result;
 	}
 
+	public function fetch( mysqli_stmt $stmt )
+	{
+		$results = $this->fetchAll( $stmt );
+		if( 1 === count( $results ) )
+			return $results[0];
+		else
+			return null;
+	}
+
         public function fetchAll( mysqli_stmt $stmt )
         {   
                 $results = array();

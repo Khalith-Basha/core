@@ -16,7 +16,7 @@
  * License along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 define('IS_AJAX', true);
-class CAdminAjax extends AdministrationController
+class CAdminAjax extends Controller_Administration
 {
 	function __construct() 
 	{

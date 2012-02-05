@@ -15,7 +15,8 @@
  * You should have received a copy of the GNU Affero General Public
  * License along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-class CWebItem extends Controller
+
+class CWebItem extends Controller_Default
 {
 	private $itemManager;
 	private $user;
@@ -36,94 +37,98 @@ class CWebItem extends Controller
 			$this->user = null;
 		}
 	}
-	function doModel() 
+
+	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
-		$locales = ClassLoader::getInstance()->getClassInstance( 'Model_Locale' )->listAllEnabled();
-		$this->getView()->assign('locales', $locales);
-		switch ($this->action) 
+		$classLoader = $this->getClassLoader();
+		$locales = $classLoader->getClassInstance( 'Model_Locale' )->listAllEnabled();
+		$view = $this->getView();
+		$view->assign('locales', $locales);
+		$secret = Params::getParam('secret');
+		$id = Params::getParam('id');
+		$item = $this->itemManager->listWhere("i.pk_i_id = '%s' AND ((i.s_secret = '%s' AND i.fk_i_user_id IS NULL) OR (i.fk_i_user_id = '%d'))", $id, $secret, $this->userId);
+		$classLoader->loadFile( 'Form_Item' );
+		$view->addJavaScript( '/static/scripts/location-new.js' );
+		if (osc_images_enabled_at_items())
+			$view->addJavaScript( '/static/scripts/photos.js' );
+		if (count($item) == 1) 
 		{
-		case 'item_edit': // edit item
-			$secret = Params::getParam('secret');
-			$id = Params::getParam('id');
-			$item = $this->itemManager->listWhere("i.pk_i_id = '%s' AND ((i.s_secret = '%s' AND i.fk_i_user_id IS NULL) OR (i.fk_i_user_id = '%d'))", $id, $secret, $this->userId);
-			if (count($item) == 1) 
+			$item = $classLoader->getClassInstance( 'Model_Item' )->findByPrimaryKey($id);
+			$form = count($this->getSession()->_getForm());
+			$keepForm = count($this->getSession()->_getKeepForm());
+			if ($form == 0 || $form == $keepForm) 
 			{
-				$item = ClassLoader::getInstance()->getClassInstance( 'Model_Item' )->findByPrimaryKey($id);
-				$form = count($this->getSession()->_getForm());
-				$keepForm = count($this->getSession()->_getKeepForm());
-				if ($form == 0 || $form == $keepForm) 
-				{
-					$this->getSession()->_dropKeepForm();
-				}
-				$this->getView()->assign('item', $item);
-				osc_run_hook("before_item_edit", $item);
-				$view->setTitle( __('Edit your item', 'modern') . ' - ' . osc_page_title() );
-				echo $view->render( 'item/edit' );
+				$this->getSession()->_dropKeepForm();
+			}
+			$view = $this->getView();
+			$view->assign('item', $item);
+			osc_run_hook("before_item_edit", $item);
+			$view->setTitle( __('Edit your item', 'modern') . ' - ' . osc_page_title() );
+			echo $view->render( 'item/edit' );
+		}
+		else
+		{
+			// add a flash message [ITEM NO EXISTE]
+			osc_add_flash_error_message(_m('Sorry, we don\'t have any items with that ID'));
+			if ($this->user != null) 
+			{
+				$this->redirectTo(osc_user_list_items_url());
 			}
 			else
 			{
-				// add a flash message [ITEM NO EXISTE]
-				osc_add_flash_error_message(_m('Sorry, we don\'t have any items with that ID'));
-				if ($this->user != null) 
-				{
-					$this->redirectTo(osc_user_list_items_url());
-				}
-				else
-				{
-					$this->redirectTo(osc_base_url());
-				}
+				$this->redirectTo(osc_base_url());
 			}
-			break;
+		}
+	}
 
-		case 'item_edit_post':
-			// recoger el secret y el
-			$secret = Params::getParam('secret');
-			$id = Params::getParam('id');
-			$item = $this->itemManager->listWhere("i.pk_i_id = '%s' AND ((i.s_secret = '%s' AND i.fk_i_user_id IS NULL) OR (i.fk_i_user_id = '%d'))", $id, $secret, $this->userId);
-			if (count($item) == 1) 
+	public function doPost( HttpRequest $req, HttpResponse $res )
+	{
+		$secret = Params::getParam('secret');
+		$id = Params::getParam('id');
+		$item = $this->itemManager->listWhere("i.pk_i_id = '%s' AND ((i.s_secret = '%s' AND i.fk_i_user_id IS NULL) OR (i.fk_i_user_id = '%d'))", $id, $secret, $this->userId);
+		if (count($item) == 1) 
+		{
+			$this->getView()->assign('item', $item[0]);
+			$mItems = new ItemActions(false);
+			// prepare data for ADD ITEM
+			$mItems->prepareData(false);
+			// set all parameters into session
+			foreach ($mItems->data as $key => $value) 
 			{
-				$this->getView()->assign('item', $item[0]);
-				$mItems = new ItemActions(false);
-				// prepare data for ADD ITEM
-				$mItems->prepareData(false);
-				// set all parameters into session
-				foreach ($mItems->data as $key => $value) 
+				$this->getSession()->_setForm($key, $value);
+			}
+			$meta = Params::getParam('meta');
+			if (is_array($meta)) 
+			{
+				foreach ($meta as $key => $value) 
 				{
-					$this->getSession()->_setForm($key, $value);
-				}
-				$meta = Params::getParam('meta');
-				if (is_array($meta)) 
-				{
-					foreach ($meta as $key => $value) 
-					{
-						$this->getSession()->_setForm('meta_' . $key, $value);
-						$this->getSession()->_keepForm('meta_' . $key);
-					}
-				}
-				if ((osc_recaptcha_private_key() != '') && Params::existParam("recaptcha_challenge_field")) 
-				{
-					if (!osc_check_recaptcha()) 
-					{
-						osc_add_flash_error_message(_m('The Recaptcha code is wrong'));
-						$this->redirectTo(osc_item_post_url());
-						return false; // BREAK THE PROCESS, THE RECAPTCHA IS WRONG
-						
-					}
-				}
-				$success = $mItems->edit();
-				osc_run_hook('edited_item', ClassLoader::getInstance()->getClassInstance( 'Model_Item' )->findByPrimaryKey($id));
-				if ($success == 1) 
-				{
-					osc_add_flash_ok_message(_m('Great! We\'ve just updated your item'));
-					$this->redirectTo(osc_base_url(true) . "?page=item&id=$id");
-				}
-				else
-				{
-					osc_add_flash_error_message($success);
-					$this->redirectTo(osc_item_edit_url($secret));
+					$this->getSession()->_setForm('meta_' . $key, $value);
+					$this->getSession()->_keepForm('meta_' . $key);
 				}
 			}
-			break;
+			if ((osc_recaptcha_private_key() != '') && Params::existParam("recaptcha_challenge_field")) 
+			{
+				if (!osc_check_recaptcha()) 
+				{
+					osc_add_flash_error_message(_m('The Recaptcha code is wrong'));
+					$this->redirectTo(osc_item_post_url());
+					return false; // BREAK THE PROCESS, THE RECAPTCHA IS WRONG
+					
+				}
+			}
+			$success = $mItems->edit();
+			osc_run_hook('edited_item', ClassLoader::getInstance()->getClassInstance( 'Model_Item' )->findByPrimaryKey($id));
+			if ($success == 1) 
+			{
+				osc_add_flash_ok_message(_m('Great! We\'ve just updated your item'));
+				$this->redirectTo(osc_base_url(true) . "?page=item&id=$id");
+			}
+			else
+			{
+				osc_add_flash_error_message($success);
+				$this->redirectTo(osc_item_edit_url($secret));
+			}
 		}
 	}
 }
+

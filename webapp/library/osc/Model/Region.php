@@ -39,31 +39,28 @@ class Model_Region extends DAO
 	 *
 	 * @access public
 	 * @since unknown
-	 * @deprecated since 2.3
-	 * @see Region::findByCountry
-	 * @param type $countryId
-	 * @return array
-	 */
-	public function getByCountry($countryId) 
-	{
-		return $this->findByCountry($countryId);
-	}
-	/**
-	 * Gets all regions from a country
-	 *
-	 * @access public
-	 * @since unknown
 	 * @param type $countryId
 	 * @return array
 	 */
 	public function findByCountry($countryId) 
 	{
-		$this->dao->select('*');
-		$this->dao->from($this->getTableName());
-		$this->dao->where('fk_c_country_code', addslashes($countryId));
-		$this->dao->orderBy('s_name', 'ASC');
-		$result = $this->dao->get();
-		return $result->result();
+		$sql = <<<SQL
+SELECT
+	pk_i_id, fk_c_country_code, s_name, b_active
+FROM
+	/*TABLE_PREFIX*/t_region
+WHERE
+	fk_c_country_code = ?
+ORDER BY
+	s_name ASC
+SQL;
+
+		$stmt = $this->prepareStatement( $sql );
+		$stmt->bind_param( 's', $countryId );
+		$regions = $this->fetchAll( $stmt );
+		$stmt->close();
+
+		return $regions;
 	}
 	/**
 	 * Find a region by its name and country

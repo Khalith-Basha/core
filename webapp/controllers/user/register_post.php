@@ -15,7 +15,8 @@
  * You should have received a copy of the GNU Affero General Public
  * License along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-class CWebUser extends Controller
+
+class CWebUser extends Controller_Default
 {
 	function __construct() 
 	{
@@ -31,7 +32,8 @@ class CWebUser extends Controller
 			$this->redirectTo(osc_base_url(true));
 		}
 	}
-	function doModel() 
+
+	public function doPost( HttpRequest $req, HttpResponse $res )
 	{
 		if (!osc_users_enabled()) 
 		{
@@ -51,38 +53,36 @@ class CWebUser extends Controller
 
 		case 2:
 			osc_add_flash_ok_message(_m('Your account has been created successfully'));
-			$this->doView('user-login.php');
+			$template = 'user-login.php';
 			break;
 
 		case 3:
 			osc_add_flash_warning_message(_m('The specified e-mail is already in use'));
-			$this->doView('user/register');
+			$template = 'user/register';
 			break;
 
 		case 4:
 			osc_add_flash_error_message(_m('The reCAPTCHA was not introduced correctly'));
-			$this->doView('user/register');
+			$template = 'user/register';
 			break;
 
 		case 5:
 			osc_add_flash_warning_message(_m('The email is not valid'));
-			$this->doView('user/register');
+			$template = 'user/register';
 			break;
 
 		case 6:
 			osc_add_flash_warning_message(_m('The password cannot be empty'));
-			$this->doView('user/register');
+			$template = 'user/register';
 			break;
 
 		case 7:
 			osc_add_flash_warning_message(_m("Passwords don't match"));
-			$this->doView('user/register');
+			$template = 'user/register';
 			break;
 		}
-	}
-	function doView($file) 
-	{
-		echo $this->getView()->render( $file );
+
+		echo $this->getView()->render( $template );
 	}
 }
 

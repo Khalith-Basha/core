@@ -27,14 +27,17 @@ class Controller_User extends Controller_Secure
 
 	public function logout() 
 	{
-		$this->getSession()->destroy();
-		$this->getSession()->_drop('userId');
-		$this->getSession()->_drop('userName');
-		$this->getSession()->_drop('userEmail');
-		$this->getSession()->_drop('userPhone');
-		$this->getCookie()->pop('oc_userId');
-		$this->getCookie()->pop('oc_userSecret');
-		$this->getCookie()->set();
+		$session = $this->getSession();
+		$session->destroy();
+		$session->_drop('userId');
+		$session->_drop('userName');
+		$session->_drop('userEmail');
+		$session->_drop('userPhone');
+
+		$cookie = $this->getCookie();
+		$cookie->pop('oc_userId');
+		$cookie->pop('oc_userSecret');
+		$cookie->set();
 	}
 	
 	public function showAuthFailPage() 

@@ -31,6 +31,14 @@ class CWebIndex extends Controller_Cacheable
 	public function renderView( HttpRequest $req, HttpResponse $res )
 	{
 		$view = $this->getView();
+
+		$locale = osc_current_user_locale();
+
+		$classLoader = $this->getClassLoader();
+		$pagesModel = $classLoader->getClassInstance( 'Model_Page' );
+		$pages = $pagesModel->findUserPagesByLocale( $locale );
+		$view->assign( 'pages', $pages );
+
 		return $view->render( 'main' );
 	}
 }

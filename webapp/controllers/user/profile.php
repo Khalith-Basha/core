@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Affero General Public
  * License along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-class CWebUser extends UserController
+class CWebUser extends Controller_User
 {
 	function __construct() 
 	{
@@ -29,25 +29,29 @@ class CWebUser extends UserController
 
 	public function doGet( HttpRequest $req, HttpResponse $res ) 
 	{
-		$user = ClassLoader::getInstance()->getClassInstance( 'Model_User' )->findByPrimaryKey($this->getSession()->_get('userId'));
-		$aCountries = ClassLoader::getInstance()->getClassInstance( 'Model_Country' )->listAll();
+		$classLoader = ClassLoader::getInstance();
+		$user = $classLoader->getClassInstance( 'Model_User' )->findByPrimaryKey($this->getSession()->_get('userId'));
+		$aCountries = $classLoader->getClassInstance( 'Model_Country' )->listAll();
 		$aRegions = array();
+
+		$regionModel = $classLoader->getClassInstance( 'Model_Region' );
+		$cityModel = $classLoader->getClassInstance( 'Model_City' );
 		if ($user['fk_c_country_code'] != '') 
 		{
-			$aRegions = Region::newInstance()->findByCountry($user['fk_c_country_code']);
+			$aRegions = $regionModel->findByCountry($user['fk_c_country_code']);
 		}
 		elseif (count($aCountries) > 0) 
 		{
-			$aRegions = Region::newInstance()->findByCountry($aCountries[0]['pk_c_code']);
+			$aRegions = $regionModel->findByCountry($aCountries[0]['pk_c_code']);
 		}
 		$aCities = array();
 		if ($user['fk_i_region_id'] != '') 
 		{
-			$aCities = City::newInstance()->findByRegion($user['fk_i_region_id']);
+			$aCities = $cityModel->findByRegion($user['fk_i_region_id']);
 		}
 		else if (count($aRegions) > 0) 
 		{
-			$aCities = City::newInstance()->findByRegion($aRegions[0]['pk_i_id']);
+			$aCities = $cityModel->findByRegion($aRegions[0]['pk_i_id']);
 		}
 		$view = $this->getView();
 		$this->getView()->assign('countries', $aCountries);

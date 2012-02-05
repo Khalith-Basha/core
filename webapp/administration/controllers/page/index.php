@@ -18,18 +18,14 @@
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-class CAdminPage extends AdministrationController
+class CAdminPage extends Controller_Administration
 {
-	private $pageManager;
-	function __construct() 
+	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
-		parent::__construct();
-		$this->pageManager = $this->getClassLoader()->getClassInstance( 'Model_Page' );
-	}
-	public function doModel() 
-	{
-		$this->getView()->assign("prefLocale", osc_current_admin_locale());
-		$this->getView()->assign("pages", $this->pageManager->listAll(0));
+		$pagesModel = $this->getClassLoader()->getClassInstance( 'Model_Page' );
+		$this->getView()->assign( "prefLocale", osc_current_admin_locale() );
+		$pages = $pagesModel->listAll();
+		$this->getView()->assign( "pages", $pages );
 		$this->doView("pages/index.php");
 	}
 }

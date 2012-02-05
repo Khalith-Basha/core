@@ -18,18 +18,10 @@
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-class CAdminStats extends AdministrationController
+class CAdminStats extends Controller_Administration
 {
-	function __construct() 
+	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
-		parent::__construct();
-		//specific things for this class
-		
-	}
-
-	function doModel() 
-	{
-		parent::doModel();
 		$items = array();
 		$reports = array();
 		if (Params::getParam('type_stat') == 'week') 

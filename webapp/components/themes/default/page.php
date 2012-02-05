@@ -19,12 +19,14 @@
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+$page = __get( 'page' );
+
 echo $view->render( 'header' );
 ?>
 
 <div class="page">
-	<h1><?php echo osc_static_page_title(); ?></h1>
-	<div><?php echo osc_static_page_text(); ?></div>
+	<h1><?php echo $page['s_title']; ?></h1>
+	<div><?php echo $page['s_text']; ?></div>
 </div>
 
 <?php

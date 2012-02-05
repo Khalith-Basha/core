@@ -6,14 +6,34 @@ abstract class Controller_Cacheable extends Controller_Default
 	{
 		$cacheKey = $this->getCacheKey();
 		$cacheService = $this->getClassLoader()->getClassInstance( 'Services_Cache_Memcached' );
-		$viewContent = $cacheService->read( $cacheKey );
-		if( false === $viewContent )
+		$cachedResponse = $cacheService->read( $cacheKey );
+		if( false === $cachedResponse )
 		{
-			$viewContent = $this->renderView( $req, $res );
+			$cachedResponse = $this->renderView( $req, $res );
 			$cacheExpiration = $this->getCacheExpiration();
-			$cacheService->write( $cacheKey, $viewContent, $cacheExpiration );
+			$cacheService->write( $cacheKey, $cachedResponse, $cacheExpiration );
 		}
-		echo $viewContent;
+
+		if( is_array( $cachedResponse ) )
+		{
+			if( !empty( $cachedResponse['statusCode'] ) )
+			{
+				$res->sendStatusCode( $cachedResponse['statusCode'] );
+				$res->sendHeaders();
+			}
+
+			echo $cachedResponse['viewContent'];
+		}
+		elseif( is_string( $cachedResponse ) )
+		{
+			echo $cachedResponse;
+		}
+		else
+		{
+			$res->sendStatusCode( 500 );
+			$res->sendHeaders();
+			echo $this->getView()->render( 'error/500' );
+		}
 	}
 
 	abstract public function getCacheKey();

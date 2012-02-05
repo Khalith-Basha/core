@@ -18,18 +18,11 @@
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-class CAdminItem extends AdministrationController
+class CAdminItem extends Controller_Administration
 {
-	private $itemManager;
-	function __construct() 
+	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
-		parent::__construct();
-		//specific things for this class
 		$this->itemManager = $this->getClassLoader()->getClassInstance( 'Model_Item' );
-	}
-	function doModel() 
-	{
-		parent::doModel();
 		//specific things for this class
 		switch ($this->action) 
 		{
@@ -218,17 +211,20 @@ class CAdminItem extends AdministrationController
 			break;
 
 		default: //default
+			$classLoader = $this->getClassLoader();
 			$catId = Params::getParam('catId');
-			$countries = $this->getClassLoader()->getClassInstance( 'Model_Country' )->listAll();
+			$countries = $classLoader->getClassInstance( 'Model_Country' )->listAll();
 			$regions = array();
 			if (count($countries) > 0) 
 			{
-				$regions = Region::newInstance()->findByCountry($countries[0]['pk_c_code']);
+				$regions = $classLoader->getClassInstance( 'Model_Region' )
+					->findByCountry($countries[0]['pk_c_code']);
 			}
 			$cities = array();
 			if (count($regions) > 0) 
 			{
-				$cities = City::newInstance()->findByRegion($regions[0]['pk_i_id']);
+				$cities = $classLoader->getClassInstance( 'Model_City' )
+					->findByRegion($regions[0]['pk_i_id']);
 			}
 			//preparing variables for the view
 			$this->getView()->assign("users", $this->getClassLoader()->getClassInstance( 'Model_User' )->listAll());

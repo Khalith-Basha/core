@@ -18,9 +18,9 @@
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-class CAdminTool extends AdministrationController
+class CAdminTool extends Controller_Administration
 {
-	function doModel() 
+	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
 		$mode = Params::getParam('mode');
 		if ($mode == 'on') 
