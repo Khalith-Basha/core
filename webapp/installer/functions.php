@@ -233,7 +233,7 @@ function oc_install()
 				break;
 			}
 		}
-		$m_db = $master_conn->getOsclassDb();
+		$m_db = $master_conn->getResource();
 		$comm = new DBCommandClass($m_db);
 		$comm->query(sprintf("CREATE DATABASE IF NOT EXISTS %s DEFAULT CHARACTER SET 'UTF8' COLLATE 'UTF8_GENERAL_CI'", $dbname));
 		$error_num = $comm->getErrorLevel();
@@ -287,7 +287,7 @@ function oc_install()
 	create_config_file($dbname, $username, $password, $dbhost, $tableprefix);
 
 	$sql = file_get_contents(ABS_PATH . '/installer/data/struct.sql');
-	$c_db = $conn->getOsclassDb();
+	$c_db = $conn->getResource();
 	$comm = new Database_Command($c_db);
 	$comm->importSQL($sql);
 	$error_num = $comm->getErrorLevel();

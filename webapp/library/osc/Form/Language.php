@@ -27,56 +27,45 @@ class Form_Language extends Form
 	public function name_input_text($locale = null) 
 	{
 		parent::generic_input_text("s_name", (isset($locale)) ? $locale['s_name'] : "");
-		return true;
 	}
 	public function short_name_input_text($locale = null) 
 	{
 		parent::generic_input_text("s_short_name", (isset($locale)) ? $locale['s_short_name'] : "");
-		return true;
 	}
 	public function description_input_text($locale = null) 
 	{
 		parent::generic_input_text("s_description", (isset($locale)) ? $locale['s_description'] : "");
-		return true;
 	}
 	public function currency_format_input_text($locale = null) 
 	{
 		parent::generic_input_text("s_currency_format", (isset($locale)) ? $locale['s_currency_format'] : "");
-		return true;
 	}
 	public function dec_point_input_text($locale = null) 
 	{
 		parent::generic_input_text("s_dec_point", (isset($locale)) ? $locale['s_dec_point'] : "");
-		return true;
 	}
 	public function num_dec_input_text($locale = null) 
 	{
 		parent::generic_input_text("i_num_dec", (isset($locale)) ? $locale['i_num_dec'] : "");
-		return true;
 	}
 	public function thousands_sep_input_text($locale = null) 
 	{
 		parent::generic_input_text("s_thousands_sep", (isset($locale)) ? $locale['s_thousands_sep'] : "");
-		return true;
 	}
 	public function date_format_input_text($locale = null) 
 	{
 		parent::generic_input_text("s_date_format", (isset($locale)) ? $locale['s_date_format'] : "");
-		return true;
 	}
 	public function description_textarea($locale = null) 
 	{
 		parent::generic_textarea("s_stop_words", $locale['s_stop_words']);
-		return true;
 	}
 	public function enabled_input_checkbox($locale = null) 
 	{
 		parent::generic_input_checkbox("b_enabled", "1", ($locale["b_enabled"] == 1) ? true : false);
-		return true;
 	}
 	public function enabled_bo_input_checkbox($locale = null) 
 	{
 		parent::generic_input_checkbox("b_enabled_bo", "1", ($locale["b_enabled_bo"] == 1) ? true : false);
-		return true;
 	}
 }

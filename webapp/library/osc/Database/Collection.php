@@ -323,7 +323,7 @@ class Database_Collection
 	 */
 	function numRows() 
 	{
-		return $this->resultId->num_rows;
+		return $this->resultId instanceof mysqli_result ? $this->resultId->num_rows : -1;
 	}
 	/**
 	 * Get the number of fields in a result

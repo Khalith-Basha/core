@@ -23,12 +23,10 @@ class Form_Alert extends Form
 	public function user_id_hidden() 
 	{
 		parent::generic_input_hidden('alert_userId', osc_logged_user_id());
-		return true;
 	}
 	public function email_hidden() 
 	{
 		parent::generic_input_hidden('alert_email', osc_logged_user_email());
-		return true;
 	}
 	public function default_email_text() 
 	{
@@ -42,16 +40,13 @@ class Form_Alert extends Form
 			$value = self::default_email_text();
 		}
 		parent::generic_input_text('alert_email', $value);
-		return true;
 	}
 	public function page_hidden() 
 	{
 		parent::generic_input_hidden('page', 'search');
-		return true;
 	}
 	public function alert_hidden() 
 	{
 		parent::generic_input_hidden('alert', osc_search_alert());
-		return true;
 	}
 }

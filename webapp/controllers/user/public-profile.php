@@ -26,7 +26,8 @@ class CWebUser extends Controller
 			$this->redirectTo(osc_base_url(true));
 		}
 	}
-	function doModel() 
+
+	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
 		$userID = Params::getParam('id');
 		$user = $this->getClassLoader()->getClassInstance( 'Model_User' )->findByPrimaryKey($userID);
@@ -43,15 +44,7 @@ class CWebUser extends Controller
 		$this->getView()->assign('user', $user);
 		$items = $this->getClassLoader()->getClassInstance( 'Model_Item' )->findByUserIDEnabled($user['pk_i_id'], 0, 3);
 		$this->getView()->assign('items', $items);
-		$this->doView('user/public-profile');
-	}
-
-	function doView($file) 
-	{
-		osc_run_hook("before_html");
-		echo $this->getView()->render( $file );
-		$this->getSession()->_clearVariables();
-		osc_run_hook("after_html");
+		echo $this->getView()->render('user/public-profile');
 	}
 }
 

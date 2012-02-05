@@ -26,9 +26,10 @@ class CAdminAjax extends Controller_Administration
 
 	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
-		$this->getView()->assign('category', ClassLoader::getInstance()->getClassInstance( 'Model_Category' )->findByPrimaryKey(Params::getParam("id")));
-		$this->getView()->assign('languages', ClassLoader::getInstance()->getClassInstance( 'Model_Locale' )->listAllEnabled());
-		osc_current_admin_theme_path("categories/iframe.php");
+		$countryId = $this->getInput()->getString( 'countryId' );
+		$regions = $this->getClassLoader()->getClassInstance( 'Model_Region' )
+			->findByCountry( $countryId );
+		echo json_encode( $regions );
 	}
 }
 

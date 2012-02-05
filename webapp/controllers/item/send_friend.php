@@ -15,26 +15,13 @@
  * You should have received a copy of the GNU Affero General Public
  * License along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-class CWebItem extends Controller
+class CWebItem extends Controller_Default
 {
 	private $itemManager;
-	private $user;
-	private $userId;
-	function __construct() 
+
+	public function init() 
 	{
-		parent::__construct();
 		$this->itemManager = ClassLoader::getInstance()->getClassInstance( 'Model_Item' );
-		// here allways userId == ''
-		if (osc_is_web_user_logged_in()) 
-		{
-			$this->userId = osc_logged_user_id();
-			$this->user = ClassLoader::getInstance()->getClassInstance( 'Model_User' )->findByPrimaryKey($this->userId);
-		}
-		else
-		{
-			$this->userId = null;
-			$this->user = null;
-		}
 	}
 
 	public function doGet( HttpRequest $req, HttpResponse $res )

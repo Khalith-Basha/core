@@ -38,7 +38,6 @@ require_once 'osc/Session.php';
 require_once 'osc/core/Params.php';
 require_once 'osc/Model/Preference.php';
 require_once 'osc/helpers/hDefines.php';
-require_once 'osc/helpers/hErrors.php';
 require_once 'osc/helpers/hLocale.php';
 require_once 'osc/helpers/hPreference.php';
 require_once 'osc/helpers/hSearch.php';
@@ -70,73 +69,62 @@ if( $step >= 4 )
 		);
 }
 
+function showView( $file )
+{
+	require 'views/header.php';
+	require $file;
+	require 'views/footer.php';
+}
+
 switch ($step) 
 {
-case 1:
-	$requirements = get_requirements();
-	$error = check_requirements($requirements);
-	break;
+	case 1:
+		$requirements = get_requirements();
+		$error = check_requirements($requirements);
+		showView( 'views/welcome.php' );
+		break;
 
-case 2:
-	if (Params::getParam('ping_engines') == '1' || isset($_COOKIE['osclass_ping_engines'])) 
-	{
-		setcookie('osclass_ping_engines', 1, time() + (24 * 60 * 60));
-	}
-	else
-	{
-		setcookie('osclass_ping_engines', 0, time() + (24 * 60 * 60));
-	}
-	break;
+	case 2:
+		if (Params::getParam('ping_engines') == '1' || isset($_COOKIE['osclass_ping_engines'])) 
+		{
+			setcookie('osclass_ping_engines', 1, time() + (24 * 60 * 60));
+		}
+		else
+		{
+			setcookie('osclass_ping_engines', 0, time() + (24 * 60 * 60));
+		}
+		showView( 'views/db_config.php' );
+		break;
 
-case 3:
-	if (Params::getParam('dbname') != '') 
-	{
-		$error = oc_install();
-	}
-	break;
+	case 3:
+		if (Params::getParam('dbname') != '') 
+		{
+			$error = oc_install();
+		}
+		if (!isset($error["error"])) 
+		{
+			showView( 'views/target.php' );
+		}
+		else
+		{
+			showView( 'views/db_error.php' );
+		}
 
-case 4:
-	list($username, $password) = basic_info();
-	break;
+		break;
 
-case 5:
-	$password = Params::getParam('password');
-	break;
+	case 4:
+		list($username, $password) = basic_info();
+		$categories = ClassLoader::getInstance()->getClassInstance( 'Model_Category' )->toTreeAll();
+		$numCols = 3;
+		$catsPerCol = ceil(count($categories) / $numCols);
+		showView( 'views/categories.php' );
+		break;
 
-default:
-	break;
+	case 5:
+		$password = Params::getParam('password');
+		ping_search_engines($_COOKIE['osclass_ping_engines']);
+		setcookie('osclass_ping_engines', '', time() - 3600);
+		display_finish($password);
+		break;
 }
-require 'views/header.php';
-if ($step == 1) 
-{
-	require 'views/welcome.php';
-}
-elseif ($step == 2) 
-{
-	require 'views/db_config.php';
-}
-elseif ($step == 3) 
-{
-	if (!isset($error["error"])) 
-	{
-		require 'views/target.php';
-	}
-	else
-	{
-		require 'views/db_error.php';
-	}
-}
-elseif ($step == 4) 
-{
-	$categories = ClassLoader::getInstance()->getClassInstance( 'Model_Category' )->toTreeAll();
-	$numCols = 3;
-	$catsPerCol = ceil(count($categories) / $numCols);
-	require 'views/categories.php';
-}
-elseif ($step == 5) 
-{
-	ping_search_engines($_COOKIE['osclass_ping_engines']);
-	setcookie('osclass_ping_engines', '', time() - 3600);
-	display_finish($password);
-}
-require 'views/footer.php';
+

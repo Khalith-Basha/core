@@ -762,7 +762,7 @@ class Database_Command
 	 * @param mixed $where
 	 * @return mixed
 	 */
-	function delete($table = '', $where = '') 
+	function delete( $table = '', $where = '' )
 	{
 		if ($table == '') 
 		{
@@ -890,11 +890,8 @@ class Database_Command
 		$rs->connId = $this->connId;
 		$rs->resultId = $rsID;
 		$rs->numRows = $rs->numRows();
-		if ($rs->numRows() == 0) 
-		{
-			return false;
-		}
-		return true;
+		
+		return $rs->numRows() > 0;
 	}
 	/**
 	 * Performs a query on the database
@@ -1463,11 +1460,7 @@ class Database_Command
 	function _hasOperator($str) 
 	{
 		$str = trim($str);
-		if (!preg_match('/(\s|<|>|!|=|is null|is not null)/i', $str)) 
-		{
-			return false;
-		}
-		return true;
+		return preg_match('/(\s|<|>|!|=|is null|is not null)/i', $str);
 	}
 	/**
 	 * Check if the sql is a select
@@ -1479,11 +1472,7 @@ class Database_Command
 	 */
 	function isSelectType($sql) 
 	{
-		if (!preg_match('/^\s*"?(SELECT)\s+/i', $sql)) 
-		{
-			return false;
-		}
-		return true;
+		return preg_match('/^\s*"?(SELECT)\s+/i', $sql);
 	}
 	/**
 	 * Check if the sql is a write type such as INSERT, UPDATE, UPDATE...
@@ -1495,11 +1484,7 @@ class Database_Command
 	 */
 	function isWriteType($sql) 
 	{
-		if (!preg_match('/^\s*"?(SET|INSERT|UPDATE|DELETE|REPLACE|CREATE|DROP|TRUNCATE|LOAD DATA|COPY|ALTER|GRANT|REVOKE|LOCK|UNLOCK)\s+/i', $sql)) 
-		{
-			return false;
-		}
-		return true;
+		return preg_match('/^\s*"?(SET|INSERT|UPDATE|DELETE|REPLACE|CREATE|DROP|TRUNCATE|LOAD DATA|COPY|ALTER|GRANT|REVOKE|LOCK|UNLOCK)\s+/i', $sql);
 	}
 	/**
 	 * Add the apostrophe if it's an string; 0 or 1 if it's a number; NULL

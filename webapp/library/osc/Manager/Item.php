@@ -20,7 +20,7 @@
 require_once 'osc/filtering.php';
 require_once 'osc/utilities/string.php';
 
-class ItemActions
+class Manager_Item
 {
 	private $manager = null;
 	private $is_admin;
@@ -514,7 +514,7 @@ class ItemActions
 		$aItem = $this->prepareDataForFunction('send_friend');
 		$item = $aItem['item'];
 		$s_title = $aItem['s_title'];
-		$classLoader->getClassInstance( 'HtmlView' )->assign('item', $item);
+		$classLoader->getClassInstance( 'View_Html' )->assign('item', $item);
 		osc_run_hook('hook_email_send_friend', $aItem);
 		$item_url = $classLoader->getClassInstance( 'Url_Item' )->getDetailsUrl( $item );
 		$item_url = '<a href="' . $item_url . '" >' . $item_url . '</a>';
@@ -566,7 +566,7 @@ class ItemActions
 		$userId = $aItem['userId'];
 		$status_num = - 1;
 		$item = $this->manager->findByPrimaryKey($itemId);
-		$classLoader->getClassInstance( 'HtmlView' )->assign('item', $item);
+		$classLoader->getClassInstance( 'View_Html' )->assign('item', $item);
 		$itemURL = $classLoader->getClassInstance( 'Url_Item' )->getDetailsUrl( $item );
 		$itemURL = '<a href="' . $itemURL . '" >' . $itemURL . '</a>';
 		$session = $classLoader->getClassInstance( 'Session' );
@@ -659,7 +659,7 @@ class ItemActions
 		case 'send_friend':
 			$item = $this->manager->findByPrimaryKey(Params::getParam('id'));
 			$aItem['item'] = $item;
-			ClassLoader::getInstance()->getClassInstance( 'HtmlView' )->assign('item', $aItem['item']);
+			ClassLoader::getInstance()->getClassInstance( 'View_Html' )->assign('item', $aItem['item']);
 			$aItem['yourName'] = Params::getParam('yourName');
 			$aItem['yourEmail'] = Params::getParam('yourEmail');
 			$aItem['friendName'] = Params::getParam('friendName');
@@ -671,7 +671,7 @@ class ItemActions
 		case 'contact':
 			$item = $this->manager->findByPrimaryKey(Params::getParam('id'));
 			$aItem['item'] = $item;
-			ClassLoader::getInstance()->getClassInstance( 'HtmlView' )->assign('item', $aItem['item']);
+			ClassLoader::getInstance()->getClassInstance( 'View_Html' )->assign('item', $aItem['item']);
 			$aItem['id'] = Params::getParam('id');
 			$aItem['yourEmail'] = Params::getParam('yourEmail');
 			$aItem['yourName'] = Params::getParam('yourName');
@@ -682,7 +682,7 @@ class ItemActions
 		case 'add_comment':
 			$item = $this->manager->findByPrimaryKey(Params::getParam('id'));
 			$aItem['item'] = $item;
-			ClassLoader::getInstance()->getClassInstance( 'HtmlView' )->assign('item', $aItem['item']);
+			ClassLoader::getInstance()->getClassInstance( 'View_Html' )->assign('item', $aItem['item']);
 			$aItem['authorName'] = Params::getParam('authorName');
 			$aItem['authorEmail'] = Params::getParam('authorEmail');
 			$aItem['body'] = Params::getParam('body');
@@ -1077,7 +1077,7 @@ class ItemActions
 	public function sendEmails( array $aItem )
 	{
 		$item = $aItem['item'];
-		ClassLoader::getInstance()->getClassInstance( 'HtmlView' )->assign('item', $item);
+		ClassLoader::getInstance()->getClassInstance( 'View_Html' )->assign('item', $item);
 		/**
 		 * Send email to non-reg user requesting item activation
 		 */

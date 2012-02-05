@@ -93,7 +93,7 @@ $javaScripts = array(
 	<div id="content">
             <div id="separator"></div>
 
-            <?php osc_current_admin_theme_path('include/backoffice_menu.php'); ?>
+            <?php osc_current_admin_theme_path('backoffice_menu.php'); ?>
             
             <div id="right_column">
 

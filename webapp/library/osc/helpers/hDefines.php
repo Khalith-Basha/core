@@ -141,7 +141,7 @@ function osc_current_admin_theme_path($file = '')
  * @param string $file the style's file
  * @return string
  */
-function osc_current_admin_theme_styles_url($file = '') 
+function osc_current_admin_theme_styles_url( $file ) 
 {
 	return ClassLoader::getInstance()->getClassInstance( 'AdminThemes' )->getCurrentThemeStyles() . '/' . $file;
 }
@@ -183,7 +183,7 @@ function osc_get_current_web_theme_path( $file, View $view = null )
 	$classLoader = ClassLoader::getInstance();
 	$themes = $classLoader->getClassInstance( 'WebThemes' );
 	if( is_null( $view ) )
-		$view = $classLoader->getClassInstance( 'HtmlView' );
+		$view = $classLoader->getClassInstance( 'View_Html' );
 	$webThemes = $themes;
 	$filePath = $webThemes->getCurrentThemePath() . DIRECTORY_SEPARATOR . $file;
 	if (file_exists($filePath)) 
@@ -295,7 +295,7 @@ function osc_contact_url()
 function osc_item_url()
 {
 	$classLoader = ClassLoader::getInstance();
-	$items = $classLoader->getClassInstance( 'HtmlView' )->_get('items');
+	$items = $classLoader->getClassInstance( 'View_Html' )->_get('items');
 	if( count( $items ) > 0 )
 	{
 		$itemUrl = $classLoader->getClassInstance( 'Url_Item' )->getDetailsUrl( $items[0] );
@@ -875,9 +875,9 @@ function osc_item_send_friend_url()
  */
 function osc_get_countries() 
 {
-	if (ClassLoader::getInstance()->getClassInstance( 'View' )->_exists('countries')) 
+	if (ClassLoader::getInstance()->getClassInstance( 'View_Default' )->_exists('countries')) 
 	{
-		return ClassLoader::getInstance()->getClassInstance( 'View' )->_get('countries');
+		return ClassLoader::getInstance()->getClassInstance( 'View_Default' )->_get('countries');
 	}
 	else
 	{
@@ -892,9 +892,9 @@ function osc_get_countries()
  */
 function osc_get_regions($country = '') 
 {
-	if (ClassLoader::getInstance()->getClassInstance( 'View' )->_exists('regions')) 
+	if (ClassLoader::getInstance()->getClassInstance( 'View_Default' )->_exists('regions')) 
 	{
-		return ClassLoader::getInstance()->getClassInstance( 'View' )->_get('regions');
+		return ClassLoader::getInstance()->getClassInstance( 'View_Default' )->_get('regions');
 	}
 	else
 	{
@@ -916,9 +916,9 @@ function osc_get_regions($country = '')
  */
 function osc_get_cities($region = '') 
 {
-	if (ClassLoader::getInstance()->getClassInstance( 'View' )->_exists('cities')) 
+	if (ClassLoader::getInstance()->getClassInstance( 'View_Default' )->_exists('cities')) 
 	{
-		return ClassLoader::getInstance()->getClassInstance( 'View' )->_get('cities');
+		return ClassLoader::getInstance()->getClassInstance( 'View_Default' )->_get('cities');
 	}
 	else
 	{
@@ -939,11 +939,11 @@ function osc_get_cities($region = '')
  */
 function osc_get_currencies() 
 {
-	if (!ClassLoader::getInstance()->getClassInstance( 'View' )->_exists('currencies')) 
+	if (!ClassLoader::getInstance()->getClassInstance( 'View_Default' )->_exists('currencies')) 
 	{
-		ClassLoader::getInstance()->getClassInstance( 'View' )->assign('currencies', ClassLoader::getInstance()->getClassInstance( 'Model_Currency' )->listAll());
+		ClassLoader::getInstance()->getClassInstance( 'View_Default' )->assign('currencies', ClassLoader::getInstance()->getClassInstance( 'Model_Currency' )->listAll());
 	}
-	return ClassLoader::getInstance()->getClassInstance( 'View' )->_get('currencies');
+	return ClassLoader::getInstance()->getClassInstance( 'View_Default' )->_get('currencies');
 }
 /**
  * Prints the additional options to the menu

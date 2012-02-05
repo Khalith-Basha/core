@@ -36,7 +36,6 @@ if( file_exists( ABS_PATH . '/.maintenance' ) )
 {
 	if (!osc_is_admin_user_logged_in()) 
 	{
-		require_once 'osc/helpers/hErrors.php';
 		$title = 'OpenSourceClassifieds &raquo; Error';
 		$message = sprintf(__('We are sorry for any inconvenience. %s is under maintenance mode') . '.', osc_page_title());
 		osc_die($title, $message);

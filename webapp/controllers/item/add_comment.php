@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Affero General Public
  * License along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-class CWebItem extends Controller
+class CWebItem extends Controller_Default
 {
 	private $itemManager;
 	private $user;
@@ -35,14 +35,15 @@ class CWebItem extends Controller
 			$this->user = null;
 		}
 	}
-	function doModel() 
+
+	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
 		$locales = $this->getClassLoader()->getClassInstance( 'Model_Locale' )->listAllEnabled();
 		$this->getView()->assign('locales', $locales);
 		$mItem = $this->getClassLoader()->getClassInstance( 'ItemActions', true, array( false ) );
 		$itemUrl = '/'; // @TODO FIX $this->getClassLoader()->getClassInstance( 'Url_Item' )->getDetailsUrl( $item );
 		$status = $mItem->add_comment();
-		switch ($status) 
+		switch ($status)
 		{
 		case -1:
 			$msg = _m('Sorry, we could not save your comment. Try again later');

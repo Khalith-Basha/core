@@ -33,11 +33,11 @@
 function __get($key) 
 {
 	$classLoader = ClassLoader::getInstance();
-	$view = $classLoader->getClassInstance( 'View' );
+	$view = $classLoader->getClassInstance( 'View_Default' );
 	$value = $view->_get( $key );
 	if( is_null( $value ) )
 	{
-		$value = $classLoader->getClassInstance( 'HtmlView' )->_get( $key );
+		$value = $classLoader->getClassInstance( 'View_Html' )->_get( $key );
 	}
 	return $value;
 }

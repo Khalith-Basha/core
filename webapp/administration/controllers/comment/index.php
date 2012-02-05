@@ -28,10 +28,8 @@ class CAdminComment extends Controller_Administration
 		$this->itemCommentManager = ClassLoader::getInstance()->getClassInstance( 'Model_ItemComment' );
 	}
 
-	function doModel() 
+	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
-		parent::doModel();
-		//specific things for this class
 		switch ($this->action) 
 		{
 		case 'bulk_actions':

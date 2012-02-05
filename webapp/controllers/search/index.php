@@ -291,7 +291,7 @@ class CWebSearch extends Controller_Default
 		}
 	}
 
-	protected function setViewTitle( View $view )
+	protected function setViewTitle( View_Html $view )
 	{
 		$region = Params::getParam('sRegion');
 		$city = Params::getParam('sCity');

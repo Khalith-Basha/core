@@ -24,7 +24,7 @@ class Stats
 	function __construct() 
 	{
 		$conn = ClassLoader::getInstance()->getClassInstance( 'Database_Connection' );
-		$data = $conn->getOsclassDb();
+		$data = $conn->getResource();
 		$this->conn = ClassLoader::getInstance()->getClassInstance( 'Database_Command', true, array( &$data ) );
 	}
 	public function new_users_count($from_date, $date = 'day') 

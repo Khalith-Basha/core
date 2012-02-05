@@ -20,18 +20,9 @@
 */
 class CAdminMedia extends Controller_Administration
 {
-	private $resourcesManager;
-	function __construct() 
+	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
-		parent::__construct();
-		//specific things for this class
 		$this->resourcesManager = ClassLoader::getInstance()->getClassInstance( 'Model_ItemResource' );
-	}
-
-	function doModel() 
-	{
-		parent::doModel();
-		//specific things for this class
 		switch ($this->action) 
 		{
 		case 'bulk_actions':

@@ -22,15 +22,6 @@
 
 class CAdminAdmins extends Controller_Administration
 {
-	private $adminManager ;
-
-	function __construct()
-	{
-	    parent::__construct() ;
-
-	    $this->adminManager = ClassLoader::getInstance()->getClassInstance( 'Model_Admin' ) ;
-	}
-
 	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
 		$this->doView( 'admins/add.php' );
@@ -38,6 +29,7 @@ class CAdminAdmins extends Controller_Administration
 
 	public function doPost( HttpRequest $req, HttpResponse $res )
 	{
+		$this->adminManager = ClassLoader::getInstance()->getClassInstance( 'Model_Admin' ) ;
 		    // adding a new admin
 		    $sPassword = Params::getParam('s_password');
 		    $sName     = Params::getParam('s_name');

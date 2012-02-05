@@ -23,17 +23,14 @@ class Form_Contact extends Form
 	public function primary_input_hidden() 
 	{
 		parent::generic_input_hidden("id", osc_item_id());
-		return true;
 	}
 	public function page_hidden() 
 	{
 		parent::generic_input_hidden("page", 'item');
-		return true;
 	}
 	public function action_hidden() 
 	{
 		parent::generic_input_hidden("action", 'contact');
-		return true;
 	}
 	public function your_name() 
 	{
@@ -47,7 +44,6 @@ class Form_Contact extends Form
 		{
 			parent::generic_input_text("yourName", osc_logged_user_name(), null, false);
 		}
-		return true;
 	}
 	public function your_email() 
 	{
@@ -61,7 +57,6 @@ class Form_Contact extends Form
 		{
 			parent::generic_input_text("yourEmail", osc_logged_user_email(), null, false);
 		}
-		return true;
 	}
 	public function your_phone_number() 
 	{
@@ -75,7 +70,6 @@ class Form_Contact extends Form
 		{
 			parent::generic_input_text("phoneNumber", osc_logged_user_phone(), null, false);
 		}
-		return true;
 	}
 	public function the_subject() 
 	{
@@ -89,7 +83,6 @@ class Form_Contact extends Form
 		{
 			parent::generic_input_text("subject", "", null, false);
 		}
-		return true;
 	}
 	public function your_message() 
 	{
@@ -103,7 +96,6 @@ class Form_Contact extends Form
 		{
 			parent::generic_textarea("message", "");
 		}
-		return true;
 	}
 	public function your_attachment() 
 	{

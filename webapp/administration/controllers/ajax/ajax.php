@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Affero General Public
  * License along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-define('IS_AJAX', true);
+
 class CAdminAjax extends Controller_Administration
 {
 	function __construct() 
@@ -24,22 +24,11 @@ class CAdminAjax extends Controller_Administration
 		$this->ajax = true;
 	}
 
-	function doModel() 
+	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
-		//specific things for this class
 		switch ($this->action) 
 		{
 		case 'bulk_actions':
-			break;
-
-		case 'regions': //Return regions given a countryId
-			$regions = Region::newInstance()->findByCountry(Params::getParam("countryId"));
-			echo json_encode($regions);
-			break;
-
-		case 'cities': //Returns cities given a regionId
-			$cities = City::newInstance()->findByRegion(Params::getParam("regionId"));
-			echo json_encode($cities);
 			break;
 
 		case 'location': // This is the autocomplete AJAX

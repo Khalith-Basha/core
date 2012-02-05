@@ -27,7 +27,7 @@ class CWebUserNonSecure extends Controller
 		}
 	}
 
-	function doModel() 
+	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
 		switch ($this->action) 
 		{

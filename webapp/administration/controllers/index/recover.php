@@ -18,11 +18,11 @@
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-class CAdminIndex extends Controller
+class CAdminIndex extends Controller_Default
 {
 	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
-		$this->doView('recover.php');
+		osc_current_admin_theme_path( 'recover.php' );
 	}
 
 	public function doPost( HttpRequest $req, HttpResponse $res )
@@ -49,10 +49,5 @@ class CAdminIndex extends Controller
 		osc_add_flash_ok_message(_m('A new password has been sent to your e-mail'), 'admin');
 		$this->redirectTo(osc_admin_base_url());
 
-	}
-
-	public function doView($file) 
-	{
-		osc_current_admin_theme_path( $file );
 	}
 }

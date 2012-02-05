@@ -17,86 +17,33 @@
  */
 class CWebUser extends Controller_Default
 {
-	function __construct() 
+	public function init()
 	{
-		parent::__construct();
-		if (!osc_users_enabled()) 
+		if( !osc_users_enabled() )
 		{
-			osc_add_flash_error_message(_m('Users not enabled'));
-			$this->redirectTo(osc_base_url(true));
+			osc_add_flash_error_message( _m( 'Users are not enabled' ) );
+			$this->redirectTo( osc_base_url( true ) );
 		}
 	}
 
 	public function doPost( HttpRequest $req, HttpResponse $res )
 	{
-		$httpReferer = $this->getServer()->getHttpReferer();
+		$classLoader = $this->getClassLoader();
 
-		if (!osc_users_enabled()) 
+		$email = $this->getInput()->getString( 'email' );
+		$password = $this->getInput()->getString( 'password' );
+
+		$userModel = $classLoader->getClassInstance( 'Model_User' );
+		$user = $userModel->findByEmailPassword( $email, $password );
+		if( is_null( $user ) )
 		{
-			osc_add_flash_error_message(_m('Users are not enabled'));
-			$this->redirectTo(osc_base_url());
-		}
-		require_once 'osc/UserActions.php';
-		$user = ClassLoader::getInstance()->getClassInstance( 'Model_User' )->findByEmail(Params::getParam('email'));
-		$url_redirect = osc_user_dashboard_url();
-		$page_redirect = '';
-		if (osc_rewrite_enabled()) 
-		{
-			if( !is_null( $httpReferer ) ) 
-			{
-				$request_uri = urldecode(preg_replace('@^' . osc_base_url() . '@', "", $httpReferer ));
-				$tmp_ar = explode("?", $request_uri);
-				$request_uri = $tmp_ar[0];
-				$rules = ClassLoader::getInstance()->getClassInstance( 'Rewrite' )->getRules();
-				foreach ($rules as $rule) 
-				{
-					$match = $rule->rePath;
-					$uri = $rule->request;
-					if (preg_match('#' . $match . '#', $request_uri, $m)) 
-					{
-						$request_uri = preg_replace('#' . $match . '#', $uri, $request_uri);
-						if (preg_match('|([&?]{1})page=([^&]*)|', '&' . $request_uri . '&', $match)) 
-						{
-							$page_redirect = $match[2];
-						}
-						break;
-					}
-				}
-			}
-		}
-		else if (preg_match('|[\?&]page=([^&]+)|', $httpReferer . '&', $match)) 
-		{
-			$page_redirect = $match[1];
-		}
-		if (Params::getParam('http_referer') != '') 
-		{
-			$this->getSession()->_setReferer(Params::getParam('http_referer'));
-			$url_redirect = Params::getParam('http_referer');
-		}
-		else if ($this->getSession()->_getReferer() != '') 
-		{
-			$this->getSession()->_setReferer($this->getSession()->_getReferer());
-			$url_redirect = $this->getSession()->_getReferer();
-		}
-		else if ($page_redirect != '' && $page_redirect != 'login') 
-		{
-			$this->getSession()->_setReferer( $httpReferer );
-			$url_redirect = $httpReferer;
-		}
-		if (!$user) 
-		{
-			osc_add_flash_error_message(_m('The username doesn\'t exist'));
+			osc_add_flash_error_message( _m( 'The username or password are wrong' ) );
 
 			$res->sendRedirection( osc_user_login_url() );
 		}
-		if ($user["s_password"] != sha1(Params::getParam('password'))) 
-		{
-			osc_add_flash_error_message(_m('The password is incorrect'));
 
-			$res->sendRedirection( osc_user_login_url() );
-		}
-		$uActions = new UserActions(false);
-		$logged = $uActions->bootstrap_login($user['pk_i_id']);
+		$logged = $classLoader->getClassInstance( 'Manager_User', false, array( false ) )
+			->bootstrap_login( $user['pk_i_id'] );
 		if ($logged == 0) 
 		{
 			osc_add_flash_error_message(_m('The username doesn\'t exist'));
@@ -111,23 +58,26 @@ class CWebUser extends Controller_Default
 		}
 		else if ($logged == 3) 
 		{
-			if (Params::getParam('remember') == 1) 
+			if( true === $this->getInput()->getBoolean( 'remember' ) ) 
 			{
-				//this include contains de osc_genRandomPassword function
 				require_once 'osc/helpers/hSecurity.php';
 				$secret = osc_genRandomPassword();
-				ClassLoader::getInstance()->getClassInstance( 'Model_User' )->update(array('s_secret' => $secret), array('pk_i_id' => $user['pk_i_id']));
-				ClassLoader::getInstance()->getClassInstance( 'Cookie' )->set_expires(osc_time_cookie());
-				ClassLoader::getInstance()->getClassInstance( 'Cookie' )->push('oc_userId', $user['pk_i_id']);
-				ClassLoader::getInstance()->getClassInstance( 'Cookie' )->push('oc_userSecret', $secret);
-				ClassLoader::getInstance()->getClassInstance( 'Cookie' )->set();
-			}
+				$userModel->update(
+					array( 's_secret' => $secret), array('pk_i_id' => $user['pk_i_id'] )
+				);
 
+				$cookie = $this->getCookie();
+				$cookie->set_expires(osc_time_cookie());
+				$cookie->push('oc_userId', $user['pk_i_id']);
+				$cookie->push('oc_userSecret', $secret);
+				$cookie->set();
+			}
+	
+			$url_redirect = osc_user_dashboard_url();
+			$httpReferer = $this->getInput()->getString( 'http_referer' );
+			if( !is_null( $httpReferer ) )
+				$url_redirect = $htpReferer;
 			$res->sendRedirection( $url_redirect );
-		}
-		else
-		{
-			osc_add_flash_error_message(_m('This should never happens'));
 		}
 
 		$res->sendRedirection( osc_user_login_url() );

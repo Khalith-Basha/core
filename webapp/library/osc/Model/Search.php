@@ -552,9 +552,11 @@ class Model_Search extends DAO
 	 * @since unknown
 	 * @param mixed $category
 	 */
-	public function addCategory($category = null) 
+	public function addCategory( $category = null )
 	{
-		if ($category == null) return '';
+		if( empty( $category ) )
+			return;
+
 		if (!is_numeric($category)) 
 		{
 			$category = preg_replace('|/$|', '', $category);

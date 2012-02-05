@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Affero General Public
  * License along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-define('IS_AJAX', true);
+
 class CAdminAjax extends Controller_Administration
 {
 	function __construct() 
@@ -24,36 +24,25 @@ class CAdminAjax extends Controller_Administration
 		$this->ajax = true;
 	}
 
-	function doModel() 
+	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
-		$id = Params::getParam("id");
-		$error = 0;
+		$id = $this->getInput()->getInteger( 'id' );
+
+		$response = array();
+
 		try
 		{
 			$categoryManager = ClassLoader::getInstance()->getClassInstance( 'Model_Category' );
 			$categoryManager->deleteByPrimaryKey($id);
-			$message = __('The categories have been deleted');
+
+			$response = array( 'ok' => 'Saved' );
 		}
-		catch(Exception $e) 
+		catch( Exception $e )
 		{
-			$error = 1;
-			$message = __('Error while deleting');
+			$response = array( 'error' => __('Error while deleting') );
 		}
-		$result = "{";
-		if ($error) 
-		{
-			$result.= '"error" : "';
-			$result.= $message;
-			$result.= '"';
-		}
-		else
-		{
-			$result.= '"ok" : "Saved." ';
-		}
-		$result.= "}";
-		echo $result;
-	$this->getSession()->_dropKeepForm();
-	$this->getSession()->_clearVariables();
+
+		echo json_encode( $response );
 	}
 }
 

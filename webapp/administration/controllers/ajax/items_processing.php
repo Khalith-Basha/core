@@ -41,7 +41,7 @@ class ItemsProcessingAjax
 	{
 		$this->_get = $params;
 		$this->getDBParams();
-		$mSearch = new Search(true);
+		$mSearch = ClassLoader::getInstance()->getClassInstance( 'Model_Search', false, array( true ) );
 		$mSearch->limit($this->start, $this->limit);
 		$mSearch->order($this->order_by['column_name'], $this->order_by['type'], $this->order_by['table_name']);
 		if (Params::getParam("catId") != "") 
@@ -114,7 +114,8 @@ class ItemsProcessingAjax
 		}
 		// do Search
 		$list_items = $mSearch->doSearch(true);
-		$this->result = ClassLoader::getInstance()->getClassInstance( 'Model_Item' )->extendCategoryName(ClassLoader::getInstance()->getClassInstance( 'Model_Item' )->extendData($list_items));
+		$itemsModel = ClassLoader::getInstance()->getClassInstance( 'Model_Item' );
+		$this->result = $itemsModel->extendCategoryName( $itemsModel->extendData($list_items) );
 		$this->filtered_total = $mSearch->count();
 		$this->total = count($list_items); //TEMPORARY FIX
 		$this->toDatatablesFormat();
@@ -240,7 +241,7 @@ class ItemsProcessingAjax
 					$this->sOutput.= ' class=\'odd\' ';
 				}
 				$this->sOutput.= ' style=\'position:absolute;\'>';
-				$this->sOutput.= '<a href=\'' . osc_admin_base_url(true) . '?page=comment&action=list&amp;id=' . $aRow['pk_i_id'] . '\'>' . __('View comments') . '</a>';
+				$this->sOutput.= '<a href=\'' . osc_admin_base_url(true) . '?page=comments&action=list&amp;id=' . $aRow['pk_i_id'] . '\'>' . __('View comments') . '</a>';
 				$this->sOutput.= ' | <a href=\'' . osc_admin_base_url(true) . '?page=media&action=list&amp;id=' . $aRow['pk_i_id'] . '\'>' . __('View media') . '</a>';
 				if (isset($aRow['b_active']) && ($aRow['b_active'] == 1)) 
 				{

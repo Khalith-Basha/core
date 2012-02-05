@@ -23,7 +23,6 @@ class CWebItem extends Controller_Default
 	function __construct() 
 	{
 		parent::__construct();
-		$this->itemModel = $this->getClassLoader()->getClassInstance( 'Model_Item' );
 
 		if (osc_is_web_user_logged_in()) 
 		{
@@ -39,6 +38,7 @@ class CWebItem extends Controller_Default
 
 	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
+		$this->itemModel = $this->getClassLoader()->getClassInstance( 'Model_Item' );
 		$locales = $this->getClassLoader()->getClassInstance( 'Model_Locale' )->listAllEnabled();
 		$this->view->assign('locales', $locales);
 		if (Params::getParam('id') == '') 

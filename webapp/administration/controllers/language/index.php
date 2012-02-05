@@ -24,10 +24,9 @@ class CAdminLanguage extends Controller_Administration
 	function __construct() 
 	{
 		parent::__construct();
-		//specific things for this class
 		$this->localeManager = ClassLoader::getInstance()->getClassInstance( 'Model_Locale' );
 	}
-	function doModel() 
+	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
 		switch ($this->action) 
 		{

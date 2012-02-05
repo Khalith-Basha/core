@@ -20,15 +20,9 @@
 */
 class CAdminField extends Controller_Administration
 {
-	private $fieldManager;
-	function __construct() 
+	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
-		parent::__construct();
 		$this->fieldManager = $this->getClassLoader()->getClassInstance( 'Model_Field' );
-	}
-	function doModel() 
-	{
-		parent::doModel();
 
 		$categories = ClassLoader::getInstance()->getClassInstance( 'Model_Category' )->toTreeAll();
 		$selected = array();

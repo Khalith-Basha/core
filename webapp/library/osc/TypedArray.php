@@ -19,12 +19,12 @@ class TypedArray
 		return isset( $this->storage[ $name ] );
 	}
 
-	public function getInteger( $name )
+	public function getInteger( $name, $default = null )
 	{
 		if( $this->exists( $name ) )
 			return intval( $this->getValue( $name ) );
 
-		return null;
+		return $default;
 	}
 
 	public function getBoolean( $name )

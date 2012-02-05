@@ -24,14 +24,13 @@
 _e('OpenSourceClassifieds admin panel login'); ?></title>
         <script type="text/javascript" src="<?php
 echo osc_admin_base_url(); ?>themes/modern/js/jquery.js"></script>
-        <link type="text/css" href="style/backoffice_login.css" media="screen" rel="stylesheet" />
+<link type="text/css" href="<?php echo osc_admin_base_url() . '/static/styles/backoffice_login.css'; ?>" media="screen" rel="stylesheet" />
     </head>
 
     <body class="login">
         <div id="login">
             <h1>
-                <a href="<?php
-echo osc_base_url(); ?>" title="OpenSourceClassifieds">
+                <a href="<?php echo osc_base_url(); ?>/" title="OpenSourceClassifieds">
                     <img src="images/osclass-logo.png" border="0" title="" alt=""/>
                 </a>
             </h1>
@@ -49,7 +48,7 @@ _e('You will receive a new password via e-mail'); ?>.
                 <p>
                     <label><?php
 _e('E-mail'); ?><br />
-                    <input type="text" name="email" id="user_email" class="input" value="" size="20" tabindex="10" /></label>
+                    <input type="text" name="email" id="user_email" class="input" value="" size="20" tabindex="10" autofocus="autofocus" required="required" /></label>
                 </p>
                 <?php
 osc_show_recaptcha(); ?>

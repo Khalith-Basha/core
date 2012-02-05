@@ -17,10 +17,8 @@
  */
 class CAdminAppearance extends Controller_Administration
 {
-	function doModel() 
+	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
-		parent::doModel();
-		//specific things for this class
 		switch ($this->action) 
 		{
 		case 'activate':

@@ -77,29 +77,6 @@ class Model_Admin extends DAO
 		return $result->row();
 	}
 	/**
-	 * Searches for admin information, given a username and password
-	 * If credential don't match return false.
-	 *
-	 * @access public
-	 * @since unknown
-	 * @param string $userName
-	 * @param string $password
-	 * @return array
-	 */
-	function findByCredentials($userName, $password) 
-	{
-		$this->dao->select();
-		$this->dao->from($this->getTableName());
-		$conditions = array('s_username' => $userName, 's_password' => sha1($password));
-		$this->dao->where($conditions);
-		$result = $this->dao->get();
-		if ($result->numRows == 0) 
-		{
-			return false;
-		}
-		return $result->row();
-	}
-	/**
 	 * Searches for admin information, given a admin id and secret.
 	 * If credential don't match return false.
 	 *

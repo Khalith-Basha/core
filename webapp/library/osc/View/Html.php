@@ -1,8 +1,8 @@
 <?php
 
-require_once 'osc/View.php';
+require_once 'osc/View/Default.php';
 
-class HtmlView extends View
+class View_Html extends View_Default
 {
 	private $title;
 

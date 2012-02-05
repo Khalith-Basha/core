@@ -18,8 +18,8 @@
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-define('IS_AJAX', true);
-class CWebAjax extends Controller
+
+class CWebAjax extends Controller_Default
 {
 	function __construct() 
 	{
@@ -27,7 +27,7 @@ class CWebAjax extends Controller
 		$this->ajax = true;
 	}
 
-	function doModel() 
+	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
 		//specific things for this class
 		switch ($this->action) 
@@ -203,12 +203,5 @@ class CWebAjax extends Controller
 		// clear all keep variables into session
 		$this->getSession()->_dropKeepForm();
 		$this->getSession()->_clearVariables();
-	}
-
-	function doView($file) 
-	{
-		osc_run_hook("before_html");
-		osc_current_web_theme_path($file);
-		osc_run_hook("after_html");
 	}
 }

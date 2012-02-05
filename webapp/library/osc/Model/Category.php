@@ -98,13 +98,39 @@ class Model_Category extends DAO
 	 */
 	public function listEnabled() 
 	{
-		$sql = 'SELECT * FROM (';
-		$sql.= 'SELECT a.*, b.*, c.i_num_items, FIELD(fk_c_locale_code, \'' . osc_current_user_locale() . '\') as locale_order FROM ' . $this->getTableName() . ' as a INNER JOIN ' . DB_TABLE_PREFIX . 't_category_description as b ON a.pk_i_id = b.fk_i_category_id ';
-		$sql.= 'LEFT JOIN ' . DB_TABLE_PREFIX . 't_category_stats as c ON a.pk_i_id = c.fk_i_category_id ';
-		$sql.= 'WHERE b.s_name != \'\' AND a.b_enabled = 1 ORDER BY locale_order DESC';
-		$sql.= ') as dummytable GROUP BY pk_i_id ORDER BY i_position ASC';
-		$result = $this->dao->query($sql);
-		return $result->result();
+		$sql = <<<SQL
+SELECT
+	*
+FROM
+	(
+		SELECT
+			a.*, b.*, c.i_num_items, FIELD( fk_c_locale_code, ? ) as locale_order
+		FROM
+			/*TABLE_PREFIX*/t_category as a
+		INNER JOIN
+			/*TABLE_PREFIX*/t_category_description as b ON a.pk_i_id = b.fk_i_category_id
+		LEFT JOIN
+			/*TABLE_PREFIX*/t_category_stats as c ON a.pk_i_id = c.fk_i_category_id
+		WHERE
+			b.s_name != ''
+		AND
+			a.b_enabled = 1
+		ORDER BY
+			locale_order DESC
+	) as dummytable
+GROUP BY
+	pk_i_id
+ORDER BY
+	i_position ASC
+SQL;
+
+		$locale = osc_current_user_locale();
+		$stmt = $this->prepareStatement( $sql );
+		$stmt->bind_param( 's', $locale );
+		$categories = $this->fetchAll( $stmt );
+		$stmt->close();
+
+		return $categories;
 	}
 	/**
 	 * Return categories in a tree
@@ -477,7 +503,8 @@ class Model_Category extends DAO
 	 */
 	public function deleteByPrimaryKey($pk) 
 	{
-		$items = ClassLoader::getInstance()->getClassInstance( 'Model_Item' )->findByCategoryID($pk);
+		$classLoader = ClassLoader::getInstance();
+
 		$subcats = $this->findSubcategories($pk);
 		if (count($subcats) > 0) 
 		{
@@ -486,12 +513,12 @@ class Model_Category extends DAO
 				$this->deleteByPrimaryKey($s["pk_i_id"]);
 			}
 		}
-		if (count($items) > 0) 
+
+		$itemsModel = $classLoader->getClassInstance( 'Model_Item' );
+		$items = $itemsModel->findByCategoryID($pk);
+		foreach ($items as $item) 
 		{
-			foreach ($items as $item) 
-			{
-				ClassLoader::getInstance()->getClassInstance( 'Model_Item' )->deleteByPrimaryKey($item["pk_i_id"]);
-			}
+			$itemsModel->deleteByPrimaryKey($item["pk_i_id"]);
 		}
 		osc_run_hook("delete_category", $pk);
 		$this->dao->delete(DB_TABLE_PREFIX . 't_plugin_category', array("fk_i_category_id", $pk));

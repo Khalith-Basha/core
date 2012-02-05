@@ -12,10 +12,10 @@
  * @param string $locale
  * @return mixed
  */
-function osc_user_field($field, $locale = "") 
+function osc_user_field($field, $locale = "")
 {
 	$classLoader = ClassLoader::getInstance();
-	$view = $classLoader->getClassInstance( 'HtmlView' );
+	$view = $classLoader->getClassInstance( 'View_Html' );
 	if ($view->_exists('users')) 
 	{
 		$user = $view->_current('users');
@@ -34,7 +34,7 @@ function osc_user_field($field, $locale = "")
 function osc_user() 
 {
 	$classLoader = ClassLoader::getInstance();
-	$view = $classLoader->getClassInstance( 'HtmlView' );
+	$view = $classLoader->getClassInstance( 'View_Html' );
 	if ($view->_exists('users')) 
 	{
 		$user = $view->_current('users');
@@ -429,7 +429,7 @@ function osc_user_comments_validated()
 function osc_alert_field($field) 
 {
 	$classLoader = ClassLoader::getInstance();
-	$view = $classLoader->getClassInstance( 'HtmlView' );
+	$view = $classLoader->getClassInstance( 'View_Html' );
 	return osc_field($view->_current('alerts'), $field, '');
 }
 /**
@@ -440,7 +440,7 @@ function osc_alert_field($field)
 function osc_has_alerts() 
 {
 	$classLoader = ClassLoader::getInstance();
-	$view = $classLoader->getClassInstance( 'HtmlView' );
+	$view = $classLoader->getClassInstance( 'View_Html' );
 	$result = $view->_next('alerts');
 	$alert = osc_alert();
 	$view->assign("items", isset($alert['items']) ? $alert['items'] : array());
@@ -453,7 +453,7 @@ function osc_has_alerts()
 function osc_count_alerts() 
 {
 	$classLoader = ClassLoader::getInstance();
-	$view = $classLoader->getClassInstance( 'HtmlView' );
+	$view = $classLoader->getClassInstance( 'View_Html' );
 	return (int)$view->_count('alerts');
 }
 /**
@@ -464,7 +464,7 @@ function osc_count_alerts()
 function osc_alert() 
 {
 	$classLoader = ClassLoader::getInstance();
-	$view = $classLoader->getClassInstance( 'HtmlView' );
+	$view = $classLoader->getClassInstance( 'View_Html' );
 	return $view->_current('alerts');
 }
 /**
@@ -501,7 +501,7 @@ function osc_alert_search_object()
 function osc_prepare_user_info() 
 {
 	$classLoader = ClassLoader::getInstance();
-	$view = $classLoader->getClassInstance( 'HtmlView' );
+	$view = $classLoader->getClassInstance( 'View_Html' );
 	if (!$view->_exists('users')) 
 	{
 		$view->assign('users', array($classLoader->getClassInstance( 'Model_User' )->findByPrimaryKey(osc_item_user_id())));

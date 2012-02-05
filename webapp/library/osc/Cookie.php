@@ -77,14 +77,11 @@ class Cookie
 		}
 		setcookie($this->name, $cookie_val, $this->expires, '/');
 	}
-	function num_vals() 
-	{
-		return (count($this->val));
-	}
 	function get_value($str) 
 	{
-		if (isset($this->val[$str])) return ($this->val[$str]);
-		return ('');
+		if( isset( $this->val[$str] ) )
+			return $this->val[$str];
+		return null;
 	}
 	//$tm: time in seconds
 	function set_expires($tm) 

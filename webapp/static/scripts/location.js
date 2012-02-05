@@ -4,14 +4,12 @@
             <?php
 		if ($path == "admin") 
 		{ ?>
-                var url = '<?php
-			echo osc_admin_base_url(true) . "?page=ajax&action=regions&countryId="; ?>' + pk_c_code;
+                var url = '<?php echo osc_admin_base_url(true) . "?page=ajax&action=regions&countryId="; ?>' + pk_c_code;
             <?php
 		}
 		else
 		{ ?>
-                var url = '<?php
-			echo osc_base_url(true) . "?page=ajax&action=regions&countryId="; ?>' + pk_c_code;
+                var url = '<?php echo osc_base_url(true) . "?page=ajax&action=regions&countryId="; ?>' + pk_c_code;
             <?php
 		}; ?>
             var result = '';

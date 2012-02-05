@@ -20,15 +20,9 @@
 */
 class CAdminEmail extends Controller_Administration
 {
-	private $emailManager;
-	function __construct() 
+	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
-		parent::__construct();
 		$this->emailManager = ClassLoader::getInstance()->getClassInstance( 'Model_Page' );
-	}
-	public function doModel() 
-	{
-		parent::doModel();
 		$this->getView()->assign("prefLocale", osc_current_admin_locale());
 		$this->getView()->assign("emails", $this->emailManager->listAll(1));
 

@@ -143,9 +143,7 @@ class Pagination
 			$links = $this->get_links();
 			return implode($this->delimiter, $links);
 		}
-		else
-		{
-			return '';
-		}
+
+		return null;
 	}
 }

@@ -26,7 +26,8 @@ class CWebUser extends Controller_User
 			$this->redirectTo(osc_base_url(true));
 		}
 	}
-	public function doModel() 
+
+	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
 		$classLoader = ClassLoader::getInstance();
 		$aAlerts = $classLoader->getClassInstance( 'Model_Alerts' )->findByUser($this->getSession()->_get('userId'));

@@ -25,9 +25,28 @@ class CAdminAdmins extends Controller_Administration
 	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
 		$this->adminManager = ClassLoader::getInstance()->getClassInstance( 'Model_Admin' ) ;
-		$admins = $this->adminManager->listAll();
-		$this->assign("admins", $admins);
-		$this->doView('admins/index.php');
+		$isDeleted = false;
+		$adminId   = Params::getParam('id');
+
+		if(!is_array($adminId)) {
+			osc_add_flash_error_message( _m('The admin id isn\'t in the correct format'), 'admin');
+			$this->redirectTo(osc_admin_base_url(true).'?page=admins');
+		}
+
+		// Verification to avoid an administrator trying to remove to itself
+		if(in_array($this->getSession()->_get('adminId'), $adminId)) {
+			osc_add_flash_error_message( _m('The operation hasn\'t been completed. You\'re trying to remove yourself!'), 'admin');
+			$this->redirectTo(osc_admin_base_url(true).'?page=admins');
+		}
+
+		$isDeleted = $this->adminManager->delete(array('pk_i_id IN (' . implode(', ', $adminId) . ')')) ;
+
+		if($isDeleted) {
+			osc_add_flash_ok_message( _m('The admin has been deleted correctly'), 'admin');
+		} else {
+			osc_add_flash_error_message( _m('The admin couldn\'t be deleted'), 'admin');
+		}
+		$this->redirectTo(osc_admin_base_url(true).'?page=admins') ;
 	}
 }
 

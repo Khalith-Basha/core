@@ -44,9 +44,8 @@ class Params
 	{
 		if( empty( $param ) )
 			return false;
-		if (!isset($_REQUEST[$param]))
-			return false;
-		return true;
+
+		return isset( $_REQUEST[$param] );
 	}
 	static function getFiles($param) 
 	{

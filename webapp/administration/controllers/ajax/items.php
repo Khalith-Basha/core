@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Affero General Public
  * License along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-define('IS_AJAX', true);
+
 class CAdminAjax extends Controller_Administration
 {
 	function __construct() 
@@ -24,7 +24,7 @@ class CAdminAjax extends Controller_Administration
 		$this->ajax = true;
 	}
 
-	function doModel() 
+	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
 		//specific things for this class
 		switch ($this->action) 

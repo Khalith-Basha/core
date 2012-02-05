@@ -49,14 +49,7 @@ function __($key, $domain = 'core')
  */
 function _e($key, $domain = 'core') 
 {
-	$gt = ClassLoader::getInstance()->getClassInstance( 'Core_Translation' )->_get($domain);
-	if (!$gt) 
-	{
-		echo $key;
-		return '';
-	}
-	echo $gt->translate($key);
-	return '';
+	echo __( $key, $domain );
 }
 /**
  * Translate string (flash messages)

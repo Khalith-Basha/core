@@ -42,7 +42,7 @@ function osc_locale_field($field, $locale = '')
  */
 function osc_locale() 
 {
-	$view = ClassLoader::getInstance()->getClassInstance( 'View' );
+	$view = ClassLoader::getInstance()->getClassInstance( 'View_Default' );
 	if ($view->_exists('locales')) 
 	{
 		$locale = $view->_current('locales');
@@ -65,7 +65,7 @@ function osc_locale()
 function osc_get_locales() 
 {
 	$classLoader = ClassLoader::getInstance();
-	$view = $classLoader->getClassInstance( 'View' );
+	$view = $classLoader->getClassInstance( 'View_Default' );
 	if (!$view->_exists('locales')) 
 	{
 		$locale = $classLoader->getClassInstance( 'Model_Locale' )->listAllEnabled();
@@ -84,7 +84,7 @@ function osc_get_locales()
  */
 function osc_priv_count_locales() 
 {
-	$view = ClassLoader::getInstance()->getClassInstance( 'View' );
+	$view = ClassLoader::getInstance()->getClassInstance( 'View_Default' );
 	return $view->_count('locales');
 }
 /**
@@ -94,7 +94,7 @@ function osc_priv_count_locales()
  */
 function osc_goto_first_locale() 
 {
-	$view = ClassLoader::getInstance()->getClassInstance( 'View' );
+	$view = ClassLoader::getInstance()->getClassInstance( 'View_Default' );
 	$view->_reset('locales');
 }
 /**
@@ -105,7 +105,7 @@ function osc_goto_first_locale()
 function osc_count_web_enabled_locales() 
 {
 	$classLoader = ClassLoader::getInstance();
-	$view = $classLoader->getClassInstance( 'View' );
+	$view = $classLoader->getClassInstance( 'View_Default' );
 	if (!$view->_exists('locales')) 
 	{
 		$view->assign('locales', $classLoader->getClassInstance( 'Model_Locale' )->listAllEnabled());
@@ -120,7 +120,7 @@ function osc_count_web_enabled_locales()
 function osc_has_web_enabled_locales() 
 {
 	$classLoader = ClassLoader::getInstance();
-	$view = $classLoader->getClassInstance( 'View' );
+	$view = $classLoader->getClassInstance( 'View_Default' );
 	if (!$view->_exists('locales')) 
 	{
 		$view->assign('locales', $classLoader->getClassInstance( 'Model_Locale' )->listAllEnabled());
@@ -239,7 +239,7 @@ function osc_all_enabled_locales_for_admin($indexed_by_pk = false)
 function osc_get_current_user_locale() 
 {
 	$classLoader = ClassLoader::getInstance();
-	$view = $classLoader->getClassInstance( 'View' );
+	$view = $classLoader->getClassInstance( 'View_Default' );
 	$view->assign('locale', $classLoader->getClassInstance( 'Model_Locale' )->findByPrimaryKey(osc_current_user_locale()));
 }
 /**

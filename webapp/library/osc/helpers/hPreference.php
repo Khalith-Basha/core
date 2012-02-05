@@ -754,14 +754,7 @@ function osc_reset_preferences()
 function osc_is_watermark_text() 
 {
 	$text = getPreference('watermark_text');
-	if ($text != '') 
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
+	return !empty( $text );
 }
 /**
  * Return if need mark images with image
@@ -771,14 +764,7 @@ function osc_is_watermark_text()
 function osc_is_watermark_image() 
 {
 	$image = getPreference('watermark_image');
-	if ($image != '') 
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
+	return !empty( $image );
 }
 /**
  * Return watermark text color

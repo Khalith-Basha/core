@@ -15,28 +15,25 @@
  * You should have received a copy of the GNU Affero General Public
  * License along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-class CWebItem extends Controller
+class CWebItem extends Controller_Default
 {
 	private $itemManager;
-	private $user;
 	private $userId;
 	function __construct() 
 	{
 		parent::__construct();
 		$this->itemManager = ClassLoader::getInstance()->getClassInstance( 'Model_Item' );
-		// here allways userId == ''
 		if (osc_is_web_user_logged_in()) 
 		{
 			$this->userId = osc_logged_user_id();
-			$this->user = ClassLoader::getInstance()->getClassInstance( 'Model_User' )->findByPrimaryKey($this->userId);
 		}
 		else
 		{
 			$this->userId = null;
-			$this->user = null;
 		}
 	}
-	function doModel() 
+
+	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
 		$locales = ClassLoader::getInstance()->getClassInstance( 'Model_Locale' )->listAllEnabled();
 		$this->getView()->assign('locales', $locales);
@@ -46,7 +43,6 @@ class CWebItem extends Controller
 		View::newInstance()->assign('item', $item[0]);
 		if ($item[0]['b_active'] == 0) 
 		{
-			// ACTIVETE ITEM
 			$mItems = new ItemActions(false);
 			$success = $mItems->activate($item[0]['pk_i_id'], $item[0]['s_secret']);
 			if ($success) 
@@ -63,12 +59,5 @@ class CWebItem extends Controller
 			osc_add_flash_error_message(_m('The item has already been validated'));
 		}
 		$this->redirectTo(osc_item_url());
-	}
-	function doView($file) 
-	{
-		osc_run_hook("before_html");
-		osc_current_web_theme_path($file);
-		$this->getSession()->_clearVariables();
-		osc_run_hook("after_html");
 	}
 }

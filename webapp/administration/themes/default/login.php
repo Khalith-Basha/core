@@ -20,43 +20,35 @@
 <html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en-US">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <title><?php
-_e('OpenSourceClassifieds admin panel login'); ?></title>
-        <script type="text/javascript" src="<?php
-echo osc_admin_base_url(); ?>themes/modern/js/jquery.js"></script>
-        <link type="text/css" href="style/backoffice_login.css" media="screen" rel="stylesheet" />
+        <title><?php _e('OpenSourceClassifieds admin panel login'); ?></title>
+        <script type="text/javascript" src="<?php echo osc_admin_base_url(); ?>/themes/modern/js/jquery.js"></script>
+	<link type="text/css" href="<?php echo osc_admin_base_url( false ) . '/static/styles/backoffice_login.css'; ?>" media="screen" rel="stylesheet" />
     </head>
     <body class="login">
         <div id="login">
             <h1>
-                <a href="<?php
-echo osc_base_url(); ?>" title="OpenSourceClassifieds">
+                <a href="<?php echo osc_base_url(); ?>" title="OpenSourceClassifieds">
                     <img src="images/osclass-logo.png" border="0" title="" alt=""/>
                 </a>
             </h1>
-            <?php
-osc_show_flash_message('admin'); ?>
-            <form name="loginform" id="loginform" action="<?php
-echo osc_admin_base_url(true); ?>" method="post">
+            <?php osc_show_flash_message('admin'); ?>
+            <form name="loginform" id="loginform" action="<?php echo osc_admin_base_url(true); ?>" method="post">
                 <input type="hidden" name="page" value="index" />
                 <input type="hidden" name="action" value="login" />
                 <p>
                     <label>
-                        <?php
-_e('Username'); ?>
-                        <input type="text" name="user" id="user_login" class="input" size="20" tabindex="10" />
+                        <?php _e('Username'); ?>
+			<input type="text" name="user" id="user_login" class="input" size="20" tabindex="10" autofocus="autofocus" required="required" />
                     </label>
                 </p>
                 <p>
                     <label>
-                        <?php
-_e('Password'); ?>
+                        <?php _e('Password'); ?>
                         <input type="password" name="password" id="user_pass" class="input" size="20" tabindex="20" />
                     </label>
                 </p>
 
-                <?php
-$locales = osc_all_enabled_locales_for_admin(); ?>
+                <?php $locales = osc_all_enabled_locales_for_admin(); ?>
                 <?php
 if (count($locales) > 1) 
 { ?>
@@ -101,15 +93,6 @@ _e('Log in'); ?>" tabindex="100" />
                 <a href="<?php echo osc_admin_base_url(true); ?>?action=recover" title="<?php _e('Forgot your password?'); ?>"><?php _e('Forgot your password?'); ?></a>
             </p>
         </div>
-        <p id="backtoblog"><a href="<?php
-echo osc_base_url(); ?>" title="<?php
-_e('Back to') . ' ' . osc_page_title(); ?>">&larr; <?php
-_e('Back to'); ?> <?php
-echo osc_page_title(); ?></a></p>
-        <script type="text/javascript">
-            try{
-                document.getElementById('user_login').focus();
-            }catch(e){}
-        </script>
+        <p id="backtoblog"><a href="<?php echo osc_base_url(); ?>" title="<?php _e('Back to') . ' ' . osc_page_title(); ?>">&larr; <?php _e('Back to'); ?> <?php echo osc_page_title(); ?></a></p>
     </body>
 </html>

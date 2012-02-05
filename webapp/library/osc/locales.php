@@ -56,7 +56,7 @@ function osc_checkLocales()
 			{
 				$sql = file_get_contents($path);
 				$conn = Database_Connection::newInstance();
-				$c_db = $conn->getOsclassDb();
+				$c_db = $conn->getResource();
 				$comm = new DBCommandClass($c_db);
 				$result = $comm->importSQL($sql);
 				if (!$result) 

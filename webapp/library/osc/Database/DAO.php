@@ -80,7 +80,7 @@ class DAO extends Model
 	{
 		parent::__construct();
 		$conn = ClassLoader::getInstance()->getClassInstance( 'Database_Connection' ); 
-		$data = $conn->getOsclassDb();
+		$data = $conn->getResource();
 		$this->dao = new Database_Command($data);
 		$this->tablePrefix = $conn->getTablePrefix();
 	}

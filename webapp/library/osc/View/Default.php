@@ -1,6 +1,6 @@
 <?php
 
-class View
+class View_Default
 {
 	private $name;
 	private $variables;

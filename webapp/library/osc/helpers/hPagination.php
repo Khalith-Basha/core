@@ -44,7 +44,7 @@ function osc_comments_pagination()
 {
 	if ((osc_comments_per_page() == 0) || (osc_item_comments_page() === 'all')) 
 	{
-		return '';
+		return null;
 	}
 	else
 	{

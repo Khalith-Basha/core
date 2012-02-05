@@ -30,12 +30,10 @@ class Form_Field extends Form
 	public function name_input_text($field = null) 
 	{
 		parent::generic_input_text("s_name", (isset($field) && isset($field["s_name"])) ? $field["s_name"] : "", null, false);
-		return true;
 	}
 	public function options_input_text($field = null) 
 	{
 		parent::generic_input_text("s_options", (isset($field) && isset($field["s_options"])) ? $field["s_options"] : "", null, false);
-		return true;
 	}
 	public function type_select($field = null) 
 	{
@@ -63,7 +61,6 @@ class Form_Field extends Form
 		}; ?>>RADIO</option>
             </select>
             <?php
-		return true;
 	}
 	public function meta($field = null) 
 	{

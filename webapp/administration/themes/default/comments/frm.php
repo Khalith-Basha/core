@@ -99,7 +99,7 @@ $item = ClassLoader::getInstance()->getClassInstance( 'Model_Item' )->findByPrim
 echo $item['s_title']; ?></b>
                                 ( <a href="<?php
 echo osc_item_url_ns($comment['fk_i_item_id']); ?>" target="_blank"><?php
-_e('View'); ?></a> |
+_e('View_Default'); ?></a> |
                                 <a href="<?php
 echo osc_admin_base_url(true); ?>?page=items&action=item_edit&id=<?php
 echo $item['pk_i_id']; ?>"><?php

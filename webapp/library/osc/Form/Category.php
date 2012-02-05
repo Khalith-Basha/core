@@ -40,7 +40,6 @@ class Form_Category extends Form
 			}
 		}
 		echo '</select>';
-		return true;
 	}
 	public function subcategory_select($categories, $category, $default_item = null, $deep = 0) 
 	{
@@ -82,17 +81,14 @@ class Form_Category extends Form
 	public function expiration_days_input_text($category = null) 
 	{
 		parent::generic_input_text("i_expiration_days", (isset($category) && isset($category['i_expiration_days'])) ? $category["i_expiration_days"] : "", 3);
-		return true;
 	}
 	public function position_input_text($category = null) 
 	{
 		parent::generic_input_text("i_position", (isset($category) && isset($category['i_position'])) ? $category["i_position"] : "", 3);
-		return true;
 	}
 	public function enabled_input_checkbox($category = null) 
 	{
 		parent::generic_input_checkbox("b_enabled", "1", (isset($category) && isset($category['b_enabled']) && $category["b_enabled"] == 1) ? true : false);
-		return true;
 	}
 	public function multilanguage_name_description($locales, $category = null) 
 	{

@@ -507,7 +507,6 @@ class PluginManager
 		unset($dao_category);
 	}
 
-	// Add a hook
 	public function addHook($hook, $function, $priority = 5) 
 	{
 		$hook = preg_replace('|/+|', '/', str_replace('\\', '/', $hook));

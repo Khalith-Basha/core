@@ -31,7 +31,8 @@ class CWebRegister extends Controller
 			$this->redirectTo(osc_base_url(true));
 		}
 	}
-	function doModel() 
+
+	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
 		$id = intval(Params::getParam('id'));
 		$code = Params::getParam('code');
@@ -60,13 +61,5 @@ class CWebRegister extends Controller
 		osc_add_flash_ok_message(_m('Your account has been validated'));
 		$this->redirectTo(osc_base_url());
 	}
-	function doView($file) 
-	{
-		osc_run_hook('before_html');
-		osc_current_web_theme_path($file);
-		$this->getSession()->_clearVariables();
-		osc_run_hook('after_html');
-	}
 }
-$do = new CWebRegister();
-$do->doModel();
+

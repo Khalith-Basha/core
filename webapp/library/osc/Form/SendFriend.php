@@ -31,7 +31,6 @@ class Form_SendFriend extends Form
 		{
 			parent::generic_input_text("yourName", "", null, false);
 		}
-		return true;
 	}
 	public function your_email() 
 	{
@@ -44,7 +43,6 @@ class Form_SendFriend extends Form
 		{
 			parent::generic_input_text("yourEmail", "", null, false);
 		}
-		return true;
 	}
 	public function friend_name() 
 	{
@@ -57,7 +55,6 @@ class Form_SendFriend extends Form
 		{
 			parent::generic_input_text("friendName", "", null, false);
 		}
-		return true;
 	}
 	public function friend_email() 
 	{
@@ -70,7 +67,6 @@ class Form_SendFriend extends Form
 		{
 			parent::generic_input_text("friendEmail", "", null, false);
 		}
-		return true;
 	}
 	public function your_message() 
 	{
@@ -83,6 +79,5 @@ class Form_SendFriend extends Form
 		{
 			parent::generic_textarea("message", "");
 		}
-		return true;
 	}
 }

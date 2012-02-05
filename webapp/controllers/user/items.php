@@ -27,19 +27,25 @@ class CWebUser extends Controller_User
 		}
 	}
 
-	function doModel() 
+	public function doGet( HttpRequest $req, HttpResponse $res ) 
 	{
-		$itemsPerPage = (Params::getParam('itemsPerPage') != '') ? Params::getParam('itemsPerPage') : 5;
-		$page = (Params::getParam('iPage') != '') ? Params::getParam('iPage') : 0;
-		$total_items = ClassLoader::getInstance()->getClassInstance( 'Model_Item' )->countByUserIDEnabled($_SESSION['userId']);
-		$total_pages = ceil($total_items / $itemsPerPage);
-		$items = ClassLoader::getInstance()->getClassInstance( 'Model_Item' )->findByUserIDEnabled($_SESSION['userId'], $page * $itemsPerPage, $itemsPerPage);
-		$this->getView()->assign('items', $items);
-		$this->getView()->assign('list_total_pages', $total_pages);
-		$this->getView()->assign('list_total_items', $total_items);
-		$this->getView()->assign('items_per_page', $itemsPerPage);
-		$this->getView()->assign('list_page', $page);
+		$classLoader = $this->getClassLoader();
+		$itemsModel = $classLoader->getClassInstance( 'Model_Item' );
+
+		$itemsPerPage = $this->getInput()->getInteger( 'itemsPerPage', 5 );
+		$page = $this->getInput()->getInteger( 'iPage', 0 );
+		$total_items = $itemsModel->countByUserIDEnabled($_SESSION['userId']);
+		$total_pages = ceil( $total_items / $itemsPerPage );
+		$items = $itemsModel->findByUserIDEnabled($_SESSION['userId'], $page * $itemsPerPage, $itemsPerPage);
+
+		$view = $this->getView();
+		$view->assign('items', $items);
+		$view->assign('list_total_pages', $total_pages);
+		$view->assign('list_total_items', $total_items);
+		$view->assign('items_per_page', $itemsPerPage);
+		$view->assign('list_page', $page);
 		$view->setTitle( __('Manage my items', 'modern') . ' - ' . osc_page_title() );
 		echo $view->render( 'user/items' );
 	}
 }
+

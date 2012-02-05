@@ -57,10 +57,10 @@ class AdminThemes
 	}
 	public function getCurrentThemeStyles() 
 	{
-		return $this->theme_url . '/css';
+		return $this->theme_url . '/static/styles';
 	}
 	public function getCurrentThemeJs() 
 	{
-		return $this->theme_url . '/js';
+		return $this->theme_url . '/static/scripts';
 	}
 }

@@ -23,7 +23,6 @@ $config = $classLoader->getClassInstance( 'Config' );
 if( false === $config->hasConfig( 'database' ) )
 {
 	$configPath = $config->getConfigPath( 'database' );
-	require_once 'osc/helpers/hErrors.php';
 	$title = 'OpenSourceClassifieds &raquo; Error';
 	$message = 'There doesn\'t seem to be a <code>' . $configPath . '</code> file. OpenSourceClassifieds isn\'t installed. <a href="http://forums.opensourceclassifieds.org/">Need more help?</a></p>';
 	$message.= '<p><a class="button" href="' . osc_get_absolute_url() . '/installer/index.php">Install</a></p>';

@@ -137,10 +137,8 @@ class Session
 		{
 			return ($messages[$key]);
 		}
-		else
-		{
-			return ('');
-		}
+
+		return null;
 	}
 
 	function _dropMessage($key) 
@@ -187,10 +185,8 @@ class Session
 			{
 				return ($form[$key]);
 			}
-			else
-			{
-				return ('');
-			}
+
+			return null;
 		}
 		else
 		{
