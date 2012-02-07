@@ -1,13 +1,3 @@
-/* Global reset by Eric Meyer */
-html, body, div, span, applet, object, iframe,h1, h2, h3, h4, h5, h6, p, blockquote, pre,a, abbr, acronym, address, big, cite, code,del, dfn, em, font, img, ins, kbd, q, s, samp,small, strike, strong, sub, sup, tt, var,b, u, i, center,dl, dt, dd, ol, ul, li,fieldset, form, label, legend,table, caption, tbody, tfoot, thead, tr, th, td {margin: 0;padding: 0;border: 0;outline: 0;font-size: 100%;vertical-align: baseline;background: transparent;}
-ol, ul {list-style: none;}
-blockquote, q {quotes: none;}
-blockquote:before, blockquote:after,
-q:before, q:after {content: '';content: none;}
-ins {text-decoration: none;}
-del {text-decoration: line-through;}
-table {border-collapse: collapse;border-spacing: 0;}
-input:focus { outline:none; }
 
 /* -- ERROR PAGES --------------------------------------- */
 #comment_error_list .error, #error_list .error { padding: 2px 0; clear: both; }
@@ -367,52 +357,6 @@ label.recaptcha_input_area_text { float:none; }
 /* -- STATIC PAGES --------------------------------------- */
 .page { margin: 10px 0; padding: 10px 0 0; clear: both; }
 .page h1 { font-size: 2em; margin: 0 0 10px; }
-
-
-/*
-Uniform Theme: Uniform Default
-Version: 1.6
-By: Josh Pyles
-License: MIT License
----
-For use with the Uniform plugin:
-http://pixelmatrixdesign.com/uniform/
-*/
-
-/* Select */
-div.selector { border:1px solid #b4b4b4; line-height: 26px; height: 26px; margin-right:10px; }
-div.selector span {  background:url(images/select_arrow.gif) no-repeat right 11px; height: 26px; line-height: 26px; }
-div.selector select { top: 0px; left: 0px; }
-div.selector.hover, 
-div.selector:hover {  }
-div.selector.hover span, 
-div.selector:hover span { background-position: right -29px; }
-div.selector.focus:active,
-div.selector.focus.active,
-div.selector:hover:active,
-div.selector.active:hover {  }
-div.selector:hover:active span,
-div.selector.active:hover span { background-position: right -29px; }
-div.selector.disabled {  }
-div.selector.disabled span {  }
-div.button { background:#eeeeee url(images/button_bg.gif) repeat-x top; border:1px solid #cacaca; -moz-border-radius:3px; -webkit-border-radius:3px; border-radius:3px; }
-div.button span { background-position: right -643px; }
-div.button.focus,
-div.button:focus,
-div.button:hover,
-div.button.hover { background-position: 0px -553px; }
-div.button.focus span,
-div.button:focus span,
-div.button:hover span,
-div.button.hover span { background-position: right -673px;  }
-div.button.active,
-div.button:active { background-position: 0px -583px; }
-div.button.active span,
-div.button:active span { background-position: right -703px; color: #555; }
-div.button.disabled,
-div.button:disabled { background-position: 0px -613px; }
-div.button.disabled span,
-div.button:disabled span { background-position: right -733px; color: #bbb; cursor: default; }
 
 /* PRESENTATION */
 /* Button */

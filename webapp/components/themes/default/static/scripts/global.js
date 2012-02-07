@@ -16,9 +16,6 @@ $(document).ready(function(){
             $('#login').slideToggle('slow', function(){});
         });
 
-	// Apply the UniForm plugin to pulldows and button
-	$("input:file, textarea, select, button, .search select, .search button, .filters select, .filters button, #comments form button, #contact form button, .user_forms form button, .add_item form select, .add_item form button, .modify_profile select, .modify_profile button").uniform({fileDefaultText: fileDefaultText,fileBtnText: fileBtnText});
-
 	// Show advanced search in internal pages
 	$("#expand_advanced").click(function(e){
 		e.preventDefault();
@@ -33,3 +30,4 @@ $(document).ready(function(){
 		$(this).find("span").hide();
 	});
 });
+

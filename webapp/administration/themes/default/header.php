@@ -33,7 +33,6 @@ $javaScripts = array(
 	'jquery-ui.js',
 	'jquery.cookie.js',
 	'jquery.json.js',
-	'jquery.uniform.js',
 	'osclass_datatables.js',
 	'tabber-minimized.js',
 	'tiny_mce/tiny_mce.js',
@@ -73,11 +72,6 @@ $javaScripts = array(
 		if($('.FlashMessage')) $('.FlashMessage').animate({opacity: 1.0}, 5000).fadeOut();
 		$("#static").hover(function(){ $(this).css('margin-right', '2px') }, function(){ $(this).css('margin-right','-2px') } );
 	    });
-	</script>
-
-	<script type="text/javascript">
-	    var fileDefaultText = '<?php _e('No file selected', 'modern'); ?>';
-	    var fileBtnText     = '<?php _e('Choose File', 'modern'); ?>';
 	</script>
 <body>
 <div id="header">

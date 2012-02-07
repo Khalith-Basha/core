@@ -36,10 +36,6 @@ class Form_User extends Form
 	{
 		parent::generic_password("password", '', null, false);
 	}
-	public function rememberme_login_checkbox($user = null) 
-	{
-		parent::generic_input_checkbox("remember", '1', false);
-	}
 	public function old_password_text($user = null) 
 	{
 		parent::generic_password("old_password", '', null, false);

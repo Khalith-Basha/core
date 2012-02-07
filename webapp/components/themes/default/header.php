@@ -31,13 +31,9 @@ $urlStatic = $classLoader->getClassInstance( 'Url_Static' );
 	<?php endforeach; ?>
 	<meta http-equiv="Content-type" content="text/html; charset=UTF-8" />
 	<title><?php echo $view->getTitle(); ?></title>
-	<link href="<?php echo $urlStatic->create( 'assets-stylesheets', 'html5,style,tabs' ); ?>" rel="stylesheet" type="text/css" />
-	<script type="text/javascript">
-	var fileDefaultText = '<?php _e('No file selected', 'modern'); ?>';
-	var fileBtnText     = '<?php _e('Choose File', 'modern'); ?>';
-	</script>
+	<link href="<?php echo $urlStatic->create( 'assets-stylesheets', 'reset,html5,style,tabs' ); ?>" rel="stylesheet" type="text/css" />
 	<script type="text/javascript" src="/static/scripts/jquery.js"></script>
-	<script type="text/javascript" src="<?php echo $urlStatic->create( 'assets-javascripts', 'jquery-ui,jquery.uniform,global,tabber-minimized' ); ?>"></script>
+	<script type="text/javascript" src="<?php echo $urlStatic->create( 'assets-javascripts', 'jquery-ui,global,tabber-minimized' ); ?>"></script>
 	<?php foreach( $view->getJavaScripts() as $js ): ?>
 	<script type="text/javascript" src="<?php echo $js; ?>"></script>
 	<?php endforeach; ?>
@@ -64,15 +60,17 @@ $urlStatic = $classLoader->getClassInstance( 'Url_Static' );
                             <a href="<?php echo osc_register_account_url(); ?>"><?php _e('Register for a free account', 'modern'); ?></a>
 			<?php endif; ?>
                         <form id="login" action="<?php echo osc_base_url(true); ?>" method="post">
-                            <fieldset>
-                                <input type="hidden" name="page" value="user" />
-                                <input type="hidden" name="action" value="login_post" />
+			    <fieldset>
+				<?php
+				echo $userForm->getInputHidden( 'page', 'user' );
+				echo $userForm->getInputHidden( 'action', 'login_post' );
+				?>
                                 <label for="email"><?php _e('E-mail', 'modern'); ?></label>
                                 <?php $userForm->email_login_text(); ?>
                                 <label for="password"><?php _e('Password', 'modern'); ?></label>
-                                <?php $userForm->password_login_text(); ?>
-                                <p class="checkbox"><?php $userForm->rememberme_login_checkbox(); ?> <label for="rememberMe"><?php _e('Remember me', 'modern'); ?></label></p>
-                                <button type="submit"><?php _e('Log in', 'modern'); ?></button>
+				<?php $userForm->password_login_text(); ?>
+				<p class="checkbox"><?php echo $userForm->getDecoratedInputCheckbox( 'remember', '1', __( 'Remember me', 'modern' ) ); ?></p>
+				<?php echo $userForm->getInputSubmit( null, __( 'Login', 'modern' ) ); ?>
                                 <div class="forgot">
                                     <a href="<?php echo osc_recover_user_password_url(); ?>"><?php _e("Forgot password?", 'modern'); ?></a>
                                 </div>
