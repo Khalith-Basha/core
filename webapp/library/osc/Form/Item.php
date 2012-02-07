@@ -238,15 +238,17 @@ class Form_Item extends Form
 	}
 	public function currency_select($currencies = null, $item = null) 
 	{
+		$classLoader = ClassLoader::getInstance();
 		if ($currencies == null) 
 		{
-			$currencies = osc_get_currencies();
+			$currencies = $classLoader->getClassInstance( 'Model_Currency' )
+				->listAll();
 		};
 		if ($item == null) 
 		{
 			$item = osc_item();
 		}
-		if (ClassLoader::getInstance()->getClassInstance( 'Session' )->_getForm('currency') != "") 
+		if ( $classLoader->getClassInstance( 'Session' )->_getForm('currency') != "") 
 		{
 			$item['fk_c_currency_code'] = ClassLoader::getInstance()->getClassInstance( 'Session' )->_getForm('currency');
 		}

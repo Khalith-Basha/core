@@ -40,14 +40,15 @@ class CWebItem extends Controller_Default
 
 	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
-		$locales = ClassLoader::getInstance()->getClassInstance( 'Model_Locale' )->listAllEnabled();
+		$classLoader = ClassLoader::getInstance();
+		$locales = $classLoader->getClassInstance( 'Model_Locale' )->listAllEnabled();
 		$this->getView()->assign('locales', $locales);
 		$secret = Params::getParam('secret');
 		$id = Params::getParam('id');
 		$item = $this->itemManager->listWhere("i.pk_i_id = '%s' AND ((i.s_secret = '%s') OR (i.fk_i_user_id = '%d'))", $id, $secret, $this->userId);
 		if (count($item) == 1) 
 		{
-			$mItems = new ItemActions(false);
+			$mItems = $classLoader->getClassInstance( 'Manager_Item', false, array( false ) );
 			$success = $mItems->delete($item[0]['s_secret'], $item[0]['pk_i_id']);
 			if ($success) 
 			{

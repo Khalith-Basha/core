@@ -21,9 +21,9 @@
 /**
  * Locale DAO
  */
-class Model_Locale extends DAO
+class Model_Locale extends Model
 {
-	function __construct() 
+	function __constructx() 
 	{
 		parent::__construct();
 		$this->setTableName('t_locale');
@@ -40,38 +40,25 @@ class Model_Locale extends DAO
 	 * @param boole $indexedByKk
 	 * @return array
 	 */
-	function listAllEnabled($isBo = false, $indexedByPk = false) 
+	function listAllEnabled( $isBo = false, $indexedByPk = false )
 	{
-		$this->dao->select();
-		$this->dao->from($this->getTableName());
-		if ($isBo) 
-		{
-			$this->dao->where('b_enabled_bo', 1);
-		}
-		else
-		{
-			$this->dao->where('b_enabled', 1);
-		}
-		$this->dao->orderBy('s_name', 'ASC');
-		$result = $this->dao->get();
-		if ($result) 
-		{
-			$aResults = $result->result();
-			if ($indexedByPk) 
-			{
-				$aTmp = array();
-				for ($i = 0; $i < count($aResults); $i++) 
-				{
-					$aTmp[(string)$aResults[$i][$this->getPrimaryKey() ]] = $aResults[$i];
-				}
-				$aResults = $aTmp;
-			}
-			return ($aResults);
-		}
-		else
-		{
-			return array();
-		}
+		$column = $isBo ? 'b_enabled_bo' : 'b_enabled';
+		$sql = <<<SQL
+SELECT
+	pk_c_code, s_name, s_short_name, s_description, s_version, s_author_name, s_author_url, s_currency_format, s_dec_point, s_thousands_sep, i_num_dec, s_date_format, s_stop_words, b_enabled, b_enabled_bo
+FROM
+	/*TABLE_PREFIX*/t_locale
+WHERE
+	$column IS TRUE
+ORDER BY
+	s_name ASC
+SQL;
+
+		$stmt = $this->prepareStatement( $sql );
+		$locales = $this->fetchAll( $stmt );
+		$stmt->close();
+
+		return $locales;
 	}
 	/**
 	 * Return all locales by code

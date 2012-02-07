@@ -193,45 +193,6 @@ function is_serialized($data)
 	}
 	return false;
 }
-/**
- * VERY BASIC
- * Perform a POST request, so we could launch fake-cron calls and other core-system calls without annoying the user
- */
-function osc_doRequest($url, $_data) 
-{
-	if (function_exists('fputs')) 
-	{
-		// convert variables array to string:
-		$data = array();
-		while (list($n, $v) = each($_data)) 
-		{
-			$data[] = "$n=$v";
-		}
-		$data = implode('&', $data);
-		// format --> test1=a&test2=b etc.
-		// parse the given URL
-		$url = parse_url($url);
-		// extract host and path:
-		$host = $url['host'];
-		$path = $url['path'];
-		// open a socket connection on port 80
-		// use localhost in case of issues with NATs (hairpinning)
-		$fp = @fsockopen($host, 80);
-		if ($fp !== false) 
-		{
-			// send the request headers:
-			fputs($fp, "POST $path HTTP/1.1\r\n");
-			fputs($fp, "Host: $host\r\n");
-			fputs($fp, "Referer: OpenSourceClassifieds\r\n");
-			fputs($fp, "Content-type: application/x-www-form-urlencoded\r\n");
-			fputs($fp, "Content-length: " . strlen($data) . "\r\n");
-			fputs($fp, "Connection: close\r\n\r\n");
-			fputs($fp, $data);
-			// close the socket connection:
-			fclose($fp);
-		}
-	}
-}
 function osc_sendMail( array $params )
 {
 	if (key_exists('add_bcc', $params)) 
@@ -420,16 +381,6 @@ function osc_downloadFile($sourceFile, $downloadedFile)
 	{
 		return false;
 	}
-}
-function osc_file_get_contents($url) 
-{
-	$ch = curl_init();
-	curl_setopt($ch, CURLOPT_URL, $url);
-	if (!defined('CURLOPT_RETURNTRANSFER')) define('CURLOPT_RETURNTRANSFER', 1);
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-	$data = curl_exec($ch);
-	curl_close($ch);
-	return $data;
 }
 /**
  * Check if we loaded some specific module of apache

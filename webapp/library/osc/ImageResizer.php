@@ -23,12 +23,7 @@
  */
 class ImageResizer
 {
-	public static function fromFile($imagePath) 
-	{
-		return new ImageResizer($imagePath);
-	}
-	private $im;
-	private function __construct($imagePath) 
+	public function fromFile($imagePath) 
 	{
 		if (!file_exists($imagePath)) throw new Exception("$imagePath does not exist!");
 		if (!is_readable($imagePath)) throw new Exception("$imagePath is not readable!");
@@ -43,6 +38,12 @@ class ImageResizer
 			$this->im = imagecreatefromstring($content);
 		}
 		return $this;
+	}
+
+	private $im;
+
+	public function __construct()
+	{
 	}
 	public function __destruct() 
 	{

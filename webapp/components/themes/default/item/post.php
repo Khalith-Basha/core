@@ -56,7 +56,7 @@ echo $view->render( 'header' );
                                     <input type="file" name="photos[]" />
                                 </div>
                             </div>
-                            <a href="#" onclick="addNewPhoto(); uniform_input_file(); return false;"><?php _e('Add new photo', 'modern'); ?></a>
+                            <a href="#" onclick="addNewPhoto(); return false;"><?php _e('Add new photo', 'modern'); ?></a>
                         </div>
 			<?php endif; ?>
                     

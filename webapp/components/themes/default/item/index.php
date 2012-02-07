@@ -248,26 +248,22 @@ if (osc_comments_enabled())
                     <?php
 if (osc_images_enabled_at_items()) 
 { ?>
-                        <?php
-	if (osc_count_item_resources() > 0) 
+                        <?php if (osc_count_item_resources() > 0) 
 	{ ?>
                         <div id="photos">
-                            <?php
-		for ($i = 0; osc_has_item_resources(); $i++) 
+                            <?php for ($i = 0; osc_has_item_resources(); $i++) 
 		{ ?>
                             <a href="<?php
 			echo osc_resource_url(); ?>" rel="image_group">
                                 <?php
 			if ($i == 0) 
 			{ ?>
-                                    <img src="<?php
-				echo osc_resource_url(); ?>" width="315" alt="" title=""/>
+                                    <img src="<?php echo osc_resource_url(); ?>" width="315" alt="" title=""/>
                                 <?php
 			}
 			else
 			{ ?>
-                                    <img src="<?php
-				echo osc_resource_thumbnail_url(); ?>" width="75" alt="" title=""/>
+                                    <img src="<?php echo osc_resource_thumbnail_url(); ?>" width="75" alt="" title=""/>
                                 <?php
 			} ?>
                             </a>

@@ -68,24 +68,14 @@ foreach ($aCountries as $country)
                             <div style="padding: 4px; width: 90%;">
                                 <div style="float:left;">
                                     <div>
-                                        <a class="close" href="<?php
-	echo osc_admin_base_url(true); ?>?page=settings&action=locations&type=delete_country&id=<?php
-	echo $country['pk_c_code']; ?>">
-                                            <img src="<?php
-	echo osc_admin_base_url(); ?>images/close.png" alt="<?php
-	_e('Close'); ?>" title="<?php
-	_e('Close'); ?>" />
+                                        <a class="close" href="<?php echo osc_admin_base_url(true); ?>?page=settings&action=locations&type=delete_country&id=<?php echo $country['pk_c_code']; ?>">
+                                            <img src="<?php echo osc_admin_base_url(); ?>images/close.png" alt="<?php _e('Close'); ?>" title="<?php _e('Close'); ?>" />
                                         </a>
-                                        <a class="edit" href="javascript:void(0);" style="padding-right: 15px;" onclick="edit_countries($(this));" data="<?php
-	echo $data; ?>" code="<?php
-	echo $country['pk_c_code']; ?>"><?php
-	echo $country['s_name']; ?></a>
+                                        <a class="edit" href="javascript:void(0);" style="padding-right: 15px;" onclick="edit_countries($(this));" data="<?php echo $data; ?>" code="<?php echo $country['pk_c_code']; ?>"><?php echo $country['s_name']; ?></a>
                                     </div>
                                 </div>
                                 <div style="float:right">
-                                    <a href="javascript:void(0)" onclick="show_region('<?php
-	echo $country['pk_c_code']; ?>', '<?php
-	echo addslashes($country['s_name']); ?>')"><?php
+                                    <a href="javascript:void(0)" onclick="show_region('<?php echo $country['pk_c_code']; ?>', '<?php echo addslashes($country['s_name']); ?>')"><?php
 	_e('View more'); ?> &raquo;</a>
                                 </div>
                             </div>

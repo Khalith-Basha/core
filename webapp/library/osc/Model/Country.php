@@ -42,20 +42,29 @@ class Model_Country extends DAO
 	 * @param type $code
 	 * @return array
 	 */
-	public function findByCode($code) 
+	public function findByCode( $code )
 	{
-		if( empty( $code ) )
-		{
-			trigger_error( 'Empty primary key' );
-			return null;
-		}
-		$this->dao->select('*');
-		$this->dao->from($this->getTableName());
-		$this->dao->where('pk_c_code', $code);
-		$this->dao->where('fk_c_locale_code', osc_current_user_locale());
-		$result = $this->dao->get();
-		return $result->row();
+		$sql = <<<SQL
+SELECT
+	pk_c_code, fk_c_locale_code, s_name
+FROM
+	/*TABLE_PREFIX*/t_country
+WHERE
+	pk_c_code = ?
+AND
+	fk_c_locale_code = ?
+LIMIT 1
+SQL;
+		$locale = osc_current_user_locale();
+
+		$stmt = $this->prepareStatement( $sql );
+		$stmt->bind_param( 'ss', $code, $locale );
+		$country = $this->fetch( $stmt );
+		$stmt->close();
+
+		return $country;
 	}
+
 	/**
 	 * Find a country by its name
 	 *
@@ -80,14 +89,37 @@ class Model_Country extends DAO
 	 * @param type $language
 	 * @return array
 	 */
-	public function listAll($language = '') 
+	public function listAll( $locale = null )
 	{
-		if ($language == '') 
-		{
-			$language = osc_current_user_locale();
-		}
-		$result = $this->dao->query(sprintf('SELECT * FROM (SELECT *, FIELD(fk_c_locale_code, \'%s\', \'%s\') as sorter FROM %st_country WHERE s_name != \'\' ORDER BY sorter DESC) dummytable GROUP BY pk_c_code ORDER BY s_name ASC', osc_current_user_locale(), $language, DB_TABLE_PREFIX));
-		return $result->result();
+		if( empty( $locale ) )
+			$locale = osc_current_user_locale();
+
+		$sql = <<<SQL
+SELECT
+	*
+FROM
+	(
+		SELECT
+			*, FIELD( fk_c_locale_code, ?, ? ) AS sorter
+		FROM
+			/*TABLE_PREFIX*/t_country
+		WHERE
+			s_name != ?
+		ORDER BY
+			sorter DESC
+	) dummytable
+GROUP BY
+	pk_c_code
+ORDER BY
+	s_name ASC
+SQL;
+
+		$stmt = $this->prepareStatement( $sql );
+		$stmt->bind_param( 'sss', $locale, $locale, $locale );
+		$countries = $this->fetchAll( $stmt );
+		$stmt->close();
+
+		return $countries;
 	}
 	/**
 	 * List all countries for admin panel

@@ -65,8 +65,8 @@ class CWebUser extends Controller_User
 	public function doPost( HttpRequest $req, HttpResponse $res )
 	{
 		$userId = $this->getSession()->_get('userId');
-		require_once 'osc/UserActions.php';
-		$userActions = new UserActions(false);
+		$userActions = $this->getClassLoader()
+			->getClassInstance( 'Manager_User', false, array( false ) );
 		$success = $userActions->edit($userId);
 		osc_add_flash_ok_message(_m('Your profile has been updated successfully'));
 		$this->redirectTo(osc_user_profile_url());

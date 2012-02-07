@@ -932,19 +932,7 @@ function osc_get_cities($region = '')
 		}
 	}
 }
-/**
- * Gets list of currencies
- *
- * @return string
- */
-function osc_get_currencies() 
-{
-	if (!ClassLoader::getInstance()->getClassInstance( 'View_Default' )->_exists('currencies')) 
-	{
-		ClassLoader::getInstance()->getClassInstance( 'View_Default' )->assign('currencies', ClassLoader::getInstance()->getClassInstance( 'Model_Currency' )->listAll());
-	}
-	return ClassLoader::getInstance()->getClassInstance( 'View_Default' )->_get('currencies');
-}
+
 /**
  * Prints the additional options to the menu
  *

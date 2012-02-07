@@ -89,11 +89,6 @@ class CAdminAjax extends Controller_Administration
 			$items_processing = new ItemsProcessingAjax(Params::getParamsAsArray("get"));
 			break;
 
-		case 'media': // Return items (use external file administration/ajax/media_processing.php)
-			require_once osc_admin_base_path() . 'ajax/media_processing.php';
-			$media_processing = new MediaProcessingAjax(Params::getParamsAsArray("get"));
-			break;
-
 		case 'categories_order': // Save the order of the categories
 			$aIds = Params::getParam('list');
 			$orderParent = 0;

@@ -12,7 +12,7 @@
  * @param string $locale
  * @return mixed
  */
-function osc_user_field($field, $locale = "")
+function osc_user_field( $field, $locale = null )
 {
 	$classLoader = ClassLoader::getInstance();
 	$view = $classLoader->getClassInstance( 'View_Html' );
@@ -23,6 +23,11 @@ function osc_user_field($field, $locale = "")
 	else
 	{
 		$user = $view->_get('user');
+	}
+	if( empty( $user ) )
+	{
+		trigger_error( 'null user' );
+		return null;
 	}
 	return osc_field($user, $field, $locale);
 }
@@ -324,7 +329,7 @@ function osc_user_phone()
 	{
 		return osc_user_field("s_phone_mobile");
 	}
-	return "";
+	return null;
 }
 /**
  * Gets country of current user

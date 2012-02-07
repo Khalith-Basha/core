@@ -169,7 +169,8 @@ class Manager_User
 	}
 	function prepareData($is_add) 
 	{
-		ClassLoader::getInstance()->loadFile( 'helpers/hSecurity' );
+		$classLoader = ClassLoader::getInstance();
+		$classLoader->loadFile( 'helpers/hSecurity' );
 		$input = array();
 		if ($is_add) 
 		{
@@ -211,7 +212,8 @@ class Manager_User
 		}
 		if (intval(Params::getParam('regionId'))) 
 		{
-			$region = Region::newInstance()->findByPrimaryKey(Params::getParam('regionId'));
+			$region = $classLoader->getClassInstance( 'Model_Region' )
+				->findByPrimaryKey(Params::getParam('regionId'));
 			if (count($region) > 0) 
 			{
 				$regionId = $region['pk_i_id'];
@@ -225,7 +227,8 @@ class Manager_User
 		}
 		if (intval(Params::getParam('cityId'))) 
 		{
-			$city = City::newInstance()->findByPrimaryKey(Params::getParam('cityId'));
+			$city = $classLoader->getClassInstance( 'Model_City' )
+				->findByPrimaryKey(Params::getParam('cityId'));
 			if (count($city) > 0) 
 			{
 				$cityId = $city['pk_i_id'];
@@ -334,7 +337,8 @@ class Manager_User
 	}
 	public function bootstrap_login($user_id) 
 	{
-		$user = ClassLoader::getInstance()->getClassInstance( 'Model_User' )->findByPrimaryKey($user_id);
+		$classLoader = ClassLoader::getInstance();
+		$user = $classLoader->getClassInstance( 'Model_User' )->findByPrimaryKey($user_id);
 		if (!$user) 
 		{
 			return 0;
@@ -347,12 +351,14 @@ class Manager_User
 		{
 			return 2;
 		}
-		//we are logged in... let's go!
-		ClassLoader::getInstance()->getClassInstance( 'Session' )->_set('userId', $user['pk_i_id']);
-		ClassLoader::getInstance()->getClassInstance( 'Session' )->_set('userName', $user['s_name']);
-		ClassLoader::getInstance()->getClassInstance( 'Session' )->_set('userEmail', $user['s_email']);
+
+		$session = $classLoader->getClassInstance( 'Session' );
 		$phone = ($user['s_phone_mobile']) ? $user['s_phone_mobile'] : $user['s_phone_land'];
-		ClassLoader::getInstance()->getClassInstance( 'Session' )->_set('userPhone', $phone);
+
+		$session->_set('userId', $user['pk_i_id']);
+		$session->_set('userName', $user['s_name']);
+		$session->_set('userEmail', $user['s_email']);
+		$session->_set('userPhone', $phone);
 		return 3;
 	}
 }

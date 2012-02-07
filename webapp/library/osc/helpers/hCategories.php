@@ -69,7 +69,6 @@ function osc_get_categories()
 	$view->assign('categories', $category->toTree());
 	return $view->_get('categories');
 }
-/* #dev.conquer: review that. If the result of toTree had the same format as items or comments, it would be the same as osc_field */
 function osc_field_toTree($item, $field) 
 {
 	if (isset($item[$field])) 
@@ -188,7 +187,8 @@ function osc_has_subcategories()
  */
 function osc_category_name($locale = "") 
 {
-	if ($locale == "") $locale = osc_current_user_locale();
+	if ($locale == "")
+		$locale = osc_current_user_locale();
 	return osc_category_field("s_name", $locale);
 }
 /**
@@ -199,7 +199,8 @@ function osc_category_name($locale = "")
  */
 function osc_category_description($locale = "") 
 {
-	if ($locale == "") $locale = osc_current_user_locale();
+	if ($locale == "")
+		$locale = osc_current_user_locale();
 	return osc_category_field("s_description", $locale);
 }
 /**

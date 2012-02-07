@@ -56,7 +56,7 @@ function osc_item()
 	/* @TODO: View or HtmlView but not both. */
 	$classLoader = ClassLoader::getInstance();
 
-	$view = $classLoader->getClassInstance( 'View_Html' );
+	$view = $classLoader->getClassInstance( 'View_Default' );
 	if( $view->_exists( 'items' ) )
 	{
 		$item = $view->_current( 'items' );
@@ -123,7 +123,7 @@ function osc_resource()
  */
 function osc_item_field($field, $locale = "") 
 {
-	return osc_field(osc_item(), $field, $locale);
+	return osc_field( osc_item(), $field, $locale);
 }
 /**
  * Gets a specific field from current comment
@@ -747,7 +747,7 @@ function osc_resource_extension()
  */
 function osc_resource_path() 
 {
-	return (string)osc_apply_filter('resource_path', osc_base_url() . osc_resource_field("s_path"));
+	return (string)osc_apply_filter('resource_path', osc_base_url() . '/'. osc_resource_field("s_path"));
 }
 /**
  * Gets thumbnail url of current resource

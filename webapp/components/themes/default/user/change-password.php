@@ -33,7 +33,7 @@ echo $view->render( 'header' );
                     <h2><?php _e('Change your password', 'modern'); ?></h2>
                     <form action="<?php echo osc_base_url(true); ?>" method="post">
                         <input type="hidden" name="page" value="user" />
-                        <input type="hidden" name="action" value="change_password_post" />
+                        <input type="hidden" name="action" value="change_password" />
                         <fieldset>
                             <p>
                                 <label for="password"><?php _e('Current password', 'modern'); ?> *</label>

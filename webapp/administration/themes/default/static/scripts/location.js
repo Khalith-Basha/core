@@ -57,7 +57,7 @@
 
     function show_region(c_code, s_country) {
         $.ajax({
-            "url": base_url + "index.php?page=ajax&action=regions&countryId=" + c_code,
+            "url": base_url + "/index.php?page=ajax&action=regions&countryId=" + c_code,
             "dataType": 'json',
             success: function( json ) {
                 var div_regions = $("#i_regions").html('');
@@ -69,7 +69,7 @@
                     var more_region = $('<div>').css('float','right');
                     var link = $('<a>');
 
-                    s_country.append('<a class="close" href="' + base_url + 'index.php?page=settings&action=locations&type=delete_region&id=' + val.pk_i_id + '"><img src="' + base_url + 'images/close.png" alt="' + s_close + '" title="' + s_close + '" /></a>');
+                    s_country.append('<a class="close" href="' + base_url + '/index.php?page=settings&action=locations&type=delete_region&id=' + val.pk_i_id + '"><img src="' + base_url + '/static/images/close.png" alt="' + s_close + '" title="' + s_close + '" /></a>');
                     s_country.append('<a href="javascript:void(0);" class="edit" onclick="edit_region($(this), ' + val.pk_i_id + ');" style="padding-right: 15px;">' + val.s_name + '</a>');
                     link.attr('href', 'javascript:void(0)');
                     link.click(function(){
@@ -92,7 +92,7 @@
 
     function show_city(id_region) {
         $.ajax({
-            "url": base_url + "index.php?page=ajax&action=cities&regionId=" + id_region,
+            "url": base_url + "/index.php?page=ajax&action=cities&regionId=" + id_region,
             "dataType": 'json',
             success: function( json ) {
                 var div_regions = $("#i_cities").html('');
@@ -101,7 +101,7 @@
                     var container = $('<div>').css('padding','4px').css('width','90%');
                     var s_region = $('<div>').css('float','left');
 
-                    s_region.append('<a class="close" href="' + base_url + 'index.php?page=settings&action=locations&type=delete_city&id=' + val.pk_i_id + '"><img src="' + base_url + 'images/close.png" alt="' + s_close + '" title="' + s_close + '" /></a>');
+                    s_region.append('<a class="close" href="' + base_url + '/index.php?page=settings&action=locations&type=delete_city&id=' + val.pk_i_id + '"><img src="' + base_url + '/static/images/close.png" alt="' + s_close + '" title="' + s_close + '" /></a>');
                     s_region.append('<a href="javascript:void(0);" class="edit" onclick="edit_city($(this), ' + val.pk_i_id + ');" style="padding-right: 15px;">' + val.s_name + '</a>');
                     container.append(s_region);
                     div_regions.append(container);

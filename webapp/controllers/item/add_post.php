@@ -51,7 +51,7 @@ class CWebItem extends Controller_Default
 			osc_add_flash_warning_message(_m('Only registered users are allowed to post items'));
 			$this->redirectTo(osc_base_url(true));
 		}
-		$mItems = $classLoader->getClassInstance( 'ItemActions', false, array( false ) );
+		$mItems = $classLoader->getClassInstance( 'Manager_Item', false, array( false ) );
 		$mItems->prepareData(true);
 		// set all parameters into session
 		foreach ($mItems->getData() as $key => $value) 

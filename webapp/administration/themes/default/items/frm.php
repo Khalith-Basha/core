@@ -57,40 +57,12 @@ $(document).ready(function(){
                 } else {
                     $("#contact_info").hide();
                 }
-                if (typeof $.uniform != 'undefined') {
-                    $('textarea, button,select, input:file').uniform();
-                }
             });
         </script>
-        <script type="text/javascript">
-            setInterval("uniform_input_file()", 250);
-            function uniform_input_file(){
-                photos_div = $('div.photos');
-                $('div',photos_div).each(
-                    function(){
-                        if( $(this).find('div.uploader').length == 0  ){
-                            divid = $(this).attr('id');
-                            if(divid != 'photos'){
-                                divclass = $(this).hasClass('box');
-                                if( !$(this).hasClass('box') & !$(this).hasClass('uploader') & !$(this).hasClass('row')){
-                                    $("div#"+$(this).attr('id')+" input:file").uniform({fileDefaultText: fileDefaultText,fileBtnText: fileBtnText});
-                                }
-                            }
-                        }
-                    }
-                );
-            }
-        </script>
-        <?php
-$itemForm->location_javascript_new('admin'); ?>
-        <?php
-if (osc_images_enabled_at_items()) $itemForm->photos_javascript(); ?>
-                <?php
-osc_show_flash_message('admin'); ?>
+                <?php osc_show_flash_message('admin'); ?>
                 <div class="content_header" id="content_header">
                     <div style="float: left;">
-                        <img alt="" title="" src="<?php
-echo osc_current_admin_theme_url('images/new-folder-icon.png'); ?>">
+                        <img alt="" title="" src="<?php echo osc_current_admin_theme_url('images/new-folder-icon.png'); ?>">
                     </div>
                     <div id="content_header_arrow">» <?php
 if ($new_item) 
@@ -115,8 +87,7 @@ else
 	_e('Edit item');
 } ?></h1>
                     <ul id="error_list"></ul>
-                    <form name="item" action="<?php
-echo osc_admin_base_url(true); ?>" method="post" enctype="multipart/form-data" >
+                    <form name="item" action="<?php echo osc_admin_base_url(true); ?>" method="post" enctype="multipart/form-data" >
                         <input type="hidden" name="page" value="item" />
                         <?php
 if ($new_item) 
@@ -127,41 +98,29 @@ if ($new_item)
 else
 { ?>
                             <input type="hidden" name="action" value="edit" />
-                            <input type="hidden" name="id" value="<?php
-	echo osc_item_id(); ?>" />
-                            <input type="hidden" name="secret" value="<?php
-	echo osc_item_secret(); ?>" />
+                            <input type="hidden" name="id" value="<?php echo osc_item_id(); ?>" />
+                            <input type="hidden" name="secret" value="<?php echo osc_item_secret(); ?>" />
                         <?php
 }; ?>
 
                         <div class="user-post">
-                            <h2><?php
-_e('User'); ?></h2>
-                            <label><?php
-_e('Item posted by'); ?></label>
-                            <?php
-$itemForm->user_select(null, null, __('Non-registered user')); ?>
+                            <h2><?php _e('User'); ?></h2>
+                            <label><?php _e('Item posted by'); ?></label>
+                            <?php $itemForm->user_select(null, null, __('Non-registered user')); ?>
                             <div  id="contact_info">
-                                <label for="contactName"><?php
-_e('Name'); ?></label>
-                                <?php
-$itemForm->contact_name_text(); ?><br/>
-                                <label for="contactEmail"><?php
-_e('E-Mail'); ?></label>
-                                <?php
-$itemForm->contact_email_text(); ?>
+                                <label for="contactName"><?php _e('Name'); ?></label>
+                                <?php $itemForm->contact_name_text(); ?><br/>
+                                <label for="contactEmail"><?php _e('E-Mail'); ?></label>
+                                <?php $itemForm->contact_email_text(); ?>
                             </div>
                         </div>
                         <h2>
-                            <?php
-_e('General information'); ?>
+                            <?php _e('General information'); ?>
                         </h2>
                         <label for="catId">
-                            <?php
-_e('Category') ?>:
+                            <?php _e('Category') ?>:
                         </label>
-                        <?php
-$itemForm->category_select(); ?>
+                        <?php $itemForm->category_select(); ?>
 
                         <?php
 $itemForm->multilanguage_title_description(osc_get_locales()); ?>
@@ -170,88 +129,60 @@ $itemForm->multilanguage_title_description(osc_get_locales()); ?>
 if (osc_price_enabled_at_items()) 
 { ?>
                             <div class="_200 auto">
-                                <h2><?php
-	_e('Price'); ?></h2>
-                                <?php
-	$itemForm->price_input_text(); ?>
-                                <?php
-	$itemForm->currency_select(); ?>
+                                <h2><?php _e('Price'); ?></h2>
+                                <?php $itemForm->price_input_text(); ?>
+                                <?php $itemForm->currency_select(); ?>
                             </div>
                         <?php
 } ?>
 
                         <?php
-if (osc_images_enabled_at_items()) 
+if (osc_images_enabled_at_items() && false) 
 { ?>
                             <div class="photos">
-                                <h2><?php
-	_e('Photos'); ?></h2>
-                                <?php
-	$itemForm->photos(); ?>
+                                <h2><?php _e('Photos'); ?></h2>
+                                <?php $itemForm->photos(); ?>
                                 <div id="photos">
                                     
                                     <?php
 	if (osc_max_images_per_item() == 0 || (osc_max_images_per_item() != 0 && osc_count_item_resources() < osc_max_images_per_item())) 
 	{ ?>
                                     <div>
-                                        <input type="file" name="photos[]" /> (<?php
-		_e('optional'); ?>)
+                                        <input type="file" name="photos[]" /> (<?php _e('optional'); ?>)
                                     </div>
                                     <?php
 	}; ?>
                                 </div>
-                                <p><a style="font-size: small;" href="#" onclick="addNewPhoto(); return false;"><?php
-	_e('Add new photo'); ?></a></p>
+                                <p><a style="font-size: small;" href="#" onclick="addNewPhoto(); return false;"><?php _e('Add new photo'); ?></a></p>
                             </div>
                         <?php
 } ?>
 
                         <div class="location-post _200 clear">
                             <!-- location info -->
-                            <h2><?php
-_e('Location'); ?></h2>
+                            <h2><?php _e('Location'); ?></h2>
                             <div class="row">
-                                <label><?php
-_e('Country'); ?></label>
-                                <?php
-$itemForm->country_select(); ?>
+                                <label><?php _e('Country'); ?></label>
+                                <?php $itemForm->country_select(); ?>
                             </div>
                             <div class="row">
-                                <label><?php
-_e('Region'); ?></label>
-                                <?php
-$itemForm->region_text(); ?>
+                                <label><?php _e('Region'); ?></label>
+                                <?php $itemForm->region_text(); ?>
                             </div>
                             <div class="row">
-                                <label><?php
-_e('City'); ?></label>
-                                <?php
-$itemForm->city_text(); ?>
+                                <label><?php _e('City'); ?></label>
+                                <?php $itemForm->city_text(); ?>
                             </div>
                             <div class="row">
-                                <label><?php
-_e('City area'); ?></label>
-                                <?php
-$itemForm->city_area_text(); ?>
+                                <label><?php _e('City area'); ?></label>
+                                <?php $itemForm->city_area_text(); ?>
                             </div>
                             <div class="row">
-                                <label><?php
-_e('Address'); ?></label>
-                                <?php
-$itemForm->address_text(); ?>
+                                <label><?php _e('Address'); ?></label>
+                                <?php $itemForm->address_text(); ?>
                             </div>
                         </div>
 
-                        <?php
-if ($new_item) 
-{
-	$itemForm->plugin_post_item();
-}
-else
-{
-	$itemForm->plugin_edit_item();
-};
-?>
                         <div class="clear"></div>
                         <div align="center" style="margin-top: 30px; padding: 20px; ">
                             <button type="submit"><?php

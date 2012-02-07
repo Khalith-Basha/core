@@ -256,7 +256,7 @@ class Manager_Item
 		$config = HTMLPurifier_Config::createDefault();
 		$config->set('HTML.Allowed', 'b,strong,i,em,u,a[href|title],ul,ol,li,p[style],br,span[style]');
 		$config->set('CSS.AllowedProperties', 'font,font-size,font-weight,font-style,font-family,text-decoration,padding-left,color,background-color,text-align');
-		$config->set('Cache.SerializerPath', ABS_PATH . 'components/uploads');
+		$config->set('Cache.SerializerPath', ABS_PATH . '/components/uploads');
 		$purifier = new HTMLPurifier($config);
 		// Sanitize
 		foreach (@$aItem['title'] as $key => $value) 
@@ -1040,9 +1040,10 @@ class Manager_Item
 						$itemResourceManager->insert(array('fk_i_item_id' => $itemId));
 						$resourceId = $itemResourceManager->dao->insertedId();
 						// Create normal size
-						$normal_path = $path = osc_content_path() . 'uploads/' . $resourceId . '.jpg';
+						$normal_path = $path = osc_content_path() . '/uploads/' . $resourceId . '.jpg';
 						$size = explode('x', osc_normal_dimensions());
-						ImageResizer::fromFile($tmpName)->resizeTo($size[0], $size[1])->saveToFile($path);
+						$imageResizer = ClassLoader::getInstance()->getClassInstance( 'ImageResizer' );
+						$imageResizer->fromFile($tmpName)->resizeTo($size[0], $size[1])->saveToFile($path);
 						if (osc_is_watermark_text()) 
 						{
 							$wat->doWatermarkText($path, osc_watermark_text_color(), osc_watermark_text(), 'image/jpeg');
@@ -1052,16 +1053,16 @@ class Manager_Item
 							$wat->doWatermarkImage($path, 'image/jpeg');
 						}
 						// Create preview
-						$path = osc_content_path() . 'uploads/' . $resourceId . '_preview.jpg';
+						$path = osc_content_path() . '/uploads/' . $resourceId . '_preview.jpg';
 						$size = explode('x', osc_preview_dimensions());
-						ImageResizer::fromFile($normal_path)->resizeTo($size[0], $size[1])->saveToFile($path);
+						$imageResizer->fromFile($normal_path)->resizeTo($size[0], $size[1])->saveToFile($path);
 						// Create thumbnail
-						$path = osc_content_path() . 'uploads/' . $resourceId . '_thumbnail.jpg';
+						$path = osc_content_path() . '/uploads/' . $resourceId . '_thumbnail.jpg';
 						$size = explode('x', osc_thumbnail_dimensions());
-						ImageResizer::fromFile($normal_path)->resizeTo($size[0], $size[1])->saveToFile($path);
+						$imageResizer->fromFile($normal_path)->resizeTo($size[0], $size[1])->saveToFile($path);
 						if (osc_keep_original_image()) 
 						{
-							$path = osc_content_path() . 'uploads/' . $resourceId . '_original.jpg';
+							$path = osc_content_path() . '/uploads/' . $resourceId . '_original.jpg';
 							move_uploaded_file($tmpName, $path);
 						}
 						$s_path = 'components/uploads/';

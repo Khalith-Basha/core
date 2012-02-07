@@ -58,15 +58,15 @@ class CWebItem extends Controller_Default
 			$regions = $this->getClassLoader()->getClassInstance( 'Model_Region' )->findByCountry($countries[0]['pk_c_code']);
 		}
 		$cities = array();
+
+		$cityModel = $classLoader->getClassInstance( 'Model_City' );
 		if (isset($this->user['fk_i_region_id']) && $this->user['fk_i_region_id'] != '') 
 		{
-			$cities = $classLoader->getClassInstance( 'Model_City' )
-				->findByRegion( $this->user['fk_i_region_id'] );
+			$cities = $cityModel->findByRegion( $this->user['fk_i_region_id'] );
 		}
 		else if (count($regions) > 0) 
 		{
-			$cities = $classLoader->getClassInstance( 'Model_City' )
-				->findByRegion( $regions[0]['pk_i_id'] );
+			$cities = $cityModel->findByRegion( $regions[0]['pk_i_id'] );
 		}
 
 		$view = $this->getView();
@@ -88,7 +88,7 @@ class CWebItem extends Controller_Default
 			if ($this->getSession()->_getForm('regionId') != "") 
 			{
 				$regionId = $this->getSession()->_getForm('regionId');
-				$cities = City::newInstance()->findByRegion($regionId);
+				$cities = $cityModel->findByRegion($regionId);
 				$this->getView()->assign('cities', $cities);
 			}
 		}

@@ -22,6 +22,9 @@ class CAdminSettings extends Controller_Administration
 {
 	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
+		$cityModel = $this->getClassLoader()->getClassInstance( 'Model_City' );
+		$regionModel = $this->getClassLoader()->getClassInstance( 'Model_Region' );
+
 		$location_action = Params::getParam('type');
 		$mCountries = $this->getClassLoader()->getClassInstance( 'Model_Country' );
 		switch ($location_action) 
@@ -41,7 +44,7 @@ class CAdminSettings extends Controller_Administration
 			}
 			else
 			{
-				$countries_json = osc_file_get_contents('http://geo.opensourceclassifieds.org/geo.download.php?action=country_code&term=' . urlencode($countryCode));
+				$countries_json = file_get_contents('http://geo.opensourceclassifieds.org/geo.download.php?action=country_code&term=' . urlencode($countryCode));
 				$countries = json_decode($countries_json);
 				foreach ($request as $k => $v) 
 				{
@@ -55,8 +58,8 @@ class CAdminSettings extends Controller_Administration
 				}
 				else
 				{ // Country is in our GEO database, add regions and cities
-					$manager_region = new Region();
-					$regions_json = osc_file_get_contents('http://geo.opensourceclassifieds.org/geo.download.php?action=region&country_code=' . urlencode($countryCode) . '&term=all');
+					$manager_region = $regionModel;
+					$regions_json = file_get_contents('http://geo.opensourceclassifieds.org/geo.download.php?action=region&country_code=' . urlencode($countryCode) . '&term=all');
 					$regions = json_decode($regions_json);
 					if (!isset($regions->error)) 
 					{
@@ -69,7 +72,7 @@ class CAdminSettings extends Controller_Administration
 						}
 						unset($regions);
 						unset($regions_json);
-						$manager_city = new City();
+						$manager_city = $cityModel;
 						if (count($countries) > 0) 
 						{
 							foreach ($countries as $c) 
@@ -81,7 +84,7 @@ class CAdminSettings extends Controller_Administration
 									{
 										foreach ($regions as $region) 
 										{
-											$cities_json = osc_file_get_contents('http://geo.opensourceclassifieds.org/geo.download.php?action=city&country=' . urlencode($c->name) . '&region=' . urlencode($region['s_name']) . '&term=all');
+											$cities_json = file_get_contents('http://geo.opensourceclassifieds.org/geo.download.php?action=city&country=' . urlencode($c->name) . '&region=' . urlencode($region['s_name']) . '&term=all');
 											$cities = json_decode($cities_json);
 											if (!isset($cities->error)) 
 											{
@@ -136,8 +139,8 @@ class CAdminSettings extends Controller_Administration
 			$has_items = ClassLoader::getInstance()->getClassInstance( 'Model_Item' )->listWhere('l.fk_c_country_code = \'%s\' LIMIT 1', $countryId);
 			if (!$has_items) 
 			{
-				$mRegions = new Region();
-				$mCities = new City();
+				$mRegions = $regionModel;
+				$mCities = $cityModel;
 				$aCountries = $mCountries->findByCode($countryId);
 				$aRegions = $mRegions->findByCountry($aCountries['pk_c_code']);
 				foreach ($aRegions as $region) 
@@ -162,7 +165,7 @@ class CAdminSettings extends Controller_Administration
 			}
 			else
 			{
-				$mRegions = new Region();
+				$mRegions = $regionModel;
 				$regionName = Params::getParam('region');
 				$countryCode = Params::getParam('country_c_parent');
 				$exists = $mRegions->findByName($regionName, $countryCode);
@@ -181,7 +184,7 @@ class CAdminSettings extends Controller_Administration
 			break;
 
 		case ('edit_region'): // edit region
-			$mRegions = new Region();
+			$mRegions = $regionModel;
 			$newRegion = Params::getParam('e_region');
 			$regionId = Params::getParam('region_id');
 			$exists = $mRegions->findByName($newRegion);
@@ -202,8 +205,8 @@ class CAdminSettings extends Controller_Administration
 			break;
 
 		case ('delete_region'): // delete region
-			$mRegion = new Region();
-			$mCities = new City();
+			$mRegion = $regionModel;
+			$mCities = $cityModel;
 			$regionId = Params::getParam('id');
 			if ($regionId != '') 
 			{
@@ -216,7 +219,7 @@ class CAdminSettings extends Controller_Administration
 			break;
 
 		case ('add_city'): // add city
-			$mCities = new City();
+			$mCities = $cityModel;
 			$regionId = Params::getParam('region_parent');
 			$countryCode = Params::getParam('country_c_parent');
 			$newCity = Params::getParam('city');
@@ -234,7 +237,7 @@ class CAdminSettings extends Controller_Administration
 			break;
 
 		case ('edit_city'): // edit city
-			$mCities = new City();
+			$mCities = $cityModel;
 			$newCity = Params::getParam('e_city');
 			$cityId = Params::getParam('city_id');
 			$exists = $mCities->findByName($newCity);
@@ -252,7 +255,7 @@ class CAdminSettings extends Controller_Administration
 			break;
 
 		case ('delete_city'): // delete city
-			$mCities = new City();
+			$mCities = $cityModel;
 			$cityId = Params::getParam('id');
 			$aCity = $mCities->findByPrimaryKey($cityId);
 			$mCities->delete(array('pk_i_id' => $cityId));

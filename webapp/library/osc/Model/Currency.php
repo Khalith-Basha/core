@@ -25,12 +25,12 @@
  * @subpackage Model
  * @since unknown
  */
-class Model_Currency extends DAO
+class Model_Currency extends Model
 {
 	/**
 	 * Set data related to t_currency table
 	 */
-	function __construct() 
+	function __constructx() 
 	{
 		parent::__construct();
 		$this->setTableName('t_currency');
@@ -50,4 +50,23 @@ class Model_Currency extends DAO
 	{
 		return $this->findByPrimaryKey($id);
 	}
+
+	public function listAll()
+	{
+		$sql = <<<SQL
+SELECT
+	pk_c_code, s_name, s_description, b_enabled
+FROM
+	/*TABLE_PREFIX*/t_currency
+ORDER BY
+	s_name ASC
+SQL;
+
+		$stmt = $this->prepareStatement( $sql );
+		$currencies = $this->fetchAll( $stmt );
+		$stmt->close();
+
+		return $currencies;
+	}
 }
+

@@ -64,19 +64,11 @@ function osc_locale()
  */
 function osc_get_locales() 
 {
-	$classLoader = ClassLoader::getInstance();
-	$view = $classLoader->getClassInstance( 'View_Default' );
-	if (!$view->_exists('locales')) 
-	{
-		$locale = $classLoader->getClassInstance( 'Model_Locale' )->listAllEnabled();
-		$view->assign("locales", $locale);
-	}
-	else
-	{
-		$locale = $view->_get('locales');
-	}
-	return $locale;
+	return ClassLoader::getInstance()
+		->getClassInstance( 'Model_Locale' )
+		->listAllEnabled();
 }
+
 /**
  * Private function to count locales
  *

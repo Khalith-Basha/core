@@ -54,34 +54,23 @@ $itemForm = ClassLoader::getInstance()->getClassInstance( 'Form_Item' );
                 width: 40px;
             }
        </style>
-        <?php
-$itemForm->location_javascript('admin'); ?>
         <script type="text/javascript">
             $(function() {
                 oTable = new osc_datatable();
                 oTable.fnInit({
                     'idTable'       : 'datatables_list',
-                    "sAjaxSource": "<?php
-echo osc_admin_base_url(true); ?>?page=ajax&action=media&resourceId=<?php
-echo Params::getParam("id"); ?>",
+                    "sAjaxSource": "<?php echo osc_admin_base_url(true); ?>?page=ajax&action=media&resourceId=<?php echo Params::getParam("id"); ?>",
                     'iDisplayLength': '10',
                     'iColumns'      : '5',
                     'oLanguage'     : {
-                            "sInfo":         "<?php
-_e('Showing _START_ to _END_ of _TOTAL_ entries'); ?>"
-                            ,"sZeroRecords":  "<?php
-_e('No matching records found'); ?>"
-                            ,"sInfoFiltered": "(<?php
-_e('filtered from _MAX_ total entries'); ?>)"
+                            "sInfo":         "<?php _e('Showing _START_ to _END_ of _TOTAL_ entries'); ?>"
+                            ,"sZeroRecords":  "<?php _e('No matching records found'); ?>"
+                            ,"sInfoFiltered": "(<?php _e('filtered from _MAX_ total entries'); ?>)"
                             ,"oPaginate": {
-                                        "sFirst":    "<?php
-_e('First'); ?>",
-                                        "sPrevious": "<?php
-_e('Previous'); ?>",
-                                        "sNext":     "<?php
-_e('Next'); ?>",
-                                        "sLast":     "<?php
-_e('Last'); ?>"
+                                        "sFirst":    "<?php _e('First'); ?>",
+                                        "sPrevious": "<?php _e('Previous'); ?>",
+                                        "sNext":     "<?php _e('Next'); ?>",
+                                        "sLast":     "<?php _e('Last'); ?>"
                                     }
                     },
 			        "aoColumns": [
@@ -91,18 +80,14 @@ _e('Last'); ?>"
 				         "sWidth": "10px",
 				         "bSearchable": false
 				         },
-				        {"sTitle": "<?php
-_e('File'); ?>",
+				        {"sTitle": "<?php _e('File'); ?>",
 				         "sWidth": "25%"
 				        },
-				        {"sTitle": "<?php
-_e('Action'); ?>",
+				        {"sTitle": "<?php _e('Action'); ?>",
 				         "sWidth": "100px"
 				        },
-				        {"sTitle": "<?php
-_e('Attached to'); ?>","bSortable": true},
-				        {"sTitle": "<?php
-_e('Date'); ?>",
+				        {"sTitle": "<?php _e('Attached to'); ?>","bSortable": true},
+				        {"sTitle": "<?php _e('Date'); ?>",
 				         "sWidth": "100px",
 				         "sClass": "center",
 				         "bSortable": true
@@ -125,46 +110,35 @@ _e('Date'); ?>",
         
                 <div id="content_header" class="content_header">
                     <div style="float: left;">
-                        <img src="<?php
-echo osc_current_admin_theme_url('images/media-icon.png'); ?>" title="" alt=""/>
+                        <img src="<?php echo osc_current_admin_theme_url('images/media-icon.png'); ?>" title="" alt=""/>
                     </div>
-                    <div id="content_header_arrow">&raquo; <?php
-_e('Media'); ?></div>
-                    <a href="<?php
-echo osc_admin_base_url(true); ?>?page=media&action=config" id="button_open"><?php
-_e('Settings'); ?></a>
+                    <div id="content_header_arrow">&raquo; <?php _e('Media'); ?></div>
+                    <a href="<?php echo osc_admin_base_url(true); ?>?page=media&action=config" id="button_open"><?php _e('Settings'); ?></a>
                     <div style="clear: both;"></div>
                 </div>
 
                 <div id="content_separator"></div>
-                <?php
-osc_show_flash_message('admin'); ?>
+                <?php osc_show_flash_message('admin'); ?>
                 <div>
-                    <form id="datatablesForm" action="<?php
-echo osc_admin_base_url(true); ?>?page=media" method="post">
+                    <form id="datatablesForm" action="<?php echo osc_admin_base_url(true); ?>?page=media" method="post">
                         <input type="hidden" name="action" value="bulk_actions" />
                         <div style="clear:both;"></div>
 
                         <div class="top" style="margin-top:10px;">
-                            <div style="float:left;"><?php
-_e('Show'); ?>
+                            <div style="float:left;"><?php _e('Show'); ?>
                                 <select class="display" id="select_range">
                                     <option value="10">10</option>
                                     <option value="15">15</option>
                                     <option value="20">20</option>
                                     <option value="100">100</option>
-                                </select> <?php
-_e('entries'); ?>
+                                </select> <?php _e('entries'); ?>
                             </div>
                             <div id="TableToolsToolbar">
                                 <select id="bulk_actions" name="bulk_actions" class="display">
-                                    <option value=""><?php
-_e('Bulk actions'); ?></option>
-                                    <option value="delete_all"><?php
-_e('Delete') ?></option>
+                                    <option value=""><?php _e('Bulk actions'); ?></option>
+                                    <option value="delete_all"><?php _e('Delete') ?></option>
                                 </select>
-                                &nbsp;<button id="bulk_apply" class="display"><?php
-_e('Apply') ?></button>
+                                &nbsp;<button id="bulk_apply" class="display"><?php _e('Apply') ?></button>
                             </div>
                         </div>
                         <table cellpadding="0" cellspacing="0" border="0" class="display" id="datatables_list"></table>
