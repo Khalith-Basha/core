@@ -1,5 +1,6 @@
 <?php
-class Watermark
+
+class Image_Watermark
 {
 	private $font;
 	private $color;

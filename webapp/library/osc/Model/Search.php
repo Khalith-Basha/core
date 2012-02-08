@@ -494,9 +494,6 @@ class Model_Search extends DAO
 			$this->addTable(sprintf('%st_item_resource', DB_TABLE_PREFIX));
 			$this->addConditions(sprintf("%st_item_resource.s_content_type LIKE '%%image%%' AND %sitem.pk_i_id = %st_item_resource.fk_i_item_id", DB_TABLE_PREFIX, DB_TABLE_PREFIX, DB_TABLE_PREFIX));
 		}
-		else
-		{
-		}
 	}
 	/**
 	 * Return ads from specified users

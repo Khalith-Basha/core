@@ -80,8 +80,7 @@ $urlStatic = $classLoader->getClassInstance( 'Url_Static' );
 		<?php endif; ?>
 <?php endif; ?>
 <?php if( osc_count_web_enabled_locales() > 1 ): ?>
-                <?php
-	osc_goto_first_locale(); ?>
+                <?php osc_goto_first_locale(); ?>
                 <li class="last with_sub">
                     <strong><?php _e("Language", 'modern'); ?></strong>
                     <ul>

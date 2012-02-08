@@ -44,8 +44,7 @@ class CAdminUser extends Controller_Administration
 
 	public function doPost( HttpRequest $req, HttpResponse $res )
 	{
-		require_once 'osc/UserActions.php';
-		$userActions = new UserActions(true);
+		$userActions = $this->getClassLoader()->getClassInstance( 'Manager_User', false, array( true ) );
 		$success = $userActions->add();
 		switch ($success) 
 		{

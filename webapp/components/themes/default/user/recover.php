@@ -30,7 +30,8 @@ echo $view->render( 'header' );
                         <input type="hidden" name="page" value="user" />
                         <input type="hidden" name="action" value="recover" />
                         <fieldset>
-                            <label for="email"><?php _e('E-mail', 'modern'); ?></label> <?php $userForm->email_text(); ?><br />
+			    <label for="email"><?php _e('E-mail', 'modern'); ?></label>
+				<input type="text" name="s_email" id="email" required="required"/><br />
                             <?php osc_show_recaptcha('recover_password'); ?>
                             <button type="submit"><?php _e('Send me a new password', 'modern'); ?></button>
                         </fieldset>

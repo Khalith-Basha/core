@@ -41,8 +41,7 @@ class CWebUser extends Controller_Default
 			$this->redirectTo(osc_base_url());
 		}
 		osc_run_hook('before_user_register');
-		require_once 'osc/UserActions.php';
-		$userActions = new UserActions(false);
+		$userActions = $this->getClassLoader()->getClassInstance( 'Manager_User', false, array( false ) );
 		$success = $userActions->add();
 		switch ($success) 
 		{

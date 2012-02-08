@@ -47,15 +47,13 @@ class CWebUser extends Controller_Cacheable
 
 	public function doPost( HttpRequest $req, HttpResponse $res )
 	{
-		require_once 'osc/UserActions.php';
-
 		$email = $this->getInput()->getString( 's_email' );
 		if (!preg_match('|^[a-z0-9\.\_\+\-]+@[a-z0-9\.\-]+\.[a-z]{2,3}$|i', $email )) 
 		{
 			osc_add_flash_error_message(_m('Invalid email address'));
 			$this->redirectTo(osc_recover_user_password_url());
 		}
-		$userActions = new UserActions(false);
+		$userActions = $this->getClassLoader()->getClassInstance( 'Manager_User', false, array( false ) );
 		$success = $userActions->recover_password();
 		switch ($success) 
 		{

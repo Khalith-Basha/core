@@ -27,6 +27,8 @@ class CWebSearch extends Controller_Default
 
 	public function doGet( HttpRequest $req, HttpResponse $res ) 
 	{
+		$classLoader = $this->getClassLoader();
+
 		require 'osc/helpers/hPremium.php';
 		require 'osc/helpers/hPagination.php';
 		osc_run_hook('before_search');
@@ -97,8 +99,8 @@ class CWebSearch extends Controller_Default
 
 		if ( osc_save_latest_searches() ) 
 		{
-			require_once 'osc/model/LatestSearches.php';
-			LatestSearches::getInstance()->insert( $p_sPattern );
+			$classLoader->getClassInstance( 'Model_LatestSearches' )
+				->insert( $p_sPattern );
 		}
 		$p_bPic = Params::getParam('bPic');
 		($p_bPic == 1) ? $p_bPic = 1 : $p_bPic = 0;
@@ -137,26 +139,17 @@ class CWebSearch extends Controller_Default
 		}
 		// search results: it's blocked with the maxResultsPerPage@search defined in t_preferences
 		$p_iPageSize = intval(Params::getParam('iPagesize'));
-		if ($p_iPageSize > 0) 
+		if ($p_iPageSize > osc_max_results_per_page_at_search()) 
 		{
-			if ($p_iPageSize > osc_max_results_per_page_at_search()) $p_iPageSize = osc_max_results_per_page_at_search();
+			$p_iPageSize = osc_max_results_per_page_at_search();
 		}
 		else
 		{
 			$p_iPageSize = osc_default_results_per_page_at_search();
 		}
-		//FILTERING CATEGORY
-		$bAllCategoriesChecked = false;
-		if (count($p_sCategory) > 0) 
+		foreach ($p_sCategory as $category) 
 		{
-			foreach ($p_sCategory as $category) 
-			{
-				$this->mSearch->addCategory($category);
-			}
-		}
-		else
-		{
-			$bAllCategoriesChecked = true;
+			$this->mSearch->addCategory($category);
 		}
 		//FILTERING CITY_AREA
 		foreach ($p_sCityArea as $city_area) 
@@ -242,7 +235,6 @@ class CWebSearch extends Controller_Default
 				$view->setMetaRobots( array( 'noindex', 'nofollow' ) );
 			}
 
-			$view = $this->getView();
 			$this->setViewTitle( $view );
 			if (osc_has_items()) 
 			{
@@ -262,7 +254,7 @@ class CWebSearch extends Controller_Default
 			{
 				// FEED REQUESTED!
 				header('Content-type: text/xml; charset=utf-8');
-				$feed = new RSSFeed;
+				$feed = $classLoader->getClassInstance( 'Feed_Rss' );
 				$feed->setTitle(__('Latest items added') . ' - ' . osc_page_title());
 				$feed->setLink(osc_base_url());
 				$feed->setDescription(__('Latest items added in') . ' ' . osc_page_title());

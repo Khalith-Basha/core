@@ -59,8 +59,7 @@ class CAdminUser extends Controller_Administration
 			break;
 
 		case 'edit_post': // edit post
-			require_once 'osc/UserActions.php';
-			$userActions = new UserActions(true);
+			$userActions = $this->getClassLoader()->getClassInstance( 'Manager_User', false, array( true ) );
 			$success = $userActions->edit(Params::getParam("id"));
 			switch ($success) 
 			{
@@ -80,14 +79,13 @@ class CAdminUser extends Controller_Administration
 			break;
 
 		case 'activate': //activate
-			require_once 'osc/UserActions.php';
 			$iUpdated = 0;
 			$userId = Params::getParam('id');
 			if (!is_array($userId)) 
 			{
 				osc_add_flash_error_message(_m('User id isn\'t in the correct format'), 'admin');
 			}
-			$userActions = new UserActions(true);
+			$userActions = $this->getClassLoader()->getClassInstance( 'Manager_User', false, array( true ) );
 			foreach ($userId as $id) 
 			{
 				$iUpdated+= $userActions->activate($id);
@@ -111,14 +109,13 @@ class CAdminUser extends Controller_Administration
 			break;
 
 		case 'deactivate': //deactivate
-			require_once 'osc/UserActions.php';
 			$iUpdated = 0;
 			$userId = Params::getParam('id');
 			if (!is_array($userId)) 
 			{
 				osc_add_flash_error_message(_m('User id isn\'t in the correct format'), 'admin');
 			}
-			$userActions = new UserActions(true);
+			$userActions = $this->getClassLoader()->getClassInstance( 'Manager_User', false, array( true ) );
 			foreach ($userId as $id) 
 			{
 				$iUpdated+= $userActions->deactivate($id);
@@ -142,14 +139,13 @@ class CAdminUser extends Controller_Administration
 			break;
 
 		case 'enable':
-			require_once 'osc/UserActions.php';
 			$iUpdated = 0;
 			$userId = Params::getParam('id');
 			if (!is_array($userId)) 
 			{
 				osc_add_flash_error_message(_m('User id isn\'t in the correct format'), 'admin');
 			}
-			$userActions = new UserActions(true);
+			$userActions = $this->getClassLoader()->getClassInstance( 'Manager_User', false, array( true ) );
 			foreach ($userId as $id) 
 			{
 				$iUpdated+= $userActions->enable($id);
@@ -173,14 +169,13 @@ class CAdminUser extends Controller_Administration
 			break;
 
 		case 'disable':
-			require_once 'osc/UserActions.php';
 			$iUpdated = 0;
 			$userId = Params::getParam('id');
 			if (!is_array($userId)) 
 			{
 				osc_add_flash_error_message(_m('User id isn\'t in the correct format'), 'admin');
 			}
-			$userActions = new UserActions(true);
+			$userActions = $this->getClassLoader()->getClassInstance( 'Manager_User', false, array( true ) );
 			foreach ($userId as $id) 
 			{
 				$iUpdated+= $userActions->disable($id);

@@ -25,13 +25,10 @@ $(document).ready( function()
 
 function doSearch()
 {
-        if($('input[name=sPattern]').val() == sQuery)
+	var inputSearch = $('input[name=sPattern]');
+        if( inputSearch.val().length < 3)
 	{
-            return false;
-        }
-        if($('input[name=sPattern]').val().length < 3)
-	{
-            $('input[name=sPattern]').css('background', '#FFC6C6');
+            inputSearch.css('background', '#FFC6C6');
             return false;
         }
         return true;

@@ -21,7 +21,7 @@
 /**
  * This class represents a utility to load and resize images easily.
  */
-class ImageResizer
+class Image_Resizer
 {
 	public function fromFile($imagePath) 
 	{
