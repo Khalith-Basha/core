@@ -68,12 +68,6 @@ function osc_premium_field($field, $locale = "")
 {
 	return osc_field(osc_premium(), $field, $locale);
 }
-/////////////////////////////////////////////////
-// END FUNCTIONS THAT RETURNS OBJECT FROM VIEW //
-/////////////////////////////////////////////////
-///////////////////////
-// HELPERS FOR PREMIUMS //
-///////////////////////
 
 /**
  * Gets id from current premium
@@ -441,12 +435,6 @@ function osc_premium_comments_page()
 	}
 	return (int)$page;
 }
-//////////////////////////
-// HELPERS FOR PREMIUMS //
-//////////////////////////
-/////////////
-// DETAILS //
-/////////////
 
 /**
  * Gets next premium if there is, else return null

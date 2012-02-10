@@ -263,3 +263,71 @@ function osc_current_admin_locale()
 	}
 	return osc_admin_language();
 }
+
+function osc_listLocales() 
+{
+	$languages = array();
+	$codes = osc_listLanguageCodes();
+	foreach ($codes as $code) 
+	{
+		$path = sprintf('%s/%s/index.php', osc_translations_path(), $code);
+		if (file_exists($path)) 
+		{
+			require $path;
+			$fxName = sprintf('locale_%s_info', $code);
+			if (function_exists($fxName)) 
+			{
+				$lang = call_user_func($fxName);
+				$lang['code'] = $code;
+				$languages[] = $lang;
+			}
+		}
+	}
+	return $languages;
+}
+function osc_checkLocales() 
+{
+	$locales = osc_listLocales();
+	foreach ($locales as $locale) 
+	{
+		$data = ClassLoader::getInstance()->getClassInstance( 'Model_Locale' )->findByPrimaryKey($locale['code']);
+		if (!is_array($data)) 
+		{
+			$values = array('pk_c_code' => $locale['code'], 's_name' => $locale['name'], 's_short_name' => $locale['short_name'], 's_description' => $locale['description'], 's_version' => $locale['version'], 's_author_name' => $locale['author_name'], 's_author_url' => $locale['author_url'], 's_currency_format' => $locale['currency_format'], 's_date_format' => $locale['date_format'], 's_stop_words' => $locale['stop_words'], 'b_enabled' => 0, 'b_enabled_bo' => 1);
+			$result = ClassLoader::getInstance()->getClassInstance( 'Model_Locale' )->insert($values);
+			if (!$result) 
+			{
+				return false;
+			}
+			// inserting e-mail translations
+			$path = sprintf('%s%s/mail.sql', osc_translations_path(), $locale['code']);
+			if (file_exists($path)) 
+			{
+				$sql = file_get_contents($path);
+				$conn = Database_Connection::newInstance();
+				$c_db = $conn->getResource();
+				$comm = new DBCommandClass($c_db);
+				$result = $comm->importSQL($sql);
+				if (!$result) 
+				{
+					return false;
+				}
+			}
+		}
+	}
+	return true;
+}
+function osc_listLanguageCodes() 
+{
+	$codes = array();
+	$dir = opendir(osc_translations_path());
+	while ($file = readdir($dir)) 
+	{
+		if (preg_match('/^[a-z_]+$/i', $file)) 
+		{
+			$codes[] = $file;
+		}
+	}
+	closedir($dir);
+	return $codes;
+}

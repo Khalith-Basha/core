@@ -29,8 +29,6 @@ if( false === $config->hasConfig( 'database' ) )
 	osc_die($title, $message);
 }
 
-$classLoader->loadFile( 'plugins' );
-$classLoader->loadFile( 'formatting' );
 $classLoader->loadFile( 'TypedArray' );
 $classLoader->loadFile( 'Url/Abstract' );
 $classLoader->loadFile( 'Form/Form' );
@@ -40,21 +38,20 @@ $classLoader->loadFile( 'Controller/User' );
 $classLoader->loadFile( 'Controller/Cacheable' );
 $classLoader->loadFile( 'Params' );
 $classLoader->loadFile( 'Database/DAO' );
-$classLoader->loadFile( 'utils' );
 $classLoader->loadFile( 'Model/Preference' );
 $classLoader->loadFile( 'Model/Locale' );
-$classLoader->loadFile( 'helpers/hCategories' );
-$classLoader->loadFile( 'helpers/hPreference' );
-$classLoader->loadFile( 'helpers/hLocale' );
-$classLoader->loadFile( 'helpers/hTranslations' );
-$classLoader->loadFile( 'helpers/hDefines' );
-$classLoader->loadFile( 'helpers/hPlugins' );
-$classLoader->loadFile( 'helpers/hItems' );
-$classLoader->loadFile( 'helpers/hUtils' );
-$classLoader->loadFile( 'helpers/hSearch' );
-$classLoader->loadFile( 'helpers/hPage' );
-$classLoader->loadFile( 'helpers/hUsers' );
-$classLoader->loadFile( 'helpers/hMessages' );
+$classLoader->loadFile( 'helpers/formatting' );
+$classLoader->loadFile( 'helpers/categories' );
+$classLoader->loadFile( 'helpers/preference' );
+$classLoader->loadFile( 'helpers/locales' );
+$classLoader->loadFile( 'helpers/translations' );
+$classLoader->loadFile( 'helpers/plugins' );
+$classLoader->loadFile( 'helpers/items' );
+$classLoader->loadFile( 'helpers/utils' );
+$classLoader->loadFile( 'helpers/search' );
+$classLoader->loadFile( 'helpers/pages' );
+$classLoader->loadFile( 'helpers/users' );
+$classLoader->loadFile( 'helpers/flashMessages' );
 
 $generalConfig = $config->getConfig( 'general' );
 define( 'WEB_PATH', $generalConfig['webUrl'] );

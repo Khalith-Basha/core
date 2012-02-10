@@ -15,18 +15,59 @@
  * You should have received a copy of the GNU Affero General Public
  * License along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-class WebThemes
+
+class Theme
 {
-	private $path;
 	private $theme;
 	private $theme_url;
 	private $theme_path;
 	private $theme_exists;
-	private $pages = array('404', 'contact', 'alert-form', 'custom', 'footer', 'functions', 'head', 'header', 'inc.search', 'index', 'item-contact', 'item-edit', 'item-post', 'item-send-friend', 'item', 'main', 'page', 'search', 'search_gallery', 'search_list', 'user-alerts', 'user-change_email', 'user-change_password', 'user-dashboard', 'user-forgot_password', 'user-items', 'user-login', 'user-profile', 'user-recover', 'user-register',);
+
+	public function setCurrentTheme($theme) 
+	{
+		$this->theme = $theme;
+		$this->setCurrentThemePath();
+		$this->setCurrentThemeUrl();
+	}
+
+	public function getCurrentTheme() 
+	{
+		return $this->theme;
+	}
+
+	public function getCurrentThemeJs() 
+	{
+		return $this->theme_url . '/static/scripts';
+	}
+
+	public function getCurrentThemeStyles() 
+	{
+		return $this->theme_url . '/static/styles';
+	}
+
+	public function getCurrentThemePath() 
+	{
+		return $this->theme_path;
+	}
+
+	public function getCurrentThemeUrl() 
+	{
+		return $this->theme_url;
+	}
+}
+
+class WebThemes extends Theme
+{
+	private $path;
+	private $pages = array(
+		'404', 'contact', 'alert-form', 'custom', 'footer', 'functions', 'head', 'header', 'inc.search', 'index', 'item-contact', 'item-edit', 'item-post', 'item-send-friend', 'item', 'main', 'page', 'search', 'search_gallery', 'search_list', 'user-alerts', 'user-change_email', 'user-change_password', 'user-dashboard', 'user-forgot_password', 'user-items', 'user-login', 'user-profile', 'user-recover', 'user-register'
+	);
+
 	public function __construct() 
 	{
 		$this->path = osc_themes_path();
-		if (Params::getParam('theme') != '' && ClassLoader::getInstance()->getClassInstance( 'Session' )->_get('adminId') != '') $this->setCurrentTheme(Params::getParam('theme'));
+		if (Params::getParam('theme') != '' && ClassLoader::getInstance()->getClassInstance( 'Session' )->_get('adminId') != '')
+			$this->setCurrentTheme(Params::getParam('theme'));
 		else $this->setCurrentTheme(osc_theme());
 		$functions_path = $this->getCurrentThemePath() . 'functions.php';
 		if (file_exists($functions_path)) 
@@ -69,12 +110,7 @@ class WebThemes
 		}
 		return false;
 	}
-	public function setCurrentTheme($theme) 
-	{
-		$this->theme = $theme;
-		$this->setCurrentThemePath();
-		$this->setCurrentThemeUrl();
-	}
+
 	public function setGuiTheme() 
 	{
 		$this->theme = '';
@@ -86,26 +122,6 @@ class WebThemes
 		{
 			require_once $functions_path;
 		}
-	}
-	public function getCurrentTheme() 
-	{
-		return $this->theme;
-	}
-	public function getCurrentThemeUrl() 
-	{
-		return $this->theme_url;
-	}
-	public function getCurrentThemePath() 
-	{
-		return $this->theme_path;
-	}
-	public function getCurrentThemeStyles() 
-	{
-		return $this->theme_url . 'css/';
-	}
-	public function getCurrentThemeJs() 
-	{
-		return $this->theme_url . 'js/';
 	}
 	/**
 	 * This function returns an array of themes (those copied in the components/themes folder)
@@ -147,5 +163,24 @@ class WebThemes
 	function isValidPage($internal_name) 
 	{
 		return !in_array($internal_name, $this->pages);
+	}
+}
+
+class AdminThemes extends Theme
+{
+	public function __construct() 
+	{
+		$this->setCurrentTheme(osc_admin_theme());
+	}
+
+	private function setCurrentThemeUrl() 
+	{
+		$this->theme_url = osc_admin_base_url() . '/themes/' . $this->theme;
+	}
+
+	private function setCurrentThemePath() 
+	{
+		$this->theme_exists = true;
+		$this->theme_path = osc_admin_base_path() . '/themes/' . $this->theme;
 	}
 }

@@ -1,29 +1,5 @@
 <?php
-/*
- *      OpenSourceClassifieds – software for creating and publishing online classified
- *                           advertising platforms
- *
- *                        Copyright (C) 2011 OpenSourceClassifieds
- *
- *       This program is free software: you can redistribute it and/or
- *     modify it under the terms of the GNU Affero General Public License
- *     as published by the Free Software Foundation, either version 3 of
- *            the License, or (at your option) any later version.
- *
- *     This program is distributed in the hope that it will be useful, but
- *         WITHOUT ANY WARRANTY; without even the implied warranty of
- *        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *             GNU Affero General Public License for more details.
- *
- *      You should have received a copy of the GNU Affero General Public
- * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-/**
- * Helper Location
- * @package OpenSourceClassifieds
- * @subpackage Helpers
- * @author OpenSourceClassifieds
- */
+
 /**
  * Gets current country
  *
@@ -304,3 +280,69 @@ function osc_city_area_url()
 {
 	return osc_search_url(array('sCityArea' => osc_city_area_name()));
 }
+/**
+ * Gets list of countries
+ *
+ * @return string
+ */
+function osc_get_countries() 
+{
+	if (ClassLoader::getInstance()->getClassInstance( 'View_Default' )->_exists('countries')) 
+	{
+		return ClassLoader::getInstance()->getClassInstance( 'View_Default' )->_get('countries');
+	}
+	else
+	{
+		return ClassLoader::getInstance()->getClassInstance( 'Model_Country' )->listAll();
+	}
+}
+/**
+ * Gets list of regions (from a country)
+ *
+ * @param int $country
+ * @return string
+ */
+function osc_get_regions($country = '') 
+{
+	if (ClassLoader::getInstance()->getClassInstance( 'View_Default' )->_exists('regions')) 
+	{
+		return ClassLoader::getInstance()->getClassInstance( 'View_Default' )->_get('regions');
+	}
+	else
+	{
+		if ($country == '') 
+		{
+			return ClassLoader::getInstance()->getClassInstance( 'Model_Region' )->listAll();
+		}
+		else
+		{
+			return ClassLoader::getInstance()->getClassInstance( 'Model_Region' )->findByCountry($country);
+		}
+	}
+}
+/**
+ * Gets list of cities (from a region)
+ *
+ * @param int $region
+ * @return string
+ */
+function osc_get_cities($region = '') 
+{
+	if (ClassLoader::getInstance()->getClassInstance( 'View_Default' )->_exists('cities')) 
+	{
+		return ClassLoader::getInstance()->getClassInstance( 'View_Default' )->_get('cities');
+	}
+	else
+	{
+		if ($region == '') 
+		{
+			return ClassLoader::getInstance()->getClassInstance( 'Model_City' )->listAll();
+		}
+		else
+		{
+			return ClassLoader::getInstance()->getClassInstance( 'Model_City' )->findByRegion($region);
+		}
+	}
+}
+
+

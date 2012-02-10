@@ -697,12 +697,6 @@ function osc_delete_comment_url()
 {
 	return (string)osc_base_url(true) . "?page=item&action=delete_comment&id=" . osc_item_id() . "&comment=" . osc_comment_id();
 }
-//////////////////////////////
-// END HELPERS FOR COMMENTS //
-//////////////////////////////
-///////////////////////////
-// HELPERS FOR RESOURCES //
-///////////////////////////
 
 /**
  * Gets id of current resource
@@ -1058,45 +1052,4 @@ function osc_item_meta_slug()
 {
 	return osc_field(osc_item_meta(), 's_slug', '');
 }
-/**
- * Gets total number of active items
- *
- * @return string
- */
-function osc_total_active_items() 
-{
-	$search = new Search(false);
-	return $search->count();
-}
-/**
- * Gets total number of all items
- *
- * @return string
- */
-function osc_total_items() 
-{
-	$search = new Search(true);
-	return $search->count();
-}
-/**
- * Gets total number of active items today
- *
- * @return string
- */
-function osc_total_active_items_today() 
-{
-	$search = new Search(false);
-	$search->addConditions(sprintf('DATEDIFF(\'%s\', %sitem.pub_date) < 1', date('Y-m-d H:i:s'), DB_TABLE_PREFIX));
-	return $search->count();
-}
-/**
- * Gets total number of all items today
- *
- * @return string
- */
-function osc_total_items_today() 
-{
-	$search = new Search(true);
-	$search->addConditions(sprintf('DATEDIFF(\'%s\', %sitem.pub_date) < 1', date('Y-m-d H:i:s'), DB_TABLE_PREFIX));
-	return $search->count();
-}
+
