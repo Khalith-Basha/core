@@ -32,9 +32,7 @@ class CWebUser extends Controller
 		$user = ClassLoader::getInstance()->getClassInstance( 'Model_User' )->findByIdPasswordSecret(Params::getParam('userId'), Params::getParam('code'));
 		if ($user) 
 		{
-			osc_run_hook("before_html");
-			osc_current_web_theme_path( 'user/forgot-password.php' );
-			osc_run_hook("after_html");
+			echo $this->getView()->render( 'user/forgot-password' );
 
 		}
 		else

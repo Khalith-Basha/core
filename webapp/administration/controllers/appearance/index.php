@@ -29,8 +29,8 @@ class CAdminAppearance extends Controller_Administration
 			break;
 
 		default:
-			$themes = ClassLoader::getInstance()->getClassInstance( 'WebThemes' )->getListThemes();
-			$info = ClassLoader::getInstance()->getClassInstance( 'WebThemes' )->loadThemeInfo(osc_theme());
+			$themes = ClassLoader::getInstance()->getClassInstance( 'Ui_MainTheme' )->getListThemes();
+			$info = ClassLoader::getInstance()->getClassInstance( 'Ui_MainTheme' )->loadThemeInfo(osc_theme());
 			$this->getView()->assign("themes", $themes);
 			$this->getView()->assign("info", $info);
 			$this->doView('appearance/index.php');

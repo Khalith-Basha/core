@@ -134,34 +134,6 @@ function osc_logged_user_phone()
 	return (string)$session->_get('userPhone');
 }
 /**
- * Gets user's profile url
- *
- * @return string
- */
-function osc_user_public_profile_url($id = null) 
-{
-	if ($id == null) 
-	{
-		$id = osc_user_id();
-	}
-	if ($id != '') 
-	{
-		if (osc_rewrite_enabled()) 
-		{
-			$path = osc_base_url() . '/user/profile/' . $id;
-		}
-		else
-		{
-			$path = sprintf(osc_base_url(true) . '?page=user&action=pub_profile&id=%d', $id);
-		}
-	}
-	else
-	{
-		$path = '';
-	}
-	return $path;
-}
-/**
  * Gets true if admin user is logged in
  *
  * @return boolean
@@ -421,9 +393,6 @@ function osc_user_comments_validated()
 {
 	return osc_user_field("i_comments");
 }
-/////////////
-// ALERTS  //
-/////////////
 
 /**
  * Gets a specific field from current alert

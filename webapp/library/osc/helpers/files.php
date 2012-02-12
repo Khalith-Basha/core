@@ -100,46 +100,6 @@ function osc_packageExtract($zipPath, $path)
 	}
 }
 /**
- * Fix the problem of symbolics links in the path of the file
- *
- * @param string $file The filename of plugin.
- * @return string The fixed path of a plugin.
- */
-function osc_plugin_path($file) 
-{
-	// Sanitize windows paths and duplicated slashes
-	$file = preg_replace('|/+|', '/', str_replace('\\', '/', $file));
-	$plugin_path = preg_replace('|/+|', '/', str_replace('\\', '/', osc_plugins_path()));
-	$file = $plugin_path . preg_replace('#^.*components\/plugins\/#', '', $file);
-	return $file;
-}
-/**
- * Fix the problem of symbolics links in the path of the file
- *
- * @param string $file The filename of plugin.
- * @return string The fixed path of a plugin.
- */
-function osc_plugin_url($file) 
-{
-	// Sanitize windows paths and duplicated slashes
-	$dir = preg_replace('|/+|', '/', str_replace('\\', '/', dirname($file)));
-	$dir = WEB_PATH . 'components/plugins/' . preg_replace('#^.*components\/plugins\/#', '', $dir) . "/";
-	return $dir;
-}
-/**
- * Fix the problem of symbolics links in the path of the file
- *
- * @param string $file The filename of plugin.
- * @return string The fixed path of a plugin.
- */
-function osc_plugin_folder($file) 
-{
-	// Sanitize windows paths and duplicated slashes
-	$dir = preg_replace('|/+|', '/', str_replace('\\', '/', dirname($file)));
-	$dir = preg_replace('#^.*components\/plugins\/#', '', $dir) . "/";
-	return $dir;
-}
-/**
  * Serialize the data (usefull at plugins activation)
  * @return the data serialized
  */
@@ -192,69 +152,6 @@ function is_serialized($data)
 		break;
 	}
 	return false;
-}
-function osc_sendMail( array $params )
-{
-	if (key_exists('add_bcc', $params)) 
-	{
-		if (!is_array($params['add_bcc'])) 
-		{
-			$params['add_bcc'] = array($params['add_bcc']);
-		}
-	}
-	require_once 'phpmailer/class.phpmailer.php';
-	if (osc_mailserver_pop()) 
-	{
-		require_once 'phpmailer/class.pop3.php';
-		$pop = new POP3();
-		$pop->Authorise((isset($params['host'])) ? $params['host'] : osc_mailserver_host(), (isset($params['port'])) ? $params['port'] : osc_mailserver_port(), 30, (isset($params['username'])) ? $params['username'] : osc_mailserver_username(), (isset($params['username'])) ? $params['username'] : osc_mailserver_username(), 0);
-	}
-	$mail = new PHPMailer(true);
-	$mail->CharSet = "utf-8";
-	if (osc_mailserver_auth()) 
-	{
-		$mail->IsSMTP();
-		$mail->SMTPAuth = true;
-	}
-	else if (osc_mailserver_pop()) 
-	{
-		$mail->IsSMTP();
-	}
-	$mail->SMTPSecure = (isset($params['ssl'])) ? $params['ssl'] : osc_mailserver_ssl();
-	$mail->Username = (isset($params['username'])) ? $params['username'] : osc_mailserver_username();
-	$mail->Password = (isset($params['password'])) ? $params['password'] : osc_mailserver_password();
-	$mail->Host = (isset($params['host'])) ? $params['host'] : osc_mailserver_host();
-	$mail->Port = (isset($params['port'])) ? $params['port'] : osc_mailserver_port();
-	$mail->From = (isset($params['from'])) ? $params['from'] : osc_contact_email();
-	$mail->FromName = (isset($params['from_name'])) ? $params['from_name'] : osc_page_title();
-	$mail->Subject = (isset($params['subject'])) ? $params['subject'] : '';
-	$mail->Body = (isset($params['body'])) ? $params['body'] : '';
-	$mail->AltBody = (isset($params['alt_body'])) ? $params['alt_body'] : '';
-	$to = (isset($params['to'])) ? $params['to'] : '';
-	$to_name = (isset($params['to_name'])) ? $params['to_name'] : '';
-	if (key_exists('add_bcc', $params)) 
-	{
-		foreach ($params['add_bcc'] as $bcc) 
-		{
-			$mail->AddBCC($bcc);
-		}
-	}
-	if (isset($params['reply_to'])) $mail->AddReplyTo($params['reply_to']);
-	if (isset($params['attachment'])) 
-	{
-		$mail->AddAttachment($params['attachment']);
-	}
-	$mail->IsHTML(true);
-	$mail->AddAddress($to, $to_name);
-	$mail->Send();
-}
-function osc_mailBeauty($text, $params) 
-{
-	$text = str_ireplace($params[0], $params[1], $text);
-	$kwords = array('{WEB_URL}', '{WEB_TITLE}', '{CURRENT_DATE}', '{HOUR}');
-	$rwords = array(osc_base_url(), osc_page_title(), date('Y-m-d H:i:s'), date('H:i'));
-	$text = str_ireplace($kwords, $rwords, $text);
-	return $text;
 }
 function osc_copy($source, $dest, $options = array('folderPermission' => 0755, 'filePermission' => 0755)) 
 {
@@ -411,35 +308,6 @@ function apache_mod_loaded($mod)
 		ob_end_clean();
 	}
 	return false;
-}
-/**
- * Change version to param number
- *
- * @param mixed version
- */
-function osc_changeVersionTo($version = null) 
-{
-	if ($version != null) 
-	{
-		Preference::newInstance()->update(array('s_value' => $version), array('s_section' => 'osclass', 's_name' => 'version'));
-		//XXX: I don't know if it's really needed. Only for reload the values of the preferences
-		Preference::newInstance()->toArray();
-	}
-}
-function strip_slashes_extended($array) 
-{
-	if (is_array($array)) 
-	{
-		foreach ($array as $k => & $v) 
-		{
-			$v = strip_slashes_extended($v);
-		}
-	}
-	else
-	{
-		$array = stripslashes($array);
-	}
-	return $array;
 }
 /**
  * Unzip's a specified ZIP file to a location
@@ -607,16 +475,6 @@ function _zip_folder_pclzip($archive_folder, $archive_name)
 	{
 		return false;
 	}
-}
-function osc_check_recaptcha() 
-{
-	require_once 'recaptchalib.php';
-	if (Params::getParam("recaptcha_challenge_field") != '') 
-	{
-		$resp = recaptcha_check_answer(osc_recaptcha_private_key(), $_SERVER["REMOTE_ADDR"], Params::getParam("recaptcha_challenge_field"), Params::getParam("recaptcha_response_field"));
-		return $resp->is_valid;
-	}
-	return false;
 }
 function osc_check_dir_writable($dir = ABS_PATH) 
 {
@@ -800,10 +658,6 @@ function osc_save_permissions($dir = ABS_PATH)
 	}
 	return $perms;
 }
-function osc_prepare_price($price) 
-{
-	return $price / 1000000;
-}
 /**
  * Recursive glob function
  *
@@ -824,3 +678,36 @@ function rglob($pattern, $flags = 0, $path = '')
 	foreach ($paths as $p) $files = array_merge($files, rglob($pattern, $flags, $p . '/'));
 	return $files;
 }
+
+/**
+ * Prints the user's account menu
+ *
+ * @param array $options array with options of the form array('name' => 'display name', 'url' => 'url of link')
+ * @return void
+ */
+function osc_private_user_menu($options = null) 
+{
+	if ($options == null) 
+	{
+		$options = array();
+		$options[] = array('name' => __('Dashboard'), 'url' => osc_user_dashboard_url(), 'class' => 'opt_dashboard');
+		$options[] = array('name' => __('Manage your items'), 'url' => osc_user_list_items_url(), 'class' => 'opt_items');
+		$options[] = array('name' => __('Manage your alerts'), 'url' => osc_user_alerts_url(), 'class' => 'opt_alerts');
+		$options[] = array('name' => __('My account'), 'url' => osc_user_profile_url(), 'class' => 'opt_account');
+		$options[] = array('name' => __('Logout'), 'url' => osc_user_logout_url(), 'class' => 'opt_logout');
+	}
+	echo '<script type="text/javascript">';
+	echo '$(".user_menu > :first-child").addClass("first") ;';
+	echo '$(".user_menu > :last-child").addClass("last") ;';
+	echo '</script>';
+	echo '<ul class="user_menu">';
+	$var_l = count($options);
+	for ($var_o = 0; $var_o < ($var_l - 1); $var_o++) 
+	{
+		echo '<li class="' . $options[$var_o]['class'] . '" ><a href="' . $options[$var_o]['url'] . '" >' . $options[$var_o]['name'] . '</a></li>';
+	}
+	osc_run_hook('user_menu');
+	echo '<li class="' . $options[$var_l - 1]['class'] . '" ><a href="' . $options[$var_l - 1]['url'] . '" >' . $options[$var_l - 1]['name'] . '</a></li>';
+	echo '</ul>';
+}
+

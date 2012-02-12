@@ -18,7 +18,7 @@
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-$classLoader = ClassLoader::getInstance();
+$indexUrl = $classLoader->getClassInstance( 'Url_Index' );
 $userForm = $classLoader->getClassInstance( 'Form_User' );
 echo $view->render( 'header' );
 ?>
@@ -26,7 +26,7 @@ echo $view->render( 'header' );
             <div class="content user_forms">
                 <div class="inner">
                     <h1><?php _e('Access to your account', 'modern'); ?></h1>
-                    <form action="<?php echo osc_base_url(true); ?>" method="post" >
+                    <form action="<?php echo $indexUrl->getBaseUrl(true); ?>" method="post" >
 			<?php
 			echo $userForm->getInputHidden( 'page', 'user' );
 			echo $userForm->getInputHidden( 'action', 'login_post' );

@@ -701,3 +701,70 @@ function fn_email_new_comment_user($aItem)
 	osc_sendMail($emailParams);
 }
 osc_add_hook('hook_email_new_comment_user', 'fn_email_new_comment_user');
+
+
+function osc_sendMail( array $params )
+{
+	if (key_exists('add_bcc', $params)) 
+	{
+		if (!is_array($params['add_bcc'])) 
+		{
+			$params['add_bcc'] = array($params['add_bcc']);
+		}
+	}
+	require_once 'phpmailer/class.phpmailer.php';
+	if (osc_mailserver_pop()) 
+	{
+		require_once 'phpmailer/class.pop3.php';
+		$pop = new POP3();
+		$pop->Authorise((isset($params['host'])) ? $params['host'] : osc_mailserver_host(), (isset($params['port'])) ? $params['port'] : osc_mailserver_port(), 30, (isset($params['username'])) ? $params['username'] : osc_mailserver_username(), (isset($params['username'])) ? $params['username'] : osc_mailserver_username(), 0);
+	}
+	$mail = new PHPMailer(true);
+	$mail->CharSet = "utf-8";
+	if (osc_mailserver_auth()) 
+	{
+		$mail->IsSMTP();
+		$mail->SMTPAuth = true;
+	}
+	else if (osc_mailserver_pop()) 
+	{
+		$mail->IsSMTP();
+	}
+	$mail->SMTPSecure = (isset($params['ssl'])) ? $params['ssl'] : osc_mailserver_ssl();
+	$mail->Username = (isset($params['username'])) ? $params['username'] : osc_mailserver_username();
+	$mail->Password = (isset($params['password'])) ? $params['password'] : osc_mailserver_password();
+	$mail->Host = (isset($params['host'])) ? $params['host'] : osc_mailserver_host();
+	$mail->Port = (isset($params['port'])) ? $params['port'] : osc_mailserver_port();
+	$mail->From = (isset($params['from'])) ? $params['from'] : osc_contact_email();
+	$mail->FromName = (isset($params['from_name'])) ? $params['from_name'] : osc_page_title();
+	$mail->Subject = (isset($params['subject'])) ? $params['subject'] : '';
+	$mail->Body = (isset($params['body'])) ? $params['body'] : '';
+	$mail->AltBody = (isset($params['alt_body'])) ? $params['alt_body'] : '';
+	$to = (isset($params['to'])) ? $params['to'] : '';
+	$to_name = (isset($params['to_name'])) ? $params['to_name'] : '';
+	if (key_exists('add_bcc', $params)) 
+	{
+		foreach ($params['add_bcc'] as $bcc) 
+		{
+			$mail->AddBCC($bcc);
+		}
+	}
+	if (isset($params['reply_to'])) $mail->AddReplyTo($params['reply_to']);
+	if (isset($params['attachment'])) 
+	{
+		$mail->AddAttachment($params['attachment']);
+	}
+	$mail->IsHTML(true);
+	$mail->AddAddress($to, $to_name);
+	$mail->Send();
+}
+function osc_mailBeauty($text, $params) 
+{
+	$text = str_ireplace($params[0], $params[1], $text);
+	$kwords = array('{WEB_URL}', '{WEB_TITLE}', '{CURRENT_DATE}', '{HOUR}');
+	$rwords = array(osc_base_url(), osc_page_title(), date('Y-m-d H:i:s'), date('H:i'));
+	$text = str_ireplace($kwords, $rwords, $text);
+	return $text;
+}
+
+

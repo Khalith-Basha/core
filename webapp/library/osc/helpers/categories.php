@@ -32,17 +32,17 @@
 function osc_category() 
 {
 	$view = ClassLoader::getInstance()->getClassInstance( 'View_Html' );
-	if ($view->_exists('subcategories')) 
+	if ($view->varExists('subcategories')) 
 	{
 		$category = $view->_current('subcategories');
 	}
-	elseif ($view->_exists('categories')) 
+	elseif ($view->varExists('categories')) 
 	{
 		$category = $view->_current('categories');
 	}
-	elseif ($view->_exists('category')) 
+	elseif ($view->varExists('category')) 
 	{
-		$category = $view->_get('category');
+		$category = $view->getVar('category');
 	}
 	else
 	{
@@ -67,7 +67,7 @@ function osc_get_categories()
 	$view = $classLoader->getClassInstance( 'View_Html' );
 	$category = $classLoader->getClassInstance( 'Model_Category' );
 	$view->assign('categories', $category->toTree());
-	return $view->_get('categories');
+	return $view->getVar('categories');
 }
 function osc_field_toTree($item, $field) 
 {
@@ -82,9 +82,9 @@ function osc_field_toTree($item, $field)
  *
  * @return <array>
  */
-function osc_category_field($field, $locale = '') 
+function osc_category_field( array $category, $field, $locale = '') 
 {
-	return osc_field_toTree(osc_category(), $field);
+	return osc_field_toTree( $category, $field );
 }
 /**
  * Gets the number of categories
@@ -94,7 +94,7 @@ function osc_category_field($field, $locale = '')
 function osc_priv_count_categories() 
 {
 	$view = ClassLoader::getInstance()->getClassInstance( 'View_Html' );
-	return $view->_count('categories');
+	return $view->countVar('categories');
 }
 /**
  * Gets the number of subcategories
@@ -104,7 +104,7 @@ function osc_priv_count_categories()
 function osc_priv_count_subcategories() 
 {
 	$view = ClassLoader::getInstance()->getClassInstance( 'View_Html' );
-	return $view->_count('subcategories');
+	return $view->countVar('subcategories');
 }
 /**
  * Gets the total of categories. If categories are not loaded, this function will load them.
@@ -115,28 +115,12 @@ function osc_count_categories()
 {
 	$classLoader = ClassLoader::getInstance();
 	$view = $classLoader->getClassInstance( 'View_Html' );
-	if (!$view->_exists('categories')) 
+	if (!$view->varExists('categories')) 
 	{
 		$category = $classLoader->getClassInstance( 'Model_Category' );
 		$view->assign('categories', $category->toTree());
 	}
 	return osc_priv_count_categories();
-}
-/**
- * Let you know if there are more categories in the list. If categories are not loaded, this function will load them.
- *
- * @return boolean
- */
-function osc_has_categories() 
-{
-	$classLoader = ClassLoader::getInstance();
-	$view = $classLoader->getClassInstance( 'View_Html' );
-	if (!$view->_exists('categories')) 
-	{
-		$category = $classLoader->getClassInstance( 'Model_Category' );
-		$view->assign('categories', $category->toTree());
-	}
-	return $view->_next('categories');
 }
 /**
  * Gets the total of subcategories for the current category. If subcategories are not loaded, this function will load them and
@@ -148,11 +132,15 @@ function osc_count_subcategories()
 {
 	$view = ClassLoader::getInstance()->getClassInstance( 'View_Html' );
 	$category = $view->_current('categories');
-	if ($category == '') return -1;
-	if (!isset($category['categories'])) return 0;
-	if (!is_array($category['categories'])) return 0;
-	if (count($category['categories']) == 0) return 0;
-	if (!$view->_exists('subcategories')) 
+	if ($category == '')
+		return -1;
+	if (!isset($category['categories']))
+		return 0;
+	if (!is_array($category['categories']))
+		return 0;
+	if (count($category['categories']) == 0)
+		return 0;
+	if (!$view->varExists('subcategories')) 
 	{
 		$view->assign('subcategories', $category['categories']);
 	}
@@ -168,9 +156,11 @@ function osc_has_subcategories()
 {
 	$view = ClassLoader::getInstance()->getClassInstance( 'View_Html' );
 	$category = $view->_current('categories');
-	if ($category == '') return -1;
-	if (!isset($category['categories'])) return false;
-	if (!$view->_exists('subcategories')) 
+	if ($category == '')
+		return -1;
+	if (!isset($category['categories']))
+		return false;
+	if (!$view->varExists('subcategories')) 
 	{
 		$view->assign('subcategories', $category['categories']);
 	}
@@ -185,11 +175,11 @@ function osc_has_subcategories()
  * @param string $locale
  * @return string
  */
-function osc_category_name($locale = "") 
+function osc_category_name( array $item, $locale = "") 
 {
 	if ($locale == "")
 		$locale = osc_current_user_locale();
-	return osc_category_field("s_name", $locale);
+	return osc_category_field( $item, "s_name", $locale);
 }
 /**
  * Gets the description of the current category
@@ -209,10 +199,11 @@ function osc_category_description($locale = "")
  * @param string $locale
  * @return string
  */
-function osc_category_id($locale = "") 
+function osc_category_id( array $category, $locale = "") 
 {
-	if ($locale == "") $locale = osc_current_user_locale();
-	return osc_category_field("pk_i_id", $locale);
+	if ($locale == "")
+		$locale = osc_current_user_locale();
+	return osc_category_field( $category, "pk_i_id", $locale);
 }
 /**
  * Gets the slug of the current category
@@ -220,10 +211,11 @@ function osc_category_id($locale = "")
  * @param string $locale
  * @return string
  */
-function osc_category_slug($locale = "") 
+function osc_category_slug( array $item, $locale = "") 
 {
-	if ($locale == "") $locale = osc_current_user_locale();
-	return osc_category_field("s_slug", $locale);
+	if ($locale == "")
+		$locale = osc_current_user_locale();
+	return osc_category_field( $item, "s_slug", $locale);
 }
 /**
  * Gets the total items related with the current category
@@ -233,16 +225,6 @@ function osc_category_slug($locale = "")
 function osc_category_total_items() 
 {
 	return osc_category_field("i_num_items", "");
-}
-/**
- * Reset the pointer of the array to the first category
- *
- * @return void
- */
-function osc_goto_first_category() 
-{
-	$view = ClassLoader::getInstance()->getClassInstance( 'View_Html' );
-	$view->_reset('categories');
 }
 /**
  * Gets list of non-empty categories
@@ -256,7 +238,7 @@ function osc_get_non_empty_categories()
 	$category = $classLoader->getClassInstance( 'Model_Category' );
 	$aCategories = $category->toTree(false);
 	$view->assign('categories', $aCategories);
-	return $view->_get('categories');
+	return $aCategories;
 }
 /**
  * Prints category select

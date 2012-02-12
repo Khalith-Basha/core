@@ -28,16 +28,12 @@ class Form_Alert extends Form
 	{
 		parent::generic_input_hidden('alert_email', osc_logged_user_email());
 	}
-	public function default_email_text() 
-	{
-		return __('Enter your e-mail');
-	}
 	public function email_text() 
 	{
 		$value = "";
 		if (osc_logged_user_email() == '') 
 		{
-			$value = self::default_email_text();
+			$value = 'Enter your e-mail';
 		}
 		parent::generic_input_text('alert_email', $value);
 	}

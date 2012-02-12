@@ -29,8 +29,7 @@ class CWebSearch extends Controller_Default
 	{
 		$classLoader = $this->getClassLoader();
 
-		require 'osc/helpers/hPremium.php';
-		require 'osc/helpers/hPagination.php';
+		$classLoader->loadFile( 'helpers/premium' );
 		osc_run_hook('before_search');
 		$mCategories = $this->getClassLoader()->getClassInstance( 'Model_Category' );
 
@@ -236,11 +235,14 @@ class CWebSearch extends Controller_Default
 			}
 
 			$this->setViewTitle( $view );
-			if (osc_has_items()) 
+			if( 0 < count( $aItems ) ) 
 			{
-				$view->setMetaDescription( osc_item_category() . ', ' . osc_highlight(strip_tags(osc_item_description()), 140) . '..., ' . osc_item_category() );
+				$item = $aItems[0];
+				$view->setMetaDescription( osc_item_category( $item ) . ', ' . osc_highlight(strip_tags(osc_item_description( $item )), 140) . '..., ' . osc_item_category( $item ) );
 			}
 
+			$pagination = $classLoader->getClassInstance( 'Pagination' );
+			$view->assign( 'pagination', $pagination );
 			echo $view->render( 'search/results' );	
 		}
 		else
@@ -265,11 +267,11 @@ class CWebSearch extends Controller_Default
 						if (osc_count_item_resources() > 0) 
 						{
 							osc_has_item_resources();
-							$feed->addItem(array('title' => osc_item_title(), 'link' => htmlentities(osc_item_url()), 'description' => osc_item_description(), 'pub_date' => osc_item_pub_date(), 'image' => array('url' => htmlentities(osc_resource_thumbnail_url()), 'title' => osc_item_title(), 'link' => htmlentities(osc_item_url()))));
+							$feed->addItem(array('title' => osc_item_title( $item ), 'link' => htmlentities(osc_item_url( $item )), 'description' => osc_item_description( $item ), 'pub_date' => osc_item_pub_date( $item ), 'image' => array('url' => htmlentities(osc_resource_thumbnail_url( $item )), 'title' => osc_item_title( $item ), 'link' => htmlentities(osc_item_url( $item )))));
 						}
 						else
 						{
-							$feed->addItem(array('title' => osc_item_title(), 'link' => htmlentities(osc_item_url()), 'description' => osc_item_description(), 'pub_date' => osc_item_pub_date()));
+							$feed->addItem(array('title' => osc_item_title( $item ), 'link' => htmlentities(osc_item_url( $item )), 'description' => osc_item_description( $item ), 'pub_date' => osc_item_pub_date( $item )));
 						}
 					}
 				}

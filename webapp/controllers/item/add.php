@@ -40,6 +40,7 @@ class CWebItem extends Controller_Default
 	public function doGet( HttpRequest $req, HttpResponse $res ) 
 	{
 		$classLoader = $this->getClassLoader();
+		$classLoader->loadFile( 'helpers/locations' );
 		$locales = $classLoader->getClassInstance( 'Model_Locale' )->listAllEnabled();
 		$this->getView()->assign('locales', $locales);
 		if (osc_reg_user_post() && $this->user == null) 

@@ -33,9 +33,9 @@ function osc_search()
 {
 	$classLoader = ClassLoader::getInstance();
 	$view = $classLoader->getClassInstance( 'View_Html' );
-	if ($view->_exists('search')) 
+	if ($view->varExists('search')) 
 	{
-		return $view->_get('search');
+		return $view->getVar('search');
 	}
 	else
 	{
@@ -61,7 +61,7 @@ function osc_list_orders()
 function osc_search_page() 
 {
 	$view = ClassLoader::getInstance()->getClassInstance( 'View_Html' );
-	return $view->_get('search_page');
+	return $view->getVar('search_page');
 }
 /**
  * Gets total pages of search
@@ -71,7 +71,7 @@ function osc_search_page()
 function osc_search_total_pages() 
 {
 	$view = ClassLoader::getInstance()->getClassInstance( 'View_Html' );
-	return $view->_get('search_total_pages');
+	return $view->getVar('search_total_pages');
 }
 /**
  * Gets if "has pic" option is enabled or not in the search
@@ -81,7 +81,7 @@ function osc_search_total_pages()
 function osc_search_has_pic() 
 {
 	$view = ClassLoader::getInstance()->getClassInstance( 'View_Html' );
-	return $view->_get('search_has_pic');
+	return $view->getVar('search_has_pic');
 }
 /**
  * Gets current search order
@@ -91,7 +91,7 @@ function osc_search_has_pic()
 function osc_search_order() 
 {
 	$view = ClassLoader::getInstance()->getClassInstance( 'View_Html' );
-	return $view->_get('search_order');
+	return $view->getVar('search_order');
 }
 /**
  * Gets current search order type
@@ -101,7 +101,7 @@ function osc_search_order()
 function osc_search_order_type() 
 {
 	$view = ClassLoader::getInstance()->getClassInstance( 'View_Html' );
-	return $view->_get('search_order_type');
+	return $view->getVar('search_order_type');
 }
 /**
  * Gets current search pattern
@@ -111,9 +111,9 @@ function osc_search_order_type()
 function osc_search_pattern() 
 {
 	$view = ClassLoader::getInstance()->getClassInstance( 'View_Html' );
-	if ($view->_exists('search_pattern')) 
+	if ($view->varExists('search_pattern')) 
 	{
-		return $view->_get('search_pattern');
+		return $view->getVar('search_pattern');
 	}
 
 	return null;
@@ -126,7 +126,7 @@ function osc_search_pattern()
 function osc_search_region() 
 {
 	$view = ClassLoader::getInstance()->getClassInstance( 'View_Html' );
-	return $view->_get('search_region');
+	return $view->getVar('search_region');
 }
 /**
  * Gets current search city
@@ -136,7 +136,7 @@ function osc_search_region()
 function osc_search_city() 
 {
 	$view = ClassLoader::getInstance()->getClassInstance( 'View_Html' );
-	return $view->_get('search_city');
+	return $view->getVar('search_city');
 }
 /**
  * Gets current search max price
@@ -146,7 +146,7 @@ function osc_search_city()
 function osc_search_price_max() 
 {
 	$view = ClassLoader::getInstance()->getClassInstance( 'View_Html' );
-	return $view->_get('search_price_max');
+	return $view->getVar('search_price_max');
 }
 /**
  * Gets current search min price
@@ -156,7 +156,7 @@ function osc_search_price_max()
 function osc_search_price_min() 
 {
 	$view = ClassLoader::getInstance()->getClassInstance( 'View_Html' );
-	return $view->_get('search_price_min');
+	return $view->getVar('search_price_min');
 }
 /**
  * Gets current search total items
@@ -166,7 +166,7 @@ function osc_search_price_min()
 function osc_search_total_items() 
 {
 	$view = ClassLoader::getInstance()->getClassInstance( 'View_Html' );
-	return $view->_get('search_total_items');
+	return $view->getVar('search_total_items');
 }
 /**
  * Gets current search "show as" variable (show the items as a list or as a gallery)
@@ -176,7 +176,7 @@ function osc_search_total_items()
 function osc_search_show_as() 
 {
 	$view = ClassLoader::getInstance()->getClassInstance( 'View_Html' );
-	return $view->_get('search_show_as');
+	return $view->getVar('search_show_as');
 }
 /**
  * Gets current search start item record
@@ -186,7 +186,7 @@ function osc_search_show_as()
 function osc_search_start() 
 {
 	$view = ClassLoader::getInstance()->getClassInstance( 'View_Html' );
-	return $view->_get('search_start');
+	return $view->getVar('search_start');
 }
 /**
  * Gets current search end item record
@@ -196,7 +196,7 @@ function osc_search_start()
 function osc_search_end() 
 {
 	$view = ClassLoader::getInstance()->getClassInstance( 'View_Html' );
-	return $view->_get('search_end');
+	return $view->getVar('search_end');
 }
 /**
  * Gets current search category
@@ -206,17 +206,17 @@ function osc_search_end()
 function osc_search_category() 
 {
 	$view = ClassLoader::getInstance()->getClassInstance( 'View_Html' );
-	if ($view->_exists('search_subcategories')) 
+	if ($view->varExists('search_subcategories')) 
 	{
 		$category = $view->_current('search_subcategories');
 	}
-	elseif ($view->_exists('search_categories')) 
+	elseif ($view->varExists('search_categories')) 
 	{
 		$category = $view->_current('search_categories');
 	}
 	else
 	{
-		$category = $view->_get('search_category');
+		$category = $view->getVar('search_category');
 	}
 	return ($category);
 }
@@ -257,23 +257,6 @@ function osc_search_category_id()
 	}
 }
 /**
- * Update the search url with new options
- *
- * @return string
- */
-function osc_update_search_url($params, $delimiter = '&amp;') 
-{
-	$request = Params::getParamsAsArray('get');
-	unset($request['osclass']);
-	if (isset($request['sCategory[0]'])) 
-	{
-		unset($request['sCategory']);
-	}
-	unset($request['sCategory[]']);
-	$merged = array_merge($request, $params);
-	return osc_base_url(true) . "?" . http_build_query($merged, '', $delimiter);
-}
-/**
  * Load the form for the alert subscription
  *
  * @return void
@@ -281,14 +264,14 @@ function osc_update_search_url($params, $delimiter = '&amp;')
 function osc_alert_form() 
 {
 	$view = ClassLoader::getInstance()->getClassInstance( 'View_Html' );
-	if (!$view->_exists('search_alert')) 
+	if (!$view->varExists('search_alert')) 
 	{
 		$search = osc_search();
 		$search->order();
 		$search->limit();
 		$view->assign('search_alert', base64_encode(serialize($search)));
 	}
-	osc_current_web_theme_path('alert-form.php');
+	echo $view->render( 'alert-form' );
 }
 /**
  * Gets alert of current search
@@ -298,41 +281,7 @@ function osc_alert_form()
 function osc_search_alert() 
 {
 	$view = ClassLoader::getInstance()->getClassInstance( 'View_Html' );
-	return $view->_get('search_alert');
-}
-/**
- * Gets for a default search (all categories, noother option)
- *
- * @return string
- */
-function osc_search_show_all_url() 
-{
-	if (osc_rewrite_enabled()) 
-	{
-		return osc_base_url() . 'search/';
-	}
-	else
-	{
-		return osc_base_url(true) . '?page=search';
-	}
-}
-/**
- * Gets search url given params
- *
- * @params array $params
- * @return string
- */
-function osc_search_url($params = null) 
-{
-	$url = osc_base_url(true) . '?page=search';
-	if ($params != null) 
-	{
-		foreach ($params as $k => $v) 
-		{
-			$url.= "&" . $k . "=" . $v;
-		}
-	}
-	return $url;
+	return $view->getVar('search_alert');
 }
 /**
  * Gets list of countries with items
@@ -342,7 +291,7 @@ function osc_search_url($params = null)
 function osc_list_country() 
 {
 	$view = ClassLoader::getInstance()->getClassInstance( 'View_Html' );
-	if ($view->_exists('list_countries')) 
+	if ($view->varExists('list_countries')) 
 	{
 		return $view->_current('list_countries');
 	}
@@ -359,7 +308,7 @@ function osc_list_country()
 function osc_list_region() 
 {
 	$view = ClassLoader::getInstance()->getClassInstance( 'View_Html' );
-	if ($view->_exists('list_regions')) 
+	if ($view->varExists('list_regions')) 
 	{
 		return $view->_current('list_regions');
 	}
@@ -376,7 +325,7 @@ function osc_list_region()
 function osc_list_city() 
 {
 	$view = ClassLoader::getInstance()->getClassInstance( 'View_Html' );
-	if ($view->_exists('list_cities')) 
+	if ($view->varExists('list_cities')) 
 	{
 		return $view->_current('list_cities');
 	}
@@ -394,7 +343,7 @@ function osc_has_list_countries()
 {
 	$classLoader = ClassLoader::getInstance();
 	$view = $classLoader->getClassInstance( 'View_Html' );
-	if (!$view->_exists('list_countries')) 
+	if (!$view->varExists('list_countries')) 
 	{
 		$view->assign('list_countries', $classLoader->getClassInstance( 'Model_Search' )->listCountries('>='));
 	}
@@ -410,7 +359,7 @@ function osc_has_list_regions($country = '%%%%')
 {
 	$classLoader = ClassLoader::getInstance();
 	$view = $classLoader->getClassInstance( 'View_Html' );
-	if (!$view->_exists('list_regions')) 
+	if (!$view->varExists('list_regions')) 
 	{
 		$view->assign('list_regions', $classLoader->getClassInstance( 'Model_Search' )->listRegions($country, '>'));
 	}
@@ -426,7 +375,7 @@ function osc_has_list_cities($region = '%%%%')
 {
 	$classLoader = ClassLoader::getInstance();
 	$view = $classLoader->getClassInstance( 'View_Html' );
-	if (!$view->_exists('list_cities')) 
+	if (!$view->varExists('list_cities')) 
 	{
 		$view->assign('list_cities', $classLoader->getClassInstance( 'Model_Search' )->listCities($region, '>='));
 	}
@@ -443,11 +392,11 @@ function osc_count_list_countries()
 {
 	$classLoader = ClassLoader::getInstance();
 	$view = $classLoader->getClassInstance( 'View_Html' );
-	if (!$view->_exists('list_countries')) 
+	if (!$view->varExists('list_countries')) 
 	{
 		$view->assign('list_countries', $classLoader->getClassInstance( 'Model_Search' )->listCountries());
 	}
-	return $view->_count('list_countries');
+	return $view->countVar('list_countries');
 }
 /**
  * Gets the total number of regions in list_regions
@@ -459,11 +408,11 @@ function osc_count_list_regions($country = '%%%%')
 {
 	$classLoader = ClassLoader::getInstance();
 	$view = $classLoader->getClassInstance( 'View_Html' );
-	if (!$view->_exists('list_regions')) 
+	if (!$view->varExists('list_regions')) 
 	{
 		$view->assign('list_regions', $classLoader->getClassInstance( 'Model_Search' )->listRegions($country));
 	}
-	return $view->_count('list_regions');
+	return $view->countVar('list_regions');
 }
 /**
  * Gets the total number of cities in list_cities
@@ -475,29 +424,29 @@ function osc_count_list_cities($region = '%%%%')
 {
 	$classLoader = ClassLoader::getInstance();
 	$view = $classLoader->getClassInstance( 'View_Html' );
-	if (!$view->_exists('list_cities')) 
+	if (!$view->varExists('list_cities')) 
 	{
 		$view->assign('list_cities', $classLoader->getClassInstance( 'Model_Search' )->listCities($region));
 	}
-	return $view->_count('list_cities');
+	return $view->countVar('list_cities');
 }
 /**
  * Gets the the name of current "list region"
  *
  * @return string
  */
-function osc_list_region_name() 
+function osc_list_region_name( array $region )
 {
-	return osc_field(osc_list_region(), 'region_name', '');
+	return osc_field( $region, 'region_name', '');
 }
 /**
  * Gets the number of items of current "list region"
  *
  * @return int
  */
-function osc_list_region_items() 
+function osc_list_region_items( array $region ) 
 {
-	return osc_field(osc_list_region(), 'items', '');
+	return osc_field( $region, 'items', '' );
 }
 /**
  * Gets the the name of current "list city""
@@ -556,11 +505,11 @@ function osc_list_city_url()
 function osc_get_latest_searches($limit = 20) 
 {
 	$view = ClassLoader::getInstance()->getClassInstance( 'View_Html' );
-	if (!$view->_exists('latest_searches')) 
+	if (!$view->varExists('latest_searches')) 
 	{
 		$view->assign('latest_searches', LatestSearches::newInstance()->getSearches($limit));
 	}
-	return $view->_count('latest_searches');
+	return $view->countVar('latest_searches');
 }
 /**
  * Gets the total number of latest searches done in the website
@@ -570,11 +519,11 @@ function osc_get_latest_searches($limit = 20)
 function osc_count_latest_searches() 
 {
 	$view = ClassLoader::getInstance()->getClassInstance( 'View_Html' );
-	if (!$view->_exists('latest_searches')) 
+	if (!$view->varExists('latest_searches')) 
 	{
 		$view->assign('latest_searches', LatestSearches::newInstance()->getSearches());
 	}
-	return $view->_count('latest_searches');
+	return $view->countVar('latest_searches');
 }
 /**
  * Gets the next latest search
@@ -584,7 +533,7 @@ function osc_count_latest_searches()
 function osc_has_latest_searches() 
 {
 	$view = ClassLoader::getInstance()->getClassInstance( 'View_Html' );
-	if (!$view->_exists('latest_searches')) 
+	if (!$view->varExists('latest_searches')) 
 	{
 		$view->assign('latest_searches', LatestSearches::newInstance()->getSearches());
 	}
@@ -598,7 +547,7 @@ function osc_has_latest_searches()
 function osc_latest_search() 
 {
 	$view = ClassLoader::getInstance()->getClassInstance( 'View_Html' );
-	if ($view->_exists('latest_searches')) 
+	if ($view->varExists('latest_searches')) 
 	{
 		return $view->_current('latest_searches');
 	}

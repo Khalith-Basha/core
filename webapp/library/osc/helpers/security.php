@@ -37,3 +37,43 @@ function osc_genRandomPassword($length = 8)
 	for ($i = 0; $i < $length; $i++) $pass.= $dict[rand(0, count($dict) - 1) ];
 	return $pass;
 }
+function osc_check_recaptcha() 
+{
+	require_once 'recaptchalib.php';
+	if (Params::getParam("recaptcha_challenge_field") != '') 
+	{
+		$resp = recaptcha_check_answer(osc_recaptcha_private_key(), $_SERVER["REMOTE_ADDR"], Params::getParam("recaptcha_challenge_field"), Params::getParam("recaptcha_response_field"));
+		return $resp->is_valid;
+	}
+	return false;
+}
+/**
+ * Print recaptcha html, if $section = "recover_password"
+ * set 'recover_time' at session.
+ *
+ * @param  string $section
+ * @return void
+ */
+function osc_show_recaptcha($section = '') 
+{
+	if (osc_recaptcha_public_key()) 
+	{
+		require_once 'recaptchalib.php';
+		switch ($section) 
+		{
+		case ('recover_password'):
+			$session = ClassLoader::getInstance()->getClassInstance( 'Session' );
+			$time = $session->_get('recover_time');
+			if ((time() - $time) <= 1200) 
+			{
+				echo recaptcha_get_html(osc_recaptcha_public_key()) . "<br />";
+			}
+			break;
+
+		default:
+			echo recaptcha_get_html(osc_recaptcha_public_key());
+			break;
+		}
+	}
+}
+

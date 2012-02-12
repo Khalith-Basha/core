@@ -41,9 +41,8 @@ class CWebItem extends Controller_Default
 	public function doPost( HttpRequest $req, HttpResponse $res )
 	{
 		$classLoader = ClassLoader::getInstance();
-		$classLoader->loadFile( 'helpers/hSecurity' );
-		$classLoader->loadFile( 'helpers/hSanitize' );
-		$classLoader->loadFile( 'helpers/hValidate' );
+		$classLoader->loadFile( 'helpers/security' );
+		$classLoader->loadFile( 'helpers/sanitize' );
 		$locales = $classLoader->getClassInstance( 'Model_Locale' )->listAllEnabled();
 		$this->getView()->assign('locales', $locales);
 		if (osc_reg_user_post() && $this->user == null) 

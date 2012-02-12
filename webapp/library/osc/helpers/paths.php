@@ -78,4 +78,18 @@ function osc_plugins_path()
 {
 	return (PLUGINS_PATH);
 }
+/**
+ * Fix the problem of symbolics links in the path of the file
+ *
+ * @param string $file The filename of plugin.
+ * @return string The fixed path of a plugin.
+ */
+function osc_plugin_path($file) 
+{
+	// Sanitize windows paths and duplicated slashes
+	$file = preg_replace('|/+|', '/', str_replace('\\', '/', $file));
+	$plugin_path = preg_replace('|/+|', '/', str_replace('\\', '/', osc_plugins_path()));
+	$file = $plugin_path . preg_replace('#^.*components\/plugins\/#', '', $file);
+	return $file;
+}
 

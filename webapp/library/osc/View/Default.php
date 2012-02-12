@@ -31,11 +31,11 @@ class View_Default
 
 		$classLoader = ClassLoader::getInstance();
 		extract( $this->variables );
+		$urlFactory = $classLoader->getClassInstance( 'Url_Abstract' );
 		$view = $this;
 		$file = $name . '.php';
-		$themes = $classLoader->getClassInstance( 'WebThemes' );
+		$webThemes = $classLoader->getClassInstance( 'Ui_MainTheme' );
 		$viewContent = null;
-		$webThemes = $themes;
 		$filePath = $webThemes->getCurrentThemePath() . $file;
 		if (!file_exists($filePath)) 
 		{
@@ -58,58 +58,20 @@ class View_Default
 		return $viewContent;
 	}
 
-	function _get($key) 
+	public function getVar( $key ) 
 	{
-		if ($this->_exists($key)) 
-		{
-			return ($this->variables[$key]);
-		}
+		if( $this->varExists( $key ) )
+			return $this->variables[ $key ];
 
 		return null;
 	}
-	function _next($key) 
+
+	public function varExists( $key ) 
 	{
-		if (is_array($this->variables[$key])) 
-		{
-			$this->aCurrent[$key] = current($this->variables[$key]);
-			if ($this->aCurrent[$key]) 
-			{
-				next($this->variables[$key]);
-				return true;
-			}
-		}
-		return false;
+		return isset( $this->variables[ $key ] );
 	}
-	function _current($key) 
-	{
-		if (isset($this->aCurrent[$key]) && is_array($this->aCurrent[$key])) 
-		{
-			return $this->aCurrent[$key];
-		}
-		elseif (is_array($this->variables[$key])) 
-		{
-			$this->aCurrent[$key] = current($this->variables[$key]);
-			return $this->aCurrent[$key];
-		}
-		return null;
-	}
-	function _reset($key) 
-	{
-		if (!array_key_exists($key, $this->variables)) 
-		{
-			return array();
-		}
-		if (!is_array($this->variables[$key])) 
-		{
-			return array();
-		}
-		return reset($this->variables[$key]);
-	}
-	function _exists($key) 
-	{
-		return isset( $this->variables[$key] );
-	}
-	function _count($key) 
+
+	public function countVar( $key ) 
 	{
 		if (is_array($this->variables[$key])) 
 		{
@@ -117,10 +79,10 @@ class View_Default
 		}
 		return -1;
 	}
-	function _erase($key) 
+
+	public function removeVar( $key ) 
 	{
-		unset($this->variables[$key]);
-		unset($this->aCurrent[$key]);
+		unset( $this->variables[ $key ] );
 	}
 }
 

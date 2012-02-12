@@ -16,57 +16,20 @@
  * License along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-class Theme
-{
-	private $theme;
-	private $theme_url;
-	private $theme_path;
-	private $theme_exists;
-
-	public function setCurrentTheme($theme) 
-	{
-		$this->theme = $theme;
-		$this->setCurrentThemePath();
-		$this->setCurrentThemeUrl();
-	}
-
-	public function getCurrentTheme() 
-	{
-		return $this->theme;
-	}
-
-	public function getCurrentThemeJs() 
-	{
-		return $this->theme_url . '/static/scripts';
-	}
-
-	public function getCurrentThemeStyles() 
-	{
-		return $this->theme_url . '/static/styles';
-	}
-
-	public function getCurrentThemePath() 
-	{
-		return $this->theme_path;
-	}
-
-	public function getCurrentThemeUrl() 
-	{
-		return $this->theme_url;
-	}
-}
-
-class WebThemes extends Theme
+class Ui_MainTheme extends Ui_Theme
 {
 	private $path;
 	private $pages = array(
 		'404', 'contact', 'alert-form', 'custom', 'footer', 'functions', 'head', 'header', 'inc.search', 'index', 'item-contact', 'item-edit', 'item-post', 'item-send-friend', 'item', 'main', 'page', 'search', 'search_gallery', 'search_list', 'user-alerts', 'user-change_email', 'user-change_password', 'user-dashboard', 'user-forgot_password', 'user-items', 'user-login', 'user-profile', 'user-recover', 'user-register'
 	);
+	protected $urlFactory;
 
 	public function __construct() 
 	{
 		$this->path = osc_themes_path();
-		if (Params::getParam('theme') != '' && ClassLoader::getInstance()->getClassInstance( 'Session' )->_get('adminId') != '')
+		$classLoader = ClassLoader::getInstance();
+		$this->urlFactory = $classLoader->getClassInstance( 'Url_Abstract' );
+		if (Params::getParam('theme') != '' && $classLoader->getClassInstance( 'Session' )->_get('adminId') != '')
 			$this->setCurrentTheme(Params::getParam('theme'));
 		else $this->setCurrentTheme(osc_theme());
 		$functions_path = $this->getCurrentThemePath() . 'functions.php';
@@ -76,31 +39,27 @@ class WebThemes extends Theme
 		}
 	}
 
-	private function setCurrentThemePath() 
+	public function setCurrentThemePath() 
 	{
 		if (file_exists($this->path . $this->theme . '/')) 
 		{
 			$this->theme_exists = true;
 			$this->theme_path = $this->path . $this->theme . '/';
 		}
-		else
-		{
-			$this->theme_exists = false;
-			$this->theme_path = osc_lib_path() . '/osc/gui';
-		}
 	}
-	private function setCurrentThemeUrl() 
+
+	public function setCurrentThemeUrl() 
 	{
 		if ($this->theme_exists) 
 		{
-			$this->theme_url = osc_base_url() . '/' . str_replace(osc_base_path(), '', $this->theme_path);
+			$this->theme_url = $this->urlFactory->getBaseUrl() . '/' . str_replace(osc_base_path(), '', $this->theme_path);
 		}
 		else
 		{
-			$this->theme_url = osc_base_url() . '/components/themes/default/';
+			$this->theme_url = $this->urlFactory->getBaseUrl() . '/components/themes/default/';
 		}
 	}
-	/* PUBLIC */
+
 	public function setPath($path) 
 	{
 		if (file_exists($path)) 
@@ -116,7 +75,7 @@ class WebThemes extends Theme
 		$this->theme = '';
 		$this->theme_exists = false;
 		$this->theme_path = ABS_PATH . '/components/themes/default';
-		$this->theme_url = osc_base_url() . '/components/themes/default/';
+		$this->theme_url = $this->urlFactory->getBaseUrl() . '/components/themes/default/';
 		$functions_path = $this->getCurrentThemePath() . '/functions.php';
 		if (file_exists($functions_path)) 
 		{
@@ -146,7 +105,7 @@ class WebThemes extends Theme
 	 * @param <type> $theme
 	 * @return <type>
 	 */
-	function loadThemeInfo($theme) 
+	public function loadThemeInfo($theme) 
 	{
 		$path = $this->path . DIRECTORY_SEPARATOR . $theme . '/index.php';
 		if( !file_exists( $path ) )
@@ -160,27 +119,9 @@ class WebThemes extends Theme
 		$result['int_name'] = $theme;
 		return $result;
 	}
-	function isValidPage($internal_name) 
+	public function isValidPage($internal_name) 
 	{
 		return !in_array($internal_name, $this->pages);
 	}
 }
 
-class AdminThemes extends Theme
-{
-	public function __construct() 
-	{
-		$this->setCurrentTheme(osc_admin_theme());
-	}
-
-	private function setCurrentThemeUrl() 
-	{
-		$this->theme_url = osc_admin_base_url() . '/themes/' . $this->theme;
-	}
-
-	private function setCurrentThemePath() 
-	{
-		$this->theme_exists = true;
-		$this->theme_path = osc_admin_base_path() . '/themes/' . $this->theme;
-	}
-}

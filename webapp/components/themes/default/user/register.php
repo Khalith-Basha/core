@@ -19,7 +19,7 @@
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 $userForm = $classLoader->getClassInstance( 'Form_User' );
-
+$classLoader->loadFile( 'helpers/security' );
 echo $view->render( 'header' );
 ?>
 
@@ -27,7 +27,7 @@ echo $view->render( 'header' );
                 <div class="inner">
                     <h1><?php _e('Register an account for free', 'modern'); ?></h1>
                     <ul id="error_list"></ul>
-                    <form name="register" id="register" action="<?php echo osc_base_url(true); ?>" method="post" >
+                    <form name="register" id="register" action="<?php echo $urlFactory->getBaseUrl(true); ?>" method="post" >
                         <input type="hidden" name="page" value="user" />
                         <input type="hidden" name="action" value="register_post" />
                         

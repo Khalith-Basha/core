@@ -38,7 +38,7 @@ if( empty( $page ) ) $page = 'index';
 $action = Params::getParam( 'action' );
 if( empty( $action ) ) $action = 'index';
 
-$classLoader->getClassInstance( 'WebThemes' );
+$classLoader->getClassInstance( 'Ui_MainTheme' );
 
 $ctrlPath = osc_admin_base_path() . '/controllers/' . $page . '/' . $action . '.php';
 require $ctrlPath;

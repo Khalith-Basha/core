@@ -43,11 +43,11 @@ function osc_locale_field($field, $locale = '')
 function osc_locale() 
 {
 	$view = ClassLoader::getInstance()->getClassInstance( 'View_Default' );
-	if ($view->_exists('locales')) 
+	if ($view->varExists('locales')) 
 	{
 		$locale = $view->_current('locales');
 	}
-	elseif ($view->_exists('locale')) 
+	elseif ($view->varExists('locale')) 
 	{
 		$locale = $view->_get('locale');
 	}
@@ -77,7 +77,7 @@ function osc_get_locales()
 function osc_priv_count_locales() 
 {
 	$view = ClassLoader::getInstance()->getClassInstance( 'View_Default' );
-	return $view->_count('locales');
+	return $view->countVar('locales');
 }
 /**
  * Reset iterator of locales
@@ -98,7 +98,7 @@ function osc_count_web_enabled_locales()
 {
 	$classLoader = ClassLoader::getInstance();
 	$view = $classLoader->getClassInstance( 'View_Default' );
-	if (!$view->_exists('locales')) 
+	if (!$view->varExists('locales')) 
 	{
 		$view->assign('locales', $classLoader->getClassInstance( 'Model_Locale' )->listAllEnabled());
 	}
@@ -113,7 +113,7 @@ function osc_has_web_enabled_locales()
 {
 	$classLoader = ClassLoader::getInstance();
 	$view = $classLoader->getClassInstance( 'View_Default' );
-	if (!$view->_exists('locales')) 
+	if (!$view->varExists('locales')) 
 	{
 		$view->assign('locales', $classLoader->getClassInstance( 'Model_Locale' )->listAllEnabled());
 	}

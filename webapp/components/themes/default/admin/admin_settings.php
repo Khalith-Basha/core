@@ -7,7 +7,7 @@ if (Params::getParam("action_specific") != '')
 		$package = Params::getFiles("logo");
 		if ($package['error'] == UPLOAD_ERR_OK) 
 		{
-			if (move_uploaded_file($package['tmp_name'], ClassLoader::getInstance()->getClassInstance( 'WebThemes' )->getCurrentThemePath() . "images/logo.jpg")) 
+			if (move_uploaded_file($package['tmp_name'], ClassLoader::getInstance()->getClassInstance( 'Ui_MainTheme' )->getCurrentThemePath() . "images/logo.jpg")) 
 			{
 				osc_add_flash_ok_message(_m('The logo image has been uploaded correctly'), 'admin');
 			}
@@ -23,9 +23,9 @@ if (Params::getParam("action_specific") != '')
 		break;
 
 	case ('remove'):
-		if (file_exists(ClassLoader::getInstance()->getClassInstance( 'WebThemes' )->getCurrentThemePath() . "images/logo.jpg")) 
+		if (file_exists(ClassLoader::getInstance()->getClassInstance( 'Ui_MainTheme' )->getCurrentThemePath() . "images/logo.jpg")) 
 		{
-			unlink(ClassLoader::getInstance()->getClassInstance( 'WebThemes' )->getCurrentThemePath() . "images/logo.jpg");
+			unlink(ClassLoader::getInstance()->getClassInstance( 'Ui_MainTheme' )->getCurrentThemePath() . "images/logo.jpg");
 			osc_add_flash_ok_message(_m('The logo image has been removed'), 'admin');
 		}
 		else
@@ -42,7 +42,7 @@ osc_show_flash_message('admin'); ?>
         <div style="padding: 20px;">
 
             <?php
-if (is_writable(ClassLoader::getInstance()->getClassInstance( 'WebThemes' )->getCurrentThemePath() . "images/")) 
+if (is_writable(ClassLoader::getInstance()->getClassInstance( 'Ui_MainTheme' )->getCurrentThemePath() . "images/")) 
 { ?>
 
             <p style="border-bottom: 1px black solid;padding-bottom: 10px;">
@@ -51,7 +51,7 @@ if (is_writable(ClassLoader::getInstance()->getClassInstance( 'WebThemes' )->get
                 <?php
 	_e('The preferred size of the logo is 600x100', 'modern'); ?>.
                 <?php
-	if (file_exists(ClassLoader::getInstance()->getClassInstance( 'WebThemes' )->getCurrentThemePath() . "images/logo.jpg")) 
+	if (file_exists(ClassLoader::getInstance()->getClassInstance( 'Ui_MainTheme' )->getCurrentThemePath() . "images/logo.jpg")) 
 	{ ?>
                 <strong><?php
 		_e('Note: Uploading another logo will overwrite current logo', 'modern'); ?>.</strong>
@@ -72,7 +72,7 @@ if (is_writable(ClassLoader::getInstance()->getClassInstance( 'WebThemes' )->get
             </form>
             <div>
                 <?php
-	if (file_exists(ClassLoader::getInstance()->getClassInstance( 'WebThemes' )->getCurrentThemePath() . "images/logo.jpg")) 
+	if (file_exists(ClassLoader::getInstance()->getClassInstance( 'Ui_MainTheme' )->getCurrentThemePath() . "images/logo.jpg")) 
 	{ ?>
                 <p>
                     Preview:<br>
@@ -105,7 +105,7 @@ else
             <div id="flash_message">
                 <p>
                     <?php
-	$msg = sprintf(__('The images folder %s is not writable on your server', 'modern'), ClassLoader::getInstance()->getClassInstance( 'WebThemes' )->getCurrentThemePath() . "images/") . ", ";
+	$msg = sprintf(__('The images folder %s is not writable on your server', 'modern'), ClassLoader::getInstance()->getClassInstance( 'Ui_MainTheme' )->getCurrentThemePath() . "images/") . ", ";
 	$msg.= __('OpenSourceClassifieds can\'t upload logo image from the administration panel', 'modern') . '. ';
 	$msg.= __('Please make the mentioned images folder writable', 'modern') . '.';
 	echo $msg;
@@ -117,7 +117,7 @@ else
                 </p>
                 <p style="background-color: white; border: 1px solid black; padding: 8px;">
                     chmod a+w <?php
-	echo ClassLoader::getInstance()->getClassInstance( 'WebThemes' )->getCurrentThemePath() . "images/"; ?>
+	echo ClassLoader::getInstance()->getClassInstance( 'Ui_MainTheme' )->getCurrentThemePath() . "images/"; ?>
                 </p>
             </div>
             

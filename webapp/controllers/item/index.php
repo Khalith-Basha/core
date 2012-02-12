@@ -38,6 +38,7 @@ class CWebItem extends Controller_Default
 
 	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
+		$classLoader = $this->getClassLoader();
 		$this->itemModel = $this->getClassLoader()->getClassInstance( 'Model_Item' );
 		$locales = $this->getClassLoader()->getClassInstance( 'Model_Locale' )->listAllEnabled();
 		$this->view->assign('locales', $locales);
@@ -85,7 +86,6 @@ class CWebItem extends Controller_Default
 			$this->view->assign('items', array($item));
 			osc_run_hook('show_item', $item);
 
-			require 'osc/helpers/hPagination.php';
 			$view = $this->getView();
 			$this->view->setTitle( $item['locale'][osc_current_user_locale()]['s_title'] );
 			$this->view->addJavaScript( '/static/scripts/contact-form.js' );

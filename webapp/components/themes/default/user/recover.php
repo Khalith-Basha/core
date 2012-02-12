@@ -18,15 +18,16 @@
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-$userForm = ClassLoader::getInstance()->getClassInstance( 'Form_User' );
-
+$userForm = $classLoader->getClassInstance( 'Form_User' );
+$indexUrl = $classLoader->getClassInstance( 'Url_Index' );
+$classLoader->loadFile( 'helpers/security' );
 echo $view->render( 'header' );
 ?>
 
             <div class="content user_forms">
                 <div class="inner">
                     <h1><?php _e('Recover your password', 'modern'); ?></h1>
-		    <form action="<?php echo osc_base_url(true); ?>" method="post" >
+		    <form action="<?php echo $indexUrl->getBaseUrl(true); ?>" method="post" >
                         <input type="hidden" name="page" value="user" />
                         <input type="hidden" name="action" value="recover" />
                         <fieldset>

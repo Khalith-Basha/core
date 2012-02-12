@@ -19,6 +19,7 @@
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+$indexUrl = $classLoader->getClassInstance( 'Url_Index' );
 $pages = __get( 'pages' );
 ?>
 
@@ -27,9 +28,9 @@ $pages = __get( 'pages' );
 <?php osc_show_widgets('footer'); ?>
 <footer>
 	<ul>
-		<li><a href="<?php echo osc_contact_url(); ?>"><?php _e( 'Contact', 'modern' ); ?></a></li>
+		<li><a href="<?php echo $indexUrl->osc_contact_url(); ?>"><?php _e( 'Contact', 'modern' ); ?></a></li>
 		<?php foreach( $pages as $page ): ?>
-			<li><a href="<?php echo osc_static_page_url( $page ); ?>"><?php echo $page['s_title']; ?></a></li>
+			<li><a href="<?php echo $page['url']; ?>"><?php echo $page['s_title']; ?></a></li>
 		<?php endforeach; ?>
 		<li><?php _e('This website is proudly using an <a title="OpenSourceClassifieds project" href="http://www.opensourceclassifieds.org/">open source classifieds</a> software.', 'modern'); ?></li>
 	</ul>

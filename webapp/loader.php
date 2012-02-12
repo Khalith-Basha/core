@@ -38,18 +38,19 @@ $classLoader->loadFile( 'Controller/User' );
 $classLoader->loadFile( 'Controller/Cacheable' );
 $classLoader->loadFile( 'Params' );
 $classLoader->loadFile( 'Database/DAO' );
+$classLoader->loadFile( 'Ui/Theme' );
 $classLoader->loadFile( 'Model/Preference' );
 $classLoader->loadFile( 'Model/Locale' );
+
+$classLoader->loadFile( 'helpers/themes' );
+$classLoader->loadFile( 'helpers/paths' );
 $classLoader->loadFile( 'helpers/formatting' );
 $classLoader->loadFile( 'helpers/categories' );
 $classLoader->loadFile( 'helpers/preference' );
 $classLoader->loadFile( 'helpers/locales' );
 $classLoader->loadFile( 'helpers/translations' );
-$classLoader->loadFile( 'helpers/plugins' );
 $classLoader->loadFile( 'helpers/items' );
-$classLoader->loadFile( 'helpers/utils' );
 $classLoader->loadFile( 'helpers/search' );
-$classLoader->loadFile( 'helpers/pages' );
 $classLoader->loadFile( 'helpers/users' );
 $classLoader->loadFile( 'helpers/flashMessages' );
 
@@ -68,3 +69,5 @@ $dbConnection = $classLoader->getClassInstance(
 $pluginManager = $classLoader->getClassInstance( 'PluginManager' );
 $pluginManager->init();
 
+$classLoader->loadFile( 'helpers/plugins' );
+$classLoader->loadFile( 'helpers/views' );

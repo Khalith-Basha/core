@@ -258,3 +258,31 @@ function osc_admin_render_plugin($file = '')
 	header('Location: ' . osc_admin_render_plugin_url($file));
 	exit;
 }
+
+/**
+ * Fix the problem of symbolics links in the path of the file
+ *
+ * @param string $file The filename of plugin.
+ * @return string The fixed path of a plugin.
+ */
+function osc_plugin_url($file) 
+{
+	// Sanitize windows paths and duplicated slashes
+	$dir = preg_replace('|/+|', '/', str_replace('\\', '/', dirname($file)));
+	$dir = WEB_PATH . 'components/plugins/' . preg_replace('#^.*components\/plugins\/#', '', $dir) . "/";
+	return $dir;
+}
+/**
+ * Fix the problem of symbolics links in the path of the file
+ *
+ * @param string $file The filename of plugin.
+ * @return string The fixed path of a plugin.
+ */
+function osc_plugin_folder($file) 
+{
+	// Sanitize windows paths and duplicated slashes
+	$dir = preg_replace('|/+|', '/', str_replace('\\', '/', dirname($file)));
+	$dir = preg_replace('#^.*components\/plugins\/#', '', $dir) . "/";
+	return $dir;
+}
+

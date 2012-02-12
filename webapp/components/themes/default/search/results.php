@@ -19,6 +19,7 @@
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+$searchUrl = $classLoader->getClassInstance( 'Url_Search' );
 echo $view->render( 'header' );
 ?>
 
@@ -42,22 +43,18 @@ foreach ($orders as $label => $params)
                                         <?php
 	if (osc_search_order() == $params['sOrder'] && osc_search_order_type() == $orderType) 
 	{ ?>
-                                            <a class="current" href="<?php echo osc_update_search_url($params); ?>"><?php echo $label; ?></a>
+                                            <a class="current" href="<?php echo $searchUrl->osc_update_search_url($params); ?>"><?php echo $label; ?></a>
                                         <?php
 	}
 	else
 	{ ?>
-                                            <a href="<?php
-		echo osc_update_search_url($params); ?>"><?php
-		echo $label; ?></a>
-                                        <?php
-	} ?>
-                                        <?php
+                                            <a href="<?php echo $searchUrl->osc_update_search_url($params); ?>"><?php echo $label; ?></a>
+                                        <?php } ?>
+<?php
 	if ($i != count($orders) - 1) 
 	{ ?>
                                             <span>|</span>
-                                        <?php
-	} ?>
+                                        <?php } ?>
                                         <?php
 	$i++; ?>
                                     <?php
@@ -74,18 +71,14 @@ if (osc_count_items() == 0)
 }
 else
 { ?>
-                            <?php
-	require (osc_search_show_as() == 'list' ? 'list.php' : 'gallery.php'); ?>
-                        <?php
-} ?>
-                        <div class="paginate" >
-                        <?php echo osc_search_pagination(); ?>
-                        </div>
+                            <?php require (osc_search_show_as() == 'list' ? 'list.php' : 'gallery.php'); ?>
+                        <?php } ?>
+			<div class="paginate"><?php echo $pagination->showLinks(); ?></div>
                     </div>
                 </div>
                 <div id="sidebar">
                     <div class="filters">
-                        <form action="<?php echo osc_base_url(true); ?>" method="get" onSubmit="return checkEmptyCategories()">
+                        <form action="<?php echo $urlFactory->getBaseUrl(true); ?>" method="get" onSubmit="return checkEmptyCategories()">
                             <input type="hidden" name="page" value="search" />
                             <fieldset class="box location">
                                 <h3><strong><?php _e('Your search', 'modern'); ?></strong></h3>
@@ -113,52 +106,35 @@ else
                                     </ul>
                                 </div>
 				<?php endif; ?>
-                                <?php
-if (osc_price_enabled_at_items()) 
-{ ?>
+                                <?php if (osc_price_enabled_at_items())  { ?>
                                 <div class="row two_input">
                                     <h6><?php _e('Price', 'modern'); ?></h6>
                                     <div><?php _e('Min', 'modern'); ?>.</div>
                                     <input type="text" id="priceMin" name="sPriceMin" value="<?php echo osc_search_price_min(); ?>" size="6" maxlength="6" />
-                                    <div><?php
-	_e('Max', 'modern'); ?>.</div>
+                                    <div><?php _e('Max', 'modern'); ?>.</div>
                                     <input type="text" id="priceMax" name="sPriceMax" value="<?php echo osc_search_price_max(); ?>" size="6" maxlength="6" />
                                 </div>
-                                <?php
-} ?>
-                                <?php
-osc_get_non_empty_categories(); ?>
-                                <?php
-if (osc_count_categories()) 
-{ ?>
+                                <?php } ?>
+                                <?php osc_get_non_empty_categories(); ?>
+                                <?php if (osc_count_categories())  { ?>
                                     <div class="row checkboxes">
                                         <h6><?php _e('Category', 'modern'); ?></h6>
                                         <ul>
-                                            <?php // RESET CATEGORIES IF WE USED THEN IN THE HEADER
-	 ?>
-                                            <?php
-	osc_goto_first_category(); ?>
-                                            <?php
-	while (osc_has_categories()) 
-	{ ?>
+						<?php foreach( $classLoader->getClassInstance( 'Model_Category' )->toTree() as $category ): ?>
                                                 <li>
-                                                    <input type="checkbox" id="cat<?php echo osc_category_id(); ?>" name="sCategory[]" value="<?php echo osc_category_id(); ?>" <?php echo ((in_array(osc_category_id(), osc_search_category()) || in_array(osc_category_slug() . "/", osc_search_category()) || count(osc_search_category()) == 0) ? 'checked' : ''); ?> /> <label for="cat<?php echo osc_category_id(); ?>"><strong><?php echo osc_category_name(); ?></strong></label>
+                                                    <input type="checkbox" id="cat<?php echo osc_category_id( $category ); ?>" name="sCategory[]" value="<?php echo osc_category_id( $category ); ?>" <?php echo ((in_array(osc_category_id( $category ), osc_search_category( $category )) || in_array(osc_category_slug( $category ) . "/", osc_search_category( $category )) || count(osc_search_category( $category )) == 0) ? 'checked' : ''); ?> /> <label for="cat<?php echo osc_category_id( $category ); ?>"><strong><?php echo osc_category_name( $category ); ?></strong></label>
                                                 </li>
-                                            <?php
-	} ?>
+                                            <?php endforeach; ?>
                                         </ul>
                                     </div>
-                                <?php
-} ?>
+                                <?php } ?>
                             </fieldset>
 
                             <?php
 if (osc_search_category_id()) 
 {
 	osc_run_hook('search_form', osc_search_category_id());
-}
-else
-{
+} else {
 	osc_run_hook('search_form');
 }
 ?>

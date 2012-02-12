@@ -87,7 +87,7 @@ foreach ($themes as $theme)
 	if ($theme != osc_theme()) 
 	{ ?>
                                     <?php
-		$info = ClassLoader::getInstance()->getClassInstance( 'WebThemes' )->loadThemeInfo($theme); ?>
+		$info = ClassLoader::getInstance()->getClassInstance( 'Ui_MainTheme' )->loadThemeInfo($theme); ?>
                                     <center>
                                         <div style="width: 49%; float: left; padding-top: 10px; padding-bottom: 20px; <?php
 		if ($c == 1) 

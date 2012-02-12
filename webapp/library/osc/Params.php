@@ -87,3 +87,19 @@ class Params
 	}
 }
 
+function strip_slashes_extended($array) 
+{
+	if (is_array($array)) 
+	{
+		foreach ($array as $k => & $v) 
+		{
+			$v = strip_slashes_extended($v);
+		}
+	}
+	else
+	{
+		$array = stripslashes($array);
+	}
+	return $array;
+}
+

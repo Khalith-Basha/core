@@ -1,17 +1,36 @@
 <?php
 
-abstract class Url_Abstract
+class Url_Abstract
 {
 	protected $urls;
+	protected $classLoader;
 
 	public function __construct()
 	{
+		$this->classLoader = ClassLoader::getInstance();
 		$this->urls = array();
 
 		$this->loadUrls();
 	}
 
-	abstract public function loadUrls();
+	public function loadUrls()
+	{
+	}
+
+	/**
+	 * Gets the root url for your installation
+	 *
+	 * @param boolean $with_index true if index.php in the url is needed
+	 * @return string
+	 */
+	public function getBaseUrl( $withIndex = false )
+	{
+		$generalConfig = $this->classLoader->getClassInstance( 'Config' )->getConfig( 'general' );
+		$path = $generalConfig['webUrl'];
+		if( $withIndex )
+			$path .= '/index.php';
+		return $path;
+	}
 
 	public function create( $name )
 	{

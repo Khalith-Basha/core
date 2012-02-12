@@ -42,7 +42,7 @@ class CAdminPage extends Controller_Administration
 	{
 		$id = Params::getParam("id");
 		$s_internal_name = Params::getParam("s_internal_name");
-		if (!ClassLoader::getInstance()->getClassInstance( 'WebThemes' )->isValidPage($s_internal_name)) 
+		if (!ClassLoader::getInstance()->getClassInstance( 'Ui_MainTheme' )->isValidPage($s_internal_name)) 
 		{
 			osc_add_flash_error_message(_m('You have to set a different internal name'), 'admin');
 			$this->redirectTo(osc_admin_base_url(true) . "?page=page?action=edit&id=" . $id);

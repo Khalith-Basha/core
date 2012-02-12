@@ -27,7 +27,7 @@ echo $view->render( 'header' );
 	<div class="inner">
 	    <h1><?php _e('Contact us', 'modern'); ?></h1>
 	    <ul id="error_list"></ul>
-	    <form action="<?php echo osc_base_url(true); ?>" method="post" name="contact" id="contact">
+	    <form action="<?php echo $urlFactory->getBaseUrl(true); ?>" method="post" name="contact" id="contact">
 		<input type="hidden" name="page" value="contact" />
 		<fieldset>
 		    <label for="subject"><?php _e('Subject', 'modern'); ?> (<?php _e('optional', 'modern'); ?>)</label> <?php $contactForm->the_subject(); ?><br />

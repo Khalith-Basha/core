@@ -57,23 +57,23 @@ function osc_item()
 	$classLoader = ClassLoader::getInstance();
 
 	$view = $classLoader->getClassInstance( 'View_Default' );
-	if( $view->_exists( 'items' ) )
+	if( $view->varExists( 'items' ) )
 	{
 		$item = $view->_current( 'items' );
 	}
-	elseif( $view->_exists( 'item' ) )
+	elseif( $view->varExists( 'item' ) )
 	{
-		$item = $view->_get( 'item' );
+		$item = $view->getVar( 'item' );
 	}
 	if( is_null( $item ) )
 		$view = $classLoader->getClassInstance( 'View_Html' );
-	if( $view->_exists( 'items' ) )
+	if( $view->varExists( 'items' ) )
 	{
 		$item = $view->_current( 'items' );
 	}
-	elseif( $view->_exists( 'item' ) )
+	elseif( $view->varExists( 'item' ) )
 	{
-		$item = $view->_get( 'item' );
+		$item = $view->getVar( 'item' );
 	}
 
 	return $item;
@@ -86,13 +86,13 @@ function osc_item()
 function osc_comment() 
 {
 	$view = ClassLoader::getInstance()->getClassInstance( 'View_Html' );
-	if ($view->_exists('comments')) 
+	if ($view->varExists('comments')) 
 	{
 		$comment = $view->_current('comments');
 	}
 	else
 	{
-		$comment = $view->_get('comment');
+		$comment = $view->getVar('comment');
 	}
 	return ($comment);
 }
@@ -104,13 +104,13 @@ function osc_comment()
 function osc_resource() 
 {
 	$view = ClassLoader::getInstance()->getClassInstance( 'View_Html' );
-	if ($view->_exists('resources')) 
+	if ($view->varExists('resources')) 
 	{
 		$resource = $view->_current('resources');
 	}
 	else
 	{
-		$resource = $view->_get('resource');
+		$resource = $view->getVar('resource');
 	}
 	return ($resource);
 }
@@ -121,9 +121,9 @@ function osc_resource()
  * @param type $locale
  * @return field_type
  */
-function osc_item_field($field, $locale = "") 
+function osc_item_field( array $item, $field, $locale = "") 
 {
-	return osc_field( osc_item(), $field, $locale);
+	return osc_field( $item, $field, $locale);
 }
 /**
  * Gets a specific field from current comment
@@ -153,9 +153,9 @@ function osc_resource_field($field, $locale = '')
  *
  * @return int
  */
-function osc_item_id() 
+function osc_item_id( array $item ) 
 {
-	return (int)osc_item_field("pk_i_id");
+	return (int)osc_item_field( $item, "pk_i_id");
 }
 /**
  * Gets user id from current item
@@ -172,19 +172,20 @@ function osc_item_user_id()
  * @param string $locale
  * @return string $desc
  */
-function osc_item_description($locale = "") 
+function osc_item_description( array $item, $locale = "") 
 {
-	if ($locale == "") $locale = osc_current_user_locale();
-	$desc = osc_item_field("s_description", $locale);
+	if ($locale == "")
+		$locale = osc_current_user_locale();
+	$desc = osc_item_field( $item, "s_description", $locale);
 	if ($desc == '') 
 	{
-		$desc = osc_item_field("s_description", osc_language());
+		$desc = osc_item_field( $item, "s_description", osc_language());
 		if ($desc == '') 
 		{
 			$aLocales = osc_get_locales();
 			foreach ($aLocales as $locale) 
 			{
-				$desc = osc_item_field("s_description", $locale);
+				$desc = osc_item_field( $item, "s_description", $locale);
 				if ($desc != '') 
 				{
 					break;
@@ -200,19 +201,20 @@ function osc_item_description($locale = "")
  * @param string $locale
  * @return string
  */
-function osc_item_title($locale = "") 
+function osc_item_title( array $item, $locale = "") 
 {
-	if ($locale == "") $locale = osc_current_user_locale();
-	$title = osc_item_field("s_title", $locale);
+	if ($locale == "")
+		$locale = osc_current_user_locale();
+	$title = osc_item_field( $item, "s_title", $locale);
 	if ($title == '') 
 	{
-		$title = osc_item_field("s_title", osc_language());
+		$title = osc_item_field( $item, "s_title", osc_language());
 		if ($title == '') 
 		{
 			$aLocales = osc_get_locales();
 			foreach ($aLocales as $locale) 
 			{
-				$title = osc_item_field("s_title", $locale);
+				$title = osc_item_field( $item, "s_title", $locale);
 				if ($title != '') 
 				{
 					break;
@@ -228,17 +230,17 @@ function osc_item_title($locale = "")
  * @param string $locale
  * @return string
  */
-function osc_item_category($locale = "") 
+function osc_item_category( array $item, $locale = "") 
 {
 	$classLoader = ClassLoader::getInstance();
 	$view = $classLoader->getClassInstance( 'View_Html' );
 	if ($locale == "")
 		$locale = osc_current_user_locale();
-	if (!$view->_exists('item_category')) 
+	if (!$view->varExists('item_category')) 
 	{
-		$view->assign('item_category', $classLoader->getClassInstance( 'Model_Category' )->findByPrimaryKey(osc_item_category_id()));
+		$view->assign('item_category', $classLoader->getClassInstance( 'Model_Category' )->findByPrimaryKey(osc_item_category_id( $item )));
 	}
-	$category = $view->_get('item_category');
+	$category = $view->getVar('item_category');
 	return (string)osc_field($category, "s_name", $locale);
 }
 /**
@@ -253,11 +255,11 @@ function osc_item_category_description($locale = "")
 	$view = $classLoader->getClassInstance( 'View_Html' );
 	if ($locale == "")
 		$locale = osc_current_user_locale();
-	if (!$view->_exists('item_category')) 
+	if (!$view->varExists('item_category')) 
 	{
 		$view->assign('item_category', $classLoader->getClassInstance( 'Model_Category' )->findByPrimaryKey(osc_item_category_id()));
 	}
-	$category = $view->_get('item_category');
+	$category = $view->getVar('item_category');
 	return osc_field($category, "s_description", $locale);
 }
 /**
@@ -265,72 +267,72 @@ function osc_item_category_description($locale = "")
  *
  * @return int
  */
-function osc_item_category_id() 
+function osc_item_category_id( array $item ) 
 {
-	return (int)osc_item_field("fk_i_category_id");
+	return (int)osc_item_field( $item, "fk_i_category_id");
 }
 /**
  * Gets publication date of current item
  *
  * @return string
  */
-function osc_item_pub_date() 
+function osc_item_pub_date( array $item )
 {
-	return (string)osc_item_field("dt_pub_date");
+	return (string)osc_item_field( $item, "dt_pub_date");
 }
 /**
  * Gets modification date of current item
  *
  * @return string
  */
-function osc_item_mod_date() 
+function osc_item_mod_date( array $item )
 {
-	return (string)osc_item_field("dt_mod_date");
+	return (string)osc_item_field( $item, "dt_mod_date");
 }
 /**
  * Gets price of current item
  *
  * @return float
  */
-function osc_item_price() 
+function osc_item_price( array $item ) 
 {
-	return (float)osc_item_field("i_price");
+	return (float)osc_item_field( $item, "i_price");
 }
 /**
  * Gets formated price of current item
  *
  * @return string
  */
-function osc_item_formated_price() 
+function osc_item_formated_price( array $item ) 
 {
-	return (string)osc_format_price(osc_item_field("i_price"));
+	return (string)osc_format_price( $item, osc_item_field( $item, "i_price") );
 }
 /**
  * Gets currency of current item
  *
  * @return string
  */
-function osc_item_currency() 
+function osc_item_currency( array $item ) 
 {
-	return (string)osc_item_field("fk_c_currency_code");
+	return (string)osc_item_field( $item, "fk_c_currency_code");
 }
 /**
  * Gets contact name of current item
  *
  * @return string
  */
-function osc_item_contact_name() 
+function osc_item_contact_name( array $item ) 
 {
-	return (string)osc_item_field("s_contact_name");
+	return (string)osc_item_field( $item, "s_contact_name");
 }
 /**
  * Gets contact email of current item
  *
  * @return string
  */
-function osc_item_contact_email() 
+function osc_item_contact_email( array $item ) 
 {
-	return (string)osc_item_field("s_contact_email");
+	return (string)osc_item_field( $item, "s_contact_email");
 }
 /**
  * Gets country name of current item
@@ -356,18 +358,18 @@ function osc_item_country_code()
  *
  * @return string
  */
-function osc_item_region() 
+function osc_item_region( array $item )
 {
-	return (string)osc_item_field("s_region");
+	return (string)osc_item_field( $item, "s_region");
 }
 /**
  * Gets city of current item
  *
  * @return string
  */
-function osc_item_city() 
+function osc_item_city( array $item ) 
 {
-	return (string)osc_item_field("s_city");
+	return (string)osc_item_field( $item, "s_city");
 }
 /**
  * Gets city area of current item
@@ -428,10 +430,9 @@ function osc_item_longitude()
  *
  * @return boolean
  */
-function osc_item_is_premium() 
+function osc_item_is_premium( array $item )
 {
-	if (osc_item_field("b_premium")) return true;
-	else return false;
+	return osc_item_field( $item, "b_premium");
 }
 /**
  * return number of views of current item
@@ -535,42 +536,6 @@ function osc_item_is_spam()
 }
 
 /**
- * Retrun link for mark as bad category the current item.
- *
- * @return string
- */
-function osc_item_link_bad_category() 
-{
-	return osc_base_url( true ) . '?page=item&action=mark&as=badcat&id=' . osc_item_id();
-}
-/**
- * Gets link for mark as repeated the current item
- *
- * @return string
- */
-function osc_item_link_repeated() 
-{
-	return osc_base_url(true) . "?page=item&action=mark&as=repeated&id=" . osc_item_id();
-}
-/**
- * Gets link for mark as offensive the current item
- *
- * @return string
- */
-function osc_item_link_offensive() 
-{
-	return osc_base_url(true) . "?page=item&action=mark&as=offensive&id=" . osc_item_id();
-}
-/**
- * Gets link for mark as expired the current item
- *
- * @return string
- */
-function osc_item_link_expired() 
-{
-	return osc_base_url(true) . "?page=item&action=mark&as=expired&id=" . osc_item_id();
-}
-/**
  * Gets actual page for current pagination
  *
  * @return int
@@ -578,7 +543,7 @@ function osc_item_link_expired()
 function osc_list_page() 
 {
 	$view = ClassLoader::getInstance()->getClassInstance( 'View_Html' );
-	return $view->_get('list_page');
+	return $view->getVar('list_page');
 }
 /**
  * Gets total of pages for current pagination
@@ -588,7 +553,7 @@ function osc_list_page()
 function osc_list_total_pages() 
 {
 	$view = ClassLoader::getInstance()->getClassInstance( 'View_Html' );
-	return $view->_get('list_total_pages');
+	return $view->getVar('list_total_pages');
 }
 /**
  * Gets number of items per page for current pagination
@@ -598,7 +563,7 @@ function osc_list_total_pages()
 function osc_list_items_per_page() 
 {
 	$view = ClassLoader::getInstance()->getClassInstance( 'View_Html' );
-	return $view->_get('items_per_page');
+	return $view->getVar('items_per_page');
 }
 /**
  * Gets total number of comments of current item
@@ -779,17 +744,17 @@ function osc_resource_original_url()
 function osc_has_items() 
 {
 	$view = ClassLoader::getInstance()->getClassInstance( 'View_Html' );
-	if ($view->_exists('resources')) 
+	if ($view->varExists('resources')) 
 	{
-		$view->_erase('resources');
+		$view->removeVar('resources');
 	}
-	if ($view->_exists('item_category')) 
+	if ($view->varExists('item_category')) 
 	{
-		$view->_erase('item_category');
+		$view->removeVar('item_category');
 	}
-	if ($view->_exists('metafields')) 
+	if ($view->varExists('metafields')) 
 	{
-		$view->_erase('metafields');
+		$view->removeVar('metafields');
 	}
 	return $view->_next('items');
 }
@@ -817,13 +782,13 @@ function osc_count_items()
  *
  * @return int
  */
-function osc_count_item_resources() 
+function osc_count_item_resources( array $item ) 
 {
 	$view = ClassLoader::getInstance()->getClassInstance( 'View_Html' );
-	if (!$view->_exists('resources')) 
+	if (!$view->varExists('resources')) 
 	{
 		$itemResourceManager = ClassLoader::getInstance()->getClassInstance( 'Model_ItemResource' );
-		$view->assign('resources', $itemResourceManager->getAllResources(osc_item_id()));
+		$view->assign('resources', $itemResourceManager->getAllResources(osc_item_id( $item )));
 	}
 	return osc_priv_count_item_resources();
 }
@@ -835,7 +800,7 @@ function osc_count_item_resources()
 function osc_has_item_resources() 
 {
 	$view = ClassLoader::getInstance()->getClassInstance( 'View_Html' );
-	if (!$view->_exists('resources')) 
+	if (!$view->varExists('resources')) 
 	{
 		$itemResourceManager = ClassLoader::getInstance()->getClassInstance( 'Model_ItemResource' );
 		$view->assign('resources', $itemResourceManager->getAllResources(osc_item_id()));
@@ -850,12 +815,12 @@ function osc_has_item_resources()
 function osc_get_item_resources() 
 {
 	$view = ClassLoader::getInstance()->getClassInstance( 'View_Html' );
-	if (!$view->_exists('resources')) 
+	if (!$view->varExists('resources')) 
 	{
 		$itemResourceManager = ClassLoader::getInstance()->getClassInstance( 'Model_ItemResource' );
 		$view->assign('resources', $itemResourceManager->getAllResources(osc_item_id()));
 	}
-	return $view->_get('resources');
+	return $view->getVar('resources');
 }
 /**
  * Gets number of item comments of current item
@@ -866,11 +831,11 @@ function osc_count_item_comments()
 {
 	$classLoader = ClassLoader::getInstance();
 	$view = $classLoader->getClassInstance( 'View_Html' );
-	if (!$view->_exists('comments')) 
+	if (!$view->varExists('comments')) 
 	{
 		$view->assign('comments', $classLoader->getClassInstance( 'Model_ItemComment' )->findByItemID(osc_item_id(), osc_item_comments_page(), osc_comments_per_page()));
 	}
-	return $view->_count('comments');
+	return $view->countVar('comments');
 }
 /**
  * Gets next comment of current item comments
@@ -881,7 +846,7 @@ function osc_has_item_comments()
 {
 	$classLoader = ClassLoader::getInstance();
 	$view = $classLoader->getClassInstance( 'View_Html' );
-	if (!$view->_exists('comments')) 
+	if (!$view->varExists('comments')) 
 	{
 		$view->assign('comments', $classLoader->getClassInstance( 'Model_ItemComment' )->findByItemID(osc_item_id(), osc_item_comments_page(), osc_comments_per_page()));
 	}
@@ -896,7 +861,7 @@ function osc_has_item_comments()
 function osc_has_latest_items() 
 {
 	$view = ClassLoader::getInstance()->getClassInstance( 'View_Html' );
-	if (!$view->_exists('items')) 
+	if (!$view->varExists('items')) 
 	{
 		$search = new Search();
 		$search->limit(0, osc_max_latest_items());
@@ -913,7 +878,7 @@ function osc_count_latest_items()
 {
 	$classLoader = ClassLoader::getInstance();
 	$view = $classLoader->getClassInstance( 'View_Html' );
-	if (!$view->_exists('items')) 
+	if (!$view->varExists('items')) 
 	{
 		$search = $classLoader->getClassInstance( 'Model_Search' );
 		$search->limit(0, osc_max_latest_items());
@@ -928,14 +893,14 @@ function osc_count_latest_items()
  * @param float $price
  * @return string
  */
-function osc_format_price($price) 
+function osc_format_price( array $item, $price )
 {
 	if ($price == null) return osc_apply_filter('item_price_null', __('Check with seller'));
 	if ($price == 0) return osc_apply_filter('item_price_zero', __('Free'));
 	$price = $price / 1000000;
 	$currencyFormat = osc_locale_currency_format();
 	$currencyFormat = str_replace('{NUMBER}', number_format($price, osc_locale_num_dec(), osc_locale_dec_point(), osc_locale_thousands_sep()), $currencyFormat);
-	$currencyFormat = str_replace('{CURRENCY}', osc_item_currency(), $currencyFormat);
+	$currencyFormat = str_replace('{CURRENCY}', osc_item_currency( $item ), $currencyFormat);
 	return osc_apply_filter('item_price', $currencyFormat);
 }
 /**
@@ -947,7 +912,7 @@ function osc_format_price($price)
 function osc_priv_count_items() 
 {
 	$view = ClassLoader::getInstance()->getClassInstance( 'View_Html' );
-	return (int)$view->_count('items');
+	return (int)$view->countVar('items');
 }
 /**
  * Gets number of item resources
@@ -958,7 +923,7 @@ function osc_priv_count_items()
 function osc_priv_count_item_resources() 
 {
 	$view = ClassLoader::getInstance()->getClassInstance( 'View_Html' );
-	return (int)$view->_count('resources');
+	return (int)$view->countVar('resources');
 }
 
 /**
@@ -970,11 +935,11 @@ function osc_count_item_meta()
 {
 	$classLoader = ClassLoader::getInstance();
 	$view = $classLoader->getClassInstance( 'View_Html' );
-	if (!$view->_exists('metafields')) 
+	if (!$view->varExists('metafields')) 
 	{
 		$view->assign('metafields', $classLoader->getClassInstance( 'Model_Item' )->metaFields(osc_item_id()));
 	}
-	return $view->_count('metafields');
+	return $view->countVar('metafields');
 }
 /**
  * Gets next item meta field if there is, else return null
@@ -985,7 +950,7 @@ function osc_has_item_meta()
 {
 	$classLoader = ClassLoader::getInstance();
 	$view = $classLoader->getClassInstance( 'View_Html' );
-	if (!$view->_exists('metafields')) 
+	if (!$view->varExists('metafields')) 
 	{
 		$view->assign('metafields', $classLoader->getClassInstance( 'Model_Item' )->metaFields(osc_item_id()));
 	}
@@ -1000,11 +965,11 @@ function osc_get_item_meta()
 {
 	$classLoader = ClassLoader::getInstance();
 	$view = $classLoader->getClassInstance( 'View_Html' );
-	if (!$view->_exists('metafields')) 
+	if (!$view->varExists('metafields')) 
 	{
 		$view->assign('metafields', $classLoader->getClassInstance( 'Model_Item' )->metaFields(osc_item_id()));
 	}
-	return $view->_get('metafields');
+	return $view->getVar('metafields');
 }
 /**
  * Gets item meta field

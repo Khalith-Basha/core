@@ -38,6 +38,7 @@ class Pagination
 	protected $url;
 	public function __construct($params = null) 
 	{
+		$classLoader = ClassLoader::getInstance();
 		$this->total = isset($params['total']) ? $params['total'] : osc_search_total_pages();
 		$this->selected = isset($params['selected']) ? $params['selected'] : osc_search_page();
 		$this->class_first = isset($params['class_first']) ? $params['class_first'] : 'searchPaginationFirst';
@@ -53,7 +54,7 @@ class Pagination
 		$this->delimiter = isset($params['delimiter']) ? $params['delimiter'] : " ";
 		$this->force_limits = isset($params['force_limits']) ? (bool)$params['delimiter'] : false;
 		$this->sides = isset($params['sides']) ? $params['sides'] : 2;
-		$this->url = isset($params['url']) ? $params['url'] : osc_update_search_url(array('iPage' => '{PAGE}'));
+		$this->url = isset($params['url']) ? $params['url'] : $classLoader->getClassInstance( 'Url_Search' )->osc_update_search_url(array('iPage' => '{PAGE}'));
 	}
 	public function get_raw_pages($params = null) 
 	{
@@ -136,14 +137,36 @@ class Pagination
 		}
 		return $links;
 	}
-	public function doPagination() 
+
+	public function showLinks()
 	{
-		if ($this->total > 1) 
+		if( $this->total > 1 )
 		{
 			$links = $this->get_links();
-			return implode($this->delimiter, $links);
+			return implode( $this->delimiter, $links );
 		}
 
-		return null;
+		return '';
 	}
 }
+
+/**
+ * Gets the pagination links of comments pagination
+ *
+ * @return string pagination links
+ */
+function osc_comments_pagination() 
+{
+	if ((osc_comments_per_page() == 0) || (osc_item_comments_page() === 'all')) 
+	{
+		return null;
+	}
+	else
+	{
+		$params = array('total' => ceil(osc_item_total_comments() / osc_comments_per_page()), 'selected' => osc_item_comments_page(), 'url' => osc_item_comments_url('{PAGE}'));
+		return ClassLoader::getInstance()
+			->getClassInstance( 'Pagination', true, array( $params ) )
+			->doPagination();
+	}
+}
+

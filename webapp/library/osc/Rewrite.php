@@ -151,7 +151,7 @@ class Rewrite
 		$this->addRule('^/user/activate/([0-9]+)/(.*?)/?$', 'index.php?page=user&action=validate&id=$1&code=$2');
 		$this->addRule('^/user/activate_alert/([a-zA-Z0-9]+)/(.+)$', 'index.php?page=user&action=activate_alert&email=$2&secret=$1');
 		$this->addRule('^/user/profile$', 'index.php?page=user&action=profile');
-		$this->addRule('^/user/profile/([0-9]+)$', 'index.php?page=user&action=pub_profile&id=$1');
+		$this->addRule('^/user/profile/([0-9]+)$', 'index.php?page=user&action=public-profile&id=$1');
 		$this->addRule('^/user/items$', 'index.php?page=user&action=items');
 		$this->addRule('^/user/alerts$', 'index.php?page=user&action=alerts');
 		$this->addRule('^/user/recover/?$', 'index.php?page=user&action=recover');

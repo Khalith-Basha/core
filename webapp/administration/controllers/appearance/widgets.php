@@ -24,7 +24,7 @@ class CAdminAppearance extends Controller_Administration
 		switch ($this->action) 
 		{
 		case 'widgets':
-			$info = ClassLoader::getInstance()->getClassInstance( 'WebThemes' )->loadThemeInfo(osc_theme());
+			$info = ClassLoader::getInstance()->getClassInstance( 'Ui_MainTheme' )->loadThemeInfo(osc_theme());
 			$this->getView()->assign("info", $info);
 			$this->doView('appearance/widgets.php');
 			break;

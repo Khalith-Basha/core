@@ -7,7 +7,7 @@
  */
 function osc_current_web_theme() 
 {
-	$themes = ClassLoader::getInstance()->getClassInstance( 'WebThemes' );
+	$themes = ClassLoader::getInstance()->getClassInstance( 'Ui_MainTheme' );
 	return $themes->getCurrentTheme();
 }
 /**
@@ -18,7 +18,7 @@ function osc_current_web_theme()
  */
 function osc_current_web_theme_url($file = '') 
 {
-	$themes = ClassLoader::getInstance()->getClassInstance( 'WebThemes' );
+	$themes = ClassLoader::getInstance()->getClassInstance( 'Ui_MainTheme' );
 	$url = $themes->getCurrentThemeUrl() . $file;
 	return $url;
 }
@@ -26,7 +26,7 @@ function osc_current_web_theme_url($file = '')
 function osc_get_current_web_theme_path( $file, View $view = null ) 
 {
 	$classLoader = ClassLoader::getInstance();
-	$themes = $classLoader->getClassInstance( 'WebThemes' );
+	$themes = $classLoader->getClassInstance( 'Ui_MainTheme' );
 	if( is_null( $view ) )
 		$view = $classLoader->getClassInstance( 'View_Html' );
 	$webThemes = $themes;
@@ -52,20 +52,6 @@ function osc_get_current_web_theme_path( $file, View $view = null )
 }
 
 /**
- * Gets the complete path of a given file using the theme path as a root
- *
- * @param string $file
- * @return string
- */
-function osc_current_web_theme_path( $file, View $view = null ) 
-{
-	$path = osc_get_current_web_theme_path( $file, $view );
-	if( !is_null( $path ) )
-		require $path;
-	else
-		trigger_error( 'Path not found: ' . $path );
-}
-/**
  * Gets the complete path of a given styles file using the theme path as a root
  *
  * @param string $file
@@ -73,7 +59,7 @@ function osc_current_web_theme_path( $file, View $view = null )
  */
 function osc_current_web_theme_styles_url($file = '') 
 {
-	$themes = ClassLoader::getInstance()->getClassInstance( 'WebThemes' );
+	$themes = ClassLoader::getInstance()->getClassInstance( 'Ui_MainTheme' );
 	return $themes->getCurrentThemeStyles() . $file;
 }
 /**
@@ -84,7 +70,7 @@ function osc_current_web_theme_styles_url($file = '')
  */
 function osc_current_web_theme_js_url($file = '') 
 {
-	$themes = ClassLoader::getInstance()->getClassInstance( 'WebThemes' );
+	$themes = ClassLoader::getInstance()->getClassInstance( 'Ui_MainTheme' );
 	return $themes->getCurrentThemeJs() . $file;
 }
 
@@ -114,36 +100,4 @@ function osc_render_file($file = '')
 	$file = str_replace("../", "", str_replace("://", "", preg_replace("|http([s]*)|", "", $file)));
 	include osc_plugins_path() . $file;
 }
-/**
- * Gets urls for render custom files in front-end
- *
- * @param string $file must be a relative path, from PLUGINS_PATH
- * @return string
- */
-function osc_render_file_url($file = '') 
-{
-	osc_sanitize_url($file);
-	$file = str_replace("../", "", str_replace("://", "", preg_replace("|http([s]*)|", "", $file)));
-	return osc_base_url(true) . '?page=custom&file=' . $file;
-}
-/**
- * Re-send the flash messages of the given section. Usefull for custom theme/plugins files.
- *
- * @param string $$section
- */
-function osc_resend_flash_messages($section = "pubMessages") 
-{
-	$message = ClassLoader::getInstance()->getClassInstance( 'Session' )->_getMessage($section);
-	if ($message["type"] == "info") 
-	{
-		osc_add_flash_info_message($message['msg'], $section);
-	}
-	else if ($message["type"] == "ok") 
-	{
-		osc_add_flash_ok_message($message['msg'], $section);
-	}
-	else
-	{
-		osc_add_flash_error_message($message['msg'], $section);
-	}
-}
+

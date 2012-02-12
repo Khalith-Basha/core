@@ -97,3 +97,19 @@ function is_utf8($string)
         |  \xF4[\x80-\x8F][\x80-\xBF]{2}     # plane 16
     )*$%xs', $string);
 }
+
+
+function osc_prepare_price($price) 
+{
+	return $price / 1000000;
+}
+/**
+ * Formats the date using the appropiate format.
+ *
+ * @param string $date
+ */
+function osc_format_date($date) 
+{
+	return date(osc_date_format(), strtotime($date));
+}
+

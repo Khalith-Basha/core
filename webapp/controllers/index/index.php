@@ -36,8 +36,24 @@ class CWebIndex extends Controller_Cacheable
 
 		$classLoader = $this->getClassLoader();
 		$pagesModel = $classLoader->getClassInstance( 'Model_Page' );
+		$pageUrl = $classLoader->getClassInstance( 'Url_Page' );
 		$pages = $pagesModel->findUserPagesByLocale( $locale );
+		foreach( $pages as &$page )
+		{
+			$page['url'] = $pageUrl->getUrl( $page );
+		}
 		$view->assign( 'pages', $pages );
+
+		$category = $classLoader->getClassInstance( 'Model_Category' );
+		$view->assign('categories', $category->toTree());
+
+		$search = $classLoader->getClassInstance( 'Model_Search' );
+		$search->limit( 0, osc_max_latest_items() );
+		$view->assign( 'latestItems', $search->getLatestItems() );
+
+		$country = '%%%%';
+		$regions = $classLoader->getClassInstance( 'Model_Search' )->listRegions( $country, '>' );
+		$view->assign( 'regions', $regions );
 
 		return $view->render( 'main' );
 	}

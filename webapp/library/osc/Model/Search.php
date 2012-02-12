@@ -568,6 +568,10 @@ class Model_Search extends DAO
 		}
 		$this->pruneBranches($tree);
 	}
+	public function getCategories()
+	{
+		return $this->categories;
+	}
 	private function _conditions() 
 	{
 		if (count($this->city_areas) > 0) 

@@ -16,10 +16,6 @@
  * License along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-
-require_once 'osc/filtering.php';
-require_once 'osc/utilities/string.php';
-
 class Manager_Item
 {
 	private $manager = null;
@@ -28,7 +24,10 @@ class Manager_Item
 	function __construct($is_admin) 
 	{
 		$this->is_admin = $is_admin;
-		$this->manager = ClassLoader::getInstance()->getClassInstance( 'Model_Item' );
+		$classLoader = ClassLoader::getInstance();
+		$classLoader->loadFile( 'helpers/filtering' );
+		$classLoader->loadFile( 'helpers/string' );
+		$this->manager = $classLoader->getClassInstance( 'Model_Item' );
 	}
 	/**
 	 * @return boolean
@@ -970,7 +969,8 @@ class Manager_Item
 	private function checkAllowedExt($aResources) 
 	{
 		$success = true;
-		require 'osc/mimes.php';
+		ClassLoader::getInstance()->loadFile( 'helpers/mimes' );
+		$mimes = osc_getMimes();
 		if ($aResources != '') 
 		{
 			// get allowedExt
@@ -1025,7 +1025,7 @@ class Manager_Item
 	{
 		if ($aResources != '') 
 		{
-			$wat = ClassLoader::getInstance()->getClassInstance( 'Watermark' );
+			$wat = ClassLoader::getInstance()->getClassInstance( 'Image_Watermark' );
 			$itemResourceManager = ClassLoader::getInstance()->getClassInstance( 'Model_ItemResource' );
 			$numImagesItems = osc_max_images_per_item();
 			$numImages = $itemResourceManager->countResources($itemId);

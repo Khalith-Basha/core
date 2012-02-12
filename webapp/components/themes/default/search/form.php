@@ -22,7 +22,7 @@
 
 <script type="text/javascript" src="/static/scripts/search.js"></script>
 
-<form action="<?php echo osc_base_url(true); ?>" method="get" class="search" onsubmit="javascript:return doSearch();">
+<form action="<?php echo $urlFactory->getBaseUrl( true ); ?>" method="get" class="search" onsubmit="javascript:return doSearch();">
     <input type="hidden" name="page" value="search" />
     <fieldset class="main">
     <input type="text" name="sPattern"  id="query" value="<?php echo osc_search_pattern(); ?>" required="required" placeholder="<?php echo __('Enter your search terms here', 'modern'); ?>" />
