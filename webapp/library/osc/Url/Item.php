@@ -37,7 +37,7 @@ class Url_Item extends Url_Abstract
 		}
 		else
 		{
-			$url = osc_item_url_ns( osc_item_id( $item ), $locale );
+			$url = $this->osc_item_url_ns( osc_item_id( $item ), $locale );
 		}
 
 		if( empty( $url ) )
@@ -114,7 +114,7 @@ class Url_Item extends Url_Abstract
 		else
 		{
 			//$path = $this->getBaseUrl( true ) . sprintf('?page=item&id=%d', osc_item_id()) ;
-			$path = osc_item_url_ns(osc_premium_id(), $locale);
+			$path = $this->osc_item_url_ns(osc_premium_id(), $locale);
 		}
 		return $path;
 	}
@@ -125,7 +125,7 @@ class Url_Item extends Url_Abstract
 	 * @param $locale
 	 * @return string
 	 */
-	public function osc_item_url_ns($id, $locale = '') 
+	public function $this->osc_item_url_ns($id, $locale = '') 
 	{
 		$path = $this->getBaseUrl( true ) . '?page=item&id=' . $id;
 		if ($locale != '') 
