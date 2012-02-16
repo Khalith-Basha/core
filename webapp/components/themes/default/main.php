@@ -86,7 +86,7 @@ if (osc_count_categories() > 0)
                                      <tr class="<?php echo $class . (osc_item_is_premium( $item ) ? " premium" : ""); ?>">
                                             <?php if( osc_images_enabled_at_items() ): ?>
                                              <td class="photo">
-                                                <?php if (osc_count_item_resources( $item )): ?>
+						<?php if( 0 < count( $item['resources'] ) ): ?>
                                                     <a href="<?php echo $itemUrls->getDetailsUrl( $item ); ?>"><img src="<?php echo osc_resource_thumbnail_url( $item ); ?>" width="75px" height="56px" title="" alt="" /></a>
                                                 <?php else: ?>
                                                     <img src="<?php echo osc_current_web_theme_url('images/no_photo.gif'); ?>" alt="" title=""/>

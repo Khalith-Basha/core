@@ -97,24 +97,6 @@ function osc_comment()
 	return ($comment);
 }
 /**
- * Gets resource array from view
- *
- * @return array $resource
- */
-function osc_resource() 
-{
-	$view = ClassLoader::getInstance()->getClassInstance( 'View_Html' );
-	if ($view->varExists('resources')) 
-	{
-		$resource = $view->_current('resources');
-	}
-	else
-	{
-		$resource = $view->getVar('resource');
-	}
-	return ($resource);
-}
-/**
  * Gets a specific field from current item
  *
  * @param type $field
@@ -143,9 +125,9 @@ function osc_comment_field($field, $locale = '')
  * @param type $locale
  * @return field_type
  */
-function osc_resource_field($field, $locale = '') 
+function osc_resource_field( array $resource, $field, $locale = '') 
 {
-	return osc_field(osc_resource(), $field, $locale);
+	return osc_field( $resource, $field, $locale);
 }
 
 /**
@@ -669,73 +651,46 @@ function osc_delete_comment_url()
  *
  * @return int
  */
-function osc_resource_id() 
+function osc_resource_id( array $resource ) 
 {
-	return (int)osc_resource_field("pk_i_id");
+	return (int)osc_resource_field( $resource, "pk_i_id");
 }
 /**
  * Gets name of current resource
  *
  * @return string
  */
-function osc_resource_name() 
+function osc_resource_name( array $resource ) 
 {
-	return (string)osc_resource_field("s_name");
+	return (string)osc_resource_field( $resource, "s_name");
 }
 /**
  * Gets content type of current resource
  *
  * @return string
  */
-function osc_resource_type() 
+function osc_resource_type( array $resource ) 
 {
-	return (string)osc_resource_field("s_content_type");
+	return (string)osc_resource_field( $resource, "s_content_type");
 }
 /**
  * Gets extension of current resource
  *
  * @return string
  */
-function osc_resource_extension() 
+function osc_resource_extension( array $resource ) 
 {
-	return (string)osc_resource_field("s_extension");
+	return (string)osc_resource_field( $resource, "s_extension");
 }
 /**
  * Gets path of current resource
  *
  * @return string
  */
-function osc_resource_path() 
+function osc_resource_path( array $resource ) 
 {
 	$urlFactory = ClassLoader::getInstance()->getClassInstance( 'Url_Index' );
-	return (string)osc_apply_filter('resource_path', $urlFactory->getBaseUrl() . '/'. osc_resource_field("s_path"));
-}
-/**
- * Gets thumbnail url of current resource
- *
- * @return <type>
- */
-function osc_resource_thumbnail_url() 
-{
-	return (string)osc_resource_path() . osc_resource_id() . "_thumbnail." . osc_resource_field("s_extension");
-}
-/**
- * Gets url of current resource
- *
- * @return string
- */
-function osc_resource_url() 
-{
-	return (string)osc_resource_path() . osc_resource_id() . "." . osc_resource_field("s_extension");
-}
-/**
- * Gets original resource url of current resource
- *
- * @return string
- */
-function osc_resource_original_url() 
-{
-	return (string)osc_resource_path() . osc_resource_id() . "_original." . osc_resource_field("s_extension");
+	return (string)osc_apply_filter('resource_path', $urlFactory->getBaseUrl() . '/'. osc_resource_field( $resource, "s_path"));
 }
 
 /**

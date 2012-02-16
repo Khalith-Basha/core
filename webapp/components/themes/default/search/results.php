@@ -20,6 +20,7 @@
  */
 
 $searchUrl = $classLoader->getClassInstance( 'Url_Search' );
+$resourceUrls = $classLoader->getClassInstance( 'Url_Resource' );
 echo $view->render( 'header' );
 ?>
 

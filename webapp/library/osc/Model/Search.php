@@ -623,14 +623,39 @@ class Model_Search extends DAO
 		$arrayConditions = $this->_conditions();
 		$extraFields = $arrayConditions['extraFields'];
 		$conditionsSQL = $arrayConditions['conditionsSQL'];
+		$tableList = implode(', ', $this->tables);
 		if ($count) 
 		{
 			$this->sql = sprintf("SELECT  COUNT(DISTINCT %sitem.pk_i_id) as totalItems FROM %sitem, %st_item_location, %s WHERE %st_item_location.fk_i_item_id = %sitem.pk_i_id %s AND %sitem.pk_i_id = d.fk_i_item_id AND %sitem.fk_i_category_id = cd.fk_i_category_id", DB_TABLE_PREFIX, DB_TABLE_PREFIX, DB_TABLE_PREFIX, implode(', ', $this->tables), DB_TABLE_PREFIX, DB_TABLE_PREFIX, $conditionsSQL, DB_TABLE_PREFIX, DB_TABLE_PREFIX, DB_TABLE_PREFIX);
 		}
 		else
 		{
-			$this->sql = sprintf("SELECT SQL_CALC_FOUND_ROWS DISTINCT %sitem.pk_i_id, %sitem.s_contact_name as s_user_name, %sitem.s_contact_email as s_user_email, %sitem.*, %st_item_location.*, d.s_title, cd.s_name as s_category_name %s FROM %sitem, %st_item_location, %s WHERE %st_item_location.fk_i_item_id = %sitem.pk_i_id %s AND %sitem.pk_i_id = d.fk_i_item_id AND %sitem.fk_i_category_id = cd.fk_i_category_id GROUP BY %sitem.pk_i_id ORDER BY %s %s LIMIT %d, %d", DB_TABLE_PREFIX, DB_TABLE_PREFIX, DB_TABLE_PREFIX, DB_TABLE_PREFIX, DB_TABLE_PREFIX, $extraFields, DB_TABLE_PREFIX, DB_TABLE_PREFIX, implode(', ', $this->tables), DB_TABLE_PREFIX, DB_TABLE_PREFIX, $conditionsSQL, DB_TABLE_PREFIX, DB_TABLE_PREFIX, DB_TABLE_PREFIX, $this->order_column, $this->order_direction, $this->limit_init, $this->results_per_page);
+			$this->sql = <<<SQL
+SELECT SQL_CALC_FOUND_ROWS DISTINCT
+	/*TABLE_PREFIX*/item.pk_i_id, /*TABLE_PREFIX*/item.s_contact_name AS s_user_name, /*TABLE_PREFIX*/item.s_contact_email AS s_user_email, /*TABLE_PREFIX*/item.*, /*TABLE_PREFIX*/t_item_location.*, /*TABLE_PREFIX*/t_item_description.s_title, /*TABLE_PREFIX*/t_category_description.s_name AS s_category_name $extraFields
+FROM
+	/*TABLE_PREFIX*/item
+INNER JOIN
+	/*TABLE_PREFIX*/t_item_description ON ( /*TABLE_PREFIX*/t_item_description.fk_i_item_id = /*TABLE_PREFIX*/item.pk_i_id )
+INNER JOIN
+	/*TABLE_PREFIX*/t_category ON ( /*TABLE_PREFIX*/t_category.pk_i_id = /*TABLE_PREFIX*/item.fk_i_category_id )
+INNER JOIN
+	/*TABLE_PREFIX*/t_category_description ON ( /*TABLE_PREFIX*/t_category_description.fk_i_category_id = /*TABLE_PREFIX*/t_category.pk_i_id )
+LEFT JOIN
+	/*TABLE_PREFIX*/t_item_stats ON ( /*TABLE_PREFIX*/t_item_stats.fk_i_item_id = /*TABLE_PREFIX*/item.pk_i_id )
+LEFT JOIN
+	/*TABLE_PREFIX*/t_item_location ON ( /*TABLE_PREFIX*/t_item_location.fk_i_item_id = /*TABLE_PREFIX*/item.pk_i_id )
+WHERE
+	TRUE $conditionsSQL
+GROUP BY
+	/*TABLE_PREFIX*/item.pk_i_id
+ORDER BY
+	$this->order_column $this->order_direction
+LIMIT
+	$this->limit_init, $this->results_per_page
+SQL;
 		}
+		$this->sql = str_replace( '/*TABLE_PREFIX*/', DB_TABLE_PREFIX, $this->sql );
 		return $this->sql;
 	}
 	/**
