@@ -125,7 +125,7 @@ class Url_Item extends Url_Abstract
 	 * @param $locale
 	 * @return string
 	 */
-	public function $this->osc_item_url_ns($id, $locale = '') 
+	public function osc_item_url_ns($id, $locale = '') 
 	{
 		$path = $this->getBaseUrl( true ) . '?page=item&id=' . $id;
 		if ($locale != '') 
