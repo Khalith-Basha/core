@@ -234,15 +234,15 @@ class Url_Item extends Url_Abstract
 	 *
 	 * @return string
 	 */
-	function osc_item_send_friend_url() 
+	function osc_item_send_friend_url( array $item )
 	{
 		if (osc_rewrite_enabled()) 
 		{
-			return $this->getBaseUrl() . '/item/send-friend/' . osc_item_id();
+			return $this->getBaseUrl() . '/item/send-friend/' . osc_item_id( $item );
 		}
 		else
 		{
-			return $this->getBaseUrl( true ) . "?page=item&action=send_friend&id=" . osc_item_id();
+			return $this->getBaseUrl( true ) . "?page=item&action=send_friend&id=" . osc_item_id( $item );
 		}
 	}
 
@@ -288,6 +288,43 @@ class Url_Item extends Url_Abstract
 			$path = sprintf($this->getBaseUrl( true ) . '?page=item&action=add');
 		}
 		return $path;
+	}
+
+	/**
+	 * Retrun link for mark as bad category the current item.
+	 *
+	 * @return string
+	 */
+	function osc_item_link_bad_category( array $item ) 
+	{
+		return $this->getBaseUrl( true ) . '?page=item&action=mark&as=badcat&id=' . osc_item_id( $item );
+	}
+	/**
+	 * Gets link for mark as repeated the current item
+	 *
+	 * @return string
+	 */
+	function osc_item_link_repeated( array $item ) 
+	{
+		return $this->getBaseUrl(true) . "?page=item&action=mark&as=repeated&id=" . osc_item_id( $item );
+	}
+	/**
+	 * Gets link for mark as offensive the current item
+	 *
+	 * @return string
+	 */
+	function osc_item_link_offensive( array $item ) 
+	{
+		return $this->getBaseUrl(true) . "?page=item&action=mark&as=offensive&id=" . osc_item_id( $item );
+	}
+	/**
+	 * Gets link for mark as expired the current item
+	 *
+	 * @return string
+	 */
+	function osc_item_link_expired( array $item )
+	{
+		return $this->getBaseUrl(true) . "?page=item&action=mark&as=expired&id=" . osc_item_id( $item );
 	}
 
 }

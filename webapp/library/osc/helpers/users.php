@@ -12,24 +12,9 @@
  * @param string $locale
  * @return mixed
  */
-function osc_user_field( $field, $locale = null )
+function osc_user_field( array $user, $field, $locale = null )
 {
-	$classLoader = ClassLoader::getInstance();
-	$view = $classLoader->getClassInstance( 'View_Html' );
-	if ($view->_exists('users')) 
-	{
-		$user = $view->_current('users');
-	}
-	else
-	{
-		$user = $view->_get('user');
-	}
-	if( empty( $user ) )
-	{
-		trigger_error( 'null user' );
-		return null;
-	}
-	return osc_field($user, $field, $locale);
+	return osc_field( $user, $field, $locale);
 }
 /**
  * Gets user array from view
@@ -291,15 +276,15 @@ function osc_user_phone_mobile()
  * else return string blank
  * @return string
  */
-function osc_user_phone() 
+function osc_user_phone( array $user ) 
 {
-	if (osc_user_field("s_phone_land") != "") 
+	if (osc_user_field( $user, "s_phone_land") != "") 
 	{
-		return osc_user_field("s_phone_land");
+		return osc_user_field( $user, "s_phone_land");
 	}
-	else if (osc_user_field("s_phone_mobile") != "") 
+	else if (osc_user_field( $user, "s_phone_mobile") != "") 
 	{
-		return osc_user_field("s_phone_mobile");
+		return osc_user_field( $user, "s_phone_mobile");
 	}
 	return null;
 }
@@ -467,18 +452,4 @@ function osc_alert_search_object()
 {
 	return osc_unserialize(base64_decode(osc_alert_field('s_search')));
 }
-/**
- * Gets next user in users array
- *
- * @return <type>
- */
-function osc_prepare_user_info() 
-{
-	$classLoader = ClassLoader::getInstance();
-	$view = $classLoader->getClassInstance( 'View_Html' );
-	if (!$view->_exists('users')) 
-	{
-		$view->assign('users', array($classLoader->getClassInstance( 'Model_User' )->findByPrimaryKey(osc_item_user_id())));
-	}
-	return $view->_next('users');
-}
+

@@ -87,10 +87,25 @@ class CWebItem extends Controller_Default
 			osc_run_hook('show_item', $item);
 
 			$view = $this->getView();
+			$this->assign( 'item', $item );
 			$this->view->setTitle( $item['locale'][osc_current_user_locale()]['s_title'] );
 			$this->view->addJavaScript( '/static/scripts/contact-form.js' );
 			$this->view->addJavaScript( '/static/scripts/comment-form.js' );
-			$view->setMetaDescription( osc_item_category() . ', ' . osc_highlight(strip_tags(osc_item_description()), 140) . '..., ' . osc_item_category() );
+			$view->setMetaDescription( osc_item_category( $item ) . ', ' . osc_highlight( strip_tags( osc_item_description( $item ) ), 140) . '..., ' . osc_item_category( $item ) );
+
+			$metafields = $classLoader->getClassInstance( 'Model_Item' )->metaFields( osc_item_id( $item ) );
+			$view->assign( 'metafields', $metafields );
+
+			$comments = $classLoader->getClassInstance( 'Model_ItemComment' )->findByItemID( osc_item_id( $item ), osc_item_comments_page(), osc_comments_per_page() );
+			$view->assign( 'comments', $comments );
+	
+			$itemResourceManager = $classLoader->getClassInstance( 'Model_ItemResource' );
+			$view->assign('resources', $itemResourceManager->getAllResources( osc_item_id( $item ) ) );
+			
+			$view->assign('user', $classLoader->getClassInstance( 'Model_User' )->findByPrimaryKey( osc_item_user_id( $item ) ) );
+
+			$classLoader->loadFile( 'helpers/security' );
+
 			echo $view->render( 'item/index' );
 		}
 	}

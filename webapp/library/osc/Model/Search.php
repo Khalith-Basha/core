@@ -740,14 +740,32 @@ class Model_Search extends DAO
 		$arrayConditions = $this->_conditions();
 		$extraFields = $arrayConditions['extraFields'];
 		$conditionsSQL = $arrayConditions['conditionsSQL'];
-		$this->sql = sprintf("SELECT %sitem.*, %st_item_location.*, cd.s_name as s_category_name %s FROM %sitem, %st_item_location, %st_category, %st_category_description as cd WHERE %st_item_location.fk_i_item_id = %sitem.pk_i_id %s AND %sitem.fk_i_category_id = cd.fk_i_category_id GROUP BY %sitem.pk_i_id ORDER BY %s %s LIMIT %d, %d", DB_TABLE_PREFIX, DB_TABLE_PREFIX, $extraFields, DB_TABLE_PREFIX, DB_TABLE_PREFIX, DB_TABLE_PREFIX, DB_TABLE_PREFIX, DB_TABLE_PREFIX, DB_TABLE_PREFIX, $conditionsSQL, DB_TABLE_PREFIX, DB_TABLE_PREFIX, $this->order_column, $this->order_direction, $this->limit_init, $this->results_per_page);
-		$result = $this->dao->query($this->sql);
-		if ($result == false) 
-		{
-			return array();
-		}
-		$items = $result->result();
-		return $this->classLoader->getClassInstance( 'Model_Item' )->extendData($items);
+		$this->sql = <<<SQL
+SELECT
+	/*TABLE_PREFIX*/item.*, /*TABLE_PREFIX*/t_item_location.*, /*TABLE_PREFIX*/t_category_description.s_name AS s_category_name $extraFields
+FROM
+	/*TABLE_PREFIX*/item
+INNER JOIN
+	/*TABLE_PREFIX*/t_category ON ( /*TABLE_PREFIX*/item.fk_i_category_id = /*TABLE_PREFIX*/t_category.pk_i_id )
+INNER JOIN
+	/*TABLE_PREFIX*/t_category_description ON ( /*TABLE_PREFIX*/t_category_description.fk_i_category_id = /*TABLE_PREFIX*/t_category.pk_i_id )
+LEFT JOIN
+	/*TABLE_PREFIX*/t_item_location ON ( /*TABLE_PREFIX*/t_item_location.fk_i_item_id = /*TABLE_PREFIX*/item.pk_i_id )
+WHERE
+	TRUE $conditionsSQL
+GROUP BY
+	/*TABLE_PREFIX*/item.pk_i_id
+ORDER BY
+	?, ?
+LIMIT
+	?, ?
+SQL;
+		$stmt = $this->prepareStatement( $this->sql );
+		$stmt->bind_param( 'ssdd', $this->order_column, $this->order_direction, $this->limit_init, $this->results_per_page );
+		$items = $this->fetchAll( $stmt );
+		$stmt->close();
+
+		return $this->classLoader->getClassInstance( 'Model_Item' )->extendData( $items );
 	}
 	/**
 	 * Returns number of ads from each country

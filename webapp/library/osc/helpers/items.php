@@ -162,9 +162,9 @@ function osc_item_id( array $item )
  *
  * @return int
  */
-function osc_item_user_id() 
+function osc_item_user_id( array $item ) 
 {
-	return (int)osc_item_field("fk_i_user_id");
+	return (int)osc_item_field( $item, "fk_i_user_id");
 }
 /**
  * Gets description from current item, if $locale is unspecified $locale is current user locale
@@ -339,9 +339,9 @@ function osc_item_contact_email( array $item )
  *
  * @return string
  */
-function osc_item_country() 
+function osc_item_country( array $item ) 
 {
-	return (string)osc_item_field("s_country");
+	return (string)osc_item_field( $item, "s_country");
 }
 /**
  * Gets country code of current item
@@ -349,9 +349,9 @@ function osc_item_country()
  *
  * @return string
  */
-function osc_item_country_code() 
+function osc_item_country_code( array $item ) 
 {
-	return (string)osc_item_field("fk_c_country_code");
+	return (string)osc_item_field( $item, "fk_c_country_code");
 }
 /**
  * Gets region of current item
@@ -376,36 +376,36 @@ function osc_item_city( array $item )
  *
  * @return string
  */
-function osc_item_city_area() 
+function osc_item_city_area( array $item ) 
 {
-	return (string)osc_item_field("s_city_area");
+	return (string)osc_item_field( $item, "s_city_area");
 }
 /**
  * Gets address of current item
  *
  * @return string
  */
-function osc_item_address() 
+function osc_item_address( array $item ) 
 {
-	return (string)osc_item_field("s_address");
+	return (string)osc_item_field( $item, "s_address");
 }
 /**
  * Gets true if can show email user at frontend, else return false
  *
  * @return boolean
  */
-function osc_item_show_email() 
+function osc_item_show_email( array $item ) 
 {
-	return (boolean)osc_item_field("b_show_email");
+	return (boolean)osc_item_field( $item, "b_show_email");
 }
 /**
  * Gets zup code of current item
  *
  * @return string
  */
-function osc_item_zip() 
+function osc_item_zip( array $item ) 
 {
-	return (string)osc_item_field("s_zip");
+	return (string)osc_item_field( $item, "s_zip");
 }
 /**
  * Gets latitude of current item
@@ -457,16 +457,16 @@ function osc_item_views()
  *
  * @return boolean
  */
-function osc_item_is_expired() 
+function osc_item_is_expired( array $item ) 
 {
-	if (osc_item_is_premium()) 
+	if (osc_item_is_premium( $item ) ) 
 	{
 		return false;
 	}
 	else
 	{
 		$classLoader = ClassLoader::getInstance();
-		$category = $classLoader->getClassInstance( 'Model_Category' )->findByPrimaryKey(osc_item_category_id());
+		$category = $classLoader->getClassInstance( 'Model_Category' )->findByPrimaryKey( osc_item_category_id( $item ) );
 		$expiration = $category['i_expiration_days'];
 		if ($expiration == 0) 
 		{
@@ -474,7 +474,7 @@ function osc_item_is_expired()
 		}
 		else
 		{
-			$date_expiration = strtotime(date("Y-m-d H:i:s", strtotime(osc_item_pub_date())) . " +$expiration day");
+			$date_expiration = strtotime(date("Y-m-d H:i:s", strtotime( osc_item_pub_date( $item ) ) ) . " +$expiration day");
 			$now = strtotime(date('Y-m-d H:i:s'));
 			if ($date_expiration < $now) 
 			{
@@ -787,8 +787,6 @@ function osc_count_item_resources( array $item )
 	$view = ClassLoader::getInstance()->getClassInstance( 'View_Html' );
 	if (!$view->varExists('resources')) 
 	{
-		$itemResourceManager = ClassLoader::getInstance()->getClassInstance( 'Model_ItemResource' );
-		$view->assign('resources', $itemResourceManager->getAllResources(osc_item_id( $item )));
 	}
 	return osc_priv_count_item_resources();
 }
@@ -823,21 +821,6 @@ function osc_get_item_resources()
 	return $view->getVar('resources');
 }
 /**
- * Gets number of item comments of current item
- *
- * @return int
- */
-function osc_count_item_comments() 
-{
-	$classLoader = ClassLoader::getInstance();
-	$view = $classLoader->getClassInstance( 'View_Html' );
-	if (!$view->varExists('comments')) 
-	{
-		$view->assign('comments', $classLoader->getClassInstance( 'Model_ItemComment' )->findByItemID(osc_item_id(), osc_item_comments_page(), osc_comments_per_page()));
-	}
-	return $view->countVar('comments');
-}
-/**
  * Gets next comment of current item comments
  *
  * @return array
@@ -851,40 +834,6 @@ function osc_has_item_comments()
 		$view->assign('comments', $classLoader->getClassInstance( 'Model_ItemComment' )->findByItemID(osc_item_id(), osc_item_comments_page(), osc_comments_per_page()));
 	}
 	return $view->_next('comments');
-}
-
-/**
- * Gets next item of last items
- *
- * @return array
- */
-function osc_has_latest_items() 
-{
-	$view = ClassLoader::getInstance()->getClassInstance( 'View_Html' );
-	if (!$view->varExists('items')) 
-	{
-		$search = new Search();
-		$search->limit(0, osc_max_latest_items());
-		$view->assign('items', $search->getLatestItems());
-	}
-	return osc_has_items();
-}
-/**
- * Gets number of latest items
- *
- * @return int
- */
-function osc_count_latest_items() 
-{
-	$classLoader = ClassLoader::getInstance();
-	$view = $classLoader->getClassInstance( 'View_Html' );
-	if (!$view->varExists('items')) 
-	{
-		$search = $classLoader->getClassInstance( 'Model_Search' );
-		$search->limit(0, osc_max_latest_items());
-		$view->assign('items', $search->getLatestItems());
-	}
-	return osc_priv_count_items();
 }
 
 /**
@@ -931,13 +880,13 @@ function osc_priv_count_item_resources()
  *
  * @return integer
  */
-function osc_count_item_meta() 
+function osc_count_item_meta( array $item ) 
 {
 	$classLoader = ClassLoader::getInstance();
 	$view = $classLoader->getClassInstance( 'View_Html' );
 	if (!$view->varExists('metafields')) 
 	{
-		$view->assign('metafields', $classLoader->getClassInstance( 'Model_Item' )->metaFields(osc_item_id()));
+		$view->assign('metafields', $classLoader->getClassInstance( 'Model_Item' )->metaFields( osc_item_id( $item ) ) );
 	}
 	return $view->countVar('metafields');
 }
@@ -946,13 +895,13 @@ function osc_count_item_meta()
  *
  * @return array
  */
-function osc_has_item_meta() 
+function osc_has_item_meta( array $item ) 
 {
 	$classLoader = ClassLoader::getInstance();
 	$view = $classLoader->getClassInstance( 'View_Html' );
 	if (!$view->varExists('metafields')) 
 	{
-		$view->assign('metafields', $classLoader->getClassInstance( 'Model_Item' )->metaFields(osc_item_id()));
+		$view->assign('metafields', $classLoader->getClassInstance( 'Model_Item' )->metaFields(osc_item_id( $item )));
 	}
 	return $view->_next('metafields');
 }
@@ -961,13 +910,13 @@ function osc_has_item_meta()
  *
  * @return array
  */
-function osc_get_item_meta() 
+function osc_get_item_meta( array $item ) 
 {
 	$classLoader = ClassLoader::getInstance();
 	$view = $classLoader->getClassInstance( 'View_Html' );
 	if (!$view->varExists('metafields')) 
 	{
-		$view->assign('metafields', $classLoader->getClassInstance( 'Model_Item' )->metaFields(osc_item_id()));
+		$view->assign('metafields', $classLoader->getClassInstance( 'Model_Item' )->metaFields(osc_item_id( $item )));
 	}
 	return $view->getVar('metafields');
 }
@@ -976,7 +925,7 @@ function osc_get_item_meta()
  *
  * @return array
  */
-function osc_item_meta() 
+function osc_item_meta( array $item ) 
 {
 	$view = ClassLoader::getInstance()->getClassInstance( 'View_Html' );
 	return $view->_current('metafields');
@@ -986,9 +935,9 @@ function osc_item_meta()
  *
  * @return string
  */
-function osc_item_meta_value() 
+function osc_item_meta_value( array $item ) 
 {
-	return htmlentities(osc_field(osc_item_meta(), 's_value', ''), ENT_COMPAT, "UTF-8");
+	return htmlentities(osc_field(osc_item_meta( $item ), 's_value', ''), ENT_COMPAT, "UTF-8");
 }
 /**
  * Gets item meta name

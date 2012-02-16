@@ -30,7 +30,7 @@ function osc_user_unsubscribe_alert_url($email = '', $secret = '')
 	{
 		$email = osc_user_email();
 	}
-	return osc_base_url(true) . '?page=user&action=unsub_alert&email=' . urlencode($email) . '&secret=' . $secret;
+	return $this->getBaseUrl(true) . '?page=user&action=unsub_alert&email=' . urlencode($email) . '&secret=' . $secret;
 }
 /**
  * Gets user alert activate url
@@ -47,7 +47,7 @@ function osc_user_activate_alert_url($secret, $email)
 	}
 	else
 	{
-		return osc_base_url(true) . '?page=user&action=activate_alert&email=' . urlencode($email) . '&secret=' . $secret;
+		return $this->getBaseUrl(true) . '?page=user&action=activate_alert&email=' . urlencode($email) . '&secret=' . $secret;
 	}
 }
 /**
@@ -63,7 +63,7 @@ function osc_user_profile_url()
 	}
 	else
 	{
-		return osc_base_url(true) . '?page=user&action=profile';
+		return $this->getBaseUrl(true) . '?page=user&action=profile';
 	}
 }
 /**
@@ -89,11 +89,11 @@ function osc_user_list_items_url($page = '')
 	{
 		if ($page == '') 
 		{
-			return osc_base_url(true) . '?page=user&action=items';
+			return $this->getBaseUrl(true) . '?page=user&action=items';
 		}
 		else
 		{
-			return osc_base_url(true) . '?page=user&action=items&iPage=' . $page;
+			return $this->getBaseUrl(true) . '?page=user&action=items&iPage=' . $page;
 		}
 	}
 }
@@ -110,7 +110,7 @@ function osc_change_user_email_url()
 	}
 	else
 	{
-		return osc_base_url(true) . '?page=user&action=change_email';
+		return $this->getBaseUrl(true) . '?page=user&action=change_email';
 	}
 }
 /**
@@ -128,7 +128,7 @@ function osc_change_user_email_confirm_url($userId, $code)
 	}
 	else
 	{
-		return osc_base_url(true) . '?page=user&action=change_email_confirm&userId=' . $userId . '&code=' . $code;
+		return $this->getBaseUrl(true) . '?page=user&action=change_email_confirm&userId=' . $userId . '&code=' . $code;
 	}
 }
 /**
@@ -144,7 +144,7 @@ function osc_change_user_password_url()
 	}
 	else
 	{
-		return osc_base_url(true) . '?page=user&action=change_password';
+		return $this->getBaseUrl(true) . '?page=user&action=change_password';
 	}
 }
 /**
@@ -160,7 +160,7 @@ function osc_recover_user_password_url()
 	}
 	else
 	{
-		return osc_base_url(true) . '?page=user&action=recover';
+		return $this->getBaseUrl(true) . '?page=user&action=recover';
 	}
 }
 /**
@@ -178,7 +178,7 @@ function osc_forgot_user_password_confirm_url($userId, $code)
 	}
 	else
 	{
-		return osc_base_url(true) . '?page=user&action=forgot&userId=' . $userId . '&code=' . $code;
+		return $this->getBaseUrl(true) . '?page=user&action=forgot&userId=' . $userId . '&code=' . $code;
 	}
 }
 /**
@@ -195,7 +195,7 @@ function osc_change_language_url($locale)
 	}
 	else
 	{
-		return osc_base_url(true) . '?page=language&locale=' . $locale;
+		return $this->getBaseUrl(true) . '?page=language&locale=' . $locale;
 	}
 }
 
@@ -212,7 +212,7 @@ function osc_user_dashboard_url()
 	}
 	else
 	{
-		$path = osc_base_url(true) . '?page=user&action=dashboard';
+		$path = $this->getBaseUrl(true) . '?page=user&action=dashboard';
 	}
 	return $path;
 }
@@ -229,7 +229,7 @@ function osc_user_logout_url()
 	}
 	else
 	{
-		$path = osc_base_url(true) . '?page=user&action=logout';
+		$path = $this->getBaseUrl(true) . '?page=user&action=logout';
 	}
 	return $path;
 }
@@ -246,7 +246,7 @@ function osc_user_login_url()
 	}
 	else
 	{
-		$path = osc_base_url(true) . '?page=user&action=login';
+		$path = $this->getBaseUrl(true) . '?page=user&action=login';
 	}
 	return $path;
 }
@@ -263,7 +263,7 @@ function osc_register_account_url()
 	}
 	else
 	{
-		$path = osc_base_url(true) . '?page=user&action=register';
+		$path = $this->getBaseUrl(true) . '?page=user&action=register';
 	}
 	return $path;
 }
@@ -282,7 +282,7 @@ function osc_user_activate_url($id, $code)
 	}
 	else
 	{
-		return osc_base_url(true) . '?page=user&action=validate&id=' . $id . '&code=' . $code;
+		return $this->getBaseUrl(true) . '?page=user&action=validate&id=' . $id . '&code=' . $code;
 	}
 }
 
@@ -305,7 +305,7 @@ function osc_user_public_profile_url($id = null)
 		}
 		else
 		{
-			$path = sprintf(osc_base_url(true) . '?page=user&action=pub_profile&id=%d', $id);
+			$path = sprintf($this->getBaseUrl(true) . '?page=user&action=pub_profile&id=%d', $id);
 		}
 	}
 	else
@@ -331,7 +331,7 @@ function osc_user_public_profile_url($id = null)
 			}
 			else
 			{
-				return osc_base_url(true) . "?page=page&id=" . osc_field( $page, "pk_i_id") . "&lang=" . $locale;
+				return $this->getBaseUrl(true) . "?page=page&id=" . osc_field( $page, "pk_i_id") . "&lang=" . $locale;
 			}
 		}
 		else
@@ -342,7 +342,7 @@ function osc_user_public_profile_url($id = null)
 			}
 			else
 			{
-				return osc_base_url(true) . "?page=page&id=" . osc_field( $page, "pk_i_id");
+				return $this->getBaseUrl(true) . "?page=page&id=" . osc_field( $page, "pk_i_id");
 			}
 		}
 	}

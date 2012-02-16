@@ -94,43 +94,5 @@ function osc_contact_url()
 		
 		return $url;
 	}
-	
-	/**
-	 * Retrun link for mark as bad category the current item.
-	 *
-	 * @return string
-	 */
-	function osc_item_link_bad_category() 
-	{
-		return $this->getBaseUrl( true ) . '?page=item&action=mark&as=badcat&id=' . osc_item_id();
-	}
-	/**
-	 * Gets link for mark as repeated the current item
-	 *
-	 * @return string
-	 */
-	function osc_item_link_repeated() 
-	{
-		return $this->getBaseUrl(true) . "?page=item&action=mark&as=repeated&id=" . osc_item_id();
-	}
-	/**
-	 * Gets link for mark as offensive the current item
-	 *
-	 * @return string
-	 */
-	function osc_item_link_offensive() 
-	{
-		return $this->getBaseUrl(true) . "?page=item&action=mark&as=offensive&id=" . osc_item_id();
-	}
-	/**
-	 * Gets link for mark as expired the current item
-	 *
-	 * @return string
-	 */
-	function osc_item_link_expired() 
-	{
-		return $this->getBaseUrl(true) . "?page=item&action=mark&as=expired&id=" . osc_item_id();
-	}
-
 }
 

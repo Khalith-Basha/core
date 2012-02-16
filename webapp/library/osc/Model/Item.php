@@ -597,7 +597,7 @@ class Model_Item extends DAO
 	 * @param type $items
 	 * @return array with description extended with all available locales
 	 */
-	public function extendData($items) 
+	public function extendData( array $items)
 	{
 		if (defined('OC_ADMIN')) 
 		{

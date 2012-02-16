@@ -7,7 +7,7 @@ abstract class Controller_Cacheable extends Controller_Default
 		$cacheKey = $this->getCacheKey();
 		$cacheService = $this->getClassLoader()->getClassInstance( 'Services_Cache_Memcached' );
 		$cachedResponse = $cacheService->read( $cacheKey );
-		if( false === $cachedResponse )
+		if( true || false === $cachedResponse ) // @TODO REMOVE
 		{
 			$cachedResponse = $this->renderView( $req, $res );
 			$cacheExpiration = $this->getCacheExpiration();
