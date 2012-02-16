@@ -660,7 +660,8 @@ function osc_comment_user_id()
  */
 function osc_delete_comment_url() 
 {
-	return (string)osc_base_url(true) . "?page=item&action=delete_comment&id=" . osc_item_id() . "&comment=" . osc_comment_id();
+	$urlFactory = ClassLoader::getInstance()->getClassInstance( 'Url_Index' );
+	return (string)$urlFactory->getBaseUrl(true) . "?page=item&action=delete_comment&id=" . osc_item_id() . "&comment=" . osc_comment_id();
 }
 
 /**
@@ -706,7 +707,8 @@ function osc_resource_extension()
  */
 function osc_resource_path() 
 {
-	return (string)osc_apply_filter('resource_path', osc_base_url() . '/'. osc_resource_field("s_path"));
+	$urlFactory = ClassLoader::getInstance()->getClassInstance( 'Url_Index' );
+	return (string)osc_apply_filter('resource_path', $urlFactory->getBaseUrl() . '/'. osc_resource_field("s_path"));
 }
 /**
  * Gets thumbnail url of current resource
