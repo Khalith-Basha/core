@@ -20,6 +20,12 @@
 */
 class Controller_Administration extends Controller_Secure 
 {
+	public function __construct()
+	{
+		parent::__construct();
+		$this->view->setTheme( $this->getClassLoader()->getClassInstance( 'Ui_AdminTheme' ) );
+	}
+
 	public function isLogged() 
 	{
 		return osc_is_admin_user_logged_in();
@@ -50,9 +56,10 @@ class Controller_Administration extends Controller_Secure
 
 	public function doView( $file )
 	{
-		osc_current_admin_theme_path( 'header.php' );
-		osc_current_admin_theme_path( $file );
-		osc_current_admin_theme_path( 'footer.php' );
+		$view = $this->getView();
+		echo $view->render( 'header' );
+		echo $view->render( preg_replace( '/\.php$/', '', $file ) );
+		echo $view->render( 'footer' );
 		$this->getSession()->_clearVariables();
 	}
 }

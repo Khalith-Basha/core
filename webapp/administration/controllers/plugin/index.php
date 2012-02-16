@@ -22,6 +22,7 @@ class CAdminPlugin extends Controller_Administration
 {
 	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
+		$classLoader = $this->getClassLoader();
 		$pluginManager = ClassLoader::getInstance()->getClassInstance( 'PluginManager' );
 		switch ($this->action) 
 		{
@@ -87,9 +88,7 @@ class CAdminPlugin extends Controller_Administration
 			break;
 
 		default:
-			require_once 'osc/helpers/hPlugins.php';
-			require_once 'osc/helpers/hDefines.php';
-			require_once 'osc/utils.php';
+			$classLoader->loadFile( 'helpers/plugins' );
 
 			$this->getView()->assign("plugins", $pluginManager->listAll());
 			$this->doView("plugins/index.php");

@@ -33,4 +33,8 @@ class Ui_AdminTheme extends Ui_Theme
 		$this->theme_exists = true;
 		$this->theme_path = osc_admin_base_path() . '/themes/' . $this->theme;
 	}
+
+	public function setGuiTheme()
+	{
+	}
 }

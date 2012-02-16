@@ -23,14 +23,15 @@ class CAdminIndex extends Controller_Administration
 {
 	public function doGet( HttpRequest $req, HttpResponse $res ) 
 	{
-		require 'osc/feeds.php';
+		$classLoader = $this->getClassLoader();
+		$classLoader->loadFile( 'helpers/feeds' );
 
-		$this->getView()->assign("numUsers", $this->getClassLoader()->getClassInstance( 'Model_User' )->count());
-		$this->getView()->assign("numAdmins", $this->getClassLoader()->getClassInstance( 'Model_Admin' )->count());
-		$this->getView()->assign("numItems", $this->getClassLoader()->getClassInstance( 'Model_Item' )->count());
+		$this->getView()->assign("numUsers", $classLoader->getClassInstance( 'Model_User' )->count());
+		$this->getView()->assign("numAdmins", $classLoader->getClassInstance( 'Model_Admin' )->count());
+		$this->getView()->assign("numItems", $classLoader->getClassInstance( 'Model_Item' )->count());
 		$this->getView()->assign("numItemsPerCategory", osc_get_non_empty_categories());
 		$this->getView()->assign("newsList", osc_listNews());
-		$this->getView()->assign("comments", $this->getClassLoader()->getClassInstance( 'Model_ItemComment' )->getLastComments(5));
+		$this->getView()->assign("comments", $classLoader->getClassInstance( 'Model_ItemComment' )->getLastComments(5));
 
 		$this->doView('main/index.php');
 	}

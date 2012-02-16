@@ -405,9 +405,7 @@ function ping_search_engines($bool)
 function display_finish($password) 
 {
 	$classLoader = ClassLoader::getInstance();
-	require_once 'osc/Model/Item.php';
-	require_once 'osc/helpers/hPlugins.php';
-	require_once 'osc/plugins.php';
+	$classLoader->loadFile( 'helpers/plugins' );
 	$data = array();
 	$mAdmin = $classLoader->getClassInstance( 'Model_Admin' );
 	$mPreference = $classLoader->getClassInstance( 'Model_Preference' );

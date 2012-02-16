@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU Affero General Public
  * License along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+$pageUrls = $classLoader->getClassInstance( 'Url_Page' );
 $pages = __get("pages");
 $prefLocale = __get("prefLocale");
 $last = end($pages);
@@ -110,7 +111,7 @@ $last_id = $last['pk_i_id'];
                                   [
                                     "<input type='checkbox' name='id[]' value='<?php echo $page['pk_i_id']; ?>' />",
                                     "<?php echo $page['s_internal_name']; ?><div id='datatables_quick_edit'>" +
-                                    "<a href='<?php echo osc_static_page_url( $page ); ?>'>" +
+                                    "<a href='<?php echo $pageUrls->getUrl( $page ); ?>'>" +
                                     "<?php _e('View page'); ?></a> | " +
                                     "<a href='<?php echo osc_admin_base_url(true); ?>?page=page&action=edit&id=<?php echo $page['pk_i_id']; ?>'>" +
                                     "<?php _e('Edit'); ?></a><?php

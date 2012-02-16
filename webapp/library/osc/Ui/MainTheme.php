@@ -60,16 +60,6 @@ class Ui_MainTheme extends Ui_Theme
 		}
 	}
 
-	public function setPath($path) 
-	{
-		if (file_exists($path)) 
-		{
-			$this->path = $path;
-			return true;
-		}
-		return false;
-	}
-
 	public function setGuiTheme() 
 	{
 		$this->theme = '';

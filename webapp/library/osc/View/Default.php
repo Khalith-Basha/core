@@ -4,11 +4,19 @@ class View_Default
 {
 	private $name;
 	private $variables;
-	private $aCurrent;
+	private $theme;
 
 	public function __construct()
 	{
 		$this->variables = array();
+
+		$this->classLoader = ClassLoader::getInstance();
+		$this->theme = $this->classLoader->getClassInstance( 'Ui_MainTheme' );
+	}
+
+	public function setTheme( Ui_Theme $theme )
+	{
+		$this->theme = $theme;
 	}
 
 	public function setName( $name )
@@ -29,18 +37,17 @@ class View_Default
 		if( is_null( $name ) )
 			throw new Exception( 'Missing template name with setName() or render(name).' );
 
-		$classLoader = ClassLoader::getInstance();
 		extract( $this->variables );
-		$urlFactory = $classLoader->getClassInstance( 'Url_Abstract' );
+		$classLoader = $this->classLoader;
+		$urlFactory = $this->classLoader->getClassInstance( 'Url_Abstract' );
 		$view = $this;
 		$file = $name . '.php';
-		$webThemes = $classLoader->getClassInstance( 'Ui_MainTheme' );
 		$viewContent = null;
-		$filePath = $webThemes->getCurrentThemePath() . $file;
+		$filePath = $this->theme->getCurrentThemePath() . $file;
 		if (!file_exists($filePath)) 
 		{
-			$webThemes->setGuiTheme();
-			$filePath = $webThemes->getCurrentThemePath() . DIRECTORY_SEPARATOR . $file;
+			$this->theme->setGuiTheme();
+			$filePath = $this->theme->getCurrentThemePath() . DIRECTORY_SEPARATOR . $file;
 		}
 		if (file_exists($filePath)) 
 		{

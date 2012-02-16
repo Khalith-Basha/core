@@ -1,5 +1,10 @@
 <?php
 
+function osc_base_url()
+{
+	return 'TODO_WEB_URL';
+}
+
 /**
  * Gets the root url of administration for your installation
  *

@@ -30,7 +30,6 @@ if (file_exists(ABS_PATH . '.maintenance'))
 
 require_once 'osc/Controller/Secure.php';
 require_once 'osc/Controller/Administration.php';
-require 'osc/AdminThemes.php';
 
 $page = Params::getParam('page');
 if( empty( $page ) ) $page = 'index';
@@ -39,6 +38,9 @@ $action = Params::getParam( 'action' );
 if( empty( $action ) ) $action = 'index';
 
 $classLoader->getClassInstance( 'Ui_MainTheme' );
+
+require 'library/osc/urls.php';
+require 'library/osc/themes.php';
 
 $ctrlPath = osc_admin_base_path() . '/controllers/' . $page . '/' . $action . '.php';
 require $ctrlPath;

@@ -18,29 +18,29 @@
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-/**
- * Locale DAO
- */
+
 class Model_Locale extends Model
 {
-	function __constructx() 
+	public function listAll()
 	{
-		parent::__construct();
-		$this->setTableName('t_locale');
-		$this->setPrimaryKey('pk_c_code');
-		$array_fields = array('pk_c_code', 's_name', 's_short_name', 's_description', 's_version', 's_author_name', 's_author_url', 's_currency_format', 's_dec_point', 's_thousands_sep', 'i_num_dec', 's_date_format', 's_stop_words', 'b_enabled', 'b_enabled_bo');
-		$this->setFields($array_fields);
+		$sql = <<<SQL
+SELECT
+	pk_c_code, s_name, s_short_name, s_description, s_version, s_author_name, s_author_url, s_currency_format, s_dec_point, s_thousands_sep, i_num_dec, s_date_format, s_stop_words, b_enabled, b_enabled_bo
+FROM
+	/*TABLE_PREFIX*/t_locale
+ORDER BY
+	s_name ASC
+SQL;
+
+		$stmt = $this->prepareStatement( $sql );
+		$locales = $this->fetchAll( $stmt );
+		$stmt->close();
+
+		return $locales;
+
 	}
-	/**
-	 * Return all locales enabled.
-	 *
-	 * @access public
-	 * @since unknown
-	 * @param boole $isBo
-	 * @param boole $indexedByKk
-	 * @return array
-	 */
-	function listAllEnabled( $isBo = false, $indexedByPk = false )
+
+	public function listAllEnabled( $isBo = false )
 	{
 		$column = $isBo ? 'b_enabled_bo' : 'b_enabled';
 		$sql = <<<SQL
@@ -60,15 +60,14 @@ SQL;
 
 		return $locales;
 	}
+
 	/**
 	 * Return all locales by code
 	 *
-	 * @access public
-	 * @since 2.3
 	 * @param string $code
 	 * @return array
 	 */
-	function findByCode($code) 
+	public function findByCode($code) 
 	{
 		$this->dao->select();
 		$this->dao->from($this->getTableName());
@@ -76,11 +75,10 @@ SQL;
 		$result = $this->dao->get();
 		return $result->result();
 	}
+
 	/**
 	 * Delete all related to locale code.
 	 *
-	 * @access public
-	 * @since unknown
 	 * @param string $locale
 	 * @return bool
 	 */
@@ -98,3 +96,4 @@ SQL;
 		return $result;
 	}
 }
+

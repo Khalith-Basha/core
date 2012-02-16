@@ -23,34 +23,6 @@ function osc_current_web_theme_url($file = '')
 	return $url;
 }
 
-function osc_get_current_web_theme_path( $file, View $view = null ) 
-{
-	$classLoader = ClassLoader::getInstance();
-	$themes = $classLoader->getClassInstance( 'Ui_MainTheme' );
-	if( is_null( $view ) )
-		$view = $classLoader->getClassInstance( 'View_Html' );
-	$webThemes = $themes;
-	$filePath = $webThemes->getCurrentThemePath() . DIRECTORY_SEPARATOR . $file;
-	if (file_exists($filePath)) 
-	{
-		return $filePath;
-	}
-	else
-	{
-		$webThemes->setGuiTheme();
-		$filePath = $webThemes->getCurrentThemePath() . DIRECTORY_SEPARATOR . $file;
-		if (file_exists($filePath)) 
-		{
-			return $filePath;
-		}
-		else
-		{
-			trigger_error('File not found: ' . $filePath, E_USER_NOTICE);
-			return null;
-		}
-	}
-}
-
 /**
  * Gets the complete path of a given styles file using the theme path as a root
  *

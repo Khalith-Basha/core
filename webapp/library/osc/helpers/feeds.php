@@ -31,7 +31,7 @@ function osc_listNews()
 	else
 	{
 		$list = array();
-		$content = osc_file_get_contents('http://opensourceclassifieds.org/feed/');
+		$content = file_get_contents('http://opensourceclassifieds.org/feed/');
 		if ($content) 
 		{
 			$xml = simplexml_load_string($content);

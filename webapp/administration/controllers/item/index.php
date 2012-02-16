@@ -212,6 +212,7 @@ class CAdminItem extends Controller_Administration
 
 		default: //default
 			$classLoader = $this->getClassLoader();
+			$classLoader->loadFile( 'helpers/locations' );
 			$catId = Params::getParam('catId');
 			$countries = $classLoader->getClassInstance( 'Model_Country' )->listAll();
 			$regions = array();

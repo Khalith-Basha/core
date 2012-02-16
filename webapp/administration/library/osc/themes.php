@@ -7,7 +7,7 @@
  */
 function osc_current_admin_theme() 
 {
-	return (ClassLoader::getInstance()->getClassInstance( 'AdminThemes' )->getCurrentTheme());
+	return (ClassLoader::getInstance()->getClassInstance( 'Ui_AdminTheme' )->getCurrentTheme());
 }
 /**
  * Gets the complete url of a given admin's file
@@ -17,7 +17,7 @@ function osc_current_admin_theme()
  */
 function osc_current_admin_theme_url($file = '') 
 {
-	return ClassLoader::getInstance()->getClassInstance( 'AdminThemes' )->getCurrentThemeUrl() . '/' . $file;
+	return ClassLoader::getInstance()->getClassInstance( 'Ui_AdminTheme' )->getCurrentThemeUrl() . '/' . $file;
 }
 /**
  * Gets the complete path of a given admin's file
@@ -27,7 +27,7 @@ function osc_current_admin_theme_url($file = '')
  */
 function osc_current_admin_theme_path($file = '') 
 {
-	require ClassLoader::getInstance()->getClassInstance( 'AdminThemes' )->getCurrentThemePath() . '/' . $file;
+	require ClassLoader::getInstance()->getClassInstance( 'Ui_AdminTheme' )->getCurrentThemePath() . '/' . $file;
 }
 /**
  * Gets the complete url of a given style's file
@@ -37,7 +37,7 @@ function osc_current_admin_theme_path($file = '')
  */
 function osc_current_admin_theme_styles_url( $file ) 
 {
-	return ClassLoader::getInstance()->getClassInstance( 'AdminThemes' )->getCurrentThemeStyles() . '/' . $file;
+	return ClassLoader::getInstance()->getClassInstance( 'Ui_AdminTheme' )->getCurrentThemeStyles() . '/' . $file;
 }
 /**
  * Gets the complete url of a given js's file
@@ -47,6 +47,6 @@ function osc_current_admin_theme_styles_url( $file )
  */
 function osc_current_admin_theme_js_url($file = '') 
 {
-	return ClassLoader::getInstance()->getClassInstance( 'AdminThemes' )->getCurrentThemeJs() . '/' . $file;
+	return ClassLoader::getInstance()->getClassInstance( 'Ui_AdminTheme' )->getCurrentThemeJs() . '/' . $file;
 }
 

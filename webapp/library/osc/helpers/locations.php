@@ -287,14 +287,7 @@ function osc_city_area_url()
  */
 function osc_get_countries() 
 {
-	if (ClassLoader::getInstance()->getClassInstance( 'View_Default' )->_exists('countries')) 
-	{
-		return ClassLoader::getInstance()->getClassInstance( 'View_Default' )->_get('countries');
-	}
-	else
-	{
-		return ClassLoader::getInstance()->getClassInstance( 'Model_Country' )->listAll();
-	}
+	return ClassLoader::getInstance()->getClassInstance( 'Model_Country' )->listAll();
 }
 /**
  * Gets list of regions (from a country)
@@ -304,20 +297,13 @@ function osc_get_countries()
  */
 function osc_get_regions($country = '') 
 {
-	if (ClassLoader::getInstance()->getClassInstance( 'View_Default' )->_exists('regions')) 
+	if ($country == '') 
 	{
-		return ClassLoader::getInstance()->getClassInstance( 'View_Default' )->_get('regions');
+		return ClassLoader::getInstance()->getClassInstance( 'Model_Region' )->listAll();
 	}
 	else
 	{
-		if ($country == '') 
-		{
-			return ClassLoader::getInstance()->getClassInstance( 'Model_Region' )->listAll();
-		}
-		else
-		{
-			return ClassLoader::getInstance()->getClassInstance( 'Model_Region' )->findByCountry($country);
-		}
+		return ClassLoader::getInstance()->getClassInstance( 'Model_Region' )->findByCountry($country);
 	}
 }
 /**
@@ -328,20 +314,13 @@ function osc_get_regions($country = '')
  */
 function osc_get_cities($region = '') 
 {
-	if (ClassLoader::getInstance()->getClassInstance( 'View_Default' )->_exists('cities')) 
+	if ($region == '') 
 	{
-		return ClassLoader::getInstance()->getClassInstance( 'View_Default' )->_get('cities');
+		return ClassLoader::getInstance()->getClassInstance( 'Model_City' )->listAll();
 	}
 	else
 	{
-		if ($region == '') 
-		{
-			return ClassLoader::getInstance()->getClassInstance( 'Model_City' )->listAll();
-		}
-		else
-		{
-			return ClassLoader::getInstance()->getClassInstance( 'Model_City' )->findByRegion($region);
-		}
+		return ClassLoader::getInstance()->getClassInstance( 'Model_City' )->findByRegion($region);
 	}
 }
 

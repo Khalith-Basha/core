@@ -38,14 +38,7 @@ class Form_Item extends Form
 		}
 		if ($categories == null) 
 		{
-			if (ClassLoader::getInstance()->getClassInstance( 'View_Default' )->_exists('categories')) 
-			{
-				$categories = ClassLoader::getInstance()->getClassInstance( 'View_Default' )->_get('categories');
-			}
-			else
-			{
-				$categories = osc_get_categories();
-			}
+			$categories = osc_get_categories();
 		}
 		if ($item == null) 
 		{

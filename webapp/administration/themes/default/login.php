@@ -27,9 +27,7 @@
     <body class="login">
         <div id="login">
             <h1>
-                <a href="<?php echo osc_base_url(); ?>" title="OpenSourceClassifieds">
-                    <img src="images/osclass-logo.png" border="0" title="" alt=""/>
-                </a>
+                <a href="<?php echo osc_base_url(); ?>" title="OpenSourceClassifieds"><img src="images/osclass-logo.png" border="0" title="" alt=""/></a>
             </h1>
             <?php osc_show_flash_message('admin'); ?>
             <form name="loginform" id="loginform" action="<?php echo osc_admin_base_url(true); ?>" method="post">
@@ -49,43 +47,27 @@
                 </p>
 
                 <?php $locales = osc_all_enabled_locales_for_admin(); ?>
-                <?php
-if (count($locales) > 1) 
-{ ?>
+                <?php if (count($locales) > 1)  { ?>
                     <p>
-                        <label><?php
-	_e('Language'); ?><br />
+                        <label><?php _e('Language'); ?><br />
                             <select name="locale" id="user_language">
-                                <?php
-	foreach ($locales as $locale) 
-	{ ?>
-                                    <option value="<?php
-		echo $locale['pk_c_code']; ?>" <?php
-		if (osc_admin_language() == $locale['pk_c_code']) echo 'selected="selected"'; ?>><?php
-		echo $locale['s_short_name']; ?></option>
-                                <?php
-	} ?>
+                                <?php foreach ($locales as $locale)  { ?>
+                                    <option value="<?php echo $locale['pk_c_code']; ?>" <?php if (osc_admin_language() == $locale['pk_c_code']) echo 'selected="selected"'; ?>><?php echo $locale['s_short_name']; ?></option>
+                                <?php } ?>
                             </select>
                         </label>
                     </p>
-                <?php
-}
-else
-{ ?>
-                    <input type="hidden" name="locale" value="<?php
-	echo $locales[0]["pk_c_code"]; ?>" />
-                <?php
-} ?>
+                <?php } else { ?>
+                    <input type="hidden" name="locale" value="<?php echo $locales[0]["pk_c_code"]; ?>" />
+                <?php } ?>
                     
                 <p class="forgetmenot">
                     <label>
-                        <input name="remember" type="checkbox" id="remember" value="1" tabindex="90" /> <?php
-_e('Remember me'); ?>
+                        <input name="remember" type="checkbox" id="remember" value="1" tabindex="90" /> <?php _e('Remember me'); ?>
                     </label>
                 </p>
                 <p class="submit">
-                    <input type="submit" name="submit" id="submit" value="<?php
-_e('Log in'); ?>" tabindex="100" />
+                    <input type="submit" name="submit" id="submit" value="<?php _e('Log in'); ?>" tabindex="100" />
                 </p>
             </form>
 
