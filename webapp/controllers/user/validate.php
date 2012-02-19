@@ -41,12 +41,12 @@ class CWebRegister extends Controller
 		if (!$user) 
 		{
 			osc_add_flash_error_message(_m('The link is not valid anymore. Sorry for the inconvenience!'));
-			$this->redirectTo(osc_base_url());
+			$this->redirectToBaseUrl();
 		}
 		if ($user['b_active'] == 1) 
 		{
 			osc_add_flash_error_message(_m('Your account has already been validated'));
-			$this->redirectTo(osc_base_url());
+			$this->redirectToBaseUrl();
 		}
 		$userManager = new User();
 		$userManager->update(array('b_active' => '1'), array('pk_i_id' => $id, 's_secret' => $code));
@@ -59,7 +59,7 @@ class CWebRegister extends Controller
 		$phone = ($user['s_phone_mobile']) ? $user['s_phone_mobile'] : $user['s_phone_land'];
 		$this->getSession()->_set('userPhone', $phone);
 		osc_add_flash_ok_message(_m('Your account has been validated'));
-		$this->redirectTo(osc_base_url());
+		$this->redirectToBaseUrl();
 	}
 }
 

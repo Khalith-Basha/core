@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Affero General Public
  * License along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-class CWebUser extends Controller
+class CWebUser extends Controller_Default
 {
 	function __construct() 
 	{
@@ -29,8 +29,11 @@ class CWebUser extends Controller
 
 	public function doPost( HttpRequest $req, HttpResponse $res )
 	{
-		$user = ClassLoader::getInstance()->getClassInstance( 'Model_User' )->findByPrimaryKey(Params::getParam('id'));
-		View::newInstance()->assign('user', $user);
+		$classLoader = ClassLoader::getInstance();
+		$userUrls = $classLoader->getClassInstance( 'Url_User' );
+		$user = $classLoader->getClassInstance( 'Model_User' )->findByPrimaryKey(Params::getParam('id'));
+		$view = $this->getView();
+		$view->assign('user', $user);
 		if ((osc_recaptcha_private_key() != '') && Params::existParam("recaptcha_challenge_field")) 
 		{
 			if (!osc_check_recaptcha()) 
@@ -45,7 +48,7 @@ class CWebUser extends Controller
 			}
 		}
 		osc_run_hook('hook_email_contact_user', Params::getParam('id'), Params::getParam('yourEmail'), Params::getParam('yourName'), Params::getParam('phoneNumber'), Params::getParam('message'));
-		$this->redirectTo(osc_user_public_profile_url());
+		$this->redirectTo( $userUrls->osc_user_public_profile_url( $user ));
 	}
 }
 

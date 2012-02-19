@@ -34,44 +34,28 @@ echo $view->render( 'header' );
                                 </h1>
                                 <p class="see_by">
                                     <?php _e('Sort by', 'modern'); ?>:
-                                    <?php
-$i = 0; ?>
+                                    <?php $i = 0; ?>
                                     <?php
 $orders = osc_list_orders();
 foreach ($orders as $label => $params) 
 {
 	$orderType = ($params['iOrderType'] == 'asc') ? '0' : '1'; ?>
-                                        <?php
-	if (osc_search_order() == $params['sOrder'] && osc_search_order_type() == $orderType) 
-	{ ?>
+                                        <?php if (osc_search_order() == $params['sOrder'] && osc_search_order_type() == $orderType)  { ?>
                                             <a class="current" href="<?php echo $searchUrl->osc_update_search_url($params); ?>"><?php echo $label; ?></a>
-                                        <?php
-	}
-	else
-	{ ?>
+                                        <?php } else { ?>
                                             <a href="<?php echo $searchUrl->osc_update_search_url($params); ?>"><?php echo $label; ?></a>
                                         <?php } ?>
-<?php
-	if ($i != count($orders) - 1) 
-	{ ?>
+					<?php if ($i != count($orders) - 1)  { ?>
                                             <span>|</span>
                                         <?php } ?>
-                                        <?php
-	$i++; ?>
-                                    <?php
-} ?>
+                                        <?php $i++; ?>
+                                    <?php } ?>
                                 </p>
                             </div>
                         </div>
-                        <?php
-if (osc_count_items() == 0) 
-{ ?>
-                            <p class="empty" ><?php
-	printf(__('There are no results matching "%s"', 'modern'), osc_search_pattern()); ?></p>
-                        <?php
-}
-else
-{ ?>
+                        <?php if (osc_count_items() == 0)  { ?>
+                            <p class="empty" ><?php printf(__('There are no results matching "%s"', 'modern'), osc_search_pattern()); ?></p>
+                        <?php } else { ?>
                             <?php require (osc_search_show_as() == 'list' ? 'list.php' : 'gallery.php'); ?>
                         <?php } ?>
 			<div class="paginate"><?php echo $pagination->showLinks(); ?></div>

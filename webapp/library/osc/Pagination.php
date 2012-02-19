@@ -150,23 +150,4 @@ class Pagination
 	}
 }
 
-/**
- * Gets the pagination links of comments pagination
- *
- * @return string pagination links
- */
-function osc_comments_pagination() 
-{
-	if ((osc_comments_per_page() == 0) || (osc_item_comments_page() === 'all')) 
-	{
-		return null;
-	}
-	else
-	{
-		$params = array('total' => ceil(osc_item_total_comments() / osc_comments_per_page()), 'selected' => osc_item_comments_page(), 'url' => osc_item_comments_url('{PAGE}'));
-		return ClassLoader::getInstance()
-			->getClassInstance( 'Pagination', true, array( $params ) )
-			->doPagination();
-	}
-}
 

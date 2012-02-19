@@ -21,17 +21,17 @@ class CWebUser extends Controller_Default
 	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
 		$session = $this->getSession();
-		$session->_drop('userId');
-		$session->_drop('userName');
-		$session->_drop('userEmail');
-		$session->_drop('userPhone');
+		$session->remove( 'userId' );
+		$session->remove( 'userName' );
+		$session->remove( 'userEmail' );
+		$session->remove( 'userPhone' );
 		
 		$cookie = $this->getCookie();
-		$cookie->pop('oc_userId');
-		$cookie->pop('oc_userSecret');
+		$cookie->remove('oc_userId');
+		$cookie->remove('oc_userSecret');
 		$cookie->set();
 
-		$this->redirectTo( osc_base_url() . '/' );
+		$this->redirectToBaseUrl();
 	}
 }
 

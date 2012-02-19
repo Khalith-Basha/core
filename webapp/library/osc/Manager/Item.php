@@ -506,54 +506,23 @@ class Manager_Item
 		}
 		ItemClassLoader::getInstance()->getClassInstance( 'Stats' )->increase($column, $id);
 	}
-	public function send_friend() 
-	{
-		$classLoader = ClassLoader::getInstance();
-		// get data for this function
-		$aItem = $this->prepareDataForFunction('send_friend');
-		$item = $aItem['item'];
-		$s_title = $aItem['s_title'];
-		$classLoader->getClassInstance( 'View_Html' )->assign('item', $item);
-		osc_run_hook('hook_email_send_friend', $aItem);
-		$item_url = $classLoader->getClassInstance( 'Url_Item' )->getDetailsUrl( $item );
-		$item_url = '<a href="' . $item_url . '" >' . $item_url . '</a>';
-		Params::setParam('item_url', $item_url);
-		osc_add_flash_ok_message(sprintf(_m('We just send your message to %s'), $aItem['friendName']));
-		return true;
-	}
-	public function contact() 
-	{
-		$flash_error = '';
-		$aItem = $this->prepareDataForFunction('contact');
-		// check parameters
-		if (!osc_validate_email($aItem['yourEmail'], true)) 
-		{
-			$flash_error.= __("Invalid email address") . PHP_EOL;
-		}
-		else if (!osc_validate_text($aItem['message'])) 
-		{
-			$flash_error.= __("Message: this field is required") . PHP_EOL;
-		}
-		else if (!osc_validate_text($aItem['yourName'])) 
-		{
-			$flash_error.= __("Your name: this field is required") . PHP_EOL;
-		}
-		if ($flash_error != '') 
-		{
-			return $flash_error;
-		}
-		else
-		{
-			osc_run_hook('hook_email_item_inquiry', $aItem);
-		}
-	}
-	/*
-	 *
-	*/
 	public function add_comment() 
 	{
 		$classLoader = ClassLoader::getInstance();
-		$aItem = $this->prepareDataForFunction('add_comment');
+			$item = $this->manager->findByPrimaryKey(Params::getParam('id'));
+			$aItem['item'] = $item;
+			ClassLoader::getInstance()->getClassInstance( 'View_Html' )->assign('item', $aItem['item']);
+			$aItem['authorName'] = Params::getParam('authorName');
+			$aItem['authorEmail'] = Params::getParam('authorEmail');
+			$aItem['body'] = Params::getParam('body');
+			$aItem['title'] = Params::getParam('title');
+			$aItem['id'] = Params::getParam('id');
+			$aItem['userId'] = ClassLoader::getInstance()->getClassInstance( 'Session' )->_get('userId');
+			if ($aItem['userId'] == '') 
+			{
+				$aItem['userId'] = NULL;
+			}
+
 		$authorName = trim($aItem['authorName']);
 		$authorName = strip_tags($authorName);
 		$authorEmail = trim($aItem['authorEmail']);
@@ -645,58 +614,6 @@ class Manager_Item
 			return $status_num;
 		}
 		return -1;
-	}
-	/**
-	 * Return an array with all data necessary for do the action
-	 * @param <type> $action
-	 */
-	private function prepareDataForFunction($action) 
-	{
-		$aItem = array();
-		switch ($action) 
-		{
-		case 'send_friend':
-			$item = $this->manager->findByPrimaryKey(Params::getParam('id'));
-			$aItem['item'] = $item;
-			ClassLoader::getInstance()->getClassInstance( 'View_Html' )->assign('item', $aItem['item']);
-			$aItem['yourName'] = Params::getParam('yourName');
-			$aItem['yourEmail'] = Params::getParam('yourEmail');
-			$aItem['friendName'] = Params::getParam('friendName');
-			$aItem['friendEmail'] = Params::getParam('friendEmail');
-			$aItem['s_title'] = Params::getParam('s_title');
-			$aItem['message'] = Params::getParam('message');
-			break;
-
-		case 'contact':
-			$item = $this->manager->findByPrimaryKey(Params::getParam('id'));
-			$aItem['item'] = $item;
-			ClassLoader::getInstance()->getClassInstance( 'View_Html' )->assign('item', $aItem['item']);
-			$aItem['id'] = Params::getParam('id');
-			$aItem['yourEmail'] = Params::getParam('yourEmail');
-			$aItem['yourName'] = Params::getParam('yourName');
-			$aItem['message'] = Params::getParam('message');
-			$aItem['phoneNumber'] = Params::getParam('phoneNumber');
-			break;
-
-		case 'add_comment':
-			$item = $this->manager->findByPrimaryKey(Params::getParam('id'));
-			$aItem['item'] = $item;
-			ClassLoader::getInstance()->getClassInstance( 'View_Html' )->assign('item', $aItem['item']);
-			$aItem['authorName'] = Params::getParam('authorName');
-			$aItem['authorEmail'] = Params::getParam('authorEmail');
-			$aItem['body'] = Params::getParam('body');
-			$aItem['title'] = Params::getParam('title');
-			$aItem['id'] = Params::getParam('id');
-			$aItem['userId'] = ClassLoader::getInstance()->getClassInstance( 'Session' )->_get('userId');
-			if ($aItem['userId'] == '') 
-			{
-				$aItem['userId'] = NULL;
-			}
-			break;
-
-		default:
-		}
-		return $aItem;
 	}
 	/**
 	 * Return an array with all data necessary for do the action (ADD OR EDIT)
@@ -1042,7 +959,7 @@ class Manager_Item
 						// Create normal size
 						$normal_path = $path = osc_content_path() . '/uploads/' . $resourceId . '.jpg';
 						$size = explode('x', osc_normal_dimensions());
-						$imageResizer = ClassLoader::getInstance()->getClassInstance( 'ImageResizer' );
+						$imageResizer = ClassLoader::getInstance()->getClassInstance( 'Image_Resizer' );
 						$imageResizer->fromFile($tmpName)->resizeTo($size[0], $size[1])->saveToFile($path);
 						if (osc_is_watermark_text()) 
 						{

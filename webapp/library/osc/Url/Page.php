@@ -13,7 +13,13 @@ class Url_Page extends Url_Abstract
 			'friendly' => 'xxx'
 		);
 	}
-	
+
+	public function loadRules( Rewrite $rewrite )
+	{
+		$rewrite->addRule( '^/(.*?)-p([0-9]*)$', 'index.php?page=page&id=$2' );
+		$rewrite->addRule( '^/(.*?)-p([0-9]*)-([a-zA-Z_]*)$', 'index.php?page=page&id=$2&lang=$3' );
+	}
+
 	/**
 	 * Gets current page url
 	 *

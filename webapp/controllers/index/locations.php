@@ -20,7 +20,7 @@ class CWebIndex extends Controller_Cacheable
 {
 	public function getCacheKey()
 	{
-		return 'page-main';
+		return 'page-locations';
 	}
 
 	public function getCacheExpiration()
@@ -32,35 +32,19 @@ class CWebIndex extends Controller_Cacheable
 	{
 		$view = $this->getView();
 
-		$locale = osc_current_user_locale();
-
 		$classLoader = $this->getClassLoader();
-		$pagesModel = $classLoader->getClassInstance( 'Model_Page' );
-		$pageUrl = $classLoader->getClassInstance( 'Url_Page' );
-		$pages = $pagesModel->findUserPagesByLocale( $locale );
-		foreach( $pages as &$page )
+		$regionModel = $classLoader->getClassInstance( 'Model_Region' );
+		$regions = $regionModel->findAll();
+
+		$cityModel = $classLoader->getClassInstance( 'Model_City' );
+		foreach( $regions as &$region )
 		{
-			$page['url'] = $pageUrl->getUrl( $page );
+			$region['cities'] = $cityModel->findByRegion( $region['pk_i_id'] );
 		}
-		$view->assign( 'pages', $pages );
 
-		$category = $classLoader->getClassInstance( 'Model_Category' );
-		$view->assign('categories', $category->toTree());
-
-		$search = $classLoader->getClassInstance( 'Model_Search' );
-		$search->limit( 0, osc_max_latest_items() );
-		$latestItems = $search->getLatestItems();
-		foreach( $latestItems as &$item )
-		{
-			$item['resources'] = $classLoader->getClassInstance( 'Model_ItemResource' )->getAllResources( $item['pk_i_id'] );
-		}
-		$view->assign( 'latestItems', $latestItems );
-
-		$country = '%%%%';
-		$regions = $classLoader->getClassInstance( 'Model_Search' )->listRegions( $country, '>' );
 		$view->assign( 'regions', $regions );
 
-		return $view->render( 'main' );
+		return $view->render( 'index/locations' );
 	}
 }
 

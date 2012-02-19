@@ -96,10 +96,13 @@ class CWebItem extends Controller_Default
 			$itemId = Params::getParam('itemId');
 			$item = $this->itemManager->findByPrimaryKey($itemId);
 			osc_run_hook('posted_item', $item);
-			$category = ClassLoader::getInstance()->getClassInstance( 'Model_Category' )->findByPrimaryKey(Params::getParam('catId'));
+
+			$classLoader = ClassLoader::getInstance();
+			$category = $classLoader->getClassInstance( 'Model_Category' )->findByPrimaryKey(Params::getParam('catId'));
+			$searchUrls = $classLoader->getClassInstance( 'Url_Search' );
 
 			$this->getView()->assign('category', $category);
-			$url = osc_search_category_url();
+			$url = $searchUrls->osc_search_category_url( $category );
 			$this->redirectTo( $url );
 		}
 	}

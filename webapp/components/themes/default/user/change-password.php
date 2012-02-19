@@ -31,7 +31,7 @@ echo $view->render( 'header' );
                 </div>
                 <div id="main" class="modify_profile">
                     <h2><?php _e('Change your password', 'modern'); ?></h2>
-                    <form action="<?php echo osc_base_url(true); ?>" method="post">
+                    <form action="<?php echo $urlFactory->getBaseUrl(true); ?>" method="post">
                         <input type="hidden" name="page" value="user" />
                         <input type="hidden" name="action" value="change_password" />
                         <fieldset>

@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU Affero General Public
  * License along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+$itemUrls = $classLoader->getClassInstance( 'Url_Item' );
 $comments = __get('comments');
 if (!is_array($comments)) 
 {
@@ -65,12 +66,10 @@ $last_id = $last['pk_i_id'];
                      }
                     ,"sPaginationType": "full_numbers"
                     ,"aaData": [
-                        <?php
-foreach (__get('comments') as $c) 
-{ ?>
+                        <?php foreach (__get('comments') as $c)  { ?>
                             [
                                 "<input type='checkbox' name='id[]' value='<?php echo $c['pk_i_id']; ?>' />"
-                                ,"<?php echo addcslashes($c['s_author_name'], '"'); ?> (<a target='_blank' href='<?php echo osc_item_url_ns($c['fk_i_item_id']); ?>'><?php echo $c['s_title']; ?></a>)<div id='datatables_quick_edit'><a href='<?php echo osc_admin_base_url(true); ?>?page=comment&action=comment_edit&id=<?php echo $c['pk_i_id']; ?>' id='dt_link_edit'><?php _e('Edit'); ?></a><?php
+                                ,"<?php echo addcslashes($c['s_author_name'], '"'); ?> (<a target='_blank' href='<?php echo $itemUrls->osc_item_url_ns($c['fk_i_item_id']); ?>'><?php echo $c['s_title']; ?></a>)<div id='datatables_quick_edit'><a href='<?php echo osc_admin_base_url(true); ?>?page=comment&action=edit&id=<?php echo $c['pk_i_id']; ?>' id='dt_link_edit'><?php _e('Edit'); ?></a><?php
 	if (isset($c['b_active']) && ($c['b_active'] == 1)) 
 	{
 		echo ' | <a href=\'' . osc_admin_base_url(true) . '?page=comment&action=status&id=' . $c['pk_i_id'] . '&value=INACTIVE\'>' . __('Deactivate') . '</a>';
@@ -91,8 +90,7 @@ foreach (__get('comments') as $c)
                                 ,"<?php echo addcslashes(preg_replace('|\s+|', ' ', $c['s_body']), '"'); ?>"
                                 ,"<?php echo $c['dt_pub_date']; ?>"
                             ] <?php echo $last_id != $c['pk_i_id'] ? ',' : ''; ?>
-                        <?php
-} ?>
+                        <?php } ?>
                     ]
 
                     ,"aoColumns": [
@@ -120,34 +118,24 @@ foreach (__get('comments') as $c)
                     <div style="float: left;">
                         <img src="<?php echo osc_current_admin_theme_url('images/comments-icon2.png'); ?>" title="" alt=""/>
                     </div>
-                    <div id="content_header_arrow">&raquo; <?php
-_e('Manage Comments'); ?></div>
+                    <div id="content_header_arrow">&raquo; <?php _e('Manage Comments'); ?></div>
                     <div style="clear: both;"></div>
                 </div>
 
                 <div id="content_separator"></div>
-                <?php
-osc_show_flash_message('admin'); ?>
+                <?php osc_show_flash_message('admin'); ?>
 
-                <form id="datatablesForm" action="<?php
-osc_admin_base_url(true); ?>" method="post">
+                <form id="datatablesForm" action="<?php osc_admin_base_url(true); ?>" method="post">
                 <div id="TableToolsToolbar">
                 <select id="bulk_actions" name="bulk_actions" class="display">
-                    <option value=""><?php
-_e('Bulk actions'); ?></option>
-                    <option value="delete_all"><?php
-_e('Delete') ?></option>
-                    <option value="activate_all"><?php
-_e('Activate') ?></option>
-                    <option value="deactivate_all"><?php
-_e('Deactivate') ?></option>
-                    <option value="enable_all"><?php
-_e('Enable') ?></option>
-                    <option value="disable_all"><?php
-_e('Disable') ?></option>
+                    <option value=""><?php _e('Bulk actions'); ?></option>
+                    <option value="delete_all"><?php _e('Delete') ?></option>
+                    <option value="activate_all"><?php _e('Activate') ?></option>
+                    <option value="deactivate_all"><?php _e('Deactivate') ?></option>
+                    <option value="enable_all"><?php _e('Enable') ?></option>
+                    <option value="disable_all"><?php _e('Disable') ?></option>
                 </select>
-                &nbsp;<button id="bulk_apply" class="display"><?php
-_e('Apply') ?></button>
+                &nbsp;<button id="bulk_apply" class="display"><?php _e('Apply') ?></button>
                 </div>
                 <input type="hidden" name="action" value="bulk_actions" />
                     <table cellpadding="0" cellspacing="0" border="0" class="display" id="datatables_list"></table>

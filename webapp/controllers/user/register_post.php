@@ -38,7 +38,7 @@ class CWebUser extends Controller_Default
 		if (!osc_users_enabled()) 
 		{
 			osc_add_flash_error_message(_m('Users are not enabled'));
-			$this->redirectTo(osc_base_url());
+			$this->redirectToBaseUrl();
 		}
 		osc_run_hook('before_user_register');
 		$userActions = $this->getClassLoader()->getClassInstance( 'Manager_User', false, array( false ) );
@@ -47,7 +47,7 @@ class CWebUser extends Controller_Default
 		{
 		case 1:
 			osc_add_flash_ok_message(_m('The user has been created. An activation email has been sent'));
-			$this->redirectTo(osc_base_url());
+			$this->redirectToBaseUrl();
 			break;
 
 		case 2:

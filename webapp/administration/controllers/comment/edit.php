@@ -18,14 +18,28 @@
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-class CAdminPlugin extends Controller_Administration
+class CAdminComment extends Controller_Administration
 {
+	private $itemCommentManager;
+	function __construct() 
+	{
+		parent::__construct();
+		$this->itemCommentManager = ClassLoader::getInstance()->getClassInstance( 'Model_ItemComment' );
+	}
+
 	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
-		$pn = Params::getParam("plugin");
-		Plugins::runHook($pn . '_disable');
-		Plugins::deactivate($pn);
-		osc_add_flash_ok_message(_m('Plugin disabled'), 'admin');
-		$this->redirectTo(osc_admin_base_url(true) . "?page=plugin");
+		$id = Params::getParam('id');
+		$comment = ClassLoader::getInstance()->getClassInstance( 'Model_ItemComment' )->findByPrimaryKey($id);
+		$this->getView()->assign('comment', $comment);
+		$this->doView('comments/frm.php');
+	}
+
+	public function doPost( HttpRequest $req, HttpResponse $res )
+	{
+		$this->itemCommentManager->update(array('s_title' => Params::getParam('title'), 's_body' => Params::getParam('body'), 's_author_name' => Params::getParam('authorName'), 's_author_email' => Params::getParam('authorEmail')), array('pk_i_id' => Params::getParam('id')));
+		osc_run_hook('edit_comment', Params::getParam('id'));
+		osc_add_flash_ok_message(_m('Great! We just updated your comment'), 'admin');
+		$this->redirectTo(osc_admin_base_url(true) . "?page=comment");
 	}
 }

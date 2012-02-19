@@ -23,7 +23,6 @@ class CAdminItem extends Controller_Administration
 	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
 		$this->itemManager = $this->getClassLoader()->getClassInstance( 'Model_Item' );
-		//specific things for this class
 		switch ($this->action) 
 		{
 		case 'delete': //delete

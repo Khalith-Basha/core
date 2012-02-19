@@ -21,15 +21,14 @@
 class CAdminComment extends Controller_Administration
 {
 	private $itemCommentManager;
-	function __construct() 
+	public function __construct() 
 	{
 		parent::__construct();
 		$this->itemCommentManager = ClassLoader::getInstance()->getClassInstance( 'Model_ItemComment' );
 	}
 
-	function doModel() 
+	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
-		parent::doModel();
 		$id = Params::getParam('id');
 		$value = Params::getParam('value');
 		if (!$id) return false;
@@ -67,7 +66,7 @@ class CAdminComment extends Controller_Administration
 		$this->redirectTo(osc_admin_base_url(true) . "?page=comment");
 	}
 
-	function sendCommentActivated($commentId) 
+	private function sendCommentActivated($commentId) 
 	{
 		$aComment = $this->itemCommentManager->findByPrimaryKey($commentId);
 		$aItem = ClassLoader::getInstance()->getClassInstance( 'Model_Item' )->findByPrimaryKey($aComment['fk_i_item_id']);

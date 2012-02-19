@@ -20,14 +20,6 @@
 */
 class CAdminPage extends Controller_Administration
 {
-	private $pageManager;
-	function __construct() 
-	{
-		parent::__construct();
-		//specific things for this class
-		$this->pageManager = ClassLoader::getInstance()->getClassInstance( 'Model_Page' );
-	}
-
 	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
 		$this->getView()->assign("page", array());
@@ -36,6 +28,7 @@ class CAdminPage extends Controller_Administration
 	
 	public function doPost( HttpRequest $req, HttpResponse $res )
 	{
+		$this->pageManager = ClassLoader::getInstance()->getClassInstance( 'Model_Page' );
 		// setForm just in case the form fails
 		foreach (Params::getParamsAsArray() as $k => $v) 
 		{

@@ -74,6 +74,9 @@ class CWebItem extends Controller_Default
 
 	public function doPost( HttpRequest $req, HttpResponse $res )
 	{
+		$classLoader = $this->getClassLoader();
+		$classLoader->loadFile( 'helpers/sanitize' );
+
 		$item = $this->itemManager->findByPrimaryKey(Params::getParam('id'));
 		$this->getView()->assign('item', $item);
 		if ((osc_recaptcha_private_key() != '') && Params::existParam("recaptcha_challenge_field")) 
@@ -90,7 +93,7 @@ class CWebItem extends Controller_Default
 				
 			}
 		}
-		$category = ClassLoader::getInstance()->getClassInstance( 'Model_Category' )->findByPrimaryKey($item['fk_i_category_id']);
+		$category = $classLoader->getClassInstance( 'Model_Category' )->findByPrimaryKey($item['fk_i_category_id']);
 		if ($category['i_expiration_days'] > 0) 
 		{
 			$item_date = strtotime($item['pub_date']) + ($category['i_expiration_days'] * (24 * 3600));
@@ -102,16 +105,41 @@ class CWebItem extends Controller_Default
 				$this->redirectTo(osc_item_url());
 			}
 		}
-		$mItem = new ItemActions(false);
-		$result = $mItem->contact();
-		if (is_string($result)) 
+
+		$flash_error = '';
+		$item = $this->itemManager->findByPrimaryKey(Params::getParam('id'));
+		$aItem['item'] = $item;
+		ClassLoader::getInstance()->getClassInstance( 'View_Html' )->assign('item', $aItem['item']);
+		$aItem['id'] = Params::getParam('id');
+		$aItem['yourEmail'] = Params::getParam('yourEmail');
+		$aItem['yourName'] = Params::getParam('yourName');
+		$aItem['message'] = Params::getParam('message');
+		$aItem['phoneNumber'] = Params::getParam('phoneNumber');
+
+		$flash_error = false;
+		// check parameters
+		if (!osc_validate_email($aItem['yourEmail'], true)) 
 		{
-			osc_add_flash_error_message($result);
+			$flash_error.= __("Invalid email address") . PHP_EOL;
+		}
+		else if (!osc_validate_text($aItem['message'])) 
+		{
+			$flash_error.= __("Message: this field is required") . PHP_EOL;
+		}
+		else if (!osc_validate_text($aItem['yourName'])) 
+		{
+			$flash_error.= __("Your name: this field is required") . PHP_EOL;
+		}
+		if ($flash_error ==false ) 
+		{
+			osc_run_hook('hook_email_item_inquiry', $aItem);
+			osc_add_flash_ok_message(_m('We\'ve just sent an e-mail to the seller'));
 		}
 		else
 		{
-			osc_add_flash_ok_message(_m('We\'ve just sent an e-mail to the seller'));
+			osc_add_flash_error_message($result);
 		}
-		$this->redirectTo(osc_item_url());
+		$itemUrls = $classLoader->getClassInstance( 'Url_Item' );
+		$this->redirectTo( $itemUrls->getDetailsUrl( $item ) );
 	}
 }

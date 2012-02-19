@@ -18,14 +18,38 @@
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-class CAdminPlugin extends Controller_Administration
+class CAdminUser extends Controller_Administration
 {
-	public function doGet( HttpRequest $req, HttpResponse $res )
+	public function doGet( HttpRequest $req, HttpResponse $res ) 
 	{
-		$pn = Params::getParam("plugin");
-		Plugins::runHook($pn . '_disable');
-		Plugins::deactivate($pn);
-		osc_add_flash_ok_message(_m('Plugin disabled'), 'admin');
-		$this->redirectTo(osc_admin_base_url(true) . "?page=plugin");
+		$this->userManager = ClassLoader::getInstance()->getClassInstance( 'Model_User' );
+		$iUpdated = 0;
+		$userId = Params::getParam('id');
+		if (!is_array($userId)) 
+		{
+			osc_add_flash_error_message(_m('User id isn\'t in the correct format'), 'admin');
+		}
+		$userActions = $this->getClassLoader()->getClassInstance( 'Manager_User', false, array( true ) );
+		foreach ($userId as $id) 
+		{
+			$iUpdated+= $userActions->deactivate($id);
+		}
+		switch ($iUpdated) 
+		{
+		case (0):
+			$msg = _m('No user has been deactivated');
+			break;
+
+		case (1):
+			$msg = _m('One user has been deactivated');
+			break;
+
+		default:
+			$msg = sprintf(_m('%s users have been deactivated'), $iUpdated);
+			break;
+		}
+		osc_add_flash_ok_message($msg, 'admin');
+		$this->redirectTo(osc_admin_base_url(true) . '?page=users');
 	}
 }
+

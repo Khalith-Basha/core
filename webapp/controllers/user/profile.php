@@ -53,6 +53,7 @@ class CWebUser extends Controller_User
 		{
 			$aCities = $cityModel->findByRegion($aRegions[0]['pk_i_id']);
 		}
+		$classLoader->loadFile( 'helpers/locations' );
 		$view = $this->getView();
 		$this->getView()->assign('countries', $aCountries);
 		$this->getView()->assign('regions', $aRegions);

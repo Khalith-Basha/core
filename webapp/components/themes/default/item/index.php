@@ -1,6 +1,7 @@
 <?php
 $itemUrls = $classLoader->getClassInstance( 'Url_Item' );
 $userUrls = $classLoader->getClassInstance( 'Url_User' );
+$resourceUrls = $classLoader->getClassInstance( 'Url_Resource' );
 $commentForm = $classLoader->getClassInstance( 'Form_Comment' );
 $contactForm = $classLoader->getClassInstance( 'Form_Contact' );
 echo $view->render( 'header' );
@@ -103,7 +104,7 @@ echo $view->render( 'header' );
                                         </div>
                                     <?php endforeach; ?>
                                     <div class="pagination">
-                                        <?php echo osc_comments_pagination(); ?>
+                                        <?php echo osc_comments_pagination( $item ); ?>
                                     </div>
                                 </div>
                             <?php endif; ?>
@@ -134,11 +135,11 @@ echo $view->render( 'header' );
                         <?php if( 0 < count( $resources ) )  { ?>
 			<div id="photos">
 				<?php foreach( $resources as $resource ): ?>
-                            <a href="<?php echo osc_resource_url( $resource ); ?>" rel="image_group">
+                            <a href="<?php echo $resourceUrls->osc_resource_url( $resource ); ?>" rel="image_group">
                                 <?php if ( !isset( $firstResource ) )  { $firstResource = false;  ?>
-                                    <img src="<?php echo osc_resource_url( $resource ); ?>" width="315" alt="" title=""/>
+                                    <img src="<?php echo $resourceUrls->osc_resource_url( $resource ); ?>" width="315" alt="" title=""/>
                                 <?php } else { ?>
-                                    <img src="<?php echo osc_resource_thumbnail_url( $resource ); ?>" width="75" alt="" title=""/>
+                                    <img src="<?php echo $resourceUrls->osc_resource_thumbnail_url( $resource ); ?>" width="75" alt="" title=""/>
                                 <?php } ?>
                             </a>
                             <?php endforeach; ?>
@@ -165,7 +166,7 @@ echo $view->render( 'header' );
                             </p>
                         <?php } else { ?>
                             <?php if (osc_item_user_id( $item ) != null)  { ?>
-                                <p class="name"><?php _e('Name', 'modern') ?>: <a href="<?php echo $userUrls->osc_user_public_profile_url( osc_item_user_id( $item ) ); ?>" ><?php echo osc_item_contact_name( $item ); ?></a></p>
+                                <p class="name"><?php _e('Name', 'modern') ?>: <a href="<?php echo $userUrls->osc_user_public_profile_url( $user ); ?>" ><?php echo osc_item_contact_name( $item ); ?></a></p>
                             <?php } else { ?>
                                 <p class="name"><?php _e('Name', 'modern') ?>: <?php echo osc_item_contact_name( $item ); ?></p>
                             <?php } ?>

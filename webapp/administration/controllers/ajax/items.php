@@ -26,7 +26,6 @@ class CAdminAjax extends Controller_Administration
 
 	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
-		//specific things for this class
 		switch ($this->action) 
 		{
 		case 'bulk_actions':
@@ -166,7 +165,7 @@ class CAdminAjax extends Controller_Administration
 		case 'category_edit_iframe':
 			$this->getView()->assign('category', ClassLoader::getInstance()->getClassInstance( 'Model_Category' )->findByPrimaryKey(Params::getParam("id")));
 			$this->getView()->assign('languages', ClassLoader::getInstance()->getClassInstance( 'Model_Locale' )->listAllEnabled());
-			$this->doView("categories/iframe.php");
+		osc_current_admin_theme_path( "categories/iframe.php" );
 			break;
 
 		case 'field_categories_iframe':
@@ -178,7 +177,7 @@ class CAdminAjax extends Controller_Administration
 			$this->getView()->assign("selected", $selected);
 			$this->getView()->assign("field", Field::newInstance()->findByPrimaryKey(Params::getParam("id")));
 			$this->getView()->assign("categories", ClassLoader::getInstance()->getClassInstance( 'Model_Category' )->toTreeAll());
-			$this->doView("fields/iframe.php");
+		osc_current_admin_theme_path("fields/iframe.php");
 			break;
 
 		case 'field_categories_post':
@@ -518,12 +517,7 @@ class CAdminAjax extends Controller_Administration
 			}
 			break;
 				}
-	$this->getSession()->_dropKeepForm();
-	$this->getSession()->_clearVariables();
-	}
-
-	function doView($file) 
-	{
-		osc_current_admin_theme_path($file);
+		$this->getSession()->_dropKeepForm();
+		$this->getSession()->_clearVariables();
 	}
 }

@@ -100,7 +100,7 @@ class Model_Category extends DAO
 	{
 		$sql = <<<SQL
 SELECT
-	*
+*
 FROM
 	(
 		SELECT

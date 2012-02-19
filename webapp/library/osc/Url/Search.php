@@ -5,6 +5,16 @@ class Url_Search extends Url_Abstract
 	public function loadUrls()
 	{
 	}
+
+	public function loadRules( Rewrite $rewrite )
+	{
+		$rewrite->addRule('^/feed$', 'index.php?page=search&sFeed=rss');
+		$rewrite->addRule('^/feed/(.+)$', 'index.php?page=search&sFeed=$1');
+		$rewrite->addRule('^/search/(.*)$', 'index.php?page=search&sPattern=$1');
+		$rewrite->addRule('^/s/(.*)$', 'index.php?page=search&sPattern=$1');
+		$rewrite->addRule('^/(.+)$', 'index.php?page=search&sCategory=$2');
+	}
+
 	/**
 	 * Create automatically the url of a category
 	 *

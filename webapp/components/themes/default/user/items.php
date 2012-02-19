@@ -18,7 +18,7 @@
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
+$itemUrls = $classLoader->getClassInstance( 'Url_Item' );
 echo $view->render( 'header' );
 ?>
 
@@ -30,59 +30,31 @@ echo $view->render( 'header' );
                     <?php echo osc_private_user_menu(); ?>
                 </div>
                 <div id="main">
-                    <h2><?php _e('Your items', 'modern'); ?> <a href="<?php echo osc_item_post_url(); ?>">+ <?php _e('Post a new item', 'modern'); ?></a></h2>
-                    <?php
-if (osc_count_items() == 0) 
-{ ?>
-                        <h3><?php
-	_e('You don\'t have any items yet', 'modern'); ?></h3>
-                    <?php
-}
-else
-{ ?>
-                        <?php
-	while (osc_has_items()) 
-	{ ?>
+                    <h2><?php _e('Your items', 'modern'); ?> <a href="<?php echo $itemUrls->osc_item_post_url(); ?>">+ <?php _e('Post a new item', 'modern'); ?></a></h2>
+                    <?php if( 0 === count( $items ) )  { ?>
+                        <h3><?php _e('You don\'t have any items yet', 'modern'); ?></h3>
+		    <?php } else { ?>
+			<?php foreach( $items as $item ): ?>
                                 <div class="item" >
                                         <h3>
-                                            <a href="<?php
-		echo osc_item_url(); ?>"><?php
-		echo osc_item_title(); ?></a>
+                                            <a href="<?php echo $itemUrls->osc_item_url( $item ); ?>"><?php echo osc_item_title( $item ); ?></a>
                                         </h3>
                                         <p>
-                                        <?php
-		_e('Publication date', 'modern'); ?>: <?php
-		echo osc_format_date(osc_item_pub_date()); ?><br />
-                                        <?php
-		if (osc_price_enabled_at_items()) 
-		{
-			_e('Price', 'modern'); ?>: <?php
-			echo osc_format_price(osc_item_price());
-		} ?>
+                                        <?php _e('Publication date', 'modern'); ?>: <?php echo osc_format_date(osc_item_pub_date( $item )); ?><br />
+                                        <?php if (osc_price_enabled_at_items())  { _e('Price', 'modern'); ?>: <?php echo osc_format_price(osc_item_price( $item )); } ?>
                                         </p>
                                         <p class="options">
-                                            <strong><a href="<?php
-		echo osc_item_edit_url(); ?>"><?php
-		_e('Edit', 'modern'); ?></a></strong>
+                                            <strong><a href="<?php echo $itemUrls->osc_item_edit_url( $item ); ?>"><?php _e('Edit', 'modern'); ?></a></strong>
                                             <span>|</span>
-                                            <a class="delete" onclick="javascript:return confirm('<?php
-		_e('This action can not be undone. Are you sure you want to continue?', 'modern'); ?>')" href="<?php
-		echo osc_item_delete_url(); ?>" ><?php
-		_e('Delete', 'modern'); ?></a>
-                                            <?php
-		if (osc_item_is_inactive()) 
-		{ ?>
+                                            <a class="delete" onclick="javascript:return confirm('<?php _e('This action can not be undone. Are you sure you want to continue?', 'modern'); ?>')" href="<?php echo $itemUrls->osc_item_delete_url( $item ); ?>" ><?php _e('Delete', 'modern'); ?></a>
+                                            <?php if (osc_item_is_inactive())  { ?>
                                             <span>|</span>
-                                            <a href="<?php
-			echo osc_item_activate_url(); ?>" ><?php
-			_e('Activate', 'modern'); ?></a>
-                                            <?php
-		} ?>
+                                            <a href="<?php echo $itemUrls->osc_item_activate_url( $item ); ?>" ><?php _e('Activate', 'modern'); ?></a>
+                                            <?php } ?>
                                         </p>
                                         <br />
                                 </div>
-                        <?php
-	} ?>
+                        <?php endforeach; ?>
                         <br />
                         <div class="paginate" >
                         <?php
@@ -98,8 +70,7 @@ else
 		}
 	} ?>
                         </div>
-                    <?php
-} ?>
+                    <?php } ?>
                 </div>
             </div>
 <?php

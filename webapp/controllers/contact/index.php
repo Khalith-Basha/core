@@ -29,6 +29,7 @@ class CWebContact extends Controller_Cacheable
 
 	public function renderView( HttpRequest $req, HttpResponse $res ) 
 	{
+		$this->getClassLoader()->loadFile( 'helpers/security' );
 		$view = $this->getView();
 		$view->setTitle( __('Contact', 'modern') . ' - ' . osc_page_title() );
 		$view->addJavaScript( osc_current_web_theme_js_url('jquery.validate.min.js') );
@@ -38,6 +39,7 @@ class CWebContact extends Controller_Cacheable
 
 	public function doPost(HttpRequest $req, HttpResponse $resp) 
 	{
+		$indexUrls = $this->getClassLoader()->getClassInstance( 'Url_Index' );
 		$yourName = Params::getParam('yourName');
 		$yourEmail = Params::getParam('yourEmail');
 		$subject = Params::getParam('subject');
@@ -51,7 +53,7 @@ class CWebContact extends Controller_Cacheable
 				$this->getSession()->_setForm("yourEmail", $yourEmail);
 				$this->getSession()->_setForm("subject", $subject);
 				$this->getSession()->_setForm("message_body", $message);
-				$this->redirectTo(osc_contact_url());
+				$this->redirectTo( $indexUrls->osc_contact_url());
 				return false; // BREAK THE PROCESS, THE RECAPTCHA IS WRONG
 				
 			}
@@ -62,7 +64,7 @@ class CWebContact extends Controller_Cacheable
 			$this->getSession()->_setForm("yourName", $yourName);
 			$this->getSession()->_setForm("subject", $subject);
 			$this->getSession()->_setForm("message_body", $message);
-			$this->redirectTo(osc_contact_url());
+			$this->redirectTo( $indexUrls->osc_contact_url());
 		}
 		$params = array('from' => $yourEmail, 'from_name' => $yourName, 'subject' => '[' . osc_page_title() . '] ' . __('Contact form') . ': ' . $subject, 'to' => osc_contact_email(), 'to_name' => __('Administrator'), 'body' => $message, 'alt_body' => $message);
 		if (osc_contact_attachment()) 
@@ -75,7 +77,7 @@ class CWebContact extends Controller_Cacheable
 			if (!is_writable(osc_content_path() . '/uploads/')) 
 			{
 				osc_add_flash_error_message(_m('There has been some errors sending the message'));
-				$this->redirectTo(osc_base_url());
+				$this->redirectToBaseUrl();
 			}
 			if (!move_uploaded_file($tmpName, $path)) 
 			{
@@ -96,7 +98,7 @@ class CWebContact extends Controller_Cacheable
 		{
 			osc_add_flash_ok_message(_m('There was a problem trying to send contact form.'));
 		}
-		$this->redirectTo(osc_base_url() . '/' );
+		$this->redirectToBaseUrl();
 	}
 }
 

@@ -31,6 +31,29 @@ class Model_Page extends DAO
 		$array_fields = array('pk_i_id', 's_internal_name', 'b_indelible', 'dt_pub_date', 'dt_mod_date', 'i_order');
 		$this->setFields($array_fields);
 	}
+
+	public function findBySlugLocale( $slug, $locale )
+	{
+		$sql = <<<SQL
+SELECT
+	p.pk_i_id, p.s_internal_name, p.b_indelible, p.dt_pub_date, p.dt_mod_date, p.i_order, pd.s_title, pd.s_text
+FROM
+	/*TABLE_PREFIX*/t_pages p
+INNER JOIN
+	/*TABLE_PREFIX*/t_pages_description pd ON ( pd.fk_i_pages_id = p.pk_i_id )
+WHERE
+	s_internal_name = ?
+LIMIT 1
+SQL;
+
+		$stmt = $this->prepareStatement( $sql );
+		$stmt->bind_param( 's', $slug );
+		$page = $this->fetch( $stmt );
+		$stmt->close();
+
+		return $page;
+	}
+
 	/**
 	 * Find a page by page id.
 	 *
@@ -140,42 +163,27 @@ class Model_Page extends DAO
 	 */
 	public function listAll( $indelible = null, $locale = null, $start = null, $limit = null) 
 	{
-		$this->dao->select();
-		$this->dao->from($this->getTableName());
-		if (!is_null($indelible)) 
-		{
-			$this->dao->where('b_indelible', $indelible);
-		}
-		$this->dao->orderBy('i_order', 'ASC');
-		if (!is_null($limit)) 
-		{
-			$this->dao->limit($limit, $start);
-		}
-		$result = $this->dao->get();
-		if ($result) 
-		{
-			$aPages = $result->result();
-			if (count($aPages) == 0) 
-			{
-				return array();
-			}
-			$resultPages = array();
-			foreach ($aPages as $aPage) 
-			{
-				$data = $this->extendDescription($aPage, $locale);
-				if (count($data) > 0) 
-				{
-					$resultPages[] = $data;
-				}
-				unset($data);
-			}
-			return $resultPages;
-		}
-		else
-		{
-			return array();
-		}
+		$sql = <<<SQL
+SELECT
+	p.pk_i_id, p.s_internal_name, p.b_indelible, p.dt_pub_date, p.dt_mod_date, p.i_order, pd.s_title, pd.s_text
+FROM
+	/*TABLE_PREFIX*/t_pages p
+INNER JOIN
+	/*TABLE_PREFIX*/t_pages_description pd ON ( pd.fk_i_pages_id = p.pk_i_id )
+WHERE
+	pd.fk_c_locale_code = ?
+ORDER BY
+	i_order ASC
+SQL;
+
+		$stmt = $this->prepareStatement( $sql );
+		$stmt->bind_param( 's', $locale );
+		$pages = $this->fetchAll( $stmt );
+		$stmt->close();
+
+		return $pages;
 	}
+
 	/**
 	 * An array with data of some page, returns the title and description in every language available
 	 *

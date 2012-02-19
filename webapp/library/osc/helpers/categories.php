@@ -87,26 +87,6 @@ function osc_category_field( array $category, $field, $locale = '')
 	return osc_field_toTree( $category, $field );
 }
 /**
- * Gets the number of categories
- *
- * @return int
- */
-function osc_priv_count_categories() 
-{
-	$view = ClassLoader::getInstance()->getClassInstance( 'View_Html' );
-	return $view->countVar('categories');
-}
-/**
- * Gets the number of subcategories
- *
- * @return int
- */
-function osc_priv_count_subcategories() 
-{
-	$view = ClassLoader::getInstance()->getClassInstance( 'View_Html' );
-	return $view->countVar('subcategories');
-}
-/**
  * Gets the total of categories. If categories are not loaded, this function will load them.
  *
  * @return int
@@ -120,54 +100,7 @@ function osc_count_categories()
 		$category = $classLoader->getClassInstance( 'Model_Category' );
 		$view->assign('categories', $category->toTree());
 	}
-	return osc_priv_count_categories();
-}
-/**
- * Gets the total of subcategories for the current category. If subcategories are not loaded, this function will load them and
- * it will prepare the the pointer to the first element
- *
- * @return int
- */
-function osc_count_subcategories() 
-{
-	$view = ClassLoader::getInstance()->getClassInstance( 'View_Html' );
-	$category = $view->_current('categories');
-	if ($category == '')
-		return -1;
-	if (!isset($category['categories']))
-		return 0;
-	if (!is_array($category['categories']))
-		return 0;
-	if (count($category['categories']) == 0)
-		return 0;
-	if (!$view->varExists('subcategories')) 
-	{
-		$view->assign('subcategories', $category['categories']);
-	}
-	return osc_priv_count_subcategories();
-}
-/**
- * Let you know if there are more subcategories for the current category in the list. If subcategories are not loaded, this
- * function will load them and it will prepare the pointer to the first element
- *
- * @return boolean
- */
-function osc_has_subcategories() 
-{
-	$view = ClassLoader::getInstance()->getClassInstance( 'View_Html' );
-	$category = $view->_current('categories');
-	if ($category == '')
-		return -1;
-	if (!isset($category['categories']))
-		return false;
-	if (!$view->varExists('subcategories')) 
-	{
-		$view->assign('subcategories', $category['categories']);
-	}
-	$ret = $view->_next('subcategories');
-	//we have to delete for next iteration
-	if (!$ret) $view->_erase('subcategories');
-	return $ret;
+	return $view->countVar('subcategories');
 }
 /**
  * Gets the name of the current category
@@ -216,15 +149,6 @@ function osc_category_slug( array $item, $locale = "")
 	if ($locale == "")
 		$locale = osc_current_user_locale();
 	return osc_category_field( $item, "s_slug", $locale);
-}
-/**
- * Gets the total items related with the current category
- *
- * @return int
- */
-function osc_category_total_items() 
-{
-	return osc_category_field("i_num_items", "");
 }
 /**
  * Gets list of non-empty categories

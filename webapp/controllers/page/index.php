@@ -20,8 +20,10 @@ class CWebPage extends Controller_Cacheable
 {
 	public function getCacheKey()
 	{
-		$pageId = $this->getInput()->getInteger( 'id' );
-		return 'page-' . $pageId;
+		$input = $this->getInput();
+		$pageId = $input->getInteger( 'id' );
+		$slug = $input->getString( 'slug' );
+		return sprintf( 'page-%d-%s', $pageId, $slug );
 	}
 
 	public function getCacheExpiration()
@@ -32,9 +34,18 @@ class CWebPage extends Controller_Cacheable
 	public function renderView( HttpRequest $req, HttpResponse $res )
 	{
 		$pagesModel = $this->getClassLoader()->getClassInstance( 'Model_Page' );
-		$id = $this->getInput()->getInteger( 'id' );
+
+		$input = $this->getInput();
+		$id = $input->getInteger( 'id' );
+		$slug = $input->getString( 'slug' );
+
 		$locale = osc_current_user_locale();
-		$page = $pagesModel->findByIdLocale( $id, $locale );
+		
+		if( !empty( $id ) )
+			$page = $pagesModel->findByIdLocale( $id, $locale );
+		elseif( !empty( $slug ) )
+			$page = $pagesModel->findBySlugLocale( $slug, $locale );
+
 		$view = $this->getView();
 
 		if( is_null( $page ) || 1 == $page['b_indelible'] )

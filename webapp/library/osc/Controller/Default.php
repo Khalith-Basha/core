@@ -112,6 +112,10 @@ abstract class Controller_Default
 	{
 	}
 
+	public function init()
+	{
+	}
+
 	protected function getView()
 	{
 		return $this->view;
@@ -122,14 +126,9 @@ abstract class Controller_Default
 		return $this->server;
 	}
 
-	protected function assign($key, $value) 
+	protected function assign( $key, $value )
 	{
-		$this->getView()->assign($key, $value);
-	}
-
-	protected function _view($key = null) 
-	{
-		$this->_view($key);
+		$this->getView()->assign( $key, $value );
 	}
 
 	public function processRequest(HttpRequest $req, HttpResponse $resp) 
@@ -150,6 +149,12 @@ abstract class Controller_Default
 	{
 		header('Location: ' . $url);
 		exit;
+	}
+
+	public function redirectToBaseUrl()
+	{
+		$url = $this->classLoader->getClassInstance( 'Url_Abstract' )->getBaseUrl( true );
+		$this->redirectTo( $url );
 	}
 
 	public function getClassLoader()

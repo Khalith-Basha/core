@@ -27,22 +27,33 @@
  */
 class Model_Region extends DAO
 {
-	function __construct() 
+	public function __construct() 
 	{
 		parent::__construct();
 		$this->setTableName('t_region');
 		$this->setPrimaryKey('pk_i_id');
 		$this->setFields(array('pk_i_id', 'fk_c_country_code', 's_name', 'b_active'));
 	}
-	/**
-	 * Gets all regions from a country
-	 *
-	 * @access public
-	 * @since unknown
-	 * @param type $countryId
-	 * @return array
-	 */
-	public function findByCountry($countryId) 
+
+	public function findAll()
+	{
+		$sql = <<<SQL
+SELECT
+	pk_i_id, fk_c_country_code, s_name, b_active
+FROM
+	/*TABLE_PREFIX*/t_region
+ORDER BY
+	s_name ASC
+SQL;
+
+		$stmt = $this->prepareStatement( $sql );
+		$regions = $this->fetchAll( $stmt );
+		$stmt->close();
+
+		return $regions;
+	}
+
+	public function findByCountry( $countryId )
 	{
 		$sql = <<<SQL
 SELECT

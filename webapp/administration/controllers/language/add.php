@@ -20,14 +20,6 @@
 */
 class CAdminLanguage extends Controller_Administration
 {
-	private $localeManager;
-	function __construct() 
-	{
-		parent::__construct();
-		//specific things for this class
-		$this->localeManager = ClassLoader::getInstance()->getClassInstance( 'Model_Locale' );
-	}
-
 	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
 		$this->doView( 'languages/add.php' );

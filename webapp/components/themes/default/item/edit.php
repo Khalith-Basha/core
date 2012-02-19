@@ -19,7 +19,7 @@
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-$itemForm = new Form_Item;
+$itemForm = new Form_Item( $item );
 echo $view->render( 'header' );
 ?>
 
@@ -27,12 +27,12 @@ echo $view->render( 'header' );
             <div class="content add_item">
                 <h1><strong><?php _e('Update your item', 'modern'); ?></strong></h1>
                 <ul id="error_list"></ul>
-                    <form name="item" action="<?php echo osc_base_url(true) ?>" method="post" enctype="multipart/form-data">
+                    <form name="item" action="<?php echo $urlFactory->getBaseUrl(true); ?>" method="post" enctype="multipart/form-data">
                     <fieldset>
                         <input type="hidden" name="action" value="item_edit_post" />
                         <input type="hidden" name="page" value="item" />
-                        <input type="hidden" name="id" value="<?php echo osc_item_id(); ?>" />
-                        <input type="hidden" name="secret" value="<?php echo osc_item_secret(); ?>" />
+                        <input type="hidden" name="id" value="<?php echo osc_item_id( $item ); ?>" />
+                        <input type="hidden" name="secret" value="<?php echo osc_item_secret( $item ); ?>" />
                             <div class="box general_info">
                                 <h2><?php _e('General Information', 'modern'); ?></h2>
                                 <div class="row">
@@ -42,34 +42,28 @@ echo $view->render( 'header' );
                                 <div class="row">
                                     <?php $itemForm->multilanguage_title_description(osc_get_locales()); ?>
                                 </div>
-                                <?php if (osc_price_enabled_at_items()) 
-{ ?>
+                                <?php if (osc_price_enabled_at_items())  { ?>
                                 <div class="row price">
                                     <label><?php _e('Price', 'modern'); ?></label>
                                     <?php $itemForm->price_input_text(); ?>
                                     <?php $itemForm->currency_select(); ?>
                                 </div>
-                                <?php
-} ?>
+                                <?php } ?>
                             </div>
-                            <?php if (osc_images_enabled_at_items()) 
-{ ?>
+                            <?php if (osc_images_enabled_at_items())  { ?>
                             <div class="box photos">
                                 <h2><?php _e('Photos', 'modern'); ?></h2>
                                 <?php $itemForm->photos(); ?>
                                 <div id="photos">
-                                    <?php if (osc_max_images_per_item() == 0 || (osc_max_images_per_item() != 0 && osc_count_item_resources() < osc_max_images_per_item())) 
-	{ ?>
+                                    <?php if (osc_max_images_per_item() == 0 || (osc_max_images_per_item() != 0 && osc_count_item_resources( $item ) < osc_max_images_per_item())) { ?>
                                     <div class="row">
                                         <input type="file" name="photos[]" />
                                     </div>
-                                    <?php
-	}; ?>
+                                    <?php } ?>
                                 </div>
                                 <a href="#" onclick="addNewPhoto(); return false;"><?php 	_e('Add new photo', 'modern'); ?></a>
                             </div>
-                            <?php
-} ?>
+                            <?php } ?>
 
                             <div class="box location">
                                 <h2><?php _e('Location', 'modern'); ?></h2>
@@ -94,16 +88,14 @@ echo $view->render( 'header' );
                                     <?php $itemForm->address_text(); ?>
                                 </div>
                             </div>
-                            <?php $itemForm->plugin_edit_item(); ?>
-                            <?php if (osc_recaptcha_items_enabled()) 
-{ ?>
+                            <?php $itemForm->plugin_edit_item( $item ); ?>
+                            <?php if (osc_recaptcha_items_enabled())  { ?>
                             <div class="box">
                                 <div class="row">
                                     <?php osc_show_recaptcha(); ?>
                                 </div>
                             </div>
-                            <?php
-} ?>
+                            <?php } ?>
                         <button class="itemFormButton" type="submit"><?php _e('Update', 'modern'); ?></button>
                         <a href="javascript:history.back(-1)" class="go_back"><?php _e('Cancel', 'modern'); ?></a>
                     </fieldset>

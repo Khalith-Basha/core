@@ -13,23 +13,32 @@ class Url_Index extends Url_Abstract
 			'friendly' => 'xxx'
 		);
 	}
+
+	public function loadRules( Rewrite $rewrite )
+	{
+		$rewrite->addRule( '^/assets/([^/]+)/(.+)$', 'index.php?page=index&action=assets&type=$1&files=$2' );
+		$rewrite->addRule( '^/language/(.*?)/?$', 'index.php?page=index&action=change-language&locale=$1' );
+		$rewrite->addRule( '^/contact/?$', 'index.php?page=contact' );
+		$rewrite->addRule( '^/browse-locations/?$', 'index.php?page=index&action=locations' );
+	}
+
 	/**
- *  Create automatically the contact url
- *
- * @return string
- */
-function osc_contact_url() 
-{
-	if (osc_rewrite_enabled()) 
+	 *  Create automatically the contact url
+	 *
+	 * @return string
+	 */
+	public function osc_contact_url() 
 	{
-		$path = $this->getBaseUrl() . '/contact';
+		if (osc_rewrite_enabled()) 
+		{
+			$path = $this->getBaseUrl() . '/contact';
+		}
+		else
+		{
+			$path = $this->getBaseUrl(true) . '?page=contact';
+		}
+		return $path;
 	}
-	else
-	{
-		$path = $this->getBaseUrl(true) . '?page=contact';
-	}
-	return $path;
-}
 
 	/**
 	 * Gets current page url

@@ -14,6 +14,23 @@ class Url_Item extends Url_Abstract
 		);
 	}
 
+	public function loadRules( Rewrite $rewrite )
+	{
+		$rewrite->addRule( '^/item/mark/(.*?)/([0-9]+)$', 'index.php?page=item&action=mark&as=$1&id=$2');
+		$rewrite->addRule( '^/item/send-friend/([0-9]+)$', 'index.php?page=item&action=send_friend&id=$1');
+		$rewrite->addRule( '^/item/contact/([0-9]+)$', 'index.php?page=item&action=contact&id=$1');
+		$rewrite->addRule( '^/item/new$', 'index.php?page=item&action=add');
+		$rewrite->addRule( '^/item/new/([0-9]+)$', 'index.php?page=item&action=add&catId=$1');
+		$rewrite->addRule( '^/item/activate/([0-9]+)/(.*?)/?$', 'index.php?page=item&action=activate&id=$1&secret=$2');
+		$rewrite->addRule( '^/item/edit/([0-9]+)/(.*?)/?$', 'index.php?page=item&action=edit&id=$1&secret=$2');
+		$rewrite->addRule( '^/item/delete/([0-9]+)/(.*?)/?$', 'index.php?page=item&action=delete&id=$1&secret=$2');
+		$rewrite->addRule( '^/item/resource/delete/([0-9]+)/([0-9]+)/([0-9A-Za-z]+)/?(.*?)/?$', 'index.php?page=item&action=deleteResource&id=$1&item=$2&code=$3&secret=$4');
+		$rewrite->addRule( '^/([a-zA-Z_]{5})_(.+)_([0-9]+)\?comments-page=([0-9al]*)$', 'index.php?page=item&id=$3&lang=$1&comments-page=$4');
+		$rewrite->addRule( '^/(.+)_([0-9]+)\?comments-page=([0-9al]*)$', 'index.php?page=item&id=$2&comments-page=$3');
+		$rewrite->addRule( '^/([a-zA-Z_]{5})_(.+)_([0-9]+)$', 'index.php?page=item&id=$3&lang=$1');
+		$rewrite->addRule( '^/(.+)_([0-9]+)$', 'index.php?page=item&id=$2');
+	}
+
 	public function getDetailsUrl( array $item, $locale = null )
 	{
 		$url = null;
@@ -64,15 +81,16 @@ class Url_Item extends Url_Abstract
 	 * @param string $locale
 	 * @return string
 	 */
-	public function osc_item_comments_url($page = 'all', $locale = '') 
+	public function osc_item_comments_url( array $item, $page = 'all', $locale = '') 
 	{
+		$itemUrls = ClassLoader::getInstance()->getClassInstance( 'Url_Item' );
 		if (osc_rewrite_enabled()) 
 		{
-			return osc_item_url($locale) . "?comments-page=" . $page;
+			return $itemUrls->getDetailsUrl( $item, $locale) . "?comments-page=" . $page;
 		}
 		else
 		{
-			return osc_item_url($locale) . "&comments-page=" . $page;
+			return $itemUrls->getDetailsUrl( $item, $locale) . "&comments-page=" . $page;
 		}
 	}
 	/**
@@ -136,32 +154,15 @@ class Url_Item extends Url_Abstract
 	}
 
 	/**
-	 * Gets current user alerts' url
-	 *
-	 * @return string
-	 */
-	public function osc_user_alerts_url() 
-	{
-		if (osc_rewrite_enabled()) 
-		{
-			return $this->getBaseUrl() . '/user/alerts';
-		}
-		else
-		{
-			return $this->getBaseUrl( true ) . '?page=user&action=alerts';
-		}
-	}
-
-	/**
 	 * Gets url for editing an item
 	 *
 	 * @param string $secret
 	 * @param int $id
 	 * @return string
 	 */
-	public function osc_item_edit_url($secret = '', $id = '') 
+	public function osc_item_edit_url( array $item, $secret = '', $id = '') 
 	{
-		if ($id == '') $id = osc_item_id();
+		if ($id == '') $id = osc_item_id( $item );
 		if (osc_rewrite_enabled()) 
 		{
 			return $this->getBaseUrl() . '/item/edit/' . $id . '/' . $secret;
@@ -178,9 +179,9 @@ class Url_Item extends Url_Abstract
 	 * @param int $id
 	 * @return string
 	 */
-	public function osc_item_delete_url($secret = '', $id = '') 
+	public function osc_item_delete_url( array $item, $secret = '', $id = '') 
 	{
-		if ($id == '') $id = osc_item_id();
+		if ($id == '') $id = osc_item_id( $item );
 		if (osc_rewrite_enabled()) 
 		{
 			return $this->getBaseUrl() . '/item/delete/' . $id . '/' . $secret;
@@ -197,9 +198,9 @@ class Url_Item extends Url_Abstract
 	 * @param int $id
 	 * @return string
 	 */
-	function osc_item_activate_url($secret = '', $id = '') 
+	function osc_item_activate_url( array $item, $secret = '', $id = '') 
 	{
-		if ($id == '') $id = osc_item_id();
+		if ($id == '') $id = osc_item_id( $item );
 		if (osc_rewrite_enabled()) 
 		{
 			return $this->getBaseUrl() . '/item/activate/' . $id . '/' . $secret;

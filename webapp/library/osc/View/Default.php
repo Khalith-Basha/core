@@ -80,9 +80,9 @@ class View_Default
 
 	public function countVar( $key ) 
 	{
-		if (is_array($this->variables[$key])) 
+		if( $this->varExists( $key ) && is_array( $this->variables[$key] ) )
 		{
-			return count($this->variables[$key]);
+			return count( $this->variables[$key] );
 		}
 		return -1;
 	}

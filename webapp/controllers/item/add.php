@@ -40,13 +40,14 @@ class CWebItem extends Controller_Default
 	public function doGet( HttpRequest $req, HttpResponse $res ) 
 	{
 		$classLoader = $this->getClassLoader();
+		$userUrls = $classLoader->getClassInstance( 'Url_User' );
 		$classLoader->loadFile( 'helpers/locations' );
 		$locales = $classLoader->getClassInstance( 'Model_Locale' )->listAllEnabled();
 		$this->getView()->assign('locales', $locales);
 		if (osc_reg_user_post() && $this->user == null) 
 		{
 			osc_add_flash_warning_message(_m('Only registered users are allowed to post items'));
-			$this->redirectTo(osc_user_login_url());
+			$this->redirectTo( $userUrls->osc_user_login_url());
 		}
 		$countries = $classLoader->getClassInstance( 'Model_Country' )->listAll();
 		$regions = array();

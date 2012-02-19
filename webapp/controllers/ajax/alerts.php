@@ -21,7 +21,7 @@
 
 class CWebAjax extends Controller_Default
 {
-	function __construct() 
+	public function __construct() 
 	{
 		parent::__construct();
 		$this->ajax = true;
@@ -29,7 +29,6 @@ class CWebAjax extends Controller_Default
 
 	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
-		//specific things for this class
 		switch ($this->action) 
 		{
 		case 'bulk_actions':

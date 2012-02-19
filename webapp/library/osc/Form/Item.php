@@ -20,12 +20,13 @@
 */
 class Form_Item extends Form
 {
+	public function __construct( array $item = null )
+	{
+		parent::__construct();
+		$this->item = $item;
+	}	
 	public function primary_input_hidden($item) 
 	{
-		if ($item == null) 
-		{
-			$item = osc_item();
-		};
 		parent::generic_input_hidden("id", $item["pk_i_id"]);
 	}
 	public function category_select($categories = null, $item = null, $default_item = null, $parent_selectable = false) 
@@ -39,10 +40,6 @@ class Form_Item extends Form
 		if ($categories == null) 
 		{
 			$categories = osc_get_categories();
-		}
-		if ($item == null) 
-		{
-			$item = osc_item();
 		}
 		echo '<select name="catId" id="catId">';
 		if (isset($default_item)) 
@@ -110,10 +107,6 @@ class Form_Item extends Form
 		{
 			$users = ClassLoader::getInstance()->getClassInstance( 'Model_User' )->listAll();
 		};
-		if ($item == null) 
-		{
-			$item = osc_item();
-		};
 		if (ClassLoader::getInstance()->getClassInstance( 'Session' )->_getForm('userId') != "") 
 		{
 			$userId = ClassLoader::getInstance()->getClassInstance( 'Session' )->_getForm('userId');
@@ -152,13 +145,10 @@ class Form_Item extends Form
 	}
 	public function multilanguage_title_description($locales = null, $item = null) 
 	{
+		$item = $this->item;
 		if ($locales == null) 
 		{
 			$locales = osc_get_locales();
-		}
-		if ($item == null) 
-		{
-			$item = osc_item();
 		}
 		$num_locales = count($locales);
 		if ($num_locales > 1) 
@@ -219,10 +209,6 @@ class Form_Item extends Form
 	}
 	public function price_input_text($item = null) 
 	{
-		if ($item == null) 
-		{
-			$item = osc_item();
-		};
 		if (ClassLoader::getInstance()->getClassInstance( 'Session' )->_getForm('price') != "") 
 		{
 			$item['i_price'] = ClassLoader::getInstance()->getClassInstance( 'Session' )->_getForm('price');
@@ -237,10 +223,6 @@ class Form_Item extends Form
 			$currencies = $classLoader->getClassInstance( 'Model_Currency' )
 				->listAll();
 		};
-		if ($item == null) 
-		{
-			$item = osc_item();
-		}
 		if ( $classLoader->getClassInstance( 'Session' )->_getForm('currency') != "") 
 		{
 			$item['fk_c_currency_code'] = ClassLoader::getInstance()->getClassInstance( 'Session' )->_getForm('currency');
@@ -274,10 +256,6 @@ class Form_Item extends Form
 		{
 			$countries = osc_get_countries();
 		};
-		if ($item == null) 
-		{
-			$item = osc_item();
-		};
 		if (count($countries) >= 1) 
 		{
 			if (ClassLoader::getInstance()->getClassInstance( 'Session' )->_getForm('countryId') != "") 
@@ -297,10 +275,6 @@ class Form_Item extends Form
 	}
 	public function country_text($item = null) 
 	{
-		if ($item == null) 
-		{
-			$item = osc_item();
-		};
 		if (ClassLoader::getInstance()->getClassInstance( 'Session' )->_getForm('country') != "") 
 		{
 			$item['s_country'] = ClassLoader::getInstance()->getClassInstance( 'Session' )->_getForm('country');
@@ -333,10 +307,6 @@ class Form_Item extends Form
 				$regions = osc_get_regions();
 			};
 		}
-		if ($item == null) 
-		{
-			$item = osc_item();
-		};
 		if (count($regions) >= 1) 
 		{
 			if (ClassLoader::getInstance()->getClassInstance( 'Session' )->_getForm('regionId') != "") 
@@ -371,10 +341,6 @@ class Form_Item extends Form
 				$cities = osc_get_cities();
 			};
 		}
-		if ($item == null) 
-		{
-			$item = osc_item();
-		};
 		if (count($cities) >= 1) 
 		{
 			if (ClassLoader::getInstance()->getClassInstance( 'Session' )->_getForm('cityId') != "") 
@@ -398,10 +364,6 @@ class Form_Item extends Form
 	}
 	public function region_text($item = null) 
 	{
-		if ($item == null) 
-		{
-			$item = osc_item();
-		};
 		if (ClassLoader::getInstance()->getClassInstance( 'Session' )->_getForm('region') != "") 
 		{
 			$item['s_region'] = ClassLoader::getInstance()->getClassInstance( 'Session' )->_getForm('region');
@@ -411,10 +373,6 @@ class Form_Item extends Form
 	}
 	public function city_text($item = null) 
 	{
-		if ($item == null) 
-		{
-			$item = osc_item();
-		};
 		if (ClassLoader::getInstance()->getClassInstance( 'Session' )->_getForm('city') != "") 
 		{
 			$item['s_city'] = ClassLoader::getInstance()->getClassInstance( 'Session' )->_getForm('city');
@@ -424,10 +382,6 @@ class Form_Item extends Form
 	}
 	public function city_area_text($item = null) 
 	{
-		if ($item == null) 
-		{
-			$item = osc_item();
-		};
 		if (ClassLoader::getInstance()->getClassInstance( 'Session' )->_getForm('cityArea') != "") 
 		{
 			$item['s_city_area'] = ClassLoader::getInstance()->getClassInstance( 'Session' )->_getForm('cityArea');
@@ -437,10 +391,6 @@ class Form_Item extends Form
 	}
 	public function address_text($item = null) 
 	{
-		if ($item == null) 
-		{
-			$item = osc_item();
-		};
 		if (ClassLoader::getInstance()->getClassInstance( 'Session' )->_getForm('address') != "") 
 		{
 			$item['s_address'] = ClassLoader::getInstance()->getClassInstance( 'Session' )->_getForm('address');
@@ -449,10 +399,6 @@ class Form_Item extends Form
 	}
 	public function contact_name_text($item = null) 
 	{
-		if ($item == null) 
-		{
-			$item = osc_item();
-		};
 		if (ClassLoader::getInstance()->getClassInstance( 'Session' )->_getForm('contactName') != "") 
 		{
 			$item['s_contact_name'] = ClassLoader::getInstance()->getClassInstance( 'Session' )->_getForm('contactName');
@@ -461,10 +407,6 @@ class Form_Item extends Form
 	}
 	public function contact_email_text($item = null) 
 	{
-		if ($item == null) 
-		{
-			$item = osc_item();
-		};
 		if (ClassLoader::getInstance()->getClassInstance( 'Session' )->_getForm('contactEmail') != "") 
 		{
 			$item['s_contact_email'] = ClassLoader::getInstance()->getClassInstance( 'Session' )->_getForm('contactEmail');
@@ -486,10 +428,6 @@ class Form_Item extends Form
 	}
 	public function show_email_checkbox($item = null) 
 	{
-		if ($item == null) 
-		{
-			$item = osc_item();
-		};
 		if (ClassLoader::getInstance()->getClassInstance( 'Session' )->_getForm('showEmail') != 0) 
 		{
 			$item['b_show_email'] = ClassLoader::getInstance()->getClassInstance( 'Session' )->_getForm('showEmail');
@@ -498,9 +436,11 @@ class Form_Item extends Form
 	}
 	public function photos($resources = null) 
 	{
+		$urlFactory = ClassLoader::getInstance()->getClassInstance( 'Url_Abstract' );
+		$item = $this->item;
 		if ($resources == null) 
 		{
-			$resources = osc_get_item_resources();
+			$resources = osc_get_item_resources( $item );
 		};
 		if ($resources != null && is_array($resources) && count($resources) > 0) 
 		{
@@ -511,7 +451,7 @@ class Form_Item extends Form
 				echo $_r['fk_i_item_id']; ?>" name="<?php
 				echo $_r['s_name']; ?>">
                         <img src="<?php
-				echo osc_apply_filter('resource_path', osc_base_url() . $_r['s_path']) . $_r['pk_i_id'] . '_thumbnail.' . $_r['s_extension']; ?>" /><a href="javascript:delete_image(<?php
+				echo osc_apply_filter('resource_path', $urlFactory->getBaseUrl() . $_r['s_path']) . $_r['pk_i_id'] . '_thumbnail.' . $_r['s_extension']; ?>" /><a href="javascript:delete_image(<?php
 				echo $_r['pk_i_id'] . ", " . $_r['fk_i_item_id'] . ", '" . $_r['s_name'] . "', '" . Params::getParam('secret') . "'"; ?>);"  class="delete"><?php
 				_e('Delete'); ?></a>
                     </div>
@@ -519,8 +459,8 @@ class Form_Item extends Form
 			}
 		}
 	}
-	public function plugin_edit_item() 
+	public function plugin_edit_item( array $item ) 
 	{
-		$this->plugin_post_item('edit&itemId=' . osc_item_id());
+		// @TODO Remove? $this->plugin_post_item('edit&itemId=' . osc_item_id( $item ));
 	}
 }

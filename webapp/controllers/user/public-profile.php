@@ -29,14 +29,16 @@ class CWebUser extends Controller_Default
 
 	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
+		$classLoader = $this->getClassLoader();
 		$userID = Params::getParam('id');
 		$user = $this->getClassLoader()->getClassInstance( 'Model_User' )->findByPrimaryKey($userID);
 		// user doesn't exist
 		if (!$user) 
 		{
-			$this->redirectTo(osc_base_url());
+			$this->redirectToBaseUrl();
 		}
-		$itemUrls = $this->getClassLoader()->getClassInstance( 'Url_Item' );
+		$itemUrls = $classLoader->getClassInstance( 'Url_Item' );
+		$classLoader->loadFile( 'helpers/security' );
 		$view = $this->getView();
 		$view->setTitle( $user['s_name'] );
 		$this->getView()->addJavaScript( '/static/scrips/contact-form.js' );

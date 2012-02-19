@@ -22,14 +22,14 @@ class CWebUser extends Controller_Default
 		if( !osc_users_enabled() )
 		{
 			osc_add_flash_error_message( _m( 'Users are not enabled' ) );
-			$this->redirectTo( osc_base_url( true ) );
+			$this->redirectToBaseUrl();
 		}
 	}
 
 	public function doPost( HttpRequest $req, HttpResponse $res )
 	{
 		$classLoader = $this->getClassLoader();
-
+		$userUrls = $classLoader->getClassInstance( 'Url_User' );
 		$email = $this->getInput()->getString( 'email' );
 		$password = $this->getInput()->getString( 'password' );
 
@@ -39,7 +39,7 @@ class CWebUser extends Controller_Default
 		{
 			osc_add_flash_error_message( _m( 'The username or password are wrong' ) );
 
-			$res->sendRedirection( osc_user_login_url() );
+			$res->sendRedirection( $userUrls->osc_user_login_url() );
 		}
 
 		$logged = $classLoader->getClassInstance( 'Manager_User', false, array( false ) )
@@ -60,7 +60,7 @@ class CWebUser extends Controller_Default
 		{
 			if( true === $this->getInput()->getBoolean( 'remember' ) ) 
 			{
-				require_once 'osc/helpers/hSecurity.php';
+				$classLoader->loadFile( 'helpers/security' );
 				$secret = osc_genRandomPassword();
 				$userModel->update(
 					array( 's_secret' => $secret), array('pk_i_id' => $user['pk_i_id'] )
@@ -73,14 +73,14 @@ class CWebUser extends Controller_Default
 				$cookie->set();
 			}
 	
-			$url_redirect = osc_user_dashboard_url();
+			$url_redirect = $userUrls->osc_user_dashboard_url();
 			$httpReferer = $this->getInput()->getString( 'http_referer' );
 			if( !is_null( $httpReferer ) )
 				$url_redirect = $htpReferer;
 			$res->sendRedirection( $url_redirect );
 		}
 
-		$res->sendRedirection( osc_user_login_url() );
+		$res->sendRedirection( $userUrls->osc_user_login_url() );
 	}
 }
 

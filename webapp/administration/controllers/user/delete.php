@@ -18,38 +18,42 @@
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-class CAdminMedia extends Controller_Administration
+class CAdminUser extends Controller_Administration
 {
-	public function doGet( HttpRequest $req, HttpResponse $res )
+	public function doGet( HttpRequest $req, HttpResponse $res ) 
 	{
-		$this->resourcesManager = ClassLoader::getInstance()->getClassInstance( 'Model_ItemResource' );
-		switch ($this->action) 
+		$this->userManager = ClassLoader::getInstance()->getClassInstance( 'Model_User' );
+		$iDeleted = 0;
+		$userId = Params::getParam('id');
+		if (!is_array($userId)) 
 		{
-		case 'bulk_actions':
-			switch (Params::getParam('bulk_actions')) 
+			osc_add_flash_error_message(_m('User id isn\'t in the correct format'), 'admin');
+		}
+		foreach ($userId as $id) 
+		{
+			$user = $this->userManager->findByPrimaryKey($id);
+			ClassLoader::getInstance()->getClassInstance( 'Logging_Logger' )->insertLog('user', 'delete', $id, $user['s_email'], 'admin', osc_logged_admin_id());
+			if ($this->userManager->deleteUser($id)) 
 			{
-			case 'delete_all':
-				$ids = Params::getParam("id");
-				if ($ids != '') 
-				{
-					foreach ($ids as $id) 
-					{
-						osc_deleteResource($id);
-					}
-					$this->resourcesManager->deleteResourcesIds($ids);
-				}
-				osc_add_flash_ok_message(_m('Resource deleted'), 'admin');
-				break;
-
-			default:
-				break;
+				$iDeleted++;
 			}
-			$this->redirectTo(osc_admin_base_url(true) . "?page=media");
+		}
+		switch ($iDeleted) 
+		{
+		case (0):
+			$msg = _m('No user has been deleted');
+			break;
+
+		case (1):
+			$msg = _m('One user has been deleted');
 			break;
 
 		default:
-			$this->doView('media/index.php');
+			$msg = sprintf(_m('%s users have been deleted'), $iDeleted);
+			break;
 		}
+		osc_add_flash_ok_message($msg, 'admin');
+		$this->redirectTo(osc_admin_base_url(true) . '?page=users');
 	}
 }
 

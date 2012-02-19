@@ -14,335 +14,335 @@ class Url_Resource extends Url_Abstract
 		);
 	}
 
-/**
- * Gets thumbnail url of current resource
- *
- * @return <type>
- */
-function osc_resource_thumbnail_url( array $resource ) 
-{
-	return (string)osc_resource_path( $resource ) . osc_resource_id( $resource ) . "_thumbnail." . osc_resource_field( $resource, "s_extension");
-}
-/**
- * Gets url of current resource
- *
- * @return string
- */
-function osc_resource_url( array $resource ) 
-{
-	return (string)osc_resource_path( $resource ) . osc_resource_id( $resource ) . "." . osc_resource_field( $resource, "s_extension");
-}
-/**
- * Gets original resource url of current resource
- *
- * @return string
- */
-function osc_resource_original_url( array $resource ) 
-{
-	return (string)osc_resource_path( $resource ) . osc_resource_id( $resource ) . "_original." . osc_resource_field( $resource, "s_extension");
-}
-
-/**
- * Gets current user alert unsubscribe url
- *
- * @param string $email
- * @param string $secret
- * @return string
- */
-function osc_user_unsubscribe_alert_url($email = '', $secret = '') 
-{
-	if ($secret == '') 
+	/**
+	 * Gets thumbnail url of current resource
+	 *
+	 * @return <type>
+	 */
+	function osc_resource_thumbnail_url( array $resource ) 
 	{
-		$secret = osc_alert_secret();
+		return (string)osc_resource_path( $resource ) . osc_resource_id( $resource ) . "_thumbnail." . osc_resource_field( $resource, "s_extension");
 	}
-	if ($email == '') 
+	/**
+	 * Gets url of current resource
+	 *
+	 * @return string
+	 */
+	function osc_resource_url( array $resource ) 
 	{
-		$email = osc_user_email();
+		return (string)osc_resource_path( $resource ) . osc_resource_id( $resource ) . "." . osc_resource_field( $resource, "s_extension");
 	}
-	return $this->getBaseUrl(true) . '?page=user&action=unsub_alert&email=' . urlencode($email) . '&secret=' . $secret;
-}
-/**
- * Gets user alert activate url
- *
- * @param string $secret
- * @param string $email
- * @return string
- */
-function osc_user_activate_alert_url($secret, $email) 
-{
-	if (osc_rewrite_enabled()) 
+	/**
+	 * Gets original resource url of current resource
+	 *
+	 * @return string
+	 */
+	function osc_resource_original_url( array $resource ) 
 	{
-		return $this->getBaseUrl() . '/user/activate_alert/' . $secret . '/' . urlencode($email);
+		return (string)osc_resource_path( $resource ) . osc_resource_id( $resource ) . "_original." . osc_resource_field( $resource, "s_extension");
 	}
-	else
-	{
-		return $this->getBaseUrl(true) . '?page=user&action=activate_alert&email=' . urlencode($email) . '&secret=' . $secret;
-	}
-}
-/**
- * Gets current user url
- *
- * @return string
- */
-function osc_user_profile_url() 
-{
-	if (osc_rewrite_enabled()) 
-	{
-		return $this->getBaseUrl() . '/user/profile';
-	}
-	else
-	{
-		return $this->getBaseUrl(true) . '?page=user&action=profile';
-	}
-}
-/**
- * Gets current user alert activate url
- *
- * @param int $page
- * @return string
- */
-function osc_user_list_items_url($page = '') 
-{
-	if (osc_rewrite_enabled()) 
-	{
-		if ($page == '') 
-		{
-			return $this->getBaseUrl() . '/user/items';
-		}
-		else
-		{
-			return $this->getBaseUrl() . '/user/items?iPage=' . $page;
-		}
-	}
-	else
-	{
-		if ($page == '') 
-		{
-			return $this->getBaseUrl(true) . '?page=user&action=items';
-		}
-		else
-		{
-			return $this->getBaseUrl(true) . '?page=user&action=items&iPage=' . $page;
-		}
-	}
-}
-/**
- * Gets url to change email
- *
- * @return string
- */
-function osc_change_user_email_url() 
-{
-	if (osc_rewrite_enabled()) 
-	{
-		return $this->getBaseUrl() . '/user/change_email';
-	}
-	else
-	{
-		return $this->getBaseUrl(true) . '?page=user&action=change_email';
-	}
-}
-/**
- * Gets confirmation url of change email
- *
- * @param int $userId
- * @param string $code
- * @return string
- */
-function osc_change_user_email_confirm_url($userId, $code) 
-{
-	if (osc_rewrite_enabled()) 
-	{
-		return $this->getBaseUrl() . '/user/change_email_confirm/' . $userId . '/' . $code;
-	}
-	else
-	{
-		return $this->getBaseUrl(true) . '?page=user&action=change_email_confirm&userId=' . $userId . '&code=' . $code;
-	}
-}
-/**
- * Gets url for changing password
- *
- * @return string
- */
-function osc_change_user_password_url() 
-{
-	if (osc_rewrite_enabled()) 
-	{
-		return $this->getBaseUrl() . '/user/change_password';
-	}
-	else
-	{
-		return $this->getBaseUrl(true) . '?page=user&action=change_password';
-	}
-}
-/**
- * Gets url for recovering password
- *
- * @return string
- */
-function osc_recover_user_password_url() 
-{
-	if (osc_rewrite_enabled()) 
-	{
-		return $this->getBaseUrl() . '/user/recover';
-	}
-	else
-	{
-		return $this->getBaseUrl(true) . '?page=user&action=recover';
-	}
-}
-/**
- * Gets url for confirm the forgot password process
- *
- * @param int $userId
- * @param string $code
- * @return string
- */
-function osc_forgot_user_password_confirm_url($userId, $code) 
-{
-	if (osc_rewrite_enabled()) 
-	{
-		return $this->getBaseUrl() . '/user/forgot/' . $userId . '/' . $code;
-	}
-	else
-	{
-		return $this->getBaseUrl(true) . '?page=user&action=forgot&userId=' . $userId . '&code=' . $code;
-	}
-}
-/**
- * Gets url for changing website language (for users)
- *
- * @param string $locale
- * @return string
- */
-function osc_change_language_url($locale) 
-{
-	if (osc_rewrite_enabled()) 
-	{
-		return $this->getBaseUrl() . '/language/' . $locale;
-	}
-	else
-	{
-		return $this->getBaseUrl(true) . '?page=language&locale=' . $locale;
-	}
-}
-
-/**
- * Create automatically the url of the users' dashboard
- *
- * @return string
- */
-function osc_user_dashboard_url() 
-{
-	if (osc_rewrite_enabled()) 
-	{
-		$path = $this->getBaseUrl() . '/user/dashboard';
-	}
-	else
-	{
-		$path = $this->getBaseUrl(true) . '?page=user&action=dashboard';
-	}
-	return $path;
-}
-/**
- * Create automatically the logout url
- *
- * @return string
- */
-function osc_user_logout_url() 
-{
-	if (osc_rewrite_enabled()) 
-	{
-		$path = $this->getBaseUrl() . '/user/logout';
-	}
-	else
-	{
-		$path = $this->getBaseUrl(true) . '?page=user&action=logout';
-	}
-	return $path;
-}
-/**
- * Create automatically the login url
- *
- * @return string
- */
-function osc_user_login_url() 
-{
-	if (osc_rewrite_enabled()) 
-	{
-		$path = $this->getBaseUrl() . '/user/login';
-	}
-	else
-	{
-		$path = $this->getBaseUrl(true) . '?page=user&action=login';
-	}
-	return $path;
-}
-/**
- * Create automatically the url to register an account
- *
- * @return string
- */
-function osc_register_account_url() 
-{
-	if (osc_rewrite_enabled()) 
-	{
-		$path = $this->getBaseUrl() . '/user/register';
-	}
-	else
-	{
-		$path = $this->getBaseUrl(true) . '?page=user&action=register';
-	}
-	return $path;
-}
-/**
- * Create automatically the url to activate an account
- *
- * @param int $id
- * @param string $code
- * @return string
- */
-function osc_user_activate_url($id, $code) 
-{
-	if (osc_rewrite_enabled()) 
-	{
-		return $this->getBaseUrl() . '/user/activate/' . $id . '/' . $code;
-	}
-	else
-	{
-		return $this->getBaseUrl(true) . '?page=user&action=validate&id=' . $id . '&code=' . $code;
-	}
-}
 
 	/**
- * Gets user's profile url
- *
- * @return string
- */
-function osc_user_public_profile_url($id = null) 
-{
-	if ($id == null) 
+	 * Gets current user alert unsubscribe url
+	 *
+	 * @param string $email
+	 * @param string $secret
+	 * @return string
+	 */
+	function osc_user_unsubscribe_alert_url($email = '', $secret = '') 
 	{
-		$id = osc_user_id();
+		if ($secret == '') 
+		{
+			$secret = osc_alert_secret();
+		}
+		if ($email == '') 
+		{
+			$email = osc_user_email();
+		}
+		return $this->getBaseUrl(true) . '?page=user&action=unsub_alert&email=' . urlencode($email) . '&secret=' . $secret;
 	}
-	if ($id != '') 
+	/**
+	 * Gets user alert activate url
+	 *
+	 * @param string $secret
+	 * @param string $email
+	 * @return string
+	 */
+	function osc_user_activate_alert_url($secret, $email) 
 	{
 		if (osc_rewrite_enabled()) 
 		{
-			$path = $this->getBaseUrl() . '/user/profile/' . $id;
+			return $this->getBaseUrl() . '/user/activate_alert/' . $secret . '/' . urlencode($email);
 		}
 		else
 		{
-			$path = sprintf($this->getBaseUrl(true) . '?page=user&action=pub_profile&id=%d', $id);
+			return $this->getBaseUrl(true) . '?page=user&action=activate_alert&email=' . urlencode($email) . '&secret=' . $secret;
 		}
 	}
-	else
+	/**
+	 * Gets current user url
+	 *
+	 * @return string
+	 */
+	function osc_user_profile_url() 
 	{
-		$path = '';
+		if (osc_rewrite_enabled()) 
+		{
+			return $this->getBaseUrl() . '/user/profile';
+		}
+		else
+		{
+			return $this->getBaseUrl(true) . '?page=user&action=profile';
+		}
 	}
-	return $path;
-}
+	/**
+	 * Gets current user alert activate url
+	 *
+	 * @param int $page
+	 * @return string
+	 */
+	function osc_user_list_items_url($page = '') 
+	{
+		if (osc_rewrite_enabled()) 
+		{
+			if ($page == '') 
+			{
+				return $this->getBaseUrl() . '/user/items';
+			}
+			else
+			{
+				return $this->getBaseUrl() . '/user/items?iPage=' . $page;
+			}
+		}
+		else
+		{
+			if ($page == '') 
+			{
+				return $this->getBaseUrl(true) . '?page=user&action=items';
+			}
+			else
+			{
+				return $this->getBaseUrl(true) . '?page=user&action=items&iPage=' . $page;
+			}
+		}
+	}
+	/**
+	 * Gets url to change email
+	 *
+	 * @return string
+	 */
+	function osc_change_user_email_url() 
+	{
+		if (osc_rewrite_enabled()) 
+		{
+			return $this->getBaseUrl() . '/user/change_email';
+		}
+		else
+		{
+			return $this->getBaseUrl(true) . '?page=user&action=change_email';
+		}
+	}
+	/**
+	 * Gets confirmation url of change email
+	 *
+	 * @param int $userId
+	 * @param string $code
+	 * @return string
+	 */
+	function osc_change_user_email_confirm_url($userId, $code) 
+	{
+		if (osc_rewrite_enabled()) 
+		{
+			return $this->getBaseUrl() . '/user/change_email_confirm/' . $userId . '/' . $code;
+		}
+		else
+		{
+			return $this->getBaseUrl(true) . '?page=user&action=change_email_confirm&userId=' . $userId . '&code=' . $code;
+		}
+	}
+	/**
+	 * Gets url for changing password
+	 *
+	 * @return string
+	 */
+	function osc_change_user_password_url() 
+	{
+		if (osc_rewrite_enabled()) 
+		{
+			return $this->getBaseUrl() . '/user/change_password';
+		}
+		else
+		{
+			return $this->getBaseUrl(true) . '?page=user&action=change_password';
+		}
+	}
+	/**
+	 * Gets url for recovering password
+	 *
+	 * @return string
+	 */
+	function osc_recover_user_password_url() 
+	{
+		if (osc_rewrite_enabled()) 
+		{
+			return $this->getBaseUrl() . '/user/recover';
+		}
+		else
+		{
+			return $this->getBaseUrl(true) . '?page=user&action=recover';
+		}
+	}
+	/**
+	 * Gets url for confirm the forgot password process
+	 *
+	 * @param int $userId
+	 * @param string $code
+	 * @return string
+	 */
+	function osc_forgot_user_password_confirm_url($userId, $code) 
+	{
+		if (osc_rewrite_enabled()) 
+		{
+			return $this->getBaseUrl() . '/user/forgot/' . $userId . '/' . $code;
+		}
+		else
+		{
+			return $this->getBaseUrl(true) . '?page=user&action=forgot&userId=' . $userId . '&code=' . $code;
+		}
+	}
+	/**
+	 * Gets url for changing website language (for users)
+	 *
+	 * @param string $locale
+	 * @return string
+	 */
+	function osc_change_language_url($locale) 
+	{
+		if (osc_rewrite_enabled()) 
+		{
+			return $this->getBaseUrl() . '/language/' . $locale;
+		}
+		else
+		{
+			return $this->getBaseUrl(true) . '?page=language&locale=' . $locale;
+		}
+	}
+
+	/**
+	 * Create automatically the url of the users' dashboard
+	 *
+	 * @return string
+	 */
+	function osc_user_dashboard_url() 
+	{
+		if (osc_rewrite_enabled()) 
+		{
+			$path = $this->getBaseUrl() . '/user/dashboard';
+		}
+		else
+		{
+			$path = $this->getBaseUrl(true) . '?page=user&action=dashboard';
+		}
+		return $path;
+	}
+	/**
+	 * Create automatically the logout url
+	 *
+	 * @return string
+	 */
+	function osc_user_logout_url() 
+	{
+		if (osc_rewrite_enabled()) 
+		{
+			$path = $this->getBaseUrl() . '/user/logout';
+		}
+		else
+		{
+			$path = $this->getBaseUrl(true) . '?page=user&action=logout';
+		}
+		return $path;
+	}
+	/**
+	 * Create automatically the login url
+	 *
+	 * @return string
+	 */
+	function osc_user_login_url() 
+	{
+		if (osc_rewrite_enabled()) 
+		{
+			$path = $this->getBaseUrl() . '/user/login';
+		}
+		else
+		{
+			$path = $this->getBaseUrl(true) . '?page=user&action=login';
+		}
+		return $path;
+	}
+	/**
+	 * Create automatically the url to register an account
+	 *
+	 * @return string
+	 */
+	function osc_register_account_url() 
+	{
+		if (osc_rewrite_enabled()) 
+		{
+			$path = $this->getBaseUrl() . '/user/register';
+		}
+		else
+		{
+			$path = $this->getBaseUrl(true) . '?page=user&action=register';
+		}
+		return $path;
+	}
+	/**
+	 * Create automatically the url to activate an account
+	 *
+	 * @param int $id
+	 * @param string $code
+	 * @return string
+	 */
+	function osc_user_activate_url($id, $code) 
+	{
+		if (osc_rewrite_enabled()) 
+		{
+			return $this->getBaseUrl() . '/user/activate/' . $id . '/' . $code;
+		}
+		else
+		{
+			return $this->getBaseUrl(true) . '?page=user&action=validate&id=' . $id . '&code=' . $code;
+		}
+	}
+
+		/**
+	 * Gets user's profile url
+	 *
+	 * @return string
+	 */
+	function osc_user_public_profile_url($id = null) 
+	{
+		if ($id == null) 
+		{
+			$id = osc_user_id();
+		}
+		if ($id != '') 
+		{
+			if (osc_rewrite_enabled()) 
+			{
+				$path = $this->getBaseUrl() . '/user/profile/' . $id;
+			}
+			else
+			{
+				$path = sprintf($this->getBaseUrl(true) . '?page=user&action=pub_profile&id=%d', $id);
+			}
+		}
+		else
+		{
+			$path = '';
+		}
+		return $path;
+	}
 
 	/**
 	 * Gets current page url

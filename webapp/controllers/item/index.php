@@ -44,7 +44,7 @@ class CWebItem extends Controller_Default
 		$this->view->assign('locales', $locales);
 		if (Params::getParam('id') == '') 
 		{
-			$this->redirectTo(osc_base_url());
+			$this->redirectToBaseUrl();
 		}
 		if (Params::getParam('lang') != '') 
 		{

@@ -25,7 +25,6 @@ class CWebItem extends Controller_Default
 	{
 		parent::__construct();
 		$this->itemManager = ClassLoader::getInstance()->getClassInstance( 'Model_Item' );
-		// here allways userId == ''
 		if (osc_is_web_user_logged_in()) 
 		{
 			$this->userId = osc_logged_user_id();
@@ -41,6 +40,7 @@ class CWebItem extends Controller_Default
 	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
 		$classLoader = $this->getClassLoader();
+		$classLoader->loadFile( 'helpers/locations' );
 		$locales = $classLoader->getClassInstance( 'Model_Locale' )->listAllEnabled();
 		$view = $this->getView();
 		$view->assign('locales', $locales);
@@ -76,7 +76,7 @@ class CWebItem extends Controller_Default
 			}
 			else
 			{
-				$this->redirectTo(osc_base_url());
+				$this->redirectToBaseUrl();
 			}
 		}
 	}

@@ -20,6 +20,10 @@
 */
 class Form
 {
+	public function __construct()
+	{
+	}
+
 	public function getInputHidden( $name, $value = '' )
 	{
 		return sprintf( '<input type="hidden" name="%s" value="%s" />', $name, $value ) . PHP_EOL;

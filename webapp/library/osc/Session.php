@@ -90,7 +90,7 @@ class Session
 		return ($this->session[$key]);
 	}
 
-	function _drop($key) 
+	function remove($key) 
 	{
 		unset($_SESSION[$key]);
 		unset($this->session[$key]);

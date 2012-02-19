@@ -17,17 +17,10 @@
  */
 class CWebSearch extends Controller_Default
 {
-	private $mSearch;
-
-	public function __construct() 
-	{
-		parent::__construct();
-		$this->mSearch = $this->getClassLoader()->getClassInstance( 'Model_Search' );
-	}
-
 	public function doGet( HttpRequest $req, HttpResponse $res ) 
 	{
 		$classLoader = $this->getClassLoader();
+		$this->mSearch = $this->getClassLoader()->getClassInstance( 'Model_Search' );
 
 		$classLoader->loadFile( 'helpers/premium' );
 		osc_run_hook('before_search');
@@ -94,6 +87,11 @@ class CWebSearch extends Controller_Default
 			}
 		}
 		$p_sPattern = strip_tags(Params::getParam('sPattern'));
+		if ($p_sPattern != '') 
+		{
+			$this->mSearch->setQueryString( $p_sPattern );
+		}
+
 		$p_sUser = strip_tags(Params::getParam('sUser'));
 
 		if ( osc_save_latest_searches() ) 
@@ -174,29 +172,23 @@ class CWebSearch extends Controller_Default
 			$this->mSearch->addCountry($country);
 		}
 		$p_sCountry = implode(", ", $p_sCountry);
-		// FILTERING PATTERN
-		if ($p_sPattern != '') 
-		{
-			$this->mSearch->addConditions(sprintf("MATCH(d.s_title, d.s_description) AGAINST('%s' IN BOOLEAN MODE)", $p_sPattern));
-			$osc_request['sPattern'] = $p_sPattern;
-		}
-		// FILTERING USER
 		if ($p_sUser != '') 
 		{
 			$this->mSearch->fromUser(explode(",", $p_sUser));
 		}
-		// FILTERING IF WE ONLY WANT ITEMS WITH PICS
 		if ($p_bPic) 
 		{
 			$this->mSearch->withPicture(true);
 		}
-		//FILTERING BY RANGE PRICE
 		$this->mSearch->priceRange($p_sPriceMin, $p_sPriceMax);
-		//ORDERING THE SEARCH RESULTS
 		$this->mSearch->order($p_sOrder, $allowedTypesForSorting[$p_iOrderType]);
-		//SET PAGE
 		$this->mSearch->page($p_iPage, $p_iPageSize);
 		osc_run_hook('search_conditions', Params::getParamsAsArray());
+
+		$view = $this->getView();
+		$premiums = array();//osc_get_premiums();
+		$view->assign( 'premiums', $premiums );
+
 		if (!Params::existParam('sFeed')) 
 		{
 			// RETRIEVE ITEMS AND TOTAL
@@ -206,7 +198,7 @@ class CWebSearch extends Controller_Default
 			$iEnd = min(($p_iPage + 1) * $p_iPageSize, $iTotalItems);
 			$iNumPages = ceil($iTotalItems / $p_iPageSize);
 			osc_run_hook('search', $this->mSearch);
-			//preparing variables...
+
 			//$this->getView()->assign('non_empty_categories', $aCategories) ;
 			$this->getView()->assign('search_start', $iStart);
 			$this->getView()->assign('search_end', $iEnd);
@@ -238,7 +230,8 @@ class CWebSearch extends Controller_Default
 			if( 0 < count( $aItems ) ) 
 			{
 				$item = $aItems[0];
-				$view->setMetaDescription( osc_item_category( $item ) . ', ' . osc_highlight(strip_tags(osc_item_description( $item )), 140) . '..., ' . osc_item_category( $item ) );
+				$itemCategory = $item['category_name'];
+				$view->setMetaDescription( $itemCategory . ', ' . osc_highlight(strip_tags(osc_item_description( $item )), 140) . '..., ' . $itemCategory );
 			}
 
 			$pagination = $classLoader->getClassInstance( 'Pagination' );

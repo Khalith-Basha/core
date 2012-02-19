@@ -17,6 +17,10 @@ class Url_Abstract
 	{
 	}
 
+	public function loadRules( Rewrite $rewrite )
+	{
+	}
+
 	/**
 	 * Gets the root url for your installation
 	 *

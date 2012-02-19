@@ -57,7 +57,7 @@ class Model_CategoryStats extends DAO
 				$parent_res = $this->increaseNumItems($result['fk_i_parent_id']);
 				if ($parent_res !== false) 
 				{
-					$return+= $parent_res;
+					$return += $parent_res;
 				}
 				else
 				{

@@ -67,6 +67,7 @@ class MediaProcessingAjax
 	/* START - format functions */
 	private function toDatatablesFormat() 
 	{
+		$itemUrls = ClassLoader::getInstance()->getClassInstance( 'Url_Item' );
 		$this->sOutput = '{';
 		$this->sOutput.= '"iTotalRecords": ' . ($this->total) . ', ';
 		$this->sOutput.= '"iTotalDisplayRecords": ' . ($this->filtered_total) . ', ';
@@ -83,8 +84,8 @@ class MediaProcessingAjax
 				$this->sOutput.= "\"<input type='checkbox' name='id[]' value='" . $r['pk_i_id'] . "' />\",";
 				$this->sOutput.= "\"<div id='media_list_pic'><img src='" . osc_apply_filter('resource_path', osc_base_url() . $r['s_path']) . $r['pk_i_id'] . "_thumbnail." . $r['s_extension'] . "' style='max-width: 60px; max-height: 60px;' /></div> <div id='media_list_filename'>" . $r['s_content_type'] . "\",";
 				$this->sOutput.= "\"<a onclick='javascript:return confirm(\'" . __('This action can not be undone. Are you sure you want to continue?') . "\')\' href='" . osc_admin_base_url(true) . "?page=media&action=delete&amp;id[]=" . $r['pk_i_id'] . "' id='dt_link_delete'>" . __('Delete') . "</a>\",";
-				$this->sOutput.= "\"<a target='_blank' href='" . osc_item_url_ns($r['fk_i_item_id']) . "'>item #" . $r['fk_i_item_id'] . "</a>\",";
-				$this->sOutput.= "\"" . $r['dt_pub_date'] . "\"";
+				$this->sOutput.= "\"<a target='_blank' href='" . $itemUrls->osc_item_url_ns($r['fk_i_item_id']) . "'>item #" . $r['fk_i_item_id'] . "</a>\",";
+				$this->sOutput.= "\"" . $r['pub_date'] . "\"";
 				if (end($this->result) == $r) 
 				{
 					$this->sOutput.= "]";

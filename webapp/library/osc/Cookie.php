@@ -23,7 +23,8 @@ class Cookie
 	public $name;
 	public $val;
 	public $expires;
-	function __construct() 
+	
+	public function __construct() 
 	{
 		$this->val = array();
 		$web_pat = WEB_PATH;
@@ -41,21 +42,25 @@ class Cookie
 			}
 		}
 	}
-	function push($var, $value) 
+
+	public function push($var, $value) 
 	{
 		$this->val["$var"] = $value;
 		$_COOKIE["$var"] = $value;
 	}
-	function pop($var) 
+
+	public function remove( $var )
 	{
 		unset($this->val[$var]);
 		unset($_COOKIE[$var]);
 	}
-	function clear() 
+	
+	public function clear() 
 	{
 		$this->val = array();
 	}
-	function set() 
+
+	public function set() 
 	{
 		$cookie_val = "";
 		if (is_array($this->val) && count($this->val) > 0) 
@@ -77,14 +82,16 @@ class Cookie
 		}
 		setcookie($this->name, $cookie_val, $this->expires, '/');
 	}
-	function get_value($str) 
+
+	public function get_value($str) 
 	{
 		if( isset( $this->val[$str] ) )
 			return $this->val[$str];
 		return null;
 	}
+	
 	//$tm: time in seconds
-	function set_expires($tm) 
+	public function set_expires($tm) 
 	{
 		$this->expires = time() + $tm;
 	}

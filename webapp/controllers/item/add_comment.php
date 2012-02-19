@@ -40,8 +40,9 @@ class CWebItem extends Controller_Default
 	{
 		$locales = $this->getClassLoader()->getClassInstance( 'Model_Locale' )->listAllEnabled();
 		$this->getView()->assign('locales', $locales);
-		$mItem = $this->getClassLoader()->getClassInstance( 'ItemActions', true, array( false ) );
-		$itemUrl = '/'; // @TODO FIX $this->getClassLoader()->getClassInstance( 'Url_Item' )->getDetailsUrl( $item );
+		$mItem = $this->getClassLoader()->getClassInstance( 'Manager_Item', true, array( false ) );
+		$item = $this->getClassLoader()->getClassInstance( 'Model_Item' )->findByPrimaryKey(Params::getParam('id'));
+		$itemUrl = $this->getClassLoader()->getClassInstance( 'Url_Item' )->getDetailsUrl( $item );
 		$status = $mItem->add_comment();
 		switch ($status)
 		{

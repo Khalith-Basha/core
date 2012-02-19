@@ -27,7 +27,7 @@ echo $view->render( 'header' );
                 <div id="contact" class="inner">
                     <h1><?php _e('Contact seller', 'modern'); ?></h1>
                     <ul id="error_list"></ul>
-                    <form action="<?php echo osc_base_url(true); ?>" method="post" name="contact_form" id="contact_form" >
+                    <form action="<?php echo $urlFactory->getBaseUrl(true); ?>" method="post" name="contact_form" id="contact_form" >
                         <fieldset>
                             <?php $contactForm->primary_input_hidden(); ?>
                             <?php $contactForm->action_hidden(); ?>

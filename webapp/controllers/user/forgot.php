@@ -38,7 +38,7 @@ class CWebUser extends Controller
 		else
 		{
 			osc_add_flash_error_message(_m('Sorry, the link is not valid'));
-			$this->redirectTo(osc_base_url());
+			$this->redirectToBaseUrl();
 		}
 	}
 	
@@ -68,7 +68,7 @@ class CWebUser extends Controller
 		{
 			osc_add_flash_error_message(_m('Sorry, the link is not valid'));
 		}
-		$this->redirectTo(osc_base_url());
+		$this->redirectToBaseUrl();
 	}
 }
 

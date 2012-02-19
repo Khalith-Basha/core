@@ -47,29 +47,31 @@ class CWebUser extends Controller_Cacheable
 
 	public function doPost( HttpRequest $req, HttpResponse $res )
 	{
+		$classLoader = $this->getClassLoader();
+		$userUrls = $classLoader->getClassInstance( 'Url_User' );
 		$email = $this->getInput()->getString( 's_email' );
 		if (!preg_match('|^[a-z0-9\.\_\+\-]+@[a-z0-9\.\-]+\.[a-z]{2,3}$|i', $email )) 
 		{
 			osc_add_flash_error_message(_m('Invalid email address'));
-			$this->redirectTo(osc_recover_user_password_url());
+			$this->redirectTo( $userUrls->osc_recover_user_password_url() );
 		}
-		$userActions = $this->getClassLoader()->getClassInstance( 'Manager_User', false, array( false ) );
+		$userActions = $classLoader->getClassInstance( 'Manager_User', false, array( false ) );
 		$success = $userActions->recover_password();
 		switch ($success) 
 		{
 		case (0): // recover ok
 			osc_add_flash_ok_message(_m('We have sent you an email with the instructions to reset your password'));
-			$this->redirectTo(osc_base_url());
+			$this->redirectToBaseUrl();
 			break;
 
 		case (1): // e-mail does not exist
 			osc_add_flash_error_message(_m('We were not able to identify you given the information provided'));
-			$this->redirectTo(osc_recover_user_password_url());
+			$this->redirectTo( $userUrls->osc_recover_user_password_url() );
 			break;
 
 		case (2): // recaptcha wrong
 			osc_add_flash_error_message(_m('The recaptcha code is wrong'));
-			$this->redirectTo(osc_recover_user_password_url());
+			$this->redirectTo( $userUrls->osc_recover_user_password_url() );
 			break;
 		}
 	}

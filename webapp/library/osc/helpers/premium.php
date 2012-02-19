@@ -41,31 +41,15 @@ function osc_get_premiums( $max = 2 )
 	return $premiums;
 }
 /**
- * Gets current premium array from view
- *
- * @return array $premium, or null if not exist
- */
-function osc_premium() 
-{
-	if (ClassLoader::getInstance()->getClassInstance( 'View_Default' )->varExists('premiums')) 
-	{
-		return ClassLoader::getInstance()->getClassInstance( 'View_Default' )->_current('premiums');
-	}
-	else
-	{
-		return null;
-	}
-}
-/**
  * Gets a specific field from current premium
  *
  * @param type $field
  * @param type $locale
  * @return field_type
  */
-function osc_premium_field($field, $locale = "") 
+function osc_premium_field( array $premium, $field, $locale = "") 
 {
-	return osc_field(osc_premium(), $field, $locale);
+	return osc_field( $premium, $field, $locale);
 }
 
 /**
@@ -435,27 +419,6 @@ function osc_premium_comments_page()
 	return (int)$page;
 }
 
-/**
- * Gets next premium if there is, else return null
- *
- * @return array
- */
-function osc_has_premiums() 
-{
-	if (ClassLoader::getInstance()->getClassInstance( 'View_Default' )->varExists('resources')) 
-	{
-		ClassLoader::getInstance()->getClassInstance( 'View_Default' )->_erase('resources');
-	}
-	if (ClassLoader::getInstance()->getClassInstance( 'View_Default' )->varExists('premium_category')) 
-	{
-		ClassLoader::getInstance()->getClassInstance( 'View_Default' )->_erase('premium_category');
-	}
-	if (ClassLoader::getInstance()->getClassInstance( 'View_Default' )->varExists('metafields')) 
-	{
-		ClassLoader::getInstance()->getClassInstance( 'View_Default' )->_erase('metafields');
-	}
-	return ClassLoader::getInstance()->getClassInstance( 'View_Default' )->_next('premiums');
-}
 /**
  * Set the internal pointer of array premiums to its first element, and return it.
  *

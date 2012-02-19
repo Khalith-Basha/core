@@ -27,7 +27,7 @@ echo $view->render( 'header' );
             <div class="content add_item">
                 <h1><strong><?php _e('Publish an item', 'modern'); ?></strong></h1>
                 <ul id="error_list"></ul>
-                <form name="item" action="<?php echo osc_base_url(true); ?>" method="post" enctype="multipart/form-data">
+                <form name="item" action="<?php echo $urlFactory->getBaseUrl(true); ?>" method="post" enctype="multipart/form-data">
                     <fieldset>
                     <input type="hidden" name="action" value="add_post" />
                     <input type="hidden" name="page" value="item" />
@@ -64,23 +64,23 @@ echo $view->render( 'header' );
                             <h2><?php _e('Item Location', 'modern'); ?></h2>
                             <div class="row">
                                 <label for="countryId"><?php _e('Country', 'modern'); ?></label>
-                                <?php $itemForm->country_select(osc_get_countries(), osc_user()); ?>
+                                <?php $itemForm->country_select(osc_get_countries(), $user ); ?>
                             </div>
                             <div class="row">
                                 <label for="regionId"><?php _e('Region', 'modern'); ?></label>
-                                <?php $itemForm->region_text(osc_user()); ?>
+                                <?php $itemForm->region_text( $user ); ?>
                             </div>
                             <div class="row">
                                 <label for="city"><?php _e('City', 'modern'); ?></label>
-                                <?php $itemForm->city_text(osc_user()); ?>
+                                <?php $itemForm->city_text( $user ); ?>
                             </div>
                             <div class="row">
                                 <label for="city"><?php _e('City Area', 'modern'); ?></label>
-                                <?php $itemForm->city_area_text(osc_user()); ?>
+                                <?php $itemForm->city_area_text( $user ); ?>
                             </div>
                             <div class="row">
                                 <label for="address"><?php _e('Address', 'modern'); ?></label>
-                                <?php $itemForm->address_text(osc_user()); ?>
+                                <?php $itemForm->address_text( $user ); ?>
                             </div>
                         </div>
                         <!-- seller info -->

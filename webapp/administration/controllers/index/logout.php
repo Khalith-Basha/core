@@ -22,14 +22,14 @@ class CAdminIndex extends Controller_Administration
 {
 	public function doModel() 
 	{
-	$this->getSession()->_drop('adminId');
-	$this->getSession()->_drop('adminUserName');
-	$this->getSession()->_drop('adminName');
-	$this->getSession()->_drop('adminEmail');
-	$this->getSession()->_drop('adminLocale');
-		$this->getCookie()->pop('oc_adminId');
-		$this->getCookie()->pop('oc_adminSecret');
-		$this->getCookie()->pop('oc_adminLocale');
+	$this->getSession()->remove('adminId');
+	$this->getSession()->remove('adminUserName');
+	$this->getSession()->remove('adminName');
+	$this->getSession()->remove('adminEmail');
+	$this->getSession()->remove('adminLocale');
+		$this->getCookie()->remove('oc_adminId');
+		$this->getCookie()->remove('oc_adminSecret');
+		$this->getCookie()->remove('oc_adminLocale');
 		$this->getCookie()->set();
 		$this->redirectTo(osc_admin_base_url(true));
 	}

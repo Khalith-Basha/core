@@ -18,77 +18,46 @@
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
+$itemUrls = $classLoader->getClassInstance( 'Url_Item' );
 echo $view->render( 'header' );
 ?>
 
             <div class="content user_account">
                 <h1>
-                    <strong><?php
-_e('User account manager', 'modern'); ?></strong>
+                    <strong><?php _e('User account manager', 'modern'); ?></strong>
                 </h1>
                 <div id="sidebar">
-                    <?php
-echo osc_private_user_menu(); ?>
+                    <?php echo osc_private_user_menu(); ?>
                 </div>
                 <div id="main">
-                    <h2><?php
-echo sprintf(__('Items from %s', 'modern'), osc_logged_user_name()); ?></h2>
-                    <?php
-if (osc_count_items() == 0) 
-{ ?>
-                        <h3><?php
-	_e('No items have been added yet', 'modern'); ?></h3>
-                    <?php
-}
-else
-{ ?>
-                        <?php
-	while (osc_has_items()) 
-	{ ?>
+                    <h2><?php echo sprintf(__('Items from %s', 'modern'), osc_logged_user_name()); ?></h2>
+                    <?php if( 0 === count( $items ) ) { ?>
+                        <h3><?php _e('No items have been added yet', 'modern'); ?></h3>
+                    <?php } else { ?>
+                        <?php foreach( $items as $item ): ?>
                             <div class="userItem" >
                                 <div>
-                                    <a href="<?php
-		echo osc_item_url(); ?>"><?php
-		echo osc_item_title(); ?></a>
+                                    <a href="<?php echo $itemUrls->getDetailsUrl( $item ); ?>"><?php echo osc_item_title( $item ); ?></a>
                                 </div>
                                 <div class="userItemData" >
-                                <?php
-		_e('Publication date', 'modern'); ?>: <?php
-		echo osc_format_date(osc_item_pub_date()); ?><br />
-                                        <?php
-		if (osc_price_enabled_at_items()) 
-		{
-			_e('Price', 'modern'); ?>: <?php
-			echo osc_format_price(osc_item_price());
-		} ?>
+                                <?php _e('Publication date', 'modern'); ?>: <?php echo osc_format_date(osc_item_pub_date( $item )); ?><br />
+                                        <?php if (osc_price_enabled_at_items())  { _e('Price', 'modern'); ?>: <?php echo osc_format_price( $item, osc_item_price( $item )); } ?>
                                         </p>
                                         <p class="options">
-                                            <strong><a href="<?php
-		echo osc_item_url(); ?>"><?php
-		_e('View item', 'modern'); ?></a></strong>
+                                            <strong><a href="<?php echo $itemUrls->getDetailsUrl( $item ); ?>"><?php _e('View item', 'modern'); ?></a></strong>
                                             <span>|</span>
-                                            <a href="<?php
-		echo osc_item_edit_url(); ?>"><?php
-		_e('Edit', 'modern'); ?></a>
-                                            <?php
-		if (osc_item_is_inactive()) 
-		{ ?>
+                                            <a href="<?php echo $itemUrls->osc_item_edit_url( $item ); ?>"><?php _e('Edit', 'modern'); ?></a>
+                                            <?php if (osc_item_is_inactive( $item ))  { ?>
                                             <span>|</span>
-                                            <a href="<?php
-			echo osc_item_activate_url(); ?>" ><?php
-			_e('Activate', 'modern'); ?></a>
-                                            <?php
-		} ?>
+                                            <a href="<?php echo $itemUrls->osc_item_activate_url( $item ); ?>" ><?php _e('Activate', 'modern'); ?></a>
+                                            <?php } ?>
                                         </p>
                                         <br />
                                 </div>
                             </div>
                             <br />
-                        <?php
-	} ?>
-                    <?php
-} ?>
+                        <?php endforeach; ?>
+                    <?php } ?>
                 </div>
             </div>
 <?php

@@ -35,16 +35,16 @@ class Controller_Administration extends Controller_Secure
 	{
 		$session = $this->getSession();
 		$session->destroy();
-		$session->_drop('adminId');
-		$session->_drop('adminUserName');
-		$session->_drop('adminName');
-		$session->_drop('adminEmail');
-		$session->_drop('adminLocale');
+		$session->remove('adminId');
+		$session->remove('adminUserName');
+		$session->remove('adminName');
+		$session->remove('adminEmail');
+		$session->remove('adminLocale');
 
 		$cookie = $this->getCookie();
-		$cookie->pop('oc_adminId');
-		$cookie->pop('oc_adminSecret');
-		$cookie->pop('oc_adminLocale');
+		$cookie->remove('oc_adminId');
+		$cookie->remove('oc_adminSecret');
+		$cookie->remove('oc_adminLocale');
 		$cookie->set();
 	}
 

@@ -26,15 +26,17 @@ class CWebItem extends Controller_Default
 
 	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
-		$locales = ClassLoader::getInstance()->getClassInstance( 'Model_Locale' )->listAllEnabled();
+		$classLoader = $this->getClassLoader();
+		$locales = $classLoader->getClassInstance( 'Model_Locale' )->listAllEnabled();
 		$item = $this->itemManager->findByPrimaryKey(Params::getParam('id'));
 
+		$classLoader->loadFile( 'helpers/security' );
 		$view = $this->getView();
 		$view->assign('locales', $locales);
 		$view->assign('item', $item);
 		$view->addJavaScript( osc_current_web_theme_js_url('jquery.validate.min.js') );
 		$view->addJavaScript( '/static/scripts/send-friend.js' );
-		$view->setTitle( __('Send to a friend', 'modern') . ' - ' . osc_item_title() . ' - ' . osc_page_title() );
+		$view->setTitle( __('Send to a friend', 'modern') . ' - ' . osc_item_title( $item ) . ' - ' . osc_page_title( $item ) );
 		echo $view->render( 'item/send-friend' );
 	}
 
@@ -57,16 +59,39 @@ class CWebItem extends Controller_Default
 				
 			}
 		}
-		$mItem = new ItemActions(false);
-		$success = $mItem->send_friend();
+
+		$classLoader = $this->getClassLoader();
+		$itemUrls = $classLoader->getClassInstance( 'Url_Item' );
+
+		$classLoader = ClassLoader::getInstance();
+		$item = $this->itemManager->findByPrimaryKey(Params::getParam('id'));
+		$aItem['item'] = $item;
+		ClassLoader::getInstance()->getClassInstance( 'View_Html' )->assign('item', $aItem['item']);
+		$aItem['yourName'] = Params::getParam('yourName');
+		$aItem['yourEmail'] = Params::getParam('yourEmail');
+		$aItem['friendName'] = Params::getParam('friendName');
+		$aItem['friendEmail'] = Params::getParam('friendEmail');
+		$aItem['s_title'] = Params::getParam('s_title');
+		$aItem['message'] = Params::getParam('message');
+
+		$item = $aItem['item'];
+		$s_title = $aItem['s_title'];
+		$classLoader->getClassInstance( 'View_Html' )->assign('item', $item);
+		osc_run_hook('hook_email_send_friend', $aItem);
+		$item_url = $classLoader->getClassInstance( 'Url_Item' )->getDetailsUrl( $item );
+		$item_url = '<a href="' . $item_url . '" >' . $item_url . '</a>';
+		Params::setParam('item_url', $item_url);
+		osc_add_flash_ok_message(sprintf(_m('We just send your message to %s'), $aItem['friendName']));
+
+		$success = true;
 		if ($success) 
 		{
 			$this->getSession()->_clearVariables();
-			$this->redirectTo(osc_item_url());
+			$this->redirectTo( $itemUrls->getDetailsUrl( $item ) );
 		}
 		else
 		{
-			$this->redirectTo(osc_item_send_friend_url());
+			$this->redirectTo( $itemUrls->osc_item_send_friend_url( $item ) );
 		}
 	}
 }

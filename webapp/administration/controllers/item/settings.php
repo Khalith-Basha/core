@@ -27,6 +27,7 @@ class CAdminItem extends Controller_Administration
 
 	public function doPost( HttpRequest $req, HttpResponse $res )
 	{
+		$preference = $this->getClassLoader()->getClassInstance( 'Model_Preference' );
 		$iUpdated = 0;
 		$enabledRecaptchaItems = Params::getParam('enabled_recaptcha_items');
 		$enabledRecaptchaItems = (($enabledRecaptchaItems != '') ? true : false);
@@ -57,26 +58,26 @@ class CAdminItem extends Controller_Administration
 		$regUserCanContact = (($regUserCanContact != '') ? true : false);
 		$contactItemAttachment = Params::getParam('item_attachment');
 		$contactItemAttachment = (($contactItemAttachment != '') ? true : false);
-		$iUpdated+= Preference::newInstance()->update(array('s_value' => $enabledRecaptchaItems), array('s_name' => 'enabled_recaptcha_items'));
+		$iUpdated+= $preference->update(array('s_value' => $enabledRecaptchaItems), array('s_name' => 'enabled_recaptcha_items'));
 		if ($moderateItems) 
 		{
-			$iUpdated+= Preference::newInstance()->update(array('s_value' => $numModerateItems), array('s_name' => 'moderate_items'));
+			$iUpdated+= $preference->update(array('s_value' => $numModerateItems), array('s_name' => 'moderate_items'));
 		}
 		else
 		{
-			$iUpdated+= Preference::newInstance()->update(array('s_value' => '-1'), array('s_name' => 'moderate_items'));
+			$iUpdated+= $preference->update(array('s_value' => '-1'), array('s_name' => 'moderate_items'));
 		}
-		$iUpdated+= Preference::newInstance()->update(array('s_value' => $loggedUserItemValidation), array('s_name' => 'logged_user_item_validation'));
-		$iUpdated+= Preference::newInstance()->update(array('s_value' => $regUserPost), array('s_name' => 'reg_user_post'));
-		$iUpdated+= Preference::newInstance()->update(array('s_value' => $notifyNewItem), array('s_name' => 'notify_new_item'));
-		$iUpdated+= Preference::newInstance()->update(array('s_value' => $notifyContactItem), array('s_name' => 'notify_contact_item'));
-		$iUpdated+= Preference::newInstance()->update(array('s_value' => $notifyContactFriends), array('s_name' => 'notify_contact_friends'));
-		$iUpdated+= Preference::newInstance()->update(array('s_value' => $enabledFieldPriceItems), array('s_name' => 'enableField#f_price@items'));
-		$iUpdated+= Preference::newInstance()->update(array('s_value' => $enabledFieldImagesItems), array('s_name' => 'enableField#images@items'));
-		$iUpdated+= Preference::newInstance()->update(array('s_value' => $itemsWaitTime), array('s_name' => 'items_wait_time'));
-		$iUpdated+= Preference::newInstance()->update(array('s_value' => $numImagesItems), array('s_name' => 'numImages@items'));
-		$iUpdated+= Preference::newInstance()->update(array('s_value' => $regUserCanContact), array('s_name' => 'reg_user_can_contact'));
-		$iUpdated+= Preference::newInstance()->update(array('s_value' => $contactItemAttachment), array('s_name' => 'item_attachment'));
+		$iUpdated+= $preference->update(array('s_value' => $loggedUserItemValidation), array('s_name' => 'logged_user_item_validation'));
+		$iUpdated+= $preference->update(array('s_value' => $regUserPost), array('s_name' => 'reg_user_post'));
+		$iUpdated+= $preference->update(array('s_value' => $notifyNewItem), array('s_name' => 'notify_new_item'));
+		$iUpdated+= $preference->update(array('s_value' => $notifyContactItem), array('s_name' => 'notify_contact_item'));
+		$iUpdated+= $preference->update(array('s_value' => $notifyContactFriends), array('s_name' => 'notify_contact_friends'));
+		$iUpdated+= $preference->update(array('s_value' => $enabledFieldPriceItems), array('s_name' => 'enableField#f_price@items'));
+		$iUpdated+= $preference->update(array('s_value' => $enabledFieldImagesItems), array('s_name' => 'enableField#images@items'));
+		$iUpdated+= $preference->update(array('s_value' => $itemsWaitTime), array('s_name' => 'items_wait_time'));
+		$iUpdated+= $preference->update(array('s_value' => $numImagesItems), array('s_name' => 'numImages@items'));
+		$iUpdated+= $preference->update(array('s_value' => $regUserCanContact), array('s_name' => 'reg_user_can_contact'));
+		$iUpdated+= $preference->update(array('s_value' => $contactItemAttachment), array('s_name' => 'item_attachment'));
 		if ($iUpdated > 0) 
 		{
 			osc_add_flash_ok_message(_m('Items\' settings have been updated'), 'admin');

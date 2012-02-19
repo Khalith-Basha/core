@@ -20,15 +20,9 @@
 */
 class CAdminPage extends Controller_Administration
 {
-	private $pageManager;
-	function __construct() 
+	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
-		parent::__construct();
-		//specific things for this class
 		$this->pageManager = $this->getClassLoader()->getClassInstance( 'Model_Page' );
-	}
-	public function doModel() 
-	{
 		$id = Params::getParam("id");
 		$page_deleted_correcty = 0;
 		$page_deleted_error = 0;

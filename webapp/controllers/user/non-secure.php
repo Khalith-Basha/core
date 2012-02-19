@@ -52,13 +52,13 @@ class CWebUserNonSecure extends Controller
 				else
 				{
 					osc_add_flash_error_message(_m('Sorry, the link is not valid'));
-					$this->redirectTo(osc_base_url());
+					$this->redirectToBaseUrl();
 				}
 			}
 			else
 			{
 				osc_add_flash_error_message(_m('Sorry, the link is not valid'));
-				$this->redirectTo(osc_base_url());
+				$this->redirectToBaseUrl();
 			}
 			break;
 
@@ -93,7 +93,7 @@ class CWebUserNonSecure extends Controller
 			{
 				osc_add_flash_error_message(_m('Ops! There was a problem trying to unsubscribe you. Please contact the administrator'));
 			}
-			$this->redirectTo(osc_base_url());
+			$this->redirectToBaseUrl();
 			break;
 
 		default:

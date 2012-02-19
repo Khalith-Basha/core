@@ -21,7 +21,7 @@ function osc_user_field( array $user, $field, $locale = null )
  *
  * @return array
  */
-function osc_user() 
+function sc_user() 
 {
 	$classLoader = ClassLoader::getInstance();
 	$view = $classLoader->getClassInstance( 'View_Html' );
@@ -204,72 +204,72 @@ function osc_logged_admin_email()
  *
  * @return string
  */
-function osc_user_name() 
+function osc_user_name( array $user ) 
 {
-	return (string)osc_user_field("s_name");
+	return (string)osc_user_field( $user, "s_name");
 }
 /**
  * Gets email of current user
  *
  * @return string
  */
-function osc_user_email() 
+function osc_user_email( array $user ) 
 {
-	return (string)osc_user_field("s_email");
+	return (string)osc_user_field( $user, "s_email");
 }
 /**
  * Gets registration date of current user
  *
  * @return string
  */
-function osc_user_regdate() 
+function osc_user_regdate( array $user ) 
 {
-	return (string)osc_user_field("reg_date");
+	return (string)osc_user_field( $user, "reg_date");
 }
 /**
  * Gets id of current user
  *
  * @return int
  */
-function osc_user_id() 
+function osc_user_id( array $user ) 
 {
-	return (int)osc_user_field("pk_i_id");
+	return (int)osc_user_field( $user, "pk_i_id");
 }
 /**
  * Gets website of current user
  *
  * @return string
  */
-function osc_user_website() 
+function osc_user_website( array $user ) 
 {
-	return (string)osc_user_field("s_website");
+	return (string)osc_user_field( $user, "s_website");
 }
 /**
  * Gets description/information of current user
  *
  * @return string
  */
-function osc_user_info() 
+function osc_user_info( array $user ) 
 {
-	return (string)osc_user_field("s_info");
+	return (string)osc_user_field( $user, "s_info");
 }
 /**
  * Gets phone of current user
  *
  * @return string
  */
-function osc_user_phone_land() 
+function osc_user_phone_land( array $user ) 
 {
-	return (string)osc_user_field("s_phone_land");
+	return (string)osc_user_field( $user, "s_phone_land");
 }
 /**
  * Gets cell phone of current user
  *
  * @return string
  */
-function osc_user_phone_mobile() 
+function osc_user_phone_mobile( array $user ) 
 {
-	return (string)osc_user_field("s_phone_mobile");
+	return (string)osc_user_field( $user, "s_phone_mobile");
 }
 /**
  * Gets phone_land if exist, else if exist return phone_mobile,
@@ -293,63 +293,63 @@ function osc_user_phone( array $user )
  *
  * @return string
  */
-function osc_user_country() 
+function osc_user_country( array $user ) 
 {
-	return (string)osc_user_field("s_country");
+	return (string)osc_user_field( $user, "s_country");
 }
 /**
  * Gets region of current user
  *
  * @return string
  */
-function osc_user_region() 
+function osc_user_region( array $user ) 
 {
-	return (string)osc_user_field("s_region");
+	return (string)osc_user_field( $user, "s_region");
 }
 /**
  * Gets city of current user
  *
  * @return string
  */
-function osc_user_city() 
+function osc_user_city( array $user ) 
 {
-	return (string)osc_user_field("s_city");
+	return (string)osc_user_field( $user, "s_city");
 }
 /**
  * Gets city area of current user
  *
  * @return string
  */
-function osc_user_city_area() 
+function osc_user_city_area( array $user ) 
 {
-	return (string)osc_user_field("s_city_area");
+	return (string)osc_user_field( $user, "s_city_area");
 }
 /**
  * Gets address of current user
  *
  * @return address
  */
-function osc_user_address() 
+function osc_user_address( array $user ) 
 {
-	return (string)osc_user_field("s_address");
+	return (string)osc_user_field( $user, "s_address");
 }
 /**
  * Gets postal zip of current user
  *
  * @return string
  */
-function osc_user_zip() 
+function osc_user_zip( array $user ) 
 {
-	return (string)osc_user_field("s_zip");
+	return (string)osc_user_field( $user, "s_zip");
 }
 /**
  * Gets latitude of current user
  *
  * @return float
  */
-function osc_user_latitude() 
+function osc_user_latitude( array $user ) 
 {
-	return (float)osc_user_field("d_coord_lat");
+	return (float)osc_user_field( $user, "d_coord_lat");
 }
 /**
  * Gets longitude of current user
@@ -413,7 +413,7 @@ function osc_count_alerts()
 {
 	$classLoader = ClassLoader::getInstance();
 	$view = $classLoader->getClassInstance( 'View_Html' );
-	return (int)$view->_count('alerts');
+	return (int)$view->countVar('alerts');
 }
 /**
  * Gets current alert fomr view

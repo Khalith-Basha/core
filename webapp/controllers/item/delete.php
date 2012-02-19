@@ -64,13 +64,13 @@ class CWebItem extends Controller_Default
 			}
 			else
 			{
-				$this->redirectTo(osc_base_url());
+				$this->redirectToBaseUrl();
 			}
 		}
 		else
 		{
 			osc_add_flash_error_message(_m('The item you are trying to delete couldn\'t be deleted'));
-			$this->redirectTo(osc_base_url());
+			$this->redirectToBaseUrl();
 		}
 	}
 }

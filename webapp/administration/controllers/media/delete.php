@@ -18,14 +18,24 @@
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-class CAdminPlugin extends Controller_Administration
+class CAdminMedia extends Controller_Administration
 {
 	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
-		$pn = Params::getParam("plugin");
-		Plugins::runHook($pn . '_disable');
-		Plugins::deactivate($pn);
-		osc_add_flash_ok_message(_m('Plugin disabled'), 'admin');
-		$this->redirectTo(osc_admin_base_url(true) . "?page=plugin");
+		$classLoader = $this->getClassLoader();
+		$this->resourcesManager = $classLoader->getClassInstance( 'Model_ItemResource' );
+		$ids = Params::getParam("id");
+		if ($ids != '') 
+		{
+			$classLoader->loadFile( 'helpers/files' );
+			foreach ($ids as $id) 
+			{
+				osc_deleteResource($id);
+			}
+			$this->resourcesManager->deleteResourcesIds($ids);
+		}
+		osc_add_flash_ok_message(_m('Resource deleted'), 'admin');
+		$this->redirectTo(osc_admin_base_url(true) . "?page=media");
 	}
 }
+

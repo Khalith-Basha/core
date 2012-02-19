@@ -24,7 +24,6 @@ class CAdminComment extends Controller_Administration
 	function __construct() 
 	{
 		parent::__construct();
-		//specific things for this class
 		$this->itemCommentManager = ClassLoader::getInstance()->getClassInstance( 'Model_ItemComment' );
 	}
 
@@ -96,27 +95,6 @@ class CAdminComment extends Controller_Administration
 			$this->redirectTo(osc_admin_base_url(true) . "?page=comment");
 			break;
 
-		case 'comment_edit':
-			$id = Params::getParam('id');
-			$comment = ClassLoader::getInstance()->getClassInstance( 'Model_ItemComment' )->findByPrimaryKey($id);
-			$this->getView()->assign('comment', $comment);
-			$this->doView('comments/frm.php');
-			break;
-
-		case 'comment_edit_post':
-			$this->itemCommentManager->update(array('s_title' => Params::getParam('title'), 's_body' => Params::getParam('body'), 's_author_name' => Params::getParam('authorName'), 's_author_email' => Params::getParam('authorEmail')), array('pk_i_id' => Params::getParam('id')));
-			osc_run_hook('edit_comment', Params::getParam('id'));
-			osc_add_flash_ok_message(_m('Great! We just updated your comment'), 'admin');
-			$this->redirectTo(osc_admin_base_url(true) . "?page=comment");
-			break;
-
-		case 'delete':
-			$this->itemCommentManager->deleteByPrimaryKey(Params::getParam('id'));
-			osc_add_flash_ok_message(_m('The comment have been deleted'), 'admin');
-			osc_run_hook('delete_comment', Params::getParam('id'));
-			$this->redirectTo(osc_admin_base_url(true) . "?page=comment");
-			break;
-
 		default:
 			if (Params::getParam('id') != '') 
 			{
@@ -127,7 +105,6 @@ class CAdminComment extends Controller_Administration
 				$comments = $this->itemCommentManager->getAllComments();
 			}
 			$this->getView()->assign('comments', $comments);
-			//calling the view...
 			$this->doView('comments/index.php');
 		}
 	}

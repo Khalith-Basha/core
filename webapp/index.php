@@ -48,14 +48,14 @@ if( file_exists( ABS_PATH . '/.maintenance' ) )
 if (!osc_users_enabled() && osc_is_web_user_logged_in()) 
 {
 	$session = $classLoader->getClassInstance( 'Session' );
-	$session->_drop('userId');
-	$session->_drop('userName');
-	$session->_drop('userEmail');
-	$session->_drop('userPhone');
+	$session->remove('userId');
+	$session->remove('userName');
+	$session->remove('userEmail');
+	$session->remove('userPhone');
 
 	$cookie = $classLoader->getClassInstance( 'Cookie' );
-	$cookie->pop('oc_userId');
-	$cookie->pop('oc_userSecret');
+	$cookie->remove('oc_userId');
+	$cookie->remove('oc_userSecret');
 	$cookie->set();
 }
 
@@ -79,7 +79,8 @@ if( file_exists($controllerPath) )
 	if( class_exists($className) )
 	{
 		$classInstance = new $className;
-		$classInstance->processRequest($req, $resp);
+		$classInstance->init();
+		$classInstance->processRequest( $req, $resp );
 	}
 	else
 	{

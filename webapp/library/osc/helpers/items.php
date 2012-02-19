@@ -79,24 +79,6 @@ function osc_item()
 	return $item;
 }
 /**
- * Gets comment array form view
- *
- * @return array $comment
- */
-function osc_comment() 
-{
-	$view = ClassLoader::getInstance()->getClassInstance( 'View_Html' );
-	if ($view->varExists('comments')) 
-	{
-		$comment = $view->_current('comments');
-	}
-	else
-	{
-		$comment = $view->getVar('comment');
-	}
-	return ($comment);
-}
-/**
  * Gets a specific field from current item
  *
  * @param type $field
@@ -114,9 +96,9 @@ function osc_item_field( array $item, $field, $locale = "")
  * @param type $locale
  * @return field_type
  */
-function osc_comment_field($field, $locale = '') 
+function osc_comment_field( array $comment, $field, $locale = '') 
 {
-	return osc_field(osc_comment(), $field, $locale);
+	return osc_field( $comment, $field, $locale);
 }
 /**
  * Gets a specific field from current resource
@@ -220,7 +202,8 @@ function osc_item_category( array $item, $locale = "")
 		$locale = osc_current_user_locale();
 	if (!$view->varExists('item_category')) 
 	{
-		$view->assign('item_category', $classLoader->getClassInstance( 'Model_Category' )->findByPrimaryKey(osc_item_category_id( $item )));
+		$categoryId = osc_item_category_id( $item );
+		$view->assign('item_category', $classLoader->getClassInstance( 'Model_Category' )->findByPrimaryKey( $categoryId ));
 	}
 	$category = $view->getVar('item_category');
 	return (string)osc_field($category, "s_name", $locale);
@@ -476,45 +459,45 @@ function osc_item_is_expired( array $item )
  *
  * @return boolean
  */
-function osc_item_status() 
+function osc_item_status( array $item ) 
 {
-	return (boolean)osc_item_field("b_active");
+	return (boolean)osc_item_field( $item, "b_active");
 }
 /**
  * Gets secret string of current item
  *
  * @return string
  */
-function osc_item_secret() 
+function osc_item_secret( array $item ) 
 {
-	return (string)osc_item_field("s_secret");
+	return (string)osc_item_field( $item, "s_secret");
 }
 /**
  * Gets if current item is active
  *
  * @return boolean
  */
-function osc_item_is_active() 
+function osc_item_is_active( array $item ) 
 {
-	return (osc_item_field("b_active") == 1);
+	return (osc_item_field( $item, "b_active") == 1);
 }
 /**
  * Gets if current item is inactive
  *
  * @return boolean
  */
-function osc_item_is_inactive() 
+function osc_item_is_inactive( array $item ) 
 {
-	return (osc_item_field("b_active") == 0);
+	return (osc_item_field( $item, "b_active") == 0);
 }
 /**
  * Gets if item is marked as spam
  *
  * @return boolean
  */
-function osc_item_is_spam() 
+function osc_item_is_spam( array $item ) 
 {
-	return (osc_item_field("b_spam") == 1);
+	return (osc_item_field( $item, "b_spam") == 1);
 }
 
 /**
@@ -552,10 +535,10 @@ function osc_list_items_per_page()
  *
  * @return int
  */
-function osc_item_total_comments() 
+function osc_item_total_comments( array $item ) 
 {
 	$classLoader = ClassLoader::getInstance();
-	return $classLoader->getClassInstance( 'Model_ItemComment' )->totalComments(osc_item_id());
+	return $classLoader->getClassInstance( 'Model_ItemComment' )->totalComments(osc_item_id( $item ));
 }
 /**
  * Gets page of comments in current pagination
@@ -595,45 +578,45 @@ function osc_comment_pub_date()
  *
  * @return string
  */
-function osc_comment_title() 
+function osc_comment_title( array $comment ) 
 {
-	return (string)osc_comment_field("s_title");
+	return (string)osc_comment_field( $comment, "s_title");
 }
 /**
  * Gets author name of current comment
  *
  * @return string
  */
-function osc_comment_author_name() 
+function osc_comment_author_name( array $comment ) 
 {
-	return (string)osc_comment_field("s_author_name");
+	return (string)osc_comment_field( $comment, "s_author_name");
 }
 /**
  * Gets author email of current comment
  *
  * @return string
  */
-function osc_comment_author_email() 
+function osc_comment_author_email( array $comment ) 
 {
-	return (string)osc_comment_field("s_author_email");
+	return (string)osc_comment_field( $comment, "s_author_email");
 }
 /**
  * Gets body of current comment
  *
  * @return string
  */
-function osc_comment_body() 
+function osc_comment_body( array $comment ) 
 {
-	return (string)osc_comment_field("s_body");
+	return (string)osc_comment_field( $comment, "s_body");
 }
 /**
  * Gets user id of current comment
  *
  * @return int
  */
-function osc_comment_user_id() 
+function osc_comment_user_id( array $comment ) 
 {
-	return (int)osc_comment_field("fk_i_user_id");
+	return (int)osc_comment_field( $comment, "fk_i_user_id");
 }
 /**
  * Gets  link to delete the current comment of current item
@@ -694,38 +677,6 @@ function osc_resource_path( array $resource )
 }
 
 /**
- * Gets next item if there is, else return null
- *
- * @return array
- */
-function osc_has_items() 
-{
-	$view = ClassLoader::getInstance()->getClassInstance( 'View_Html' );
-	if ($view->varExists('resources')) 
-	{
-		$view->removeVar('resources');
-	}
-	if ($view->varExists('item_category')) 
-	{
-		$view->removeVar('item_category');
-	}
-	if ($view->varExists('metafields')) 
-	{
-		$view->removeVar('metafields');
-	}
-	return $view->_next('items');
-}
-/**
- * Set the internal pointer of array items to its first element, and return it.
- *
- * @return array
- */
-function osc_reset_items() 
-{
-	$view = ClassLoader::getInstance()->getClassInstance( 'View_Html' );
-	return $view->_reset('items');
-}
-/**
  * Gets number of items in current array items
  *
  * @return int
@@ -767,15 +718,10 @@ function osc_has_item_resources()
  *
  * @return array
  */
-function osc_get_item_resources() 
+function osc_get_item_resources( array $item ) 
 {
-	$view = ClassLoader::getInstance()->getClassInstance( 'View_Html' );
-	if (!$view->varExists('resources')) 
-	{
-		$itemResourceManager = ClassLoader::getInstance()->getClassInstance( 'Model_ItemResource' );
-		$view->assign('resources', $itemResourceManager->getAllResources(osc_item_id()));
-	}
-	return $view->getVar('resources');
+	$itemResourceManager = ClassLoader::getInstance()->getClassInstance( 'Model_ItemResource' );
+	return $itemResourceManager->getAllResources(osc_item_id( $item ));
 }
 /**
  * Gets next comment of current item comments
@@ -922,5 +868,26 @@ function osc_item_meta_id()
 function osc_item_meta_slug() 
 {
 	return osc_field(osc_item_meta(), 's_slug', '');
+}
+
+/**
+ * Gets the pagination links of comments pagination
+ *
+ * @return string pagination links
+ */
+function osc_comments_pagination( array $item ) 
+{
+	$classLoader = ClassLoader::getInstance();
+	$itemUrls = $classLoader->getClassInstance( 'Url_Item' );
+	if ((osc_comments_per_page() == 0) || (osc_item_comments_page() === 'all')) 
+	{
+		return null;
+	}
+	else
+	{
+		$params = array('total' => ceil(osc_item_total_comments( $item ) / osc_comments_per_page()), 'selected' => osc_item_comments_page(), 'url' => $itemUrls->osc_item_comments_url( $item, '{PAGE}'));
+		return $classLoader->getClassInstance( 'Pagination', true, array( $params ) )
+			->showLinks();
+	}
 }
 

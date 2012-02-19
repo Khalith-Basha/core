@@ -19,9 +19,10 @@
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 $itemUrls = $classLoader->getClassInstance( 'Url_Item' );
+$resourceUrls = $classLoader->getClassInstance( 'Url_Resource' );
 $searchUrl = $classLoader->getClassInstance( 'Url_Search' );
 
-$total_categories = osc_count_categories();
+$total_categories = count( $categories );
 $col1_max_cat = ceil($total_categories / 3);
 $col2_max_cat = ceil(($total_categories - $col1_max_cat) / 2);
 $col3_max_cat = $total_categories - ($col1_max_cat + $col2_max_cat);
@@ -37,12 +38,7 @@ echo $view->render( 'header' );
             <div class="content home">
                 <div id="main">
                     <div class="categories <?php echo 'c' . $total_categories; ?>">
-                        <?php
-if (osc_count_categories() > 0) 
-{
-	echo '<div class="col c1">';
-}
-?>
+			<?php if( 0 < $total_categories ): ?><div class="col c1"><?php endif; ?>
 			<?php foreach( $categories as $category ): ?>
                             <div class="category">
                                 <h1><strong><a class="category <?php echo osc_category_field( $category, 's_slug' ); ?>" href="<?php echo $searchUrl->osc_search_category_url( $category ); ?>"><?php echo osc_category_field( $category, 's_name' ); ?></a> <span>(<?php echo osc_category_field( $category, 'i_num_items' ); ?>)</span></strong></h1>
@@ -87,7 +83,7 @@ if (osc_count_categories() > 0)
                                             <?php if( osc_images_enabled_at_items() ): ?>
                                              <td class="photo">
 						<?php if( 0 < count( $item['resources'] ) ): ?>
-                                                    <a href="<?php echo $itemUrls->getDetailsUrl( $item ); ?>"><img src="<?php echo osc_resource_thumbnail_url( $item ); ?>" width="75px" height="56px" title="" alt="" /></a>
+                                                    <a href="<?php echo $itemUrls->getDetailsUrl( $item ); ?>"><img src="<?php echo $resourceUrls->osc_resource_thumbnail_url( $item['resources'][0] ); ?>" width="75px" height="56px" title="" alt="" /></a>
                                                 <?php else: ?>
                                                     <img src="<?php echo osc_current_web_theme_url('images/no_photo.gif'); ?>" alt="" title=""/>
                                                 <?php endif; ?>
