@@ -560,18 +560,18 @@ function osc_item_comments_page()
  *
  * @return int
  */
-function osc_comment_id() 
+function osc_comment_id( array $comment ) 
 {
-	return (int)osc_comment_field("pk_i_id");
+	return (int)osc_comment_field( $comment, "pk_i_id");
 }
 /**
  * Gets publication date of current comment
  *
  * @return string
  */
-function osc_comment_pub_date() 
+function osc_comment_pub_date( array $comment ) 
 {
-	return (string)osc_comment_field("dt_pub_date");
+	return (string)osc_comment_field( $comment, "dt_pub_date");
 }
 /**
  * Gets title of current commnet
@@ -623,10 +623,10 @@ function osc_comment_user_id( array $comment )
  *
  * @return string
  */
-function osc_delete_comment_url() 
+function osc_delete_comment_url( array $item, array $comment ) 
 {
 	$urlFactory = ClassLoader::getInstance()->getClassInstance( 'Url_Index' );
-	return (string)$urlFactory->getBaseUrl(true) . "?page=item&action=delete_comment&id=" . osc_item_id() . "&comment=" . osc_comment_id();
+	return (string)$urlFactory->getBaseUrl(true) . "?page=item&action=delete_comment&id=" . osc_item_id( $item ) . "&comment=" . osc_comment_id( $comment );
 }
 
 /**

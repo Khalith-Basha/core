@@ -98,7 +98,7 @@ echo $view->render( 'header' );
                                             <p><?php echo osc_comment_body( $comment ); ?> </p>
                                             <?php if (osc_comment_user_id( $comment ) && (osc_comment_user_id( $comment ) == osc_logged_user_id()))  { ?>
                                             <p>
-                                                <a rel="nofollow" href="<?php echo osc_delete_comment_url( $comment ); ?>" title="<?php _e('Delete your comment', 'modern'); ?>"><?php _e('Delete', 'modern'); ?></a>
+                                                <a rel="nofollow" href="<?php echo osc_delete_comment_url( $item, $comment ); ?>" title="<?php _e('Delete your comment', 'modern'); ?>"><?php _e('Delete', 'modern'); ?></a>
                                             </p>
                                             <?php } ?>
                                         </div>

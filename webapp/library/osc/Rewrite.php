@@ -126,7 +126,7 @@ class Rewrite
 		$this->clearRules();
 
 		$classLoader = ClassLoader::getInstance();
-		$this->addRule( '^/index.php$', 'index.php' );
+		$this->addRule( '^/index.php', 'index.php' );
 
 		$factories = array( 'Url_User', 'Url_Page', 'Url_Index', 'Url_Item', 'Url_Search' );
 		foreach( $factories as $factory )

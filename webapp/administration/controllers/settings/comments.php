@@ -27,6 +27,7 @@ class CAdminSettings extends Controller_Administration
 
 	public function doPost( HttpRequest $req, HttpResponse $res )
 	{
+		$preference = $this->getClassLoader()->getClassInstance( 'Model_Preference' );
 		$iUpdated = 0;
 		$enabledComments = Params::getParam('enabled_comments');
 		$enabledComments = (($enabledComments != '') ? true : false);
@@ -40,19 +41,19 @@ class CAdminSettings extends Controller_Administration
 		$notifyNewCommentUser = (($notifyNewCommentUser != '') ? true : false);
 		$regUserPostComments = Params::getParam('reg_user_post_comments');
 		$regUserPostComments = (($regUserPostComments != '') ? true : false);
-		$iUpdated+= Preference::newInstance()->update(array('s_value' => $enabledComments), array('s_name' => 'enabled_comments'));
+		$iUpdated+= $preference->update(array('s_value' => $enabledComments), array('s_name' => 'enabled_comments'));
 		if ($moderateComments) 
 		{
-			$iUpdated+= Preference::newInstance()->update(array('s_value' => $numModerateComments), array('s_name' => 'moderate_comments'));
+			$iUpdated+= $preference->update(array('s_value' => $numModerateComments), array('s_name' => 'moderate_comments'));
 		}
 		else
 		{
-			$iUpdated+= Preference::newInstance()->update(array('s_value' => '-1'), array('s_name' => 'moderate_comments'));
+			$iUpdated+= $preference->update(array('s_value' => '-1'), array('s_name' => 'moderate_comments'));
 		}
-		$iUpdated+= Preference::newInstance()->update(array('s_value' => $notifyNewComment), array('s_name' => 'notify_new_comment'));
-		$iUpdated+= Preference::newInstance()->update(array('s_value' => $notifyNewCommentUser), array('s_name' => 'notify_new_comment_user'));
-		$iUpdated+= Preference::newInstance()->update(array('s_value' => $commentsPerPage), array('s_name' => 'comments_per_page'));
-		$iUpdated+= Preference::newInstance()->update(array('s_value' => $regUserPostComments), array('s_name' => 'reg_user_post_comments'));
+		$iUpdated+= $preference->update(array('s_value' => $notifyNewComment), array('s_name' => 'notify_new_comment'));
+		$iUpdated+= $preference->update(array('s_value' => $notifyNewCommentUser), array('s_name' => 'notify_new_comment_user'));
+		$iUpdated+= $preference->update(array('s_value' => $commentsPerPage), array('s_name' => 'comments_per_page'));
+		$iUpdated+= $preference->update(array('s_value' => $regUserPostComments), array('s_name' => 'reg_user_post_comments'));
 		if ($iUpdated > 0) 
 		{
 			osc_add_flash_ok_message(_m('Comments\' settings have been updated'), 'admin');

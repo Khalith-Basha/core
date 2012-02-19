@@ -6,11 +6,7 @@ class Url_Item extends Url_Abstract
 	{
 		$this->urls['mark-spam'] = array(
 			'default' => $this->getBaseUrl( true ) . '?page=item&action=mark&as=spam&id=%d',
-			'friendly' => $this->getBaseUrl( false ) . '/item/mark/spam'
-		);
-		$this->urls['item-details'] = array(
-			'default' => 'xxx',
-			'friendly' => 'xxx'
+			'friendly' => $this->getBaseUrl( true ) . '?page=item&action=mark&as=spam&id=%d',
 		);
 	}
 

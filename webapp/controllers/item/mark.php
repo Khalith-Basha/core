@@ -20,16 +20,16 @@ class CWebItem extends Controller_Default
 {
 	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
-		$locales = ClassLoader::getInstance()->getClassInstance( 'Model_Locale' )->listAllEnabled();
-		$this->getView()->assign('locales', $locales);
-		$mItem = new ItemActions(false);
+		$classLoader = ClassLoader::getInstance();
+		$itemUrls = $classLoader->getClassInstance( 'Url_Item' );
+		$locales = $classLoader->getClassInstance( 'Model_Locale' )->listAllEnabled();
+		$mItem = $classLoader->getClassInstance( 'Manager_Item', false, array( false ) );
 		$id = Params::getParam('id');
 		$as = Params::getParam('as');
-		$item = ClassLoader::getInstance()->getClassInstance( 'Model_Item' )->findByPrimaryKey($id);
-		View::newInstance()->assign('item', $item);
+		$item = $classLoader->getClassInstance( 'Model_Item' )->findByPrimaryKey($id);
 		$mItem->mark($id, $as);
 		osc_add_flash_ok_message(_m('Thanks! That\'s very helpful'));
-		$this->redirectTo(osc_item_url());
+		$this->redirectTo( $itemUrls->getDetailsUrl( $item ) );
 	}
 }
 

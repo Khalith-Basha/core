@@ -2,18 +2,16 @@
 $(document).ready( function()
 	{
 		var oPattern = $('input[name=sPattern]');
-		if(oPattern.val() == sQuery) {
+		if(oPattern.val() == '') {
 		    oPattern.css('color', 'gray');
 		}
 		oPattern.click(function(){
-		    if($('input[name=sPattern]').val() == sQuery) {
-			$('input[name=sPattern]').val('');
+		    if($('input[name=sPattern]').val() == '') {
 			$('input[name=sPattern]').css('color', '');
 		    }
 		});
 		oPattern.blur(function(){
 		    if($('input[name=sPattern]').val() == '') {
-			$('input[name=sPattern]').val(sQuery);
 			$('input[name=sPattern]').css('color', 'gray');
 		    }
 		});

@@ -4,14 +4,6 @@ class Url_User extends Url_Abstract
 {
 	public function loadUrls()
 	{
-		$this->urls['mark-spam'] = array(
-			'default' => $this->getBaseUrl( true ) . '?page=item&action=mark&as=spam&id=%d',
-			'friendly' => $this->getBaseUrl( false ) . '/item/mark/spam'
-		);
-		$this->urls['item-details'] = array(
-			'default' => 'xxx',
-			'friendly' => 'xxx'
-		);
 	}
 
 	public function loadRules( Rewrite $rewrite )

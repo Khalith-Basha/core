@@ -41,6 +41,8 @@ class Model_Search extends DAO
 	private $categories;
 	private $search_fields;
 	private $total_results;
+
+	private $queryString;
 	/**
 	 *
 	 */
@@ -74,6 +76,12 @@ class Model_Search extends DAO
 
 		$this->classLoader = ClassLoader::getInstance();
 	}
+
+	public function setQueryString( $queryString )
+	{
+		$this->queryString = $queryString;
+	}
+
 	public static function getAllowedColumnsForSorting() 
 	{
 		return (array('i_price', 'pub_date'));

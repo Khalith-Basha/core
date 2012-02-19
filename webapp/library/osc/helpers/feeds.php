@@ -30,8 +30,9 @@ function osc_listNews()
 	}
 	else
 	{
+		$url = 'http://blog.opensourceclassifieds.org/feeds/posts/default';
 		$list = array();
-		$content = file_get_contents('http://opensourceclassifieds.org/feed/');
+		$content = file_get_contents( $url );
 		if ($content) 
 		{
 			$xml = simplexml_load_string($content);

@@ -504,7 +504,7 @@ class Manager_Item
 			$column = 'i_num_expired';
 			break;
 		}
-		ItemClassLoader::getInstance()->getClassInstance( 'Stats' )->increase($column, $id);
+		ClassLoader::getInstance()->getClassInstance( 'Model_ItemStats' )->increase($column, $id);
 	}
 	public function add_comment() 
 	{

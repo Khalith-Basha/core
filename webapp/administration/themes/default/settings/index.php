@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU Affero General Public
  * License along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+$classLoader->loadFile( 'helpers/timezones' );
 $dateFormats = array('F j, Y', 'Y/m/d', 'm/d/Y', 'd/m/Y');
 $timeFormats = array('g:i a', 'g:i A', 'H:i');
 $aLanguages = __get('aLanguages');
@@ -34,38 +35,30 @@ $aCurrencies = __get('aCurrencies');
         </script>
                 <div id="content_header" class="content_header">
                     <div style="float: left;">
-                        <img src="<?php
-echo osc_current_admin_theme_url('images/settings-icon.png'); ?>" alt="" title=""/>
+                        <img src="<?php echo osc_current_admin_theme_url('images/settings-icon.png'); ?>" alt="" title=""/>
                     </div>
-                    <div id="content_header_arrow">&raquo; <?php
-_e('General settings'); ?></div>
+                    <div id="content_header_arrow">&raquo; <?php _e('General settings'); ?></div>
                     <div style="clear: both;"></div>
                 </div>
                 <div id="content_separator"></div>
-                <?php
-osc_show_flash_message('admin'); ?>
+                <?php osc_show_flash_message('admin'); ?>
                 <!-- settings form -->
                 <div id="settings_form" style="border: 1px solid #ccc; background: #eee;">
                     <div style="padding: 20px;">
-                        <form action="<?php
-echo osc_admin_base_url(true); ?>" method="post">
+                        <form action="<?php echo osc_admin_base_url(true); ?>" method="post">
                             <input type="hidden" name="page" value="settings" />
                             <input type="hidden" name="action" value="update" />
                             <div style="float: left; width: 50%;">
                                 <fieldset>
-                                    <legend><?php
-_e('Page title'); ?></legend>
-                                    <input style="width: 95%; height: 20px; padding-left: 4px;" type="text" name="pageTitle" id="pageTitle" value="<?php
-echo osc_page_title(); ?>" />
+                                    <legend><?php _e('Page title'); ?></legend>
+                                    <input style="width: 95%; height: 20px; padding-left: 4px;" type="text" name="pageTitle" id="pageTitle" value="<?php echo osc_page_title(); ?>" />
                                 </fieldset>
                             </div>
 
                             <div style="float: left; width: 50%;">
                                 <fieldset>
-                                    <legend><?php
-_e('Page description'); ?></legend>
-                                    <input style="width: 95%; height: 20px; padding-left: 4px;" type="text" name="pageDesc" id="pageDesc" value="<?php
-echo osc_page_description(); ?>" />
+                                    <legend><?php _e('Page description'); ?></legend>
+                                    <input style="width: 95%; height: 20px; padding-left: 4px;" type="text" name="pageDesc" id="pageDesc" value="<?php echo osc_page_description(); ?>" />
                                 </fieldset>
                             </div>
 
@@ -73,29 +66,19 @@ echo osc_page_description(); ?>" />
 
                             <div style="float: left; width: 50%;">
                                 <fieldset>
-                                    <legend><?php
-_e('Admin e-mail'); ?></legend>
-                                    <input style="width: 95%; height: 20px; padding-left: 4px;" type="text" name="contactEmail" id="contactEmail" value="<?php
-echo osc_contact_email(); ?>" />
+                                    <legend><?php _e('Admin e-mail'); ?></legend>
+                                    <input style="width: 95%; height: 20px; padding-left: 4px;" type="text" name="contactEmail" id="contactEmail" value="<?php echo osc_contact_email(); ?>" />
                                 </fieldset>
                             </div>
 
                             <div style="float: left; width: 50%;">
                                 <fieldset>
-                                    <legend><?php
-_e('Default language'); ?></legend>
+                                    <legend><?php _e('Default language'); ?></legend>
                                     <select name="language" id="language">
-                                        <?php
-foreach ($aLanguages as $lang) 
-{ ?>
-                                            <?php
-	$sLanguage = osc_language(); ?>
-                                            <option value="<?php
-	echo $lang['pk_c_code']; ?>" <?php
-	echo ((osc_language() == $lang['pk_c_code']) ? 'selected="selected"' : ''); ?>><?php
-	echo $lang['s_name']; ?></option>
-                                        <?php
-} ?>
+                                        <?php foreach ($aLanguages as $lang)  { ?>
+                                            <?php $sLanguage = osc_language(); ?>
+                                            <option value="<?php echo $lang['pk_c_code']; ?>" <?php echo ((osc_language() == $lang['pk_c_code']) ? 'selected="selected"' : ''); ?>><?php echo $lang['s_name']; ?></option>
+                                        <?php } ?>
                                     </select>
                                 </fieldset>
                             </div>
@@ -104,8 +87,7 @@ foreach ($aLanguages as $lang)
 
                             <div style="float: left; width: 50%;">
                                 <fieldset>
-                                    <legend><?php
-_e('Date format'); ?></legend>
+                                    <legend><?php _e('Date format'); ?></legend>
                                     <div style="font-size: small; margin: 0px;">
                                         <?php
 $custom_checked = true;
@@ -141,11 +123,9 @@ echo osc_date_format(); ?>" />
 
                             <div style="float: left; width: 50%;">
                                 <fieldset>
-                                    <legend><?php
-_e('Default currency'); ?></legend>
+                                    <legend><?php _e('Default currency'); ?></legend>
                                     <select name="currency" id="currency_admin">
-                                        <?php
-$currentCurrency = osc_currency(); ?>
+                                        <?php $currentCurrency = osc_currency(); ?>
                                         <?php
 foreach ($aCurrencies as $currency) 
 { ?>
@@ -159,8 +139,7 @@ foreach ($aCurrencies as $currency)
                                 </fieldset>
 
                                 <fieldset>
-                                    <legend><?php
-_e('Week starts on'); ?></legend>
+                                    <legend><?php _e('Week starts on'); ?></legend>
                                     <select name="weekStart" id="weekStart">
                                         <option value="0" <?php
 if (osc_week_starts_at() == '0') 
@@ -201,13 +180,9 @@ _e('Saturday'); ?></option>
                                 </fieldset>
 
                                 <fieldset>
-                                    <legend><?php
-_e('Timezone'); ?></legend>
-                                    <?php
-require 'osc/timezones.php'; ?>
+                                    <legend><?php _e('Timezone'); ?></legend>
                                     <select name="timezone" id="timezone">
-                                        <?php
-$selected_tz = osc_timezone(); ?>
+                                        <?php $selected_tz = osc_timezone(); ?>
                                         <option value="" selected="selected"><?php
 _e('Select a timezone...'); ?></option>
                                         <?php

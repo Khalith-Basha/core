@@ -22,15 +22,15 @@ class CAdminIndex extends Controller_Default
 {
 	public function doPost( HttpRequest $req, HttpResponse $res )
 	{
-		$admin = $this->getClassLoader()->getClassInstance( 'Model_Admin' )->findByUsername(Params::getParam('user'));
+		$classLoader = $this->getClassLoader();
+		$admin = $classLoader->getClassInstance( 'Model_Admin' )->findByUsername(Params::getParam('user'));
 		if ($admin) 
 		{
 			if ($admin["s_password"] == sha1(Params::getParam('password'))) 
 			{
 				if (Params::getParam('remember')) 
 				{
-					//this include contains de osc_genRandomPassword function
-					require_once 'osc/helpers/hSecurity.php';
+					$classLoader->loadFile( 'helpers/security' );
 					$secret = osc_genRandomPassword();
 					$this->getClassLoader()->getClassInstance( 'Model_Admin' )->update(array('s_secret' => $secret), array('pk_i_id' => $admin['pk_i_id']));
 					$this->getCookie()->set_expires(osc_time_cookie());
