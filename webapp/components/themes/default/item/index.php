@@ -41,11 +41,11 @@ echo $view->render( 'header' );
                         <em class="update"><?php if (osc_item_mod_date( $item ) != '') echo __('Modified date', 'modern') . ': ' . osc_format_date(osc_item_mod_date( $item )); ?></em>
                     </div>
                     <ul id="item_location">
-                        <?php if (osc_item_country( $item ) != "")  { ?><li><?php _e("Country", 'modern'); ?>: <strong><?php echo osc_item_country( $item ); ?></strong></li><?php } ?>
-                        <?php if (osc_item_region( $item ) != "")  { ?><li><?php _e("Region", 'modern'); ?>: <strong><?php echo osc_item_region( $item ); ?></strong></li><?php } ?>
-                        <?php if (osc_item_city( $item ) != "")  { ?><li><?php _e("City", 'modern'); ?>: <strong><?php echo osc_item_city( $item ); ?></strong></li><?php } ?>
-                        <?php if (osc_item_city_area( $item ) != "")  { ?><li><?php _e("City area", 'modern'); ?>: <strong><?php echo osc_item_city_area( $item ); ?></strong></li><?php } ?>
-                        <?php if (osc_item_address( $item ) != "")  { ?><li><?php _e("Address", 'modern'); ?>: <strong><?php echo osc_item_address( $item ); ?></strong></li><?php } ?>
+                        <?php if (osc_item_country( $item ) != "") { ?><li><?php _e("Country", 'modern'); ?>: <strong><?php echo osc_item_country( $item ); ?></strong></li><?php } ?>
+                        <?php if (osc_item_region( $item ) != "") { ?><li><?php _e("Region", 'modern'); ?>: <strong><?php echo osc_item_region( $item ); ?></strong></li><?php } ?>
+                        <?php if (osc_item_city( $item ) != "") { ?><li><?php _e("City", 'modern'); ?>: <strong><?php echo osc_item_city( $item ); ?></strong></li><?php } ?>
+                        <?php if (osc_item_city_area( $item ) != "") { ?><li><?php _e("City area", 'modern'); ?>: <strong><?php echo osc_item_city_area( $item ); ?></strong></li><?php } ?>
+                        <?php if (osc_item_address( $item ) != "") { ?><li><?php _e("Address", 'modern'); ?>: <strong><?php echo osc_item_address( $item ); ?></strong></li><?php } ?>
                     </ul>
                     <div id="description">
                         <p><?php echo osc_item_description( $item ); ?></p>

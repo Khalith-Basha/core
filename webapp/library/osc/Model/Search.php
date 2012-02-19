@@ -246,17 +246,6 @@ class Model_Search extends DAO
 		$this->results_per_page = $r_p_p;
 	}
 	/**
-	 * Limit the results of the search
-	 *
-	 * @access public
-	 * @since unknown
-	 * @param int $t_p_p results per page
-	 */
-	public function set_rpp($r_p_p) 
-	{
-		$this->results_per_page = $r_p_p;
-	}
-	/**
 	 * Select the page of the search
 	 *
 	 * @access public

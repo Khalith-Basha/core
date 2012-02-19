@@ -123,7 +123,6 @@ class CWebSearch extends Controller_Default
 		}
 		$p_iOrderType = $orderType;
 		$p_sFeed = Params::getParam('sFeed');
-		$p_iPage = intval(Params::getParam('iPage'));
 		if ($p_sFeed != '') 
 		{
 			$p_sPageSize = 1000;
@@ -135,15 +134,6 @@ class CWebSearch extends Controller_Default
 			$p_sShowAs = osc_default_show_as_at_search();
 		}
 		// search results: it's blocked with the maxResultsPerPage@search defined in t_preferences
-		$p_iPageSize = intval(Params::getParam('iPagesize'));
-		if ($p_iPageSize > osc_max_results_per_page_at_search()) 
-		{
-			$p_iPageSize = osc_max_results_per_page_at_search();
-		}
-		else
-		{
-			$p_iPageSize = osc_default_results_per_page_at_search();
-		}
 		foreach ($p_sCategory as $category) 
 		{
 			$this->mSearch->addCategory($category);
@@ -182,7 +172,20 @@ class CWebSearch extends Controller_Default
 		}
 		$this->mSearch->priceRange($p_sPriceMin, $p_sPriceMax);
 		$this->mSearch->order($p_sOrder, $allowedTypesForSorting[$p_iOrderType]);
-		$this->mSearch->page($p_iPage, $p_iPageSize);
+
+		$input = $this->getInput();
+
+		// Pagination
+		$defaultRowsPerPage = osc_default_results_per_page_at_search();
+		$maxRowsPerPage = osc_max_results_per_page_at_search();
+		$rowsPerPage = $input->getInteger( 'rowsPerPage', $defaultRowsPerPage );
+		if( $rowsPerPage > $maxRowsPerPage )
+			$rowsPerPage = $maxRowsPerPage;
+		$this->mSearch->setRowsPerPage( $rowsPerPage );
+
+		$page = $input->getInteger( 'sPage', 0 );
+		$this->mSearch->setPage( $page );
+
 		osc_run_hook('search_conditions', Params::getParamsAsArray());
 
 		$view = $this->getView();
@@ -194,9 +197,9 @@ class CWebSearch extends Controller_Default
 			// RETRIEVE ITEMS AND TOTAL
 			$aItems = $this->mSearch->doSearch();
 			$iTotalItems = $this->mSearch->count();
-			$iStart = $p_iPage * $p_iPageSize;
-			$iEnd = min(($p_iPage + 1) * $p_iPageSize, $iTotalItems);
-			$iNumPages = ceil($iTotalItems / $p_iPageSize);
+			$iStart = $page * $rowsPerPage;
+			$iEnd = min(($page + 1) * $rowsPerPage, $iTotalItems);
+			$iNumPages = ceil($iTotalItems / $rowsPerPage );
 			osc_run_hook('search', $this->mSearch);
 
 			//$this->getView()->assign('non_empty_categories', $aCategories) ;
@@ -208,7 +211,7 @@ class CWebSearch extends Controller_Default
 			$this->getView()->assign('search_pattern', $p_sPattern);
 			$this->getView()->assign('search_from_user', $p_sUser);
 			$this->getView()->assign('search_total_pages', $iNumPages);
-			$this->getView()->assign('search_page', $p_iPage);
+			$this->getView()->assign('search_page', $page );
 			$this->getView()->assign('search_has_pic', $p_bPic);
 			$this->getView()->assign('search_region', $p_sRegion);
 			$this->getView()->assign('search_city', $p_sCity);

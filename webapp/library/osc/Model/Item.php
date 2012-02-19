@@ -78,21 +78,19 @@ class Model_Item extends DAO
 		$result = $this->dao->get();
 		if ($result === false) 
 		{
-			return false;
+			return null;
 		}
 		if ($result->numRows() == 0) 
 		{
-			return array();
+			return null;
 		}
 		$item = $result->row();
-		if (!is_null($item)) 
+		if (is_null($item)) 
 		{
-			return $this->extendDataSingle($item);
+			return null;
 		}
-		else
-		{
-			return array();
-		}
+
+		return $this->extendDataSingle($item);
 	}
 	/**
 	 * List Items with category name

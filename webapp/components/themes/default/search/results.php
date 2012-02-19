@@ -99,7 +99,18 @@ foreach ($orders as $label => $params)
                                     <div><?php _e('Max', 'modern'); ?>.</div>
                                     <input type="text" id="priceMax" name="sPriceMax" value="<?php echo osc_search_price_max(); ?>" size="6" maxlength="6" />
                                 </div>
-                                <?php } ?>
+				<?php } ?>
+				<?php foreach( $search->getFacets() as $facetName => $facetValues ): ?>
+                                    <div class="row checkboxes">
+				    <h6><?php echo $facetName; ?></h6>
+					<ul>
+					<?php foreach( $facetValues as $valueName => $valueCount ): ?>
+						<li><?php echo $valueName; ?> (<?php echo $valueCount; ?>)</li>
+					<?php endforeach; ?>
+					</ul>
+					</div>
+
+				<?php endforeach; ?>
                                 <?php osc_get_non_empty_categories(); ?>
                                 <?php if (osc_count_categories())  { ?>
                                     <div class="row checkboxes">
