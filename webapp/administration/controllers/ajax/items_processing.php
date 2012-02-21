@@ -43,6 +43,7 @@ class ItemsProcessingAjax
 		$this->getDBParams();
 		$mSearch = ClassLoader::getInstance()->getClassInstance( 'Model_Search', false, array( true ) );
 		$mSearch->limit($this->start, $this->limit);
+		$mSearch->limit(0, 10);
 		$mSearch->order($this->order_by['column_name'], $this->order_by['type'], $this->order_by['table_name']);
 		if (Params::getParam("catId") != "") 
 		{

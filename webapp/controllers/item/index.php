@@ -55,7 +55,7 @@ class CWebItem extends Controller_Default
 		if (count($item) == 0) 
 		{
 			osc_add_flash_error_message(_m('This item doesn\'t exist'));
-			$this->redirectTo(osc_base_url(true));
+			$this->redirectToBaseUrl();
 		}
 		else
 		{
@@ -68,13 +68,13 @@ class CWebItem extends Controller_Default
 				else
 				{
 					osc_add_flash_error_message(_m('This item hasn\'t been validated'));
-					$this->redirectTo(osc_base_url(true));
+					$this->redirectToBaseUrl();
 				}
 			}
 			else if ($item['b_enabled'] == 0) 
 			{
 				osc_add_flash_error_message(_m('The item has been suspended'));
-				$this->redirectTo(osc_base_url(true));
+				$this->redirectToBaseUrl();
 			}
 			$mStats = ClassLoader::getInstance()->getClassInstance( 'Model_ItemStats' );
 			$mStats->increase('i_num_views', $item['pk_i_id']);

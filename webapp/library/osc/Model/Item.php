@@ -39,26 +39,6 @@ class Model_Item extends DAO
 		$this->setFields($array_fields);
 	}
 	/**
-	 * List items ordered by views
-	 *
-	 * @access public
-	 * @since unknown
-	 * @param int $limit
-	 * @return array of items
-	 */
-	public function mostViewed($limit = 10) 
-	{
-		$this->dao->select();
-		$this->dao->from($this->getTableName() . ' i, ' . DB_TABLE_PREFIX . 't_item_location l, ' . DB_TABLE_PREFIX . 't_item_stats s');
-		$this->dao->where('l.fk_i_item_id = i.pk_i_id AND s.fk_i_item_id = i.pk_i_id');
-		$this->dao->groupBy('s.fk_i_item_id');
-		$this->dao->orderBy('i_num_views', 'DESC');
-		$this->dao->limit($limit);
-		$result = $this->dao->get();
-		$items = $result->result();
-		return $this->extendData($items);
-	}
-	/**
 	 * Get the result match of the primary key passed by parameter, extended with
 	 * location information and number of views.
 	 *
@@ -69,43 +49,32 @@ class Model_Item extends DAO
 	 */
 	public function findByPrimaryKey($id) 
 	{
-		$this->dao->select('l.*, i.*, SUM(s.i_num_views) AS i_num_views');
-		$this->dao->from($this->getTableName() . ' i');
-		$this->dao->join(DB_TABLE_PREFIX . 't_item_location l', 'l.fk_i_item_id = i.pk_i_id ', 'LEFT');
-		$this->dao->join(DB_TABLE_PREFIX . 't_item_stats s', 'i.pk_i_id = s.fk_i_item_id', 'LEFT');
-		$this->dao->where('i.pk_i_id', $id);
-		$this->dao->groupBy('s.fk_i_item_id');
-		$result = $this->dao->get();
-		if ($result === false) 
-		{
-			return null;
-		}
-		if ($result->numRows() == 0) 
-		{
-			return null;
-		}
-		$item = $result->row();
-		if (is_null($item)) 
-		{
-			return null;
-		}
+		$sql = <<<SQL
+SELECT
+	l.*, IFNULL( r.s_name, l.s_region ) AS s_region, IFNULL( c.s_name, l.s_city ) AS s_city,
+	i.*, SUM( s.i_num_views ) AS i_num_views
+FROM
+	/*TABLE_PREFIX*/item i
+LEFT JOIN
+	/*TABLE_PREFIX*/t_item_location l ON ( l.fk_i_item_id = i.pk_i_id )
+LEFT JOIN
+	/*TABLE_PREFIX*/t_region r ON ( r.pk_i_id = l.fk_i_region_id )
+LEFT JOIN
+	/*TABLE_PREFIX*/t_city c ON ( c.pk_i_id = l.fk_i_city_id )
+LEFT JOIN
+	/*TABLE_PREFIX*/t_item_stats s ON ( i.pk_i_id = s.fk_i_item_id )
+WHERE
+	i.pk_i_id = ?
+GROUP BY
+	s.fk_i_item_id
+SQL;
+		$stmt = $this->prepareStatement( $sql );
+		$stmt->bind_param( 'i', $id );
+		$item = $this->fetch( $stmt );
 
-		return $this->extendDataSingle($item);
-	}
-	/**
-	 * List Items with category name
-	 *
-	 * @access public
-	 * @since unknown
-	 * @return array of items
-	 */
-	public function listAllWithCategories() 
-	{
-		$this->dao->select('i.*, cd.s_name AS s_category_name ');
-		$this->dao->from($this->getTableName() . ' i, ' . DB_TABLE_PREFIX . 't_category c, ' . DB_TABLE_PREFIX . 't_category_description cd');
-		$this->dao->where('c.pk_i_id = i.fk_i_category_id AND cd.fk_i_category_id = i.fk_i_category_id');
-		$result = $this->dao->get();
-		return $result->result();
+		$stmt->close();
+
+		return $this->extendDataSingle( $item );
 	}
 	/**
 	 * Comodin function to serve multiple queries
@@ -155,22 +124,6 @@ class Model_Item extends DAO
 		return ClassLoader::getInstance()->getClassInstance( 'Model_ItemResource' )->getResources($id);
 	}
 	/**
-	 * Find the item location given a item id
-	 *
-	 * @access public
-	 * @since unknown
-	 * @param int $id Item id
-	 * @return array of location
-	 */
-	public function findLocationByID($id) 
-	{
-		$this->dao->select();
-		$this->dao->from(DB_TABLE_PREFIX . 't_item_location');
-		$this->dao->where('fk_i_item_id', $id);
-		$result = $this->dao->get();
-		return $result->row();
-	}
-	/**
 	 * Find items belong to a category given its id
 	 *
 	 * @access public
@@ -194,49 +147,6 @@ class Model_Item extends DAO
 	{
 		return $this->listWhere("s_contact_email = '%s'", $email);
 	}
-	/**
-	 * Count all items, or all items belong to a category id, can be filtered
-	 * by $active  ['ACTIVE'|'INACTIVE'|'SPAM']
-	 *
-	 * @access public
-	 * @since unknown
-	 * @param type $categoryId
-	 * @param string $active
-	 * @return int total items
-	 */
-	public function totalItems($categoryId = null, $active = null) 
-	{
-		$this->dao->select('count(*) as total');
-		$this->dao->from($this->getTableName() . ' i');
-		$this->dao->join(DB_TABLE_PREFIX . 't_category c', 'c.pk_i_id = i.fk_i_category_id');
-		if (!is_null($categoryId)) 
-		{
-			$this->dao->where('i.fk_i_category_id', $categoryId);
-		}
-		$conditions = '';
-		if (!is_null($active)) 
-		{
-			switch ($active) 
-			{
-			case 'ACTIVE':
-				$this->dao->where('b_active', 1);
-				break;
-
-			case 'INACTIVE':
-				$this->dao->where('b_active', 0);
-				break;
-
-			case 'SPAM':
-				$this->dao->where('b_spam', 1);
-				break;
-
-			default:
-			}
-		}
-		$result = $this->dao->get();
-		$total_ads = $result->row();
-		return $total_ads['total'];
-	}
 	public function numItems($category, $enabled = true, $active = true) 
 	{
 		$this->dao->select('COUNT(*) AS total');
@@ -259,12 +169,6 @@ class Model_Item extends DAO
 		}
 		$row = $result->row();
 		return $row['total'];
-	}
-	// LEAVE THIS FOR COMPATIBILITIES ISSUES (ONLY SITEMAP GENERATOR)
-	// BUT REMEMBER TO DELETE IN ANYTHING > 2.1.x THANKS
-	public function listLatest($limit = 10) 
-	{
-		return $this->listWhere(" b_active = 1 AND b_enabled = 1 ORDER BY pub_date DESC LIMIT " . $limit);
 	}
 	/**
 	 * Insert title, description and what for a given locale and item id.
