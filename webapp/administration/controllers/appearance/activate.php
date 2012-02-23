@@ -15,22 +15,16 @@
  * You should have received a copy of the GNU Affero General Public
  * License along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
-class Ui_AdminTheme extends Ui_Theme
+class CAdminAppearance extends Controller_Administration
 {
-	public function __construct() 
+	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
-		$basePath = osc_admin_base_url() . '/themes';
-		parent::__construct( $basePath, osc_admin_theme() );
-	}
-
-	public function setCurrentThemeUrl() 
-	{
-		$this->themeUrl = $this->urlFactory->getBaseUrl() . '/administration/themes/' . $this->theme;
-	}
-
-	public function setCurrentThemePath() 
-	{
-		$this->basePath = osc_admin_base_path() . '/themes';
+		$preferenceModel = $this->getClassLoader()
+			->getClassInstance( 'Model_Preference' );
+		$preferenceModel->update( array( 's_value' => Params::getParam('theme')), array('s_section' => 'osclass', 's_name' => 'theme'));
+		osc_add_flash_ok_message(_m('Theme activated correctly'), 'admin');
+		osc_run_hook("theme_activate", Params::getParam('theme'));
+		$this->redirectTo( osc_admin_base_url( true ) . "?page=appearance" );
 	}
 }
+

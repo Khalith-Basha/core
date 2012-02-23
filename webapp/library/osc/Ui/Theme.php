@@ -19,13 +19,17 @@
 class Ui_Theme
 {
 	protected $theme;
-	protected $theme_url;
-	protected $theme_path;
-	protected $theme_exists;
+	protected $themeUrl;
+	protected $basePath;
+	protected $urlFactory;
 
-	public function setCurrentTheme($theme) 
+	public function __construct( $themesPath, $themeName ) 
 	{
-		$this->theme = $theme;
+		$classLoader = ClassLoader::getInstance();
+		$this->urlFactory = $classLoader->getClassInstance( 'Url_Abstract' );
+
+		$this->basePath = $themesPath;
+		$this->theme = $themeName;
 		$this->setCurrentThemePath();
 		$this->setCurrentThemeUrl();
 	}
@@ -35,24 +39,39 @@ class Ui_Theme
 		return $this->theme;
 	}
 
+	public function getStaticUrl( $type, $resource = '' )
+	{
+		return $this->themeUrl . '/static/' . $type . $resource;
+	}
+
+	public function getStaticImageUrl( $resource )
+	{
+		return $this->getStaticUrl( $resource );
+	}
+
 	public function getCurrentThemeJs() 
 	{
-		return $this->theme_url . '/static/scripts';
+		return $this->getStaticUrl( 'scripts' );
 	}
 
 	public function getCurrentThemeStyles() 
 	{
-		return $this->theme_url . '/static/styles';
+		return $this->getStaticUrl( 'styles' );
 	}
 
 	public function getCurrentThemePath() 
 	{
-		return $this->theme_path;
+		return $this->basePath . DIRECTORY_SEPARATOR . $this->theme;
+	}
+
+	public function getDefaultThemePath()
+	{
+		return $this->basePath . DIRECTORY_SEPARATOR . 'default';
 	}
 
 	public function getCurrentThemeUrl() 
 	{
-		return $this->theme_url;
+		return $this->themeUrl;
 	}
 }
 

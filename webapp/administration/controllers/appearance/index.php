@@ -19,22 +19,33 @@ class CAdminAppearance extends Controller_Administration
 {
 	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
-		switch ($this->action) 
-		{
-		case 'activate':
-			Preference::newInstance()->update(array('s_value' => Params::getParam('theme')), array('s_section' => 'osclass', 's_name' => 'theme'));
-			osc_add_flash_ok_message(_m('Theme activated correctly'), 'admin');
-			osc_run_hook("theme_activate", Params::getParam('theme'));
-			$this->redirectTo(osc_admin_base_url(true) . "?page=appearance");
-			break;
+		$classLoader = ClassLoader::getInstance();
+		$themeManager = $classLoader->getClassInstance( 'Ui_MainTheme' );
 
-		default:
-			$themes = ClassLoader::getInstance()->getClassInstance( 'Ui_MainTheme' )->getListThemes();
-			$info = ClassLoader::getInstance()->getClassInstance( 'Ui_MainTheme' )->loadThemeInfo(osc_theme());
-			$this->getView()->assign("themes", $themes);
-			$this->getView()->assign("info", $info);
-			$this->doView('appearance/index.php');
+		$view = $this->getView();
+		$themeName = osc_theme();
+
+		$currentTheme = null;
+		$availableThemes = array();
+
+		$themes = $themeManager->getListThemes();
+		foreach( $themes as $theme )
+		{
+			if( $theme === $themeName )
+				$currentTheme = $themeManager->loadThemeInfo( $theme );
+			else
+				$availableThemes[] = $themeManager->loadThemeInfo( $theme );
 		}
+
+		$screenshotPath = osc_base_url() . '/components/themes/' . $themeName . '/screenshot.png';
+		if( file_exists( $screenshotPath ) )
+		{
+			$view->assign( 'screenshotPath', $screenshotPath );
+		}
+
+		$view->assign( 'currentTheme', $currentTheme );
+		$view->assign( 'availableThemes', $availableThemes );
+		$this->doView( 'appearance/index.php' );
 	}
 }
 

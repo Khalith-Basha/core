@@ -45,7 +45,7 @@ class CWebIndex extends Controller_Cacheable
 		$view->assign( 'pages', $pages );
 
 		$category = $classLoader->getClassInstance( 'Model_Category' );
-		$view->assign('categories', $category->toTree());
+		$view->assign( 'categories', $category->toTree() );
 
 		$search = $classLoader->getClassInstance( 'Model_Search' );
 		$search->limit( 0, osc_max_latest_items() );

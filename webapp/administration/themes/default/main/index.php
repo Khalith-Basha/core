@@ -15,13 +15,6 @@
  * You should have received a copy of the GNU Affero General Public
  * License along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-//getting variables for this view
-$numUsers = __get("numUsers");
-$numAdmins = __get("numAdmins");
-$numItems = __get("numItems");
-$numItemsPerCategory = __get("numItemsPerCategory");
-$newsList = __get("newsList");
-$comments = __get("comments");
 ?>
 
         <script type="text/javascript">

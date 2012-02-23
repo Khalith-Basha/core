@@ -20,6 +20,10 @@
  */
 
 echo $view->render( 'header' );
+// Clean $file to prevent hacking of some type
+osc_sanitize_url( $file );
+$file = str_replace( '../', '', str_replace( '://', '', preg_replace( '|http([s]*)|', '', $file ) ) );
+include osc_plugins_path() . $file;
 osc_render_file();
 echo $view->render( 'footer' );
 

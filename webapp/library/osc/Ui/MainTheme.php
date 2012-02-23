@@ -18,33 +18,18 @@
 
 class Ui_MainTheme extends Ui_Theme
 {
-	private $path;
-	private $pages = array(
-		'404', 'contact', 'alert-form', 'custom', 'footer', 'functions', 'head', 'header', 'inc.search', 'index', 'item-contact', 'item-edit', 'item-post', 'item-send-friend', 'item', 'main', 'page', 'search', 'search_gallery', 'search_list', 'user-alerts', 'user-change_email', 'user-change_password', 'user-dashboard', 'user-forgot_password', 'user-items', 'user-login', 'user-profile', 'user-recover', 'user-register'
-	);
-	protected $urlFactory;
-
-	public function __construct() 
+	public function __construct()
 	{
-		$this->path = osc_themes_path();
-		$classLoader = ClassLoader::getInstance();
-		$this->urlFactory = $classLoader->getClassInstance( 'Url_Abstract' );
-		if (Params::getParam('theme') != '' && $classLoader->getClassInstance( 'Session' )->_get('adminId') != '')
-			$this->setCurrentTheme(Params::getParam('theme'));
-		else $this->setCurrentTheme(osc_theme());
-		$functions_path = $this->getCurrentThemePath() . 'functions.php';
-		if (file_exists($functions_path)) 
-		{
-			require_once $functions_path;
-		}
+		parent::__construct( osc_themes_path(), osc_theme() );
 	}
 
 	public function setCurrentThemePath() 
 	{
-		if (file_exists($this->path . $this->theme . '/')) 
+		$themePath = $this->basePath . DIRECTORY_SEPARATOR . $this->theme;
+		if( file_exists( $themePath ) )
 		{
 			$this->theme_exists = true;
-			$this->theme_path = $this->path . $this->theme . '/';
+			$this->theme_path = $themePath;
 		}
 	}
 
@@ -52,52 +37,40 @@ class Ui_MainTheme extends Ui_Theme
 	{
 		if ($this->theme_exists) 
 		{
-			$this->theme_url = $this->urlFactory->getBaseUrl() . '/' . str_replace(osc_base_path(), '', $this->theme_path);
+			$this->themeUrl = $this->urlFactory->getBaseUrl() . '/' . str_replace(osc_base_path(), '', $this->theme_path);
 		}
 		else
 		{
-			$this->theme_url = $this->urlFactory->getBaseUrl() . '/components/themes/default/';
+			$this->themeUrl = $this->urlFactory->getBaseUrl() . '/components/themes/default/';
 		}
 	}
 
-	public function setGuiTheme() 
-	{
-		$this->theme = '';
-		$this->theme_exists = false;
-		$this->theme_path = ABS_PATH . '/components/themes/default';
-		$this->theme_url = $this->urlFactory->getBaseUrl() . '/components/themes/default/';
-		$functions_path = $this->getCurrentThemePath() . '/functions.php';
-		if (file_exists($functions_path)) 
-		{
-			require_once $functions_path;
-		}
-	}
 	/**
 	 * This function returns an array of themes (those copied in the components/themes folder)
-	 * @return <type>
+	 *
+	 * @return array
 	 */
 	public function getListThemes() 
 	{
 		$themes = array();
-		$dir = opendir($this->path);
-		while ($file = readdir($dir)) 
+		$dir = opendir( $this->basePath );
+		while( $file = readdir( $dir ) )
 		{
 			if (preg_match('/^[a-z0-9_]+$/i', $file)) 
 			{
 				$themes[] = $file;
 			}
 		}
-		closedir($dir);
+		closedir( $dir );
 		return $themes;
 	}
+
 	/**
-	 *
-	 * @param <type> $theme
-	 * @return <type>
+	 * @return array
 	 */
-	public function loadThemeInfo($theme) 
+	public function loadThemeInfo( $theme )
 	{
-		$path = $this->path . DIRECTORY_SEPARATOR . $theme . '/index.php';
+		$path = $this->basePath . DIRECTORY_SEPARATOR . $theme . '/index.php';
 		if( !file_exists( $path ) )
 			throw new Exception( "Theme '$theme' does not have an 'index.php' file." );
 		require_once $path;
@@ -106,12 +79,11 @@ class Ui_MainTheme extends Ui_Theme
 			throw new Exception( "Theme '$theme' does not have function '$fxName'." );
 	
 		$result = call_user_func($fxName);
+		if( !is_array( $result ) )
+			throw new Exception( "Function '$fxName' of theme '$theme' did not return an array." );
 		$result['int_name'] = $theme;
+
 		return $result;
-	}
-	public function isValidPage($internal_name) 
-	{
-		return !in_array($internal_name, $this->pages);
 	}
 }
 

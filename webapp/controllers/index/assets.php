@@ -30,25 +30,22 @@ function osc_get_current_web_theme_path( $file, View $view = null )
 	if( is_null( $view ) )
 		$view = $classLoader->getClassInstance( 'View_Html' );
 	$webThemes = $themes;
-	$filePath = $webThemes->getCurrentThemePath() . DIRECTORY_SEPARATOR . $file;
-	if (file_exists($filePath)) 
+
+	$paths = array(
+		$webThemes->getCurrentThemePath() . DIRECTORY_SEPARATOR . $file,
+		$webThemes->getDefaultThemePath() . DIRECTORY_SEPARATOR . $file,
+	);
+
+	foreach( $paths as $path )
 	{
-		return $filePath;
-	}
-	else
-	{
-		$webThemes->setGuiTheme();
-		$filePath = $webThemes->getCurrentThemePath() . DIRECTORY_SEPARATOR . $file;
-		if (file_exists($filePath)) 
+		if( file_exists( $path ) )
 		{
-			return $filePath;
-		}
-		else
-		{
-			trigger_error('File not found: ' . $filePath, E_USER_NOTICE);
-			return null;
+			return $path;
 		}
 	}
+
+	trigger_error('File not found: ' . $filePath, E_USER_NOTICE);
+	return null;
 }
 
 
@@ -162,3 +159,4 @@ else
 	}
 }
 
+exit;

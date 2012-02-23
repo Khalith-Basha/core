@@ -20,7 +20,6 @@
  */
 
 $indexUrl = $classLoader->getClassInstance( 'Url_Index' );
-$pages = __get( 'pages' );
 ?>
 
 <br style="clear: both" />

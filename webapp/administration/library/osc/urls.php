@@ -2,7 +2,9 @@
 
 function osc_base_url()
 {
-	return 'TODO_WEB_URL';
+	return ClassLoader::getInstance()
+		->getClassInstance( 'Url_Abstract' )
+		->getBaseUrl();
 }
 
 /**

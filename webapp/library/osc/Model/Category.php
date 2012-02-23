@@ -104,13 +104,13 @@ SELECT
 FROM
 	(
 		SELECT
-			a.*, b.*, c.i_num_items, FIELD( fk_c_locale_code, ? ) as locale_order
+			a.*, b.*, IFNULL( c.i_num_items, 0 ) AS i_num_items, FIELD( fk_c_locale_code, ? ) AS locale_order
 		FROM
-			/*TABLE_PREFIX*/t_category as a
+			/*TABLE_PREFIX*/t_category AS a
 		INNER JOIN
-			/*TABLE_PREFIX*/t_category_description as b ON a.pk_i_id = b.fk_i_category_id
+			/*TABLE_PREFIX*/t_category_description AS b ON a.pk_i_id = b.fk_i_category_id
 		LEFT JOIN
-			/*TABLE_PREFIX*/t_category_stats as c ON a.pk_i_id = c.fk_i_category_id
+			/*TABLE_PREFIX*/t_category_stats AS c ON a.pk_i_id = c.fk_i_category_id
 		WHERE
 			b.s_name != ''
 		AND

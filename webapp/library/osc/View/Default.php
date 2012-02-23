@@ -43,13 +43,22 @@ class View_Default
 		$view = $this;
 		$file = $name . '.php';
 		$viewContent = null;
-		$filePath = $this->theme->getCurrentThemePath() . $file;
-		if (!file_exists($filePath)) 
+
+		$paths = array(
+			$this->theme->getCurrentThemePath() . DIRECTORY_SEPARATOR . $file,
+			$this->theme->getDefaultThemePath() . DIRECTORY_SEPARATOR . $file,
+		);
+		$filePath = null;
+		foreach( $paths as $path )
 		{
-			$this->theme->setGuiTheme();
-			$filePath = $this->theme->getCurrentThemePath() . DIRECTORY_SEPARATOR . $file;
+			if( file_exists( $path ) )
+			{
+				$filePath = $path;
+				break;
+			}
 		}
-		if (file_exists($filePath)) 
+
+		if( !is_null( $filePath ) ) 
 		{
 			ob_start();
 			osc_run_hook('before_html');
@@ -60,8 +69,9 @@ class View_Default
 		}
 		else
 		{
-			trigger_error('File not found: ' . $filePath, E_USER_NOTICE);
+			trigger_error( 'File not found: ' . $name, E_USER_NOTICE );
 		}
+
 		return $viewContent;
 	}
 
