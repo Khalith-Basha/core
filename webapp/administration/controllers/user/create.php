@@ -72,7 +72,7 @@ class CAdminUser extends Controller_Administration
 			osc_add_flash_warning_message(_m("Sorry, passwords don't match"), 'admin');
 			break;
 		}
-		$this->redirectTo(osc_admin_base_url(true) . '?page=users');
+		$this->redirectTo(osc_admin_base_url(true) . '?page=user');
 	}
 }
 

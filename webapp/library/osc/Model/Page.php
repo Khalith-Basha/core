@@ -23,7 +23,7 @@
  */
 class Model_Page extends DAO
 {
-	function __construct() 
+	public function __construct() 
 	{
 		parent::__construct();
 		$this->setTableName('t_pages');

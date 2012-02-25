@@ -15,12 +15,6 @@
  * You should have received a copy of the GNU Affero General Public
  * License along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-$users = __get("users");
-$max = __get("max");
-$item = __get("item");
-$users_by_country = __get("users_by_country");
-$users_by_region = __get("users_by_region");
-$latest_users = __get("latest_users");
 ?>
         <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 			    <div id="content_header" class="content_header">

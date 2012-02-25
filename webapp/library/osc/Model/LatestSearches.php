@@ -19,8 +19,6 @@
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-require_once 'osc/core/model.php';
-
 class Model_LatestSearches extends Model 
 {
 	public function insert( $query )
@@ -46,9 +44,11 @@ SQL;
 		$sql = <<<SQL
 SELECT
 	query,
-	search_time
+	MAX( search_time )
 FROM
 	/*TABLE_PREFIX*/latest_searches
+GROUP BY
+	query
 ORDER BY
 	search_time DESC
 SQL;

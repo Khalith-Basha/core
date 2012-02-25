@@ -17,12 +17,6 @@
  */
 $itemForm = ClassLoader::getInstance()->getClassInstance( 'Form_Item' );
 $userForm = ClassLoader::getInstance()->getClassInstance( 'Form_User' );
-$users = __get("users");
-$stat = __get("stat");
-$categories = __get("categories");
-$countries = __get("countries");
-$regions = __get("regions");
-$cities = __get("cities");
 ?>
 
         <script type="text/javascript">

@@ -37,8 +37,8 @@ echo $view->render( 'header' );
                 <div id="main">
                     <div id="type_dates">
                         <strong><?php echo osc_item_category( $item ); ?></strong>
-                        <em class="publish"><?php if (osc_item_pub_date( $item ) != '') echo __('Published date', 'modern') . ': ' . osc_format_date(osc_item_pub_date( $item )); ?></em>
-                        <em class="update"><?php if (osc_item_mod_date( $item ) != '') echo __('Modified date', 'modern') . ': ' . osc_format_date(osc_item_mod_date( $item )); ?></em>
+                        <em class="publish"><?php if (osc_item_pub_date( $item ) != '') echo __('Published date', 'modern') . ': ' . osc_format_date( osc_item_pub_date( $item )); ?></em>
+                        <em class="update"><?php if (osc_item_mod_date( $item ) != '') echo __('Modified date', 'modern') . ': ' . osc_format_date( osc_item_mod_date( $item )); ?></em>
                     </div>
                     <ul id="item_location">
                         <?php if (osc_item_country( $item ) != "") { ?><li><?php _e("Country", 'modern'); ?>: <strong><?php echo osc_item_country( $item ); ?></strong></li><?php } ?>

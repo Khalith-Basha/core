@@ -15,9 +15,6 @@
  * You should have received a copy of the GNU Affero General Public
  * License along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-// getting variables for this view
-$info = __get("info");
-$widget = __get("widget");
 ?>
 
         <div id="update_version" style="display:none;"></div>

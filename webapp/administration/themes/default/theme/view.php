@@ -39,11 +39,11 @@
                 <div id="content_separator"></div>
                 <div id="TableToolsToolbar"></div>
                 <div>
-                <?php require __get("file"); ?>
+                <?php require $file; ?>
                 </div>
-            </div> <!-- end of right column -->
+            </div>
             <div style="clear: both;"></div>
-        </div> <!-- end of container -->
+        </div>
         <?php osc_current_admin_theme_path('footer.php'); ?>
     </body>
 </html>

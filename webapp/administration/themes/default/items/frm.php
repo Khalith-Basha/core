@@ -15,7 +15,6 @@
  * You should have received a copy of the GNU Affero General Public
  * License along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-$new_item = __get("new_item");
 $itemForm = ClassLoader::getInstance()->getClassInstance( 'Form_Item' );
 ?>
 

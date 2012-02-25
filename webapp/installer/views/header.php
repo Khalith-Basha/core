@@ -24,46 +24,16 @@ $javaScripts = array(
             <div id="container">
                 <div id="header" class="installation">
                     <h1 id="logo">
-                        <img src="<?php echo get_absolute_url(); ?>/library/images/osclass-logo.png" alt="OpenSourceClassifieds" title="OpenSourceClassifieds"/>
+                        <img src="<?php echo get_absolute_url(); ?>/static/images/osclass-logo.png" alt="OpenSourceClassifieds" title="OpenSourceClassifieds"/>
                     </h1>
-                    <?php
-if (in_array($step, array(2, 3, 4))) 
-{ ?>
+                    <?php if (in_array($step, array(2, 3, 4)))  { ?>
                     <ul id="nav">
-                        <li class="<?php
-	if ($step == 2) 
-	{ ?>actual<?php
-	}
-	elseif ($step < 2) 
-	{ ?>next<?php
-	}
-	else
-	{ ?>past<?php
-	} ?>">1 - Database</li>
-                        <li class="<?php
-	if ($step == 3) 
-	{ ?>actual<?php
-	}
-	elseif ($step < 3) 
-	{ ?>next<?php
-	}
-	else
-	{ ?>past<?php
-	} ?>">2 - Target</li>
-                        <li class="<?php
-	if ($step == 4) 
-	{ ?>actual<?php
-	}
-	elseif ($step < 4) 
-	{ ?>next<?php
-	}
-	else
-	{ ?>past<?php
-	} ?>">3 - Categories</li>
+                        <li class="<?php if ($step == 2)  { ?>actual<?php } elseif ($step < 2)  { ?>next<?php } else { ?>past<?php } ?>">1 - Database</li>
+                        <li class="<?php if ($step == 3)  { ?>actual<?php } elseif ($step < 3)  { ?>next<?php } else { ?>past<?php } ?>">2 - Target</li>
+                        <li class="<?php if ($step == 4)  { ?>actual<?php } elseif ($step < 4)  { ?>next<?php } else { ?>past<?php } ?>">3 - Categories</li>
                     </ul>
                     <div class="clear"></div>
-                    <?php
-} ?>
+                    <?php } ?>
                 </div>
                 <div id="content">
 

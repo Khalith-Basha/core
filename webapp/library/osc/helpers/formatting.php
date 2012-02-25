@@ -108,8 +108,8 @@ function osc_prepare_price($price)
  *
  * @param string $date
  */
-function osc_format_date($date) 
+function osc_format_date( $date )
 {
-	return date(osc_date_format(), strtotime($date));
+	return date( osc_date_format(), strtotime( $date ) );
 }
 

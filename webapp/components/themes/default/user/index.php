@@ -40,7 +40,7 @@ echo $view->render( 'header' );
                                     <a href="<?php echo $itemUrls->getDetailsUrl( $item ); ?>"><?php echo osc_item_title( $item ); ?></a>
                                 </div>
                                 <div class="userItemData" >
-                                <?php _e('Publication date', 'modern'); ?>: <?php echo osc_format_date(osc_item_pub_date( $item )); ?><br />
+                                <?php _e('Publication date', 'modern'); ?>: <?php echo osc_format_date( osc_item_pub_date( $item ) ); ?><br />
                                         <?php if (osc_price_enabled_at_items())  { _e('Price', 'modern'); ?>: <?php echo osc_format_price( $item, osc_item_price( $item )); } ?>
                                         </p>
                                         <p class="options">

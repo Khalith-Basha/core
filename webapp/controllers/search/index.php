@@ -20,6 +20,8 @@ class CWebSearch extends Controller_Default
 	public function doGet( HttpRequest $req, HttpResponse $res ) 
 	{
 		$classLoader = $this->getClassLoader();
+
+		$input = $this->getInput();
 		$this->mSearch = $this->getClassLoader()->getClassInstance( 'Model_Search' );
 
 		$classLoader->loadFile( 'helpers/premium' );
@@ -86,31 +88,32 @@ class CWebSearch extends Controller_Default
 				$p_sCountry = explode(",", $p_sCountry);
 			}
 		}
-		$p_sPattern = strip_tags(Params::getParam('sPattern'));
-		if ($p_sPattern != '') 
-		{
-			$this->mSearch->setQueryString( $p_sPattern );
-		}
-
-		$p_sUser = strip_tags(Params::getParam('sUser'));
-
-		if ( osc_save_latest_searches() ) 
+		$p_sPattern = strip_tags( $input->getString( 'sPattern', '' ) );
+		$p_sPattern = trim( $p_sPattern );
+		$this->mSearch->setQueryString( $p_sPattern );
+		if( osc_save_latest_searches() && !empty( $p_sPattern ) )
 		{
 			$classLoader->getClassInstance( 'Model_LatestSearches' )
 				->insert( $p_sPattern );
 		}
+
+		$page = $input->getInteger( 'iPage', 0 );
+		$this->mSearch->setPage( $page );
+
+		$p_sUser = strip_tags( $input->getString( 'sUser', '' ) );
+
 		$p_bPic = Params::getParam('bPic');
 		($p_bPic == 1) ? $p_bPic = 1 : $p_bPic = 0;
-		$p_sPriceMin = Params::getParam('sPriceMin');
-		$p_sPriceMax = Params::getParam('sPriceMax');
+		$p_sPriceMin = $input->getFloat( 'sPriceMin' );
+		$p_sPriceMax = $input->getFloat( 'sPriceMax');
 		//WE CAN ONLY USE THE FIELDS RETURNED BY $this->mSearch->getAllowedColumnsForSorting()
-		$p_sOrder = Params::getParam('sOrder');
+		$p_sOrder = $input->getString( 'sOrder' );
 		if (!in_array($p_sOrder, $this->mSearch->getAllowedColumnsForSorting())) 
 		{
 			$p_sOrder = osc_default_order_field_at_search();
 		}
 		//ONLY 0 ( => 'asc' ), 1 ( => 'desc' ) AS ALLOWED VALUES
-		$p_iOrderType = Params::getParam('iOrderType');
+		$p_iOrderType = $input->getString( 'iOrderType' );
 		$allowedTypesForSorting = $this->mSearch->getAllowedTypesForSorting();
 		$orderType = osc_default_order_type_at_search();
 		foreach ($allowedTypesForSorting as $k => $v) 
@@ -122,12 +125,12 @@ class CWebSearch extends Controller_Default
 			}
 		}
 		$p_iOrderType = $orderType;
-		$p_sFeed = Params::getParam('sFeed');
+		$p_sFeed = $input->getString( 'sFeed' );
 		if ($p_sFeed != '') 
 		{
 			$p_sPageSize = 1000;
 		}
-		$p_sShowAs = Params::getParam('sShowAs');
+		$p_sShowAs = $input->getString( 'sShowAs' );
 		$aValidShowAsValues = array('list', 'gallery');
 		if (!in_array($p_sShowAs, $aValidShowAsValues)) 
 		{
@@ -173,18 +176,12 @@ class CWebSearch extends Controller_Default
 		$this->mSearch->priceRange($p_sPriceMin, $p_sPriceMax);
 		$this->mSearch->order($p_sOrder, $allowedTypesForSorting[$p_iOrderType]);
 
-		$input = $this->getInput();
-
-		// Pagination
 		$defaultRowsPerPage = osc_default_results_per_page_at_search();
 		$maxRowsPerPage = osc_max_results_per_page_at_search();
 		$rowsPerPage = $input->getInteger( 'rowsPerPage', $defaultRowsPerPage );
 		if( $rowsPerPage > $maxRowsPerPage )
 			$rowsPerPage = $maxRowsPerPage;
 		$this->mSearch->setRowsPerPage( $rowsPerPage );
-
-		$page = $input->getInteger( 'sPage', 0 );
-		$this->mSearch->setPage( $page );
 
 		osc_run_hook('search_conditions', Params::getParamsAsArray());
 
@@ -229,16 +226,23 @@ class CWebSearch extends Controller_Default
 				$view->setMetaRobots( array( 'noindex', 'nofollow' ) );
 			}
 
-			$this->setViewTitle( $view );
+			$this->setViewTitle( $view, $input );
 			if( 0 < count( $aItems ) ) 
 			{
 				$item = $aItems[0];
 				$itemCategory = $item['category_name'];
 				$view->setMetaDescription( $itemCategory . ', ' . osc_highlight(strip_tags(osc_item_description( $item )), 140) . '..., ' . $itemCategory );
 			}
-
+	
 			$pagination = $classLoader->getClassInstance( 'Pagination' );
+			$searchUrls = $classLoader->getClassInstance( 'Url_Search' );
+			$urlTemplate = $searchUrls->osc_update_search_url( array( 'iPage' => $pagination::PLACEHOLDER ) );
+			$pagination->setSelectedPage( $page );
+			$pagination->setUrlTemplate( $urlTemplate );
+			$pagination->setItemsPerPage( $rowsPerPage );
+			$pagination->setNumItems( $iTotalItems );
 			$view->assign( 'pagination', $pagination );
+
 			echo $view->render( 'search/results' );	
 		}
 		else
@@ -281,7 +285,7 @@ class CWebSearch extends Controller_Default
 		}
 	}
 
-	protected function setViewTitle( View_Html $view )
+	protected function setViewTitle( View_Html $view, Input_Get $input )
 	{
 		$region = Params::getParam('sRegion');
 		$city = Params::getParam('sCity');
@@ -289,7 +293,7 @@ class CWebSearch extends Controller_Default
 		$category = osc_search_category_id();
 		$category = ((count($category) == 1) ? $category[0] : '');
 		$s_page = '';
-		$i_page = Params::getParam('iPage');
+		$i_page = $input->getInteger( 'iPage', 0 );
 		if ($i_page != '' && $i_page > 0) 
 		{
 			$s_page = __('page', 'modern') . ' ' . ($i_page + 1) . ' - ';

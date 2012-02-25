@@ -16,11 +16,6 @@
  * License along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 $userForm = ClassLoader::getInstance()->getClassInstance( 'Form_User' );
-$user = __get('user');
-$countries = __get('countries');
-$regions = __get('regions');
-$cities = __get('cities');
-$locales = __get('locales');
 if (isset($user['pk_i_id'])) 
 {
 	// editing...
@@ -38,15 +33,6 @@ else
 	$btn_text = __('Add');
 }
 ?>
-        <?php
-if (isset($user['pk_i_id'])) 
-{
-	$userForm->js_validation_edit();
-}
-else
-{
-	$userForm->js_validation();
-} ?>
         <script type="text/javascript">
             document.write('<style type="text/css">.tabber{display:none;}</style>');
             $(document).ready(function(){
@@ -55,8 +41,6 @@ else
                 }
             });
         </script>
-            <?php
-$userForm->location_javascript("admin"); ?>
                 <div id="content_header" class="content_header">
                     <div style="float: left;">
                         <img src="<?php

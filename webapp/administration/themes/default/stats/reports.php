@@ -15,8 +15,6 @@
  * You should have received a copy of the GNU Affero General Public
  * License along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-$reports = __get("reports");
-$max = __get("max");
 ?>
         <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 			    <div id="content_header" class="content_header">

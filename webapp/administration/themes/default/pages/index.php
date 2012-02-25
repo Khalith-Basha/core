@@ -16,8 +16,6 @@
  * License along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 $pageUrls = $classLoader->getClassInstance( 'Url_Page' );
-$pages = __get("pages");
-$prefLocale = __get("prefLocale");
 $last = end($pages);
 $last_id = $last['pk_i_id'];
 ?>

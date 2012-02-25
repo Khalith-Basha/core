@@ -49,7 +49,7 @@ class CAdminUser extends Controller_Administration
 			break;
 		}
 		osc_add_flash_ok_message($msg, 'admin');
-		$this->redirectTo(osc_admin_base_url(true) . '?page=users');
+		$this->redirectTo(osc_admin_base_url(true) . '?page=user');
 	}
 }
 

@@ -16,7 +16,6 @@
  * License along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 $pageForm = ClassLoader::getInstance()->getClassInstance( 'Form_Page' );
-$page = __get("page");
 if (isset($page['pk_i_id'])) 
 {
 	//editing...

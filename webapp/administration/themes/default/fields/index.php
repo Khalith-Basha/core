@@ -16,11 +16,8 @@
  * License along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 $categoryForm = ClassLoader::getInstance()->getClassInstance( 'Form_Category' );
-$fields = __get("fields");
 $last = end($fields);
 $last_id = $last['pk_i_id'];
-$categories = __get("categories");
-$selected = __get("default_selected");
 $numCols = 1;
 ?>
 

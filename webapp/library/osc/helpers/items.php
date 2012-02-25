@@ -243,7 +243,7 @@ function osc_item_category_id( array $item )
  */
 function osc_item_pub_date( array $item )
 {
-	return (string)osc_item_field( $item, "dt_pub_date");
+	return (string)osc_item_field( $item, 'pub_date' );
 }
 /**
  * Gets modification date of current item
@@ -252,7 +252,7 @@ function osc_item_pub_date( array $item )
  */
 function osc_item_mod_date( array $item )
 {
-	return (string)osc_item_field( $item, "dt_mod_date");
+	return (string)osc_item_field( $item, 'mod_date' );
 }
 /**
  * Gets price of current item
@@ -325,7 +325,7 @@ function osc_item_country_code( array $item )
  */
 function osc_item_region( array $item )
 {
-	return (string)osc_item_field( $item, "s_region");
+	return osc_item_field( $item, 'region_name' );
 }
 /**
  * Gets city of current item
@@ -334,7 +334,7 @@ function osc_item_region( array $item )
  */
 function osc_item_city( array $item ) 
 {
-	return (string)osc_item_field( $item, "s_city");
+	return osc_item_field( $item, 'city_name' );
 }
 /**
  * Gets city area of current item
@@ -511,26 +511,6 @@ function osc_list_page()
 	return $view->getVar('list_page');
 }
 /**
- * Gets total of pages for current pagination
- *
- * @return int
- */
-function osc_list_total_pages() 
-{
-	$view = ClassLoader::getInstance()->getClassInstance( 'View_Html' );
-	return $view->getVar('list_total_pages');
-}
-/**
- * Gets number of items per page for current pagination
- *
- * @return <type>
- */
-function osc_list_items_per_page() 
-{
-	$view = ClassLoader::getInstance()->getClassInstance( 'View_Html' );
-	return $view->getVar('items_per_page');
-}
-/**
  * Gets total number of comments of current item
  *
  * @return int
@@ -683,7 +663,8 @@ function osc_resource_path( array $resource )
  */
 function osc_count_items() 
 {
-	return osc_priv_count_items();
+	$view = ClassLoader::getInstance()->getClassInstance( 'View_Html' );
+	return (int)$view->countVar('items');
 }
 /**
  * Gets number of resources in array resources of current item
@@ -754,17 +735,6 @@ function osc_format_price( array $item, $price )
 	$currencyFormat = str_replace('{NUMBER}', number_format($price, osc_locale_num_dec(), osc_locale_dec_point(), osc_locale_thousands_sep()), $currencyFormat);
 	$currencyFormat = str_replace('{CURRENCY}', osc_item_currency( $item ), $currencyFormat);
 	return osc_apply_filter('item_price', $currencyFormat);
-}
-/**
- * Gets number of items
- *
- * @access private
- * @return int
- */
-function osc_priv_count_items() 
-{
-	$view = ClassLoader::getInstance()->getClassInstance( 'View_Html' );
-	return (int)$view->countVar('items');
 }
 /**
  * Gets number of item resources
@@ -877,17 +847,13 @@ function osc_item_meta_slug()
  */
 function osc_comments_pagination( array $item ) 
 {
+	if( 0 === osc_comments_per_page() || 'all' === osc_item_comments_page() )
+		return;
+
 	$classLoader = ClassLoader::getInstance();
 	$itemUrls = $classLoader->getClassInstance( 'Url_Item' );
-	if ((osc_comments_per_page() == 0) || (osc_item_comments_page() === 'all')) 
-	{
-		return null;
-	}
-	else
-	{
-		$params = array('total' => ceil(osc_item_total_comments( $item ) / osc_comments_per_page()), 'selected' => osc_item_comments_page(), 'url' => $itemUrls->osc_item_comments_url( $item, '{PAGE}'));
-		return $classLoader->getClassInstance( 'Pagination', true, array( $params ) )
-			->showLinks();
-	}
+	$params = array('total' => ceil(osc_item_total_comments( $item ) / osc_comments_per_page()), 'selected' => osc_item_comments_page(), 'url' => $itemUrls->osc_item_comments_url( $item, '{PAGE}'));
+	return $classLoader->getClassInstance( 'Pagination', true, array( $params ) )
+		->showLinks();
 }
 

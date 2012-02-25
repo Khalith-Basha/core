@@ -73,7 +73,7 @@ class CAdminUser extends Controller_Administration
 			osc_add_flash_ok_message(_m('The user has been updated'), 'admin');
 			break;
 		}
-		$this->redirectTo(osc_admin_base_url(true) . '?page=users');
+		$this->redirectTo(osc_admin_base_url(true) . '?page=user');
 	}
 }
 

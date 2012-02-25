@@ -40,7 +40,7 @@ echo $view->render( 'header' );
                                             <a href="<?php echo $itemUrls->osc_item_url( $item ); ?>"><?php echo osc_item_title( $item ); ?></a>
                                         </h3>
                                         <p>
-                                        <?php _e('Publication date', 'modern'); ?>: <?php echo osc_format_date(osc_item_pub_date( $item )); ?><br />
+                                        <?php _e('Publication date', 'modern'); ?>: <?php echo osc_format_date( osc_item_pub_date( $item ) ); ?><br />
                                         <?php if (osc_price_enabled_at_items())  { _e('Price', 'modern'); ?>: <?php echo osc_format_price(osc_item_price( $item )); } ?>
                                         </p>
                                         <p class="options">
@@ -56,20 +56,13 @@ echo $view->render( 'header' );
                                 </div>
                         <?php endforeach; ?>
                         <br />
-                        <div class="paginate" >
-                        <?php
-	for ($i = 0; $i < osc_list_total_pages(); $i++) 
-	{
-		if ($i == osc_list_page()) 
-		{
-			printf('<a class="searchPaginationSelected" href="%s">%d</a>', osc_user_list_items_url($i), ($i + 1));
-		}
-		else
-		{
-			printf('<a class="searchPaginationNonSelected" href="%s">%d</a>', osc_user_list_items_url($i), ($i + 1));
-		}
-	} ?>
-                        </div>
+			<div class="paginate">
+			<?php foreach( $pagination->getPages() as $page ): ?>
+			<a class="<?php echo $page['selected'] ? 'searchPaginationSelected' : 'searchPaginationNonSelected'; ?>" href="%s">%d</a>
+			<?php endforeach; ?>
+			</div>
+			osc_list_total_pages()
+			osc_user_list_items_url($i)
                     <?php } ?>
                 </div>
             </div>

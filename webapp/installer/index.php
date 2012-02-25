@@ -35,19 +35,17 @@ require_once 'osc/Database/Command.php';
 require_once 'osc/Database/Collection.php';
 require_once 'osc/Database/DAO.php';
 require_once 'osc/Session.php';
-require_once 'osc/core/Params.php';
+require_once 'osc/Params.php';
 require_once 'osc/Model/Preference.php';
-require_once 'osc/helpers/hDefines.php';
-require_once 'osc/helpers/hLocale.php';
-require_once 'osc/helpers/hPreference.php';
-require_once 'osc/helpers/hSearch.php';
-require_once 'osc/default-constants.php';
+require_once 'osc/helpers/locales.php';
+require_once 'osc/helpers/preference.php';
+require_once 'osc/helpers/search.php';
+require_once 'osc/helpers/paths.php';
 require_once 'functions.php';
-require_once 'osc/utils.php';
 $step = Params::getParam('step');
 if (!is_numeric($step)) 
 {
-	$step = '1';
+	$step = 1;
 }
 if (is_osclass_installed()&&false) 
 {
@@ -69,8 +67,10 @@ if( $step >= 4 )
 		);
 }
 
-function showView( $file )
+function showView( $file, array $extraParams = array() )
 {
+	extract( $GLOBALS );
+	extract( $extraParams );
 	require 'views/header.php';
 	require $file;
 	require 'views/footer.php';
@@ -124,7 +124,8 @@ switch ($step)
 		$password = Params::getParam('password');
 		ping_search_engines($_COOKIE['osclass_ping_engines']);
 		setcookie('osclass_ping_engines', '', time() - 3600);
-		display_finish($password);
+		$data = savePreferences( $password );
+		showView( 'views/finish.php', array( 'data' => $data ) );
 		break;
 }
 

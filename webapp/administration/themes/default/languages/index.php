@@ -15,7 +15,6 @@
  * You should have received a copy of the GNU Affero General Public
  * License along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-$locales = __get('locales');
 $last = end($locales);
 $last_id = $last['pk_c_code'];
 $default_lang = osc_language();

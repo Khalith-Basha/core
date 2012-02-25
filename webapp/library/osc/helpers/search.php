@@ -54,26 +54,6 @@ function osc_list_orders()
 	return array(__('Newly listed') => array('sOrder' => 'pub_date', 'iOrderType' => 'desc'), __('Lower price first') => array('sOrder' => 'i_price', 'iOrderType' => 'asc'), __('Higher price first') => array('sOrder' => 'i_price', 'iOrderType' => 'desc'));
 }
 /**
- * Gets current search page
- *
- * @return int
- */
-function osc_search_page() 
-{
-	$view = ClassLoader::getInstance()->getClassInstance( 'View_Html' );
-	return $view->getVar('search_page');
-}
-/**
- * Gets total pages of search
- *
- * @return int
- */
-function osc_search_total_pages() 
-{
-	$view = ClassLoader::getInstance()->getClassInstance( 'View_Html' );
-	return $view->getVar('search_total_pages');
-}
-/**
  * Gets if "has pic" option is enabled or not in the search
  *
  * @return boolean

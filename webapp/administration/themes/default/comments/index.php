@@ -16,7 +16,6 @@
  * License along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 $itemUrls = $classLoader->getClassInstance( 'Url_Item' );
-$comments = __get('comments');
 if (!is_array($comments)) 
 {
 	$comments = array();
@@ -66,7 +65,7 @@ $last_id = $last['pk_i_id'];
                      }
                     ,"sPaginationType": "full_numbers"
                     ,"aaData": [
-                        <?php foreach (__get('comments') as $c)  { ?>
+                        <?php foreach ( $comments as $c)  { ?>
                             [
                                 "<input type='checkbox' name='id[]' value='<?php echo $c['pk_i_id']; ?>' />"
                                 ,"<?php echo addcslashes($c['s_author_name'], '"'); ?> (<a target='_blank' href='<?php echo $itemUrls->osc_item_url_ns($c['fk_i_item_id']); ?>'><?php echo $c['s_title']; ?></a>)<div id='datatables_quick_edit'><a href='<?php echo osc_admin_base_url(true); ?>?page=comment&action=edit&id=<?php echo $c['pk_i_id']; ?>' id='dt_link_edit'><?php _e('Edit'); ?></a><?php

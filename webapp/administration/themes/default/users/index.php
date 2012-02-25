@@ -15,7 +15,6 @@
  * You should have received a copy of the GNU Affero General Public
  * License along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-$users = __get("users");
 $last = end($users);
 $last_id = $last['pk_i_id'];
 ?>
@@ -30,8 +29,7 @@ $last_id = $last['pk_i_id'];
 			        return anRows;
 		        };
 
-		        sSearchName = "<?php
-_e('Search'); ?>...";	
+		        sSearchName = "<?php _e('Search'); ?>...";	
 		        oTable = $('#datatables_list').dataTable({
 	               	"bAutoWidth": false
 			        ,"sDom": '<"top"fl>rt<"bottom"ip<"clear">'
@@ -60,47 +58,41 @@ _e('Search'); ?>...";
 			                "sSearch": '<span class="ui-icon ui-icon-search" style="display: inline-block;"></span>'
 			         }
 			        ,"sPaginationType": "full_numbers"
-			        /* THIS DATA SHOULD COME THROUGH JSON  OR MYSQL !!! */
 			        ,"aaData": [
 				        <?php
 foreach ($users as $u) 
 { ?>
 					        [
-						        "<input type='checkbox'  name='id[]' value='<?php
-	echo $u['pk_i_id']; ?>' />"
-						        ,"<?php
-	echo $u['s_email']; ?>&nbsp;<div id='datatables_quick_edit'><?php
+						        "<input type='checkbox'  name='id[]' value='<?php echo $u['pk_i_id']; ?>' />"
+						        ,"<?php echo $u['s_email']; ?>&nbsp;<div id='datatables_quick_edit'><?php
 	if ($u['b_active'] == 0) 
-	{ ?><a href='<?php
-		echo osc_admin_base_url(true); ?>?page=users&action=activate&amp;id[]=<?php
-		echo $u['pk_i_id']; ?>'><?php
-		_e('Activate user'); ?></a><?php
+	{ ?><a href='<?php echo osc_admin_base_url(true); ?>?page=user&action=activate&amp;id[]=<?php echo $u['pk_i_id']; ?>'><?php _e('Activate user'); ?></a><?php
 	}
 	else
 	{ ?><a href='<?php
-		echo osc_admin_base_url(true); ?>?page=users&action=deactivate&amp;id[]=<?php
+		echo osc_admin_base_url(true); ?>?page=user&action=deactivate&amp;id[]=<?php
 		echo $u['pk_i_id']; ?>'><?php
 		_e('Deactivate user'); ?></a><?php
 	};
 ?> | <?php
 	if ($u['b_enabled'] == 0) 
 	{ ?><a href='<?php
-		echo osc_admin_base_url(true); ?>?page=users&action=enable&amp;id[]=<?php
+		echo osc_admin_base_url(true); ?>?page=user&action=enable&amp;id[]=<?php
 		echo $u['pk_i_id']; ?>'><?php
 		_e('Enable user'); ?></a><?php
 	}
 	else
 	{ ?><a href='<?php
-		echo osc_admin_base_url(true); ?>?page=users&action=disable&amp;id[]=<?php
+		echo osc_admin_base_url(true); ?>?page=user&action=disable&amp;id[]=<?php
 		echo $u['pk_i_id']; ?>'><?php
 		_e('Disable user'); ?></a><?php
 	};
 ?> | <a href='<?php
-	echo osc_admin_base_url(true); ?>?page=users&action=edit&amp;id=<?php
+	echo osc_admin_base_url(true); ?>?page=user&action=edit&amp;id=<?php
 	echo $u['pk_i_id']; ?>'><?php
 	_e('Edit'); ?></a> | <a onclick=\"javascript:return confirm('<?php
 	_e('This action can\\\\\'t be undone. Are you sure you want to continue?'); ?>')\" href='<?php
-	echo osc_admin_base_url(true); ?>?page=users&action=delete&amp;id[]=<?php
+	echo osc_admin_base_url(true); ?>?page=user&action=delete&amp;id[]=<?php
 	echo $u['pk_i_id']; ?>'><?php
 	_e('Delete'); ?></a></div>"
 						        ,"<?php echo addcslashes($u['s_name'], '"'); ?>"
@@ -118,56 +110,38 @@ foreach ($users as $u)
 				         ,"sWidth": "10px"
 				         ,"bSearchable": false
 				         }
-				        ,{"sTitle": "<?php
-_e('E-mail'); ?>",
+				        ,{"sTitle": "<?php _e('E-mail'); ?>",
 				         "sWidth": "30%"
 				        }
-				        ,{"sTitle": "<?php
-_e('Real name') ?>" }
-				        ,{"sTitle": "<?php
-_e('Date'); ?>" }
-                        ,{"sTitle": "<?php
-_e('Update Date'); ?>" }
+				        ,{"sTitle": "<?php _e('Real name') ?>" }
+				        ,{"sTitle": "<?php _e('Date'); ?>" }
+                        ,{"sTitle": "<?php _e('Update Date'); ?>" }
 			        ]
 		        });
 	        });
         </script>
-        <script type="text/javascript" src="<?php
-echo osc_current_admin_theme_js_url('datatables.post_init.js'); ?>"></script>
+        <script type="text/javascript" src="<?php echo osc_current_admin_theme_js_url('datatables.post_init.js'); ?>"></script>
 			    <div id="content_header" class="content_header">
 					<div style="float: left;">
-                        <img src="<?php
-echo osc_current_admin_theme_url('images/user-group-icon.png'); ?>" alt="" title="" />
+                        <img src="<?php echo osc_current_admin_theme_url('images/user-group-icon.png'); ?>" alt="" title="" />
                     </div>
-					<div id="content_header_arrow">&raquo; <?php
-_e('Users'); ?></div>
-					<a href="<?php
-echo osc_admin_base_url(true); ?>?page=users&action=create" id="button_open"><?php
-_e('Add a new user'); ?></a>
+					<div id="content_header_arrow">&raquo; <?php _e('Users'); ?></div>
+					<a href="<?php echo osc_admin_base_url(true); ?>?page=user&action=create" id="button_open"><?php _e('Add a new user'); ?></a>
 					<div style="clear: both;"></div>
 				</div>
 				<div id="content_separator"></div>
-				<?php
-osc_show_flash_message('admin'); ?>
-				<form id="datatablesForm" action="<?php
-echo osc_admin_base_url(true); ?>?page=users" method="post">
+				<?php osc_show_flash_message('admin'); ?>
+				<form id="datatablesForm" action="<?php echo osc_admin_base_url(true); ?>?page=user" method="post">
                     <div id="TableToolsToolbar">
                         <select name="action" id="action" class="display">
-                            <option value=""><?php
-_e('Bulk Actions'); ?></option>
-                            <option value="delete"><?php
-_e('Delete'); ?></option>
-                            <option value="activate"><?php
-_e('Activate'); ?></option>
-                            <option value="deactivate"><?php
-_e('Deactivate'); ?></option>
-                            <option value="enable"><?php
-_e('Enable'); ?></option>
-                            <option value="disable"><?php
-_e('Disable'); ?></option>
+                            <option value=""><?php _e('Bulk Actions'); ?></option>
+                            <option value="delete"><?php _e('Delete'); ?></option>
+                            <option value="activate"><?php _e('Activate'); ?></option>
+                            <option value="deactivate"><?php _e('Deactivate'); ?></option>
+                            <option value="enable"><?php _e('Enable'); ?></option>
+                            <option value="disable"><?php _e('Disable'); ?></option>
                         </select>
-                        &nbsp;<button id="bulk_apply" class="display"><?php
-_e('Apply'); ?></button>
+                        &nbsp;<button id="bulk_apply" class="display"><?php _e('Apply'); ?></button>
                     </div>
 					<table cellpadding="0" cellspacing="0" border="0" class="display" id="datatables_list"></table>
 					<br />

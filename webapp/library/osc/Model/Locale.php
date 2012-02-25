@@ -19,8 +19,17 @@
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-class Model_Locale extends Model
+class Model_Locale extends DAO
 {
+	public function __construct() 
+	{
+		parent::__construct();
+		$this->setTableName('t_locale');
+		$this->setPrimaryKey('pk_c_code');
+		$array_fields = array( 'pk_c_code', 's_name', 's_short_name', 's_description', 's_version', 's_author_name', 's_author_url', 's_currency_format', 's_dec_point', 's_thousands_sep', 'i_num_dec', 's_date_format', 's_stop_words', 'b_enabled', 'b_enabled_bo' );
+		$this->setFields($array_fields);
+	}
+
 	public function listAll()
 	{
 		$sql = <<<SQL

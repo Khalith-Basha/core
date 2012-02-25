@@ -44,7 +44,7 @@ class CAdminUser extends Controller_Administration
 		{
 			osc_add_flash_ok_message(_m('Users\' settings have been updated'), 'admin');
 		}
-		$this->redirectTo(osc_admin_base_url(true) . '?page=users&action=settings');
+		$this->redirectTo(osc_admin_base_url(true) . '?page=user&action=settings');
 	}
 }
 

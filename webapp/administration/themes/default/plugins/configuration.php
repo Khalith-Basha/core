@@ -15,9 +15,6 @@
  * You should have received a copy of the GNU Affero General Public
  * License along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-$categories = __get("categories");
-$selected = __get("selected");
-$plugin_data = __get("plugin_data");
 $numCols = 1;
 $catsPerCol = round(count($categories) / $numCols);
 ?>

@@ -189,28 +189,24 @@ SQL;
 	 * @param int $id
 	 * @return bool
 	 */
-	public function deleteUser($id = null) 
+	public function deleteUser( $id ) 
 	{
-		if ($id != null) 
+		osc_run_hook('delete_user', $id);
+		$this->dao->select('pk_i_id, fk_i_category_id');
+		$this->dao->from(DB_TABLE_PREFIX . "item");
+		$this->dao->where('fk_i_user_id', $id);
+		$result = $this->dao->get();
+		$items = $result->result();
+		$itemManager = ClassLoader::getInstance()->getClassInstance( 'Model_Item' );
+		foreach ($items as $item) 
 		{
-			osc_run_hook('delete_user', $id);
-			$this->dao->select('pk_i_id, fk_i_category_id');
-			$this->dao->from(DB_TABLE_PREFIX . "t_item");
-			$this->dao->where('fk_i_user_id', $id);
-			$result = $this->dao->get();
-			$items = $result->result();
-			$itemManager = ClassLoader::getInstance()->getClassInstance( 'Model_Item' );
-			foreach ($items as $item) 
-			{
-				$itemManager->deleteByPrimaryKey($item['pk_i_id']);
-			}
-			ClassLoader::getInstance()->getClassInstance( 'Model_ItemComment' )->delete(array('fk_i_user_id' => $id));
-			$this->dao->delete(DB_TABLE_PREFIX . 't_user_email_tmp', array('fk_i_user_id' => $id));
-			$this->dao->delete(DB_TABLE_PREFIX . 't_user_description', array('fk_i_user_id' => $id));
-			$this->dao->delete(DB_TABLE_PREFIX . 't_alerts', array('fk_i_user_id' => $id));
-			return $this->dao->delete($this->getTableName(), array('pk_i_id' => $id));
+			$itemManager->deleteByPrimaryKey($item['pk_i_id']);
 		}
-		return false;
+		ClassLoader::getInstance()->getClassInstance( 'Model_ItemComment' )->delete(array('fk_i_user_id' => $id));
+		$this->dao->delete(DB_TABLE_PREFIX . 't_user_email_tmp', array('fk_i_user_id' => $id));
+		$this->dao->delete(DB_TABLE_PREFIX . 't_user_description', array('fk_i_user_id' => $id));
+		$this->dao->delete(DB_TABLE_PREFIX . 't_alerts', array('fk_i_user_id' => $id));
+		return $this->dao->delete($this->getTableName(), array('pk_i_id' => $id));
 	}
 	/**
 	 * Insert users' description

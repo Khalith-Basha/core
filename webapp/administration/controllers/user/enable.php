@@ -18,28 +18,38 @@
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-class CAdminSettings extends Controller_Administration
+class CAdminUser extends Controller_Administration
 {
-	public function doGet( HttpRequest $req, HttpResponse $res )
+	public function doGet( HttpRequest $req, HttpResponse $res ) 
 	{
-		$this->doView('settings/searches.php');
-	}
-	
-	public function doPost( HttpRequest $req, HttpResponse $res )
-	{
-		$preferenceModel = $this->getClassLoader()
-			->getClassInstance( 'Model_Preference' );
-		if (Params::getParam('save_latest_searches') == 'on') 
+		$this->userManager = ClassLoader::getInstance()->getClassInstance( 'Model_User' );
+		$iUpdated = 0;
+		$userId = Params::getParam('id');
+		if (!is_array($userId)) 
 		{
-			$preferenceModel->update(array('s_value' => 1), array('s_name' => 'save_latest_searches'));
+			osc_add_flash_error_message(_m('User id isn\'t in the correct format'), 'admin');
 		}
-		else
+		$userActions = $this->getClassLoader()->getClassInstance( 'Manager_User', false, array( true ) );
+		foreach ($userId as $id) 
 		{
-			$preferenceModel->update(array('s_value' => 0), array('s_name' => 'save_latest_searches'));
+			$iUpdated+= $userActions->enable($id);
 		}
-		$preferenceModel->update(array('s_value' => Params::getParam('customPurge')), array('s_name' => 'purge_latest_searches'));
-		osc_add_flash_ok_message(_m('Settings have been updated'), 'admin');
-		$this->redirectTo(osc_admin_base_url(true) . '?page=settings&action=latestsearches');
+		switch ($iUpdated) 
+		{
+		case (0):
+			$msg = _m('No user has been enabled');
+			break;
+
+		case (1):
+			$msg = _m('One user has been enabled');
+			break;
+
+		default:
+			$msg = sprintf(_m('%s users have been enabled'), $iUpdated);
+			break;
+		}
+		osc_add_flash_ok_message($msg, 'admin');
+		$this->redirectTo(osc_admin_base_url(true) . '?page=user');
 	}
 }
 

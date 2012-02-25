@@ -18,8 +18,6 @@
 $classLoader->loadFile( 'helpers/timezones' );
 $dateFormats = array('F j, Y', 'Y/m/d', 'm/d/Y', 'd/m/Y');
 $timeFormats = array('g:i a', 'g:i A', 'H:i');
-$aLanguages = __get('aLanguages');
-$aCurrencies = __get('aCurrencies');
 ?>
 
         <script type="text/javascript">

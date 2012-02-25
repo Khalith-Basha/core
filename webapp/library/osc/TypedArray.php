@@ -27,6 +27,14 @@ class TypedArray
 		return $default;
 	}
 
+	public function getFloat( $name, $default = null )
+	{
+		if( $this->exists( $name ) )
+			return floatval( $this->getValue( $name ) );
+
+		return $default;
+	}
+
 	public function getBoolean( $name )
 	{
 		if( $this->exists( $name ) )

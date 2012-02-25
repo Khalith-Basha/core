@@ -67,11 +67,9 @@ if (osc_count_premiums() > 0)
 			echo osc_premium_formated_price(); ?> - <?php
 		}
 		echo osc_premium_city(); ?> (<?php
-		echo osc_premium_region(); ?>) - <?php
-		echo osc_format_date(osc_premium_pub_date()); ?></strong>
+		echo osc_premium_region(); ?>) - <?php echo osc_format_date(osc_premium_pub_date( $item )); ?></strong>
                      </p>
-                     <p><?php
-		echo osc_highlight(strip_tags(osc_premium_description())); ?></p>
+                     <p><?php echo osc_highlight(strip_tags(osc_premium_description( $item ))); ?></p>
                  </td>
              </tr>
             <?php
@@ -116,9 +114,7 @@ while (osc_has_items())
 	} ?>
                  <td class="text">
                      <h3>
-                         <a href="<?php
-	echo $itemUrls->getDetailsUrl( $item ); ?>"><?php
-	echo osc_item_title(); ?></a>
+                         <a href="<?php echo $itemUrls->getDetailsUrl( $item ); ?>"><?php echo osc_item_title( $item ); ?></a>
                      </h3>
                      <p>
                          <strong><?php
@@ -126,12 +122,9 @@ while (osc_has_items())
 	{
 		echo osc_item_formated_price(); ?> - <?php
 	}
-	echo osc_item_city(); ?> (<?php
-	echo osc_item_region(); ?>) - <?php
-	echo osc_format_date(osc_item_pub_date()); ?></strong>
+	echo osc_item_city( $item ); ?> (<?php echo osc_item_region( $item ); ?>) - <?php echo osc_format_date(osc_item_pub_date( $item )); ?></strong>
                      </p>
-                     <p><?php
-	echo osc_highlight(strip_tags(osc_item_description())); ?></p>
+                     <p><?php echo osc_highlight(strip_tags(osc_item_description( $item ))); ?></p>
                  </td>
              </tr>
             <?php

@@ -40,20 +40,23 @@ class CAdminSettings extends Controller_Administration
 		if ($rewriteEnabled) 
 		{
 			$preference->update(array('s_value' => '1'), array('s_name' => 'rewriteEnabled'));
-			$htaccess = '
-    <IfModule mod_rewrite.c>
-        RewriteEngine On
-        RewriteBase ' . REL_WEB_URL . '
-        RewriteRule ^index\.php$ - [L]
-        RewriteCond %{REQUEST_FILENAME} !-f
-        RewriteCond %{REQUEST_FILENAME} !-d
-        RewriteRule . ' . REL_WEB_URL . 'index.php [L]
-    </IfModule>';
-			if (file_exists(osc_base_path() . '.htaccess')) 
+			$relwebUrl = '/';
+			$htaccess = <<<HTACCESS
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase $relwebUrl
+RewriteRule ^index\.php$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . ${relwebUrl}index.php [L]
+</IfModule>
+HTACCESS;
+			$htaccessPath = osc_base_path() . '/.htaccess';
+			if (file_exists( $htaccessPath)) 
 			{
 				$file_status = 1;
 			}
-			else if (file_put_contents(osc_base_path() . '.htaccess', $htaccess)) 
+			else if (file_put_contents( $htaccessPath, $htaccess)) 
 			{
 				$file_status = 2;
 			}
@@ -61,20 +64,11 @@ class CAdminSettings extends Controller_Administration
 			{
 				$file_status = 3;
 			}
-			if (apache_mod_loaded('mod_rewrite')) 
-			{
-				$htaccess_status = 1;
-				$preference->update(array('s_value' => '1'), array('s_name' => 'mod_rewrite_loaded'));
-			}
-			else
-			{
-				$htaccess_status = 2;
-				$preference->update(array('s_value' => '0'), array('s_name' => 'mod_rewrite_loaded'));
-			}
+			$htaccess_status = 1;
+			$preference->update(array('s_value' => '1'), array('s_name' => 'mod_rewrite_loaded'));
 		}
 		else
 		{
-			$modRewrite = apache_mod_loaded('mod_rewrite');
 			$preference->update(array('s_value' => '0'), array('s_name' => 'rewriteEnabled'));
 			$preference->update(array('s_value' => '0'), array('s_name' => 'mod_rewrite_loaded'));
 		}

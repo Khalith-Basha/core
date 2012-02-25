@@ -21,8 +21,8 @@
 
 $userForm = $classLoader->getClassInstance( 'Form_User' );
 $urlStatic = $classLoader->getClassInstance( 'Url_Static' );
-$urlUser = $classLoader->getClassInstance( 'Url_User' );
-$urlCategory = $classLoader->getClassInstance( 'Url_Item' );
+$userUrls = $classLoader->getClassInstance( 'Url_User' );
+$itemUrls = $classLoader->getClassInstance( 'Url_Item' );
 if( !isset( $category ) )
 	$category = null;
 ?>
@@ -53,15 +53,15 @@ if( !isset( $category ) )
                 <?php if (osc_is_web_user_logged_in()): ?>
                     <li class="first logged">
                         <?php echo sprintf(__('Hi %s', 'modern'), osc_logged_user_name() . '!'); ?>  &middot;
-                        <strong><a href="<?php echo $urlUser->osc_user_dashboard_url(); ?>"><?php _e('My account', 'modern'); ?></a></strong> &middot;
-                        <a href="<?php echo $urlUser->osc_user_logout_url(); ?>"><?php _e('Logout', 'modern'); ?></a>
+                        <strong><a href="<?php echo $userUrls->osc_user_dashboard_url(); ?>"><?php _e('My account', 'modern'); ?></a></strong> &middot;
+                        <a href="<?php echo $userUrls->osc_user_logout_url(); ?>"><?php _e('Logout', 'modern'); ?></a>
                     </li>
 		<?php else: ?>
                     <li class="first">
-                        <a id="login_open" href="<?php echo $urlUser->osc_user_login_url(); ?>"><?php _e('Login', 'modern'); ?></a>
+                        <a id="login_open" href="<?php echo $userUrls->osc_user_login_url(); ?>"><?php _e('Login', 'modern'); ?></a>
 			<?php if (osc_user_registration_enabled()): ?>
                             &middot;
-                            <a href="<?php echo $urlUser->osc_register_account_url(); ?>"><?php _e('Register for a free account', 'modern'); ?></a>
+                            <a href="<?php echo $userUrls->osc_register_account_url(); ?>"><?php _e('Register for a free account', 'modern'); ?></a>
 			<?php endif; ?>
                         <form id="login" action="<?php echo $urlFactory->getBaseUrl( true ); ?>" method="post">
 			    <fieldset>
@@ -76,7 +76,7 @@ if( !isset( $category ) )
 				<p class="checkbox"><?php echo $userForm->getDecoratedInputCheckbox( 'remember', '1', __( 'Remember me', 'modern' ) ); ?></p>
 				<?php echo $userForm->getInputSubmit( null, __( 'Login', 'modern' ) ); ?>
                                 <div class="forgot">
-                                    <a href="<?php echo $urlUser->osc_recover_user_password_url(); ?>"><?php _e("Forgot password?", 'modern'); ?></a>
+                                    <a href="<?php echo $userUrls->osc_recover_user_password_url(); ?>"><?php _e("Forgot password?", 'modern'); ?></a>
                                 </div>
                             </fieldset>
                         </form>
@@ -100,7 +100,7 @@ if( !isset( $category ) )
         </ul>
         <?php if( osc_users_enabled() || (!osc_users_enabled() && !osc_reg_user_post()) ): ?>
             <div id="form_publish">
-                <strong class="publish_button"><a href="<?php echo $urlCategory->osc_item_post_url_in_category( $category ); ?>"><?php _e("Publish your ad for free", 'modern'); ?></a></strong>
+                <strong class="publish_button"><a href="<?php echo $itemUrls->osc_item_post_url_in_category( $category ); ?>"><?php _e("Publish your ad for free", 'modern'); ?></a></strong>
             </div>
 	<?php endif; ?>
         <div class="empty"></div>

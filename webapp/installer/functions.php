@@ -25,7 +25,7 @@ define( 'SAMPLE_CONFIG_FOLDER_PATH', implode(DIRECTORY_SEPARATOR, array(ABS_PATH
 
 function basic_info() 
 {
-	require_once 'osc/helpers/hSecurity.php';
+	require_once 'osc/helpers/security.php';
 	$admin = Params::getParam('s_name');
 	if ($admin == '') 
 	{
@@ -304,7 +304,6 @@ function oc_install()
 			break;
 		}
 	}
-	require_once 'osc/locales.php';
 	require_once 'osc/Model/Locale.php';
 	$localeManager = new Model_Locale;
 	$locales = osc_listLocales();
@@ -384,29 +383,44 @@ function is_osclass_installed()
 	/** TODO: FIX THIS! */
 	return false;
 }
+
+/**
+ * @return boolean
+ */
+function requestUrl( $url )
+{
+	$ch = curl_init();
+	curl_setopt( $ch, CURLOPT_URL, $url );
+	curl_setopt( $ch, CURLOPT_HEADER, 0 );
+	$result = curl_exec( $ch );
+	curl_close( $ch );
+
+	return $result;
+}
+
 function ping_search_engines($bool) 
 {
-	$mPreference = ClassLoader::getInstance()->getClassInstance( 'Model_Preference' );
+	$classLoader = ClassLoader::getInstance();
+	$classLoader->loadFile( 'Url_Abstract' );
+	$searchUrls = $classLoader->getClassInstance( 'Url_Search' );
+	$mPreference = $classLoader->getClassInstance( 'Model_Preference' );
 	if ($bool == 1) 
 	{
+		$url = $searchUrls->osc_search_url(array('sFeed' => 'rss'));
 		$mPreference->insert(array('s_section' => 'osclass', 's_name' => 'ping_search_engines', 's_value' => '1', 'e_type' => 'BOOLEAN'));
-		// GOOGLE
-		osc_doRequest('http://www.google.com/webmasters/sitemaps/ping?sitemap=' . urlencode(osc_search_url(array('sFeed' => 'rss'))), array());
-		// BING
-		osc_doRequest('http://www.bing.com/webmaster/ping.aspx?siteMap=' . urlencode(osc_search_url(array('sFeed' => 'rss'))), array());
-		// YAHOO!
-		osc_doRequest('http://search.yahooapis.com/SiteExplorerService/V1/ping?sitemap=' . urlencode(osc_search_url(array('sFeed' => 'rss'))), array());
+		requestUrl('http://www.google.com/webmasters/sitemaps/ping?sitemap=' . urlencode( $url ));
+		requestUrl('http://www.bing.com/webmaster/ping.aspx?siteMap=' . urlencode( $url ));
+		requestUrl('http://search.yahooapis.com/SiteExplorerService/V1/ping?sitemap=' . urlencode( $url ));
 	}
 	else
 	{
 		$mPreference->insert(array('s_section' => 'osclass', 's_name' => 'ping_search_engines', 's_value' => '0', 'e_type' => 'BOOLEAN'));
 	}
 }
-function display_finish($password) 
+function savePreferences($password) 
 {
 	$classLoader = ClassLoader::getInstance();
 	$classLoader->loadFile( 'helpers/plugins' );
-	$data = array();
 	$mAdmin = $classLoader->getClassInstance( 'Model_Admin' );
 	$mPreference = $classLoader->getClassInstance( 'Model_Preference' );
 	$mPreference->insert(array('s_section' => 'osclass', 's_name' => 'osclass_installed', 's_value' => '1', 'e_type' => 'BOOLEAN'));
@@ -429,9 +443,11 @@ function display_finish($password)
 		$mCategories->deleteByPrimaryKey($aCategory['pk_i_id']);
 	}
 	$admin = $mAdmin->findByPrimaryKey(1);
+
+	$data = array();
 	$data['s_email'] = $admin['s_email'];
 	$data['admin_user'] = $admin['s_username'];
 	$data['password'] = $password;
-	require 'views/finish.php';
+	return $data;
 }
 

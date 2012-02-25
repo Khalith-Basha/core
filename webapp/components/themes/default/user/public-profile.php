@@ -99,7 +99,7 @@ echo $view->render( 'header' );
 	{
 		echo osc_item_formated_price( $item ); ?> - <?php
 	} 
-	echo osc_item_city( $item ); ?> (<?php echo osc_item_region( $item ); ?>) - <?php echo osc_format_date( $item, osc_item_pub_date( $item )); ?></strong>
+	echo osc_item_city( $item ); ?> (<?php echo osc_item_region( $item ); ?>) - <?php echo osc_format_date( osc_item_pub_date( $item ) ); ?></strong>
                                              </p>
                                              <p><?php echo osc_highlight(strip_tags(osc_item_description( $item ))); ?></p>
                                          </td>

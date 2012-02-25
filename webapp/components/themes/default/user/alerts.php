@@ -29,15 +29,9 @@ echo $view->render( 'header' );
                 <div id="main">
                     <h2><?php _e('Your alerts', 'modern'); ?></h2>
                     <?php if (osc_count_alerts() == 0)  { ?>
-                        <h3><?php
-	_e('You do not have any alerts yet', 'modern'); ?>.</h3>
-                    <?php
-}
-else
-{ ?>
-                        <?php
-	while (osc_has_alerts()) 
-	{ ?>
+                        <h3><?php _e('You do not have any alerts yet', 'modern'); ?>.</h3>
+                    <?php } else { ?>
+                        <?php while (osc_has_alerts())  { ?>
                             <div class="userItem" >
                                 <div><?php
 		_e('Alert', 'modern'); ?> | <a onclick="javascript:return confirm('<?php
@@ -45,35 +39,21 @@ else
 		echo osc_user_unsubscribe_alert_url(); ?>"><?php
 		_e('Delete this alert', 'modern'); ?></a></div>
                                 <div style="width: 75%; padding-left: 100px;" >
-                                <?php
-		while (osc_has_items()) 
-		{ ?>
+                                <?php while (osc_has_items())  { ?>
                                     <div class="userItem" >
-                                        <div><a href="<?php
-			echo osc_item_url(); ?>"><?php
-			echo osc_item_title(); ?></a></div>
+                                        <div><a href="<?php echo osc_item_url( $item ); ?>"><?php echo osc_item_title( $item ); ?></a></div>
                                         <div class="userItemData" >
-                                        <?php
-			_e('Publication date', 'modern'); ?>: <?php
-			echo osc_format_date(osc_item_pub_date()); ?><br />
-                                        <?php
-			if (osc_price_enabled_at_items()) 
-			{
-				_e('Price', 'modern'); ?>: <?php
-				echo osc_format_price(osc_item_price());
-			} ?>
+                                        <?php _e('Publication date', 'modern'); ?>: <?php echo osc_format_date( osc_item_pub_date( $item ) ); ?><br />
+                                        <?php if (osc_price_enabled_at_items()) { _e('Price', 'modern'); ?>: <?php echo osc_format_price(osc_item_price()); } ?>
                                         </div>
                                     </div>
                                     <br />
-                                <?php
-		} ?>
+                                <?php } ?>
                                 </div>
                             </div>
                             <br />
-                        <?php
-	} ?>
-                    <?php
-} ?>
+                        <?php } ?>
+                    <?php } ?>
                 </div>
             </div>
 <?php

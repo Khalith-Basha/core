@@ -15,9 +15,6 @@
  * You should have received a copy of the GNU Affero General Public
  * License along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-$field = __get("field");
-$categories = __get("categories");
-$selected = __get("selected");
 $numCols = 1;
 ?>
 

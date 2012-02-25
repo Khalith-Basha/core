@@ -19,8 +19,6 @@
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-$page = __get( 'page' );
-
 echo $view->render( 'header' );
 ?>
 

@@ -15,8 +15,6 @@
  * You should have received a copy of the GNU Affero General Public
  * License along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-//getting variables for this view
-$adminEdit = __get("admin");
 ?>
 
                 <div id="settings_form" style="border: 1px solid #ccc; background: #eee; ">

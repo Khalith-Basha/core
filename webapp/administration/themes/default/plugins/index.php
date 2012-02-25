@@ -15,7 +15,6 @@
  * You should have received a copy of the GNU Affero General Public
  * License along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-$plugins = __get("plugins");
 $last = end($plugins);
 $last_id = $last['int_name'];
 $active_plugins = osc_get_plugins();

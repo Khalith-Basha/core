@@ -23,73 +23,9 @@ class CAdminUser extends Controller_Administration
 	public function doGet( HttpRequest $req, HttpResponse $res ) 
 	{
 		$this->userManager = ClassLoader::getInstance()->getClassInstance( 'Model_User' );
-		switch ($this->action) 
-		{
-		case 'activate': //activate
-			$iUpdated = 0;
-			$userId = Params::getParam('id');
-			if (!is_array($userId)) 
-			{
-				osc_add_flash_error_message(_m('User id isn\'t in the correct format'), 'admin');
-			}
-			$userActions = $this->getClassLoader()->getClassInstance( 'Manager_User', false, array( true ) );
-			foreach ($userId as $id) 
-			{
-				$iUpdated+= $userActions->activate($id);
-			}
-			switch ($iUpdated) 
-			{
-			case (0):
-				$msg = _m('No user has been activated');
-				break;
-
-			case (1):
-				$msg = _m('One user has been activated');
-				break;
-
-			default:
-				$msg = sprintf(_m('%s users have been activated'), $iUpdated);
-				break;
-			}
-			osc_add_flash_ok_message($msg, 'admin');
-			$this->redirectTo(osc_admin_base_url(true) . '?page=users');
-			break;
-
-		case 'enable':
-			$iUpdated = 0;
-			$userId = Params::getParam('id');
-			if (!is_array($userId)) 
-			{
-				osc_add_flash_error_message(_m('User id isn\'t in the correct format'), 'admin');
-			}
-			$userActions = $this->getClassLoader()->getClassInstance( 'Manager_User', false, array( true ) );
-			foreach ($userId as $id) 
-			{
-				$iUpdated+= $userActions->enable($id);
-			}
-			switch ($iUpdated) 
-			{
-			case (0):
-				$msg = _m('No user has been enabled');
-				break;
-
-			case (1):
-				$msg = _m('One user has been enabled');
-				break;
-
-			default:
-				$msg = sprintf(_m('%s users have been enabled'), $iUpdated);
-				break;
-			}
-			osc_add_flash_ok_message($msg, 'admin');
-			$this->redirectTo(osc_admin_base_url(true) . '?page=users');
-			break;
-		default: // manage users view
-			$aUsers = $this->userManager->listAll();
-			$this->getView()->assign("users", $aUsers);
-			$this->doView("users/index.php");
-			break;
-		}
+		$aUsers = $this->userManager->listAll();
+		$this->getView()->assign("users", $aUsers);
+		$this->doView("users/index.php");
 	}
 }
 

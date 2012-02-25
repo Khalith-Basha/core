@@ -28,9 +28,11 @@ $indexUrl = $classLoader->getClassInstance( 'Url_Index' );
 <footer>
 	<ul>
 		<li><a href="<?php echo $indexUrl->osc_contact_url(); ?>"><?php _e( 'Contact', 'modern' ); ?></a></li>
+		<?php if( isset( $pages ) ): ?>
 		<?php foreach( $pages as $page ): ?>
 			<li><a href="<?php echo $page['url']; ?>"><?php echo $page['s_title']; ?></a></li>
 		<?php endforeach; ?>
+		<?php endif; ?>
 		<li><?php _e('This website is proudly using an <a title="OpenSourceClassifieds project" href="http://www.opensourceclassifieds.org/">open source classifieds</a> software.', 'modern'); ?></li>
 	</ul>
 </footer>

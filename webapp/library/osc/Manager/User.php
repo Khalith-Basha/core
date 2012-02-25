@@ -45,7 +45,7 @@ class Manager_User
 		}
 		$input = $this->prepareData(true);
 
-		ClassLoader::getInstance()->loadFile( 'helpers/hValidate' );
+		ClassLoader::getInstance()->loadFile( 'helpers/sanitize' );
 		if (!osc_validate_email($input['s_email'])) 
 		{
 			return 5;
@@ -170,7 +170,7 @@ class Manager_User
 	function prepareData($is_add) 
 	{
 		$classLoader = ClassLoader::getInstance();
-		$classLoader->loadFile( 'helpers/hSecurity' );
+		$classLoader->loadFile( 'helpers/security' );
 		$input = array();
 		if ($is_add) 
 		{
@@ -266,7 +266,7 @@ class Manager_User
 		ClassLoader::getInstance()->getClassInstance( 'Logging_Logger' )->insertLog('user', 'activate', $user_id, $user['s_email'], $this->is_admin ? 'admin' : 'user', $this->is_admin ? osc_logged_admin_id() : osc_logged_user_id());
 		if ($user['b_enabled'] == 1) 
 		{
-			$mItem = new ItemActions(true);
+			$mItem = ClassLoader::getInstance()->getClassInstance( 'Manager_Item', false, array( true ) );
 			$items = ClassLoader::getInstance()->getClassInstance( 'Model_Item' )->findByUserID($user_id);
 			foreach ($items as $item) 
 			{
@@ -286,7 +286,7 @@ class Manager_User
 		ClassLoader::getInstance()->getClassInstance( 'Logging_Logger' )->insertLog('user', 'deactivate', $user_id, $user['s_email'], $this->is_admin ? 'admin' : 'user', $this->is_admin ? osc_logged_admin_id() : osc_logged_user_id());
 		if ($user['b_enabled'] == 1) 
 		{
-			$mItem = new ItemActions(true);
+			$mItem = ClassLoader::getInstance()->getClassInstance( 'Manager_Item', false, array( true ) );
 			$items = ClassLoader::getInstance()->getClassInstance( 'Model_Item' )->findByUserID($user_id);
 			foreach ($items as $item) 
 			{
@@ -306,7 +306,7 @@ class Manager_User
 		ClassLoader::getInstance()->getClassInstance( 'Logging_Logger' )->insertLog('user', 'enable', $user_id, $user['s_email'], $this->is_admin ? 'admin' : 'user', $this->is_admin ? osc_logged_admin_id() : osc_logged_user_id());
 		if ($user['b_active'] == 1) 
 		{
-			$mItem = new ItemActions(true);
+			$mItem = ClassLoader::getInstance()->getClassInstance( 'Manager_Item', false, array( true ) );
 			$items = ClassLoader::getInstance()->getClassInstance( 'Model_Item' )->findByUserID($user_id);
 			foreach ($items as $item) 
 			{
@@ -326,7 +326,7 @@ class Manager_User
 		ClassLoader::getInstance()->getClassInstance( 'Logging_Logger' )->insertLog('user', 'disable', $user_id, $user['s_email'], $this->is_admin ? 'admin' : 'user', $this->is_admin ? osc_logged_admin_id() : osc_logged_user_id());
 		if ($user['b_active'] == 1) 
 		{
-			$mItem = new ItemActions(true);
+			$mItem = ClassLoader::getInstance()->getClassInstance( 'Manager_Item', false, array( true ) );
 			$items = ClassLoader::getInstance()->getClassInstance( 'Model_Item' )->findByUserID($user_id);
 			foreach ($items as $item) 
 			{
