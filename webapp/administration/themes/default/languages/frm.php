@@ -15,122 +15,93 @@
  * You should have received a copy of the GNU Affero General Public
  * License along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+$languageForm = $classLoader->getClassInstance( 'Form_Language' );
 ?>
 
                 <div id="content_header" class="content_header">
                     <div style="float: left;">
-                        <img src="<?php
-echo osc_current_admin_theme_url('images/icon-language.png'); ?>" title="" alt="" />
+                        <img src="<?php echo osc_current_admin_theme_url('images/icon-language.png'); ?>" title="" alt="" />
                     </div>
-                    <div id="content_header_arrow">&raquo; <?php
-_e('Edit'); ?></div>
+                    <div id="content_header_arrow">&raquo; <?php _e('Edit'); ?></div>
                     <div style="clear: both;"></div>
                 </div>
                 <div id="content_separator"></div>
-                <!-- add edit language form -->
                 <div id="settings_form">
-                    <form action="<?php
-echo osc_admin_base_url(true); ?>" method="post">
-                        <input type="hidden" name="page" value="languages" />
-                        <input type="hidden" name="action" value="edit_post" />
-                        <?php
-LanguageForm::primary_input_hidden($aLocale); ?>
+                    <form action="<?php echo osc_admin_base_url(true); ?>" method="post">
+                        <input type="hidden" name="page" value="language" />
+                        <input type="hidden" name="action" value="edit" />
+                        <?php $languageForm->primary_input_hidden($aLocale); ?>
                         <div class="FormElement">
-                            <div class="FormElementName"><?php
-_e('Name'); ?></div>
+                            <div class="FormElementName"><?php _e('Name'); ?></div>
                             <div class="FormElementInput">
-                            <?php
-LanguageForm::name_input_text($aLocale); ?>
+                            <?php $languageForm->name_input_text($aLocale); ?>
                             </div>
                         </div>
                         <div class="FormElement">
-                            <div class="FormElementName"><?php
-_e('Short name'); ?></div>
+                            <div class="FormElementName"><?php _e('Short name'); ?></div>
                             <div class="FormElementInput">
-                            <?php
-LanguageForm::short_name_input_text($aLocale); ?>
+                            <?php $languageForm->short_name_input_text($aLocale); ?>
                             </div>
                         </div>
                         <div class="FormElement">
-                            <div class="FormElementName"><?php
-_e('Description'); ?></div>
+                            <div class="FormElementName"><?php _e('Description'); ?></div>
                             <div class="FormElementInput">
-                            <?php
-LanguageForm::description_input_text($aLocale); ?>
+                            <?php $languageForm->description_input_text($aLocale); ?>
                             </div>
                         </div>
                         <div class="FormElement">
-                            <div class="FormElementName"><?php
-_e('Currency format'); ?></div>
+                            <div class="FormElementName"><?php _e('Currency format'); ?></div>
                             <div class="FormElementInput">
-                            <?php
-LanguageForm::currency_format_input_text($aLocale); ?>
+                            <?php $languageForm->currency_format_input_text($aLocale); ?>
                             </div>
                         </div>
                         <div class="FormElement">
-                            <div class="FormElementName"><?php
-_e('Number of decimals'); ?></div>
+                            <div class="FormElementName"><?php _e('Number of decimals'); ?></div>
                             <div class="FormElementInput">
-                            <?php
-LanguageForm::num_dec_input_text($aLocale); ?>
+                            <?php $languageForm->num_dec_input_text($aLocale); ?>
                             </div>
                         </div>
                         <div class="FormElement">
-                            <div class="FormElementName"><?php
-_e('Decimal point'); ?></div>
+                            <div class="FormElementName"><?php _e('Decimal point'); ?></div>
                             <div class="FormElementInput">
-                            <?php
-LanguageForm::dec_point_input_text($aLocale); ?>
+                            <?php $languageForm->dec_point_input_text($aLocale); ?>
                             </div>
                         </div>
                         <div class="FormElement">
-                            <div class="FormElementName"><?php
-_e('Thousands separator'); ?></div>
+                            <div class="FormElementName"><?php _e('Thousands separator'); ?></div>
                             <div class="FormElementInput">
-                            <?php
-LanguageForm::thousands_sep_input_text($aLocale); ?>
+                            <?php $languageForm->thousands_sep_input_text($aLocale); ?>
                             </div>
                         </div>
                         <div class="FormElement">
-                            <div class="FormElementName"><?php
-_e('Date format'); ?></div>
+                            <div class="FormElementName"><?php _e('Date format'); ?></div>
                             <div class="FormElementInput">
-                            <?php
-LanguageForm::date_format_input_text($aLocale); ?>
+                            <?php $languageForm->date_format_input_text($aLocale); ?>
                             </div>
                         </div>
                         <div class="FormElement">
-                            <div class="FormElementName"><?php
-_e('Stopwords'); ?></div>
+                            <div class="FormElementName"><?php _e('Stopwords'); ?></div>
                             <div class="FormElementInput">
-                            <?php
-LanguageForm::description_textarea($aLocale); ?>
+                            <?php $languageForm->description_textarea($aLocale); ?>
                             </div>
                         </div>
                         <div class="FormElement">
                             <div class="FormElementName"></div>
                             <div class="FormElementInput">
-                            <?php
-LanguageForm::enabled_input_checkbox($aLocale); ?>&nbsp;<label for="b_enabled"><?php
-_e('Enabled for the public website'); ?></label>
+                            <?php $languageForm->enabled_input_checkbox($aLocale); ?>&nbsp;<label for="b_enabled"><?php _e('Enabled for the public website'); ?></label>
                             </div>
                         </div>
                         <div class="FormElement">
                             <div class="FormElementName"></div>
                             <div class="FormElementInput">
-                            <?php
-LanguageForm::enabled_bo_input_checkbox($aLocale); ?>&nbsp;<label for="b_enabled_bo"><?php
-_e('Enabled for the backoffice (administration)'); ?></label>
+                            <?php $languageForm->enabled_bo_input_checkbox($aLocale); ?>&nbsp;<label for="b_enabled_bo"><?php _e('Enabled for the backoffice (administration)'); ?></label>
                             </div>
                         </div>
                         <div class="FormElement">
                             <div class="FormElementName"></div>
                             <div class="FormElementInput">
-                                <button class="formButton" type="button" onclick="window.location='<?php
-echo osc_admin_base_url(true); ?>?page=languages';" ><?php
-_e('Cancel'); ?></button>
-                                <button class="formButton" type="submit"><?php
-_e('Update'); ?></button>
+                                <button class="formButton" type="button" onclick="window.location='<?php echo osc_admin_base_url(true); ?>?page=languages';" ><?php _e('Cancel'); ?></button>
+                                <button class="formButton" type="submit"><?php _e('Update'); ?></button>
                             </div>
                         </div>
                     </form>

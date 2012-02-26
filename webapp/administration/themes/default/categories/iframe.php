@@ -16,41 +16,31 @@
  * License along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 $action_frm = "edit_category_post";
+$classLoader = ClassLoader::getInstance();
+$categoryForm = $classLoader->getClassInstance( 'Form_Category' );
+$locales = ClassLoader::getInstance()->getClassInstance( 'Model_Locale' )->listAllEnabled();
+$categoryForm->multilanguage_name_description( $locales, $category );
 ?>
 
 <div id="settings_form">
-    <form action="<?php
-echo osc_admin_base_url(true); ?>?page=ajax" method="post">
-            <input type="hidden" name="action" value="<?php
-echo $action_frm; ?>" />
+    <form action="<?php echo osc_admin_base_url(true); ?>?page=ajax" method="post">
+            <input type="hidden" name="action" value="<?php echo $action_frm; ?>" />
             
-            <?php
-CategoryForm::primary_input_hidden($category); ?>
+            <?php $categoryForm->primary_input_hidden($category); ?>
             
             <div class="FormElement">
-                <div class="FormElementName"><?php
-_e('Expirations days'); ?> <?php
-_e('(0 = no expiration)'); ?></div>
+                <div class="FormElementName"><?php _e('Expirations days'); ?> <?php _e('(0 = no expiration)'); ?></div>
                 <div class="FormElementInput">
-                   <?php
-CategoryForm::expiration_days_input_text($category); ?>
+                   <?php $categoryForm->expiration_days_input_text($category); ?>
                 </div>
             </div>
 
             <div class="clear20"></div>
-
-            <?php
-$locales = ClassLoader::getInstance()->getClassInstance( 'Model_Locale' )->listAllEnabled();
-CategoryForm::multilanguage_name_description($locales, $category);
-?>
-
             <div class="FormElement">
                 <div class="FormElementName"></div>
                 <div class="FormElementInput">
-                    <button class="formButton" type="button" onclick="$('#settings_form').remove();" ><?php
-_e('Cancel'); ?></button>
-                    <button class="formButton" type="submit" ><?php
-_e('Save'); ?></button>
+                    <button class="formButton" type="button" onclick="$('#settings_form').remove();" ><?php _e('Cancel'); ?></button>
+                    <button class="formButton" type="submit" ><?php _e('Save'); ?></button>
                 </div>
             </div>
 
@@ -73,13 +63,11 @@ _e('Save'); ?></button>
                         $('#settings_form').fadeOut('fast', function(){
                             $('#settings_form').remove();
                         });
-                        message += '<img style="padding-right:5px;padding-top:2px;" src="<?php
-echo osc_current_admin_theme_url('images/tick.png'); ?>"/>';
+                        message += '<img style="padding-right:5px;padding-top:2px;" src="<?php echo osc_current_admin_theme_url('images/tick.png'); ?>"/>';
                         message += ret.msg;
                         $('div#settings_form').parent().parent().find('.quick_edit').html(ret.text);
                     } else {
-                        message += '<img style="padding-right:5px;padding-top:2px;" src="<?php
-echo osc_current_admin_theme_url('images/cross.png'); ?>"/>';
+                        message += '<img style="padding-right:5px;padding-top:2px;" src="<?php echo osc_current_admin_theme_url('images/cross.png'); ?>"/>';
                         message += ret.msg; 
 
                     }
@@ -91,13 +79,11 @@ echo osc_current_admin_theme_url('images/cross.png'); ?>"/>';
                             $("#jsMessage").html("");
                         });
                     }, 3000);
-                    $('div.content_list_<?php
-echo osc_category_id(); ?>').html('');
+                    $('div.content_list_<?php echo osc_category_id( $category ); ?>').html('');
                 },
                 error: function(){
                     $("#jsMessage").fadeIn("fast");
-                    $("#jsMessage").html("<?php
-_e('Ajax error, try again.'); ?>");
+                    $("#jsMessage").html("<?php _e('Ajax error, try again.'); ?>");
                     setTimeout(function(){
                         $("#jsMessage").fadeOut("slow", function () {
                             $("#jsMessage").html("");
@@ -112,3 +98,4 @@ _e('Ajax error, try again.'); ?>");
     });     
     tabberAutomatic();
 </script>
+

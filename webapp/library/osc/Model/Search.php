@@ -90,11 +90,6 @@ class Model_Search extends DAO
 	{
 		return (array(0 => 'asc', 1 => 'desc'));
 	}
-	public function reconnect() 
-	{
-		//   $this->conn = getConnection();
-		
-	}
 	/**
 	 * Add conditions to the search
 	 *
@@ -700,7 +695,8 @@ SQL;
 	 */
 	public function doSearch($extended = true) 
 	{
-		$result = $this->dao->query($this->makeSQL(false));
+		$sql = $this->makeSQL( false );
+		$result = $this->dao->query( $sql );
 		// get total items
 		$datatmp = $this->dao->query('SELECT FOUND_ROWS() as totalItems');
 		$data = $datatmp->row();
@@ -742,20 +738,44 @@ SQL;
 	 */
 	public function getPremiums($max = 2) 
 	{
-		$this->order(sprintf('order_premium_views', DB_TABLE_PREFIX), 'ASC');
-		$this->page(0, $max);
-		$this->addField(sprintf('sum(%st_item_stats.i_num_premium_views) as total_premium_views', DB_TABLE_PREFIX));
-		$this->addField(sprintf('( sum(%st_item_stats.i_num_premium_views) + sum(%st_item_stats.i_num_premium_views) * RAND() * 0.7 + DATEDIFF(\'%s\', %sitem.pub_date) * 0.3) as order_premium_views', DB_TABLE_PREFIX, DB_TABLE_PREFIX, date('Y-m-d H:i:s'), DB_TABLE_PREFIX));
-		$this->addTable(sprintf('%st_item_stats', DB_TABLE_PREFIX));
-		$this->addConditions(sprintf('%st_item_stats.fk_i_item_id = %sitem.pk_i_id', DB_TABLE_PREFIX, DB_TABLE_PREFIX));
-		$this->addConditions(sprintf("%sitem.b_premium = 1", DB_TABLE_PREFIX));
-		$items = $this->doSearch(false);
+		$this->sql = <<<SQL
+SELECT
+	/*TABLE_PREFIX*/item.*, /*TABLE_PREFIX*/t_item_location.*, /*TABLE_PREFIX*/t_category_description.s_name AS s_category_name,
+	SUM( /*TABLE_PREFIX*/t_item_stats.i_num_premium_views ) AS total_premium_views,
+	( SUM( /*TABLE_PREFIX*/t_item_stats.i_num_premium_views ) + SUM( /*TABLE_PREFIX*/t_item_stats.i_num_premium_views ) * RAND() * 0.7 + DATEDIFF( ?, /*TABLE_PREFIX*/item.pub_date ) * 0.3 ) AS order_premium_views
+FROM
+	/*TABLE_PREFIX*/item
+INNER JOIN
+	/*TABLE_PREFIX*/t_category ON ( /*TABLE_PREFIX*/item.fk_i_category_id = /*TABLE_PREFIX*/t_category.pk_i_id )
+INNER JOIN
+	/*TABLE_PREFIX*/t_category_description ON ( /*TABLE_PREFIX*/t_category_description.fk_i_category_id = /*TABLE_PREFIX*/t_category.pk_i_id )
+LEFT JOIN
+	/*TABLE_PREFIX*/t_item_stats ON ( /*TABLE_PREFIX*/t_item_stats.fk_i_item_id = /*TABLE_PREFIX*/item.pk_i_id )
+LEFT JOIN
+	/*TABLE_PREFIX*/t_item_location ON ( /*TABLE_PREFIX*/t_item_location.fk_i_item_id = /*TABLE_PREFIX*/item.pk_i_id )
+WHERE
+	b_premium IS TRUE
+GROUP BY
+	/*TABLE_PREFIX*/item.pk_i_id
+ORDER BY
+	order_premium_views ASC
+LIMIT
+	0, ?
+SQL;
+		$currentDate = date( 'Y-m-d H:i:s' );
+
+		$stmt = $this->prepareStatement( $this->sql );
+		$stmt->bind_param( 'sd', $currentDate, $max );
+		$items = $this->fetchAll( $stmt );
+		$stmt->close();
+
 		$mStat = ClassLoader::getInstance()->getClassInstance( 'Model_ItemStats' );
 		foreach ($items as $item) 
 		{
 			$mStat->increase('i_num_premium_views', $item['pk_i_id']);
 		}
-		return ClassLoader::getInstance()->getClassInstance( 'Model_Item' )->extendData($items);
+
+		return $this->classLoader->getClassInstance( 'Model_Item' )->extendData( $items );
 	}
 	public function getLatestItems() 
 	{

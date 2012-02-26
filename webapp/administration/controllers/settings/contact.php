@@ -27,11 +27,16 @@ class CAdminSettings extends Controller_Administration
 
 	public function doPost( HttpRequest $req, HttpResponse $res )
 	{
+		$preferenceModel = $this->getClassLoader()
+			->getClassInstance( 'Model_Preference' );
+		
 		$enabled_attachment = Params::getParam('enabled_attachment');
-		if ($enabled_attachment == '') $enabled_attachment = 0;
-		else $enabled_attachment = 1;
-		// format parameters
-		$iUpdated = Preference::newInstance()->update(array('s_value' => $enabled_attachment), array('s_name' => 'contact_attachment'));
+		if ($enabled_attachment == '')
+			$enabled_attachment = 0;
+		else
+			$enabled_attachment = 1;
+
+		$iUpdated = $preferenceModel->update(array('s_value' => $enabled_attachment), array('s_name' => 'contact_attachment'));
 		if ($iUpdated > 0) 
 		{
 			osc_add_flash_ok_message(_m('Contact configuration has been updated'), 'admin');

@@ -61,7 +61,7 @@ INSERT INTO /*TABLE_PREFIX*/t_preference VALUES
     ,('osclass', 'maxResultsPerPage@search', '50', 'INTEGER')
     ,('osclass', 'defaultShowAs@search', 'list', 'STRING')
     ,('osclass', 'defaultOrderField@search', 'pub_date', 'STRING')
-    ,('osclass', 'defaultOrderType@search', '1', 'BOOLEAN')
+    ,('osclass', 'defaultOrderType@search', 'desc', 'STRING')
     ,('osclass', 'admin_theme', 'default', 'STRING')
     ,('osclass', 'akismetKey', '', 'STRING')
     ,('osclass', 'recaptchaPrivKey', '', 'STRING')

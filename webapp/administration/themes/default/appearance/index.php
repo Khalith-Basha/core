@@ -17,77 +17,77 @@
  */
 ?>
 
-        <script type="text/javascript">
-            $(function() {
-                $("#button_cancel").click(function() {
-                    if(confirm('<?php _e('Are you sure you want to cancel?'); ?>')) {
-                        setTimeout ("window.location = 'appearance.php';", 100) ;
-                    }
-                });
-            });
-        </script>
-                <div id="content_header" class="content_header">
-                    <div style="float: left;">
-                        <img src="<?php echo osc_current_admin_theme_url('images/themes-icon.png'); ?>" title="" alt=""/>
-                    </div>
-                    <div id="content_header_arrow">&raquo; <?php _e('Appearance'); ?></div>
-                    <a href="<?php echo osc_admin_base_url(true); ?>?page=appearance&action=add" id="button_open"><?php _e('Add a new theme'); ?></a>
-                    <div style="clear: both;"></div>
-                </div>
+<script type="text/javascript">
+$(function() {
+$("#button_cancel").click(function() {
+if(confirm('<?php _e('Are you sure you want to cancel?'); ?>')) {
+window.location = 'appearance.php';
+}
+});
+});
+</script>
+<div id="content_header" class="content_header">
+<div style="float: left;">
+<img src="<?php echo osc_current_admin_theme_url('images/themes-icon.png'); ?>" title="" alt=""/>
+</div>
+<div id="content_header_arrow">&raquo; <?php _e('Appearance'); ?></div>
+<a href="<?php echo osc_admin_base_url(true); ?>?page=appearance&action=add" id="button_open"><?php _e('Add a new theme'); ?></a>
+<div style="clear: both;"></div>
+</div>
 
-                <?php osc_show_flash_message('admin'); ?>
+<?php osc_show_flash_message('admin'); ?>
 
-                <div id="content_separator"></div>
-                <div id="list_themes_div" style="border: 1px solid #ccc; background: #eee;">
-                    <div style="padding: 20px;">
+<div id="content_separator"></div>
+<div id="list_themes_div" style="border: 1px solid #ccc; background: #eee;">
+<div style="padding: 20px;">
 
-			<div id="current_theme"><?php _e('Current theme'); ?></div>
+<div id="current_theme"><?php _e('Current theme'); ?></div>
 
-			<?php if( isset( $screenshotPath ) ): ?>
-			<div id="current_theme_pic"><img src="<?php echo $screenshotPath; ?>" style="width: 280px;" title="" alt="" /></div>
-			<?php endif; ?>
-                        <div id="current_theme_info">
-                            <strong><?php echo $currentTheme['name']; ?> <?php echo $currentTheme['version']; ?>. <?php _e('Author'); ?> <a target="_blank" href="<?php echo $currentTheme['author_url']; ?>"><?php echo $currentTheme['author_name']; ?></a></strong>
-                        </div>
-			<div id="current_theme_desc"><?php echo $currentTheme['description']; ?></div>
+<div id="current_theme_pic">
+<?php if( !empty( $currentTheme['screenshot'] ) ): ?>
+<img src="<?php echo $currentTheme['screenshot']; ?>" style="width: 280px;" alt="Theme screenshot" />
+<?php else: ?>
+<p>(screenshot has not been found)</p>
+<?php endif; ?>
+</div>
 
-                        <div id="content_separator"></div>
-                        <div id="current_theme"><?php _e('Available themes'); ?></div>
+<div id="current_theme_info">
+<strong><?php echo $currentTheme['name']; ?> <?php echo $currentTheme['version']; ?>. <?php _e('Author'); ?> <a target="_blank" href="<?php echo $currentTheme['author_url']; ?>"><?php echo $currentTheme['author_name']; ?></a></strong>
+</div>
+<div id="current_theme_desc"><?php echo $currentTheme['description']; ?></div>
 
-                        <?php
-$i = 1;
-$colnums = 2;
-$c = 1; ?>
+<div id="content_separator"></div>
+<div id="current_theme"><?php _e('Available themes'); ?></div>
 
-			<div>
-				<?php if( 0 === count( $availableThemes ) ): ?>
-				<p>No themes are available yet.</p>
-				<?php endif; ?>
-                            <?php foreach( $availableThemes as $theme ) { ?>
-                                    <center>
-                                        <div style="width: 49%; float: left; padding-top: 10px; padding-bottom: 20px; <?php if ($c == 1)  { ?> border-right: 1px solid #ccc;<?php } ?>">
-                                            <div id="available_theme_info">
-                                                <strong><?php echo $theme['name']; ?> <?php echo $theme['version']; ?> by <a href="<?php echo $theme['author_url']; ?>"><?php echo $theme['author_name']; ?></a></strong>
-                                            </div>
-                                            <div id="available_theme_actions">
-                                                <a href="<?php echo osc_admin_base_url(true); ?>?page=appearance&action=activate&amp;theme=<?php echo $theme['int_name']; ?>"><?php _e('Activate'); ?></a> |
-                                                <a target="_blank" href="<?php echo osc_base_url(true); ?>?theme=<?php echo $theme; ?>"><?php _e('Preview'); ?></a>
-                                            </div>
-                                            <div id="available_theme_pic">
-                                                <img src="<?php echo osc_base_url(); ?>/components/themes/<?php echo $theme; ?>/screenshot.png" style="width: 280px;" title="" alt="" />
-                                            </div>
-                                            <div id="available_theme_desc"><?php echo $theme['description']; ?></div>
-                                            <div style="clear: both;"></div>
-                                        </div>
-                                    </center>
-                                    <?php $c == $colnums ? $c = 1 : $c++; ?>
-                            <?php } ?>
+<div>
+<?php if( 0 === count( $availableThemes ) ): ?>
+<p>No themes are available yet.</p>
+<?php endif; ?>
+<?php foreach( $availableThemes as $theme ): ?>
+<center>
+<div style="width: 49%; float: left; padding-top: 10px; padding-bottom: 20px;">
+<div id="available_theme_info">
+<strong><?php echo $theme['name']; ?> <?php echo $theme['version']; ?> by <a href="<?php echo $theme['author_url']; ?>"><?php echo $theme['author_name']; ?></a></strong>
+</div>
+<div id="available_theme_actions">
+<a href="<?php echo osc_admin_base_url(true); ?>?page=appearance&action=activate&amp;theme=<?php echo $theme['int_name']; ?>"><?php _e('Activate'); ?></a> |
+<a target="_blank" href="<?php echo osc_base_url(true); ?>?theme=<?php echo $theme['int_name']; ?>"><?php _e('Preview'); ?></a>
+</div>
+<div id="available_theme_pic">
+<?php if( !empty( $theme['screenshot'] ) ): ?>
+<img src="<?php echo $theme['screenshot']; ?>" width="280" alt="Theme screenshot" />
+<?php else: ?>
+<p>(screenshot has not been found)</p>
+<?php endif; ?>
+</div>
+<div id="available_theme_desc"><?php echo $theme['description']; ?></div>
+<div style="clear: both;"></div>
+</div>
+</center>
+<?php endforeach; ?>
 
-                            <?php if ($i == $colnums) echo '<div style="clear:both;"></div>';
-$i = 1;
-if ($i != $colnums) $i++; ?>
-                            <div style="clear:both;"></div>
-                        </div>
-                    </div>
-                </div> <!-- end of list themes -->
+<div style="clear:both;"></div>
+</div>
+</div>
+</div>
 

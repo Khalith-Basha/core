@@ -573,10 +573,11 @@ class Manager_Item
 			$status = 'INACTIVE';
 			$status_num = 1;
 		}
-		if (osc_akismet_key()) 
+		if( osc_akismet_key() )
 		{
+			$indexUrls = $classLoader->getClassInstance( 'Url_Index' );
 			require_once 'Akismet.class.php';
-			$akismet = new Akismet(osc_base_url(), osc_akismet_key());
+			$akismet = new Akismet( $indexUrls->getBaseUrl(), osc_akismet_key() );
 			$akismet->setCommentAuthor($authorName);
 			$akismet->setCommentAuthorEmail($authorEmail);
 			$akismet->setCommentContent($body);

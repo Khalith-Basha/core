@@ -32,46 +32,32 @@ $default_lang = osc_language();
                     return anRows;
                 };
 
-                sSearchName = "<?php
-_e('Search'); ?>...";
+                sSearchName = "<?php _e('Search'); ?>...";
                 oTable = $('#datatables_list').dataTable({
                     "bAutoWidth": false
                     ,"sDom": '<"top"fl>rt<"bottom"ip<"clear">'
                     ,"oLanguage": {
-                        "sProcessing":   "<?php
-_e('Processing'); ?>..."
-                        ,"sLengthMenu":   "<?php
-_e('Show _MENU_ entries'); ?>"
-                        ,"sZeroRecords":  "<?php
-_e('No matching records found'); ?>"
-                        ,"sInfo":         "<?php
-_e('Showing _START_ to _END_ of _TOTAL_ entries'); ?>"
-                        ,"sInfoEmpty":    "<?php
-_e('Showing 0 to 0 of 0 entries'); ?>"
-                        ,"sInfoFiltered": "(<?php
-_e('filtered from _MAX_ total entries'); ?>)"
+                        "sProcessing":   "<?php _e('Processing'); ?>..."
+                        ,"sLengthMenu":   "<?php _e('Show _MENU_ entries'); ?>"
+                        ,"sZeroRecords":  "<?php _e('No matching records found'); ?>"
+                        ,"sInfo":         "<?php _e('Showing _START_ to _END_ of _TOTAL_ entries'); ?>"
+                        ,"sInfoEmpty":    "<?php _e('Showing 0 to 0 of 0 entries'); ?>"
+                        ,"sInfoFiltered": "(<?php _e('filtered from _MAX_ total entries'); ?>)"
                         ,"sInfoPostFix":  ""
-                        ,"sSearch":       "<?php
-_e('Search'); ?>:"
+                        ,"sSearch":       "<?php _e('Search'); ?>:"
                         ,"sUrl":          ""
                         ,"oPaginate": {
-                            "sFirst":    "<?php
-_e('First'); ?>"
-                            ,"sPrevious": "<?php
-_e('Previous'); ?>"
-                            ,"sNext":     "<?php
-_e('Next'); ?>"
-                            ,"sLast":     "<?php
-_e('Last'); ?>"
+                            "sFirst":    "<?php _e('First'); ?>"
+                            ,"sPrevious": "<?php _e('Previous'); ?>"
+                            ,"sNext":     "<?php _e('Next'); ?>"
+                            ,"sLast":     "<?php _e('Last'); ?>"
                         }
-                        ,"sLengthMenu": '<div style="float:left;"><?php
-_e('Show'); ?> <select class="display" id="select_range">'
+                        ,"sLengthMenu": '<div style="float:left;"><?php _e('Show'); ?> <select class="display" id="select_range">'
                                         + '<option value="10">10</option>'
                                         + '<option value="15">15</option>'
                                         + '<option value="20">20</option>'
                                         + '<option value="100">100</option>'
-                                        + '</select> <?php
-_e('entries'); ?>'
+                                        + '</select> <?php _e('entries'); ?>'
                         ,"sSearch": '<span class="ui-icon ui-icon-search" style="display: inline-block;"></span>'
                     }
                     ,"sPaginationType": "full_numbers"
@@ -84,19 +70,19 @@ foreach ($locales as $l)
 	echo $l['pk_c_code']; ?>' />"
                                 ,"<?php
 	echo str_replace('"', '\"', $l['s_name']); ?> <div id='datatables_quick_edit'> <a href='<?php
-	echo osc_admin_base_url(true); ?>?page=languages&action=edit&amp;id=<?php
+	echo osc_admin_base_url(true); ?>?page=language&action=edit&amp;id=<?php
 	echo $l['pk_c_code']; ?>'><?php
 	_e('Edit'); ?></a> | <a href='<?php
-	echo osc_admin_base_url(true); ?>?page=languages&action=<?php
+	echo osc_admin_base_url(true); ?>?page=language&action=<?php
 	echo $l['b_enabled'] == 1 ? 'disable_selected' : 'enable_selected'; ?>&amp;id[]=<?php
 	echo $l['pk_c_code']; ?>'><?php
 	_e($l['b_enabled'] == 1 ? 'Disable (website)' : 'Enable (website)'); ?></a> | <a href='<?php
-	echo osc_admin_base_url(true); ?>?page=languages&action=<?php
+	echo osc_admin_base_url(true); ?>?page=language&action=<?php
 	echo $l['b_enabled_bo'] == 1 ? 'disable_bo_selected' : 'enable_bo_selected'; ?>&amp;id[]=<?php
 	echo $l['pk_c_code']; ?>'><?php
 	_e($l['b_enabled_bo'] == 1 ? 'Disable (administration)' : 'Enable (oc-admin)'); ?></a> | <a onclick=\"javascript:return confirm('<?php
 	_e('This action can\\\\\'t be undone. Are you sure you want to continue?'); ?>')\" href='<?php
-	echo osc_admin_base_url(true); ?>?page=languages&action=delete&amp;id[]=<?php
+	echo osc_admin_base_url(true); ?>?page=language&action=delete&amp;id[]=<?php
 	echo $l['pk_c_code']; ?>'><?php
 	_e('Delete'); ?></a></div>"
                                 ,"<?php
@@ -119,64 +105,45 @@ foreach ($locales as $l)
                                 ,"sWidth": "10px"
                                 ,"bSearchable": false
                             }
-                            ,{"sTitle": "<?php
-_e('Name'); ?>", "sWidth": "300px"}
-                            ,{"sTitle": "<?php
-_e('Short name'); ?>"}
-                            ,{"sTitle": "<?php
-_e('Description'); ?>"}
-                            ,{"sTitle": "<?php
-_e('Enabled (website)'); ?>"}
-                            ,{"sTitle": "<?php
-_e('Enabled (administration)'); ?>"}
+                            ,{"sTitle": "<?php _e('Name'); ?>", "sWidth": "300px"}
+                            ,{"sTitle": "<?php _e('Short name'); ?>"}
+                            ,{"sTitle": "<?php _e('Description'); ?>"}
+                            ,{"sTitle": "<?php _e('Enabled (website)'); ?>"}
+                            ,{"sTitle": "<?php _e('Enabled (administration)'); ?>"}
                         ]
                     });
 
                 });
         </script>
 
-        <script type="text/javascript" src="<?php
-echo osc_current_admin_theme_url('js/datatables.post_init.js'); ?>"></script>
+        <script type="text/javascript" src="<?php echo osc_current_admin_theme_url('js/datatables.post_init.js'); ?>"></script>
 
                 <div id="content_header" class="content_header">
                     <div style="float: left;">
-                        <img src="<?php
-echo osc_current_admin_theme_url('images/icon-language.png'); ?>" title="" alt=""/>
+                        <img src="<?php echo osc_current_admin_theme_url('images/icon-language.png'); ?>" title="" alt=""/>
                     </div>
-                    <div id="content_header_arrow">&raquo; <?php
-_e('Languages'); ?></div>
-                    <a href="<?php
-echo osc_admin_base_url(true); ?>?page=languages&action=add" id="button_open"><?php
-_e('Add'); ?></a>
+                    <div id="content_header_arrow">&raquo; <?php _e('Languages'); ?></div>
+                    <a href="<?php echo osc_admin_base_url(true); ?>?page=language&action=add" id="button_open"><?php _e('Add'); ?></a>
                     <div style="clear: both;"></div>
                 </div>
 
                 <div id="content_separator"></div>
 
-                <?php
-osc_show_flash_message('admin'); ?>
+                <?php osc_show_flash_message('admin'); ?>
 
                 <div id="TableToolsToolbar">
                     <select name="action" id="bulk_actions" class="display">
-                        <option value=""><?php
-_e('Bulk Actions'); ?></option>
-                        <option value="enable_selected"><?php
-_e('Enable (Website)'); ?></option>
-                        <option value="disable_selected"><?php
-_e('Disable (Website)'); ?></option>
-                        <option value="enable_bo_selected"><?php
-_e('Enable (administration)'); ?></option>
-                        <option value="disable_bo_selected"><?php
-_e('Disable (administration)'); ?></option>
-                        <option value="delete"><?php
-_e('Delete') ?></option>
+                        <option value=""><?php _e('Bulk Actions'); ?></option>
+                        <option value="enable_selected"><?php _e('Enable (Website)'); ?></option>
+                        <option value="disable_selected"><?php _e('Disable (Website)'); ?></option>
+                        <option value="enable_bo_selected"><?php _e('Enable (administration)'); ?></option>
+			<option value="disable_bo_selected"><?php _e('Disable (administration)'); ?></option>
+                        <option value="delete"><?php _e('Delete') ?></option>
                     </select>
-                    &nbsp;<button id="bulk_apply" class="display"><?php
-_e('Apply'); ?></button>
+                    &nbsp;<button id="bulk_apply" class="display"><?php _e('Apply'); ?></button>
                 </div>
 
-                <form id="datatablesForm" action="<?php
-echo osc_admin_base_url(true); ?>?page=languages" method="post">
+                <form id="datatablesForm" action="<?php echo osc_admin_base_url(true); ?>?page=language" method="post">
                     <table cellpadding="0" cellspacing="0" border="0" class="display" id="datatables_list"></table>
                     <br />
                     <div style="clear: both;"></div>

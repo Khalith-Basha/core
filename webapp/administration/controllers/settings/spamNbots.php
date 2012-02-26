@@ -27,6 +27,8 @@ class CAdminSettings extends Controller_Administration
 
 	public function doPost( HttpRequest $req, HttpResponse $res )
 	{
+		$preferenceModel = $this->getClassLoader()
+			->getClassInstance( 'Model_Preference' );
 		$iUpdated = 0;
 		$akismetKey = Params::getParam('akismetKey');
 		$akismetKey = trim($akismetKey);
@@ -34,9 +36,9 @@ class CAdminSettings extends Controller_Administration
 		$recaptchaPrivKey = trim($recaptchaPrivKey);
 		$recaptchaPubKey = Params::getParam('recaptchaPubKey');
 		$recaptchaPubKey = trim($recaptchaPubKey);
-		$iUpdated+= Preference::newInstance()->update(array('s_value' => $akismetKey), array('s_name' => 'akismetKey'));
-		$iUpdated+= Preference::newInstance()->update(array('s_value' => $recaptchaPrivKey), array('s_name' => 'recaptchaPrivKey'));
-		$iUpdated+= Preference::newInstance()->update(array('s_value' => $recaptchaPubKey), array('s_name' => 'recaptchaPubKey'));
+		$iUpdated+= $preferenceModel->update(array('s_value' => $akismetKey), array('s_name' => 'akismetKey'));
+		$iUpdated+= $preferenceModel->update(array('s_value' => $recaptchaPrivKey), array('s_name' => 'recaptchaPrivKey'));
+		$iUpdated+= $preferenceModel->update(array('s_value' => $recaptchaPubKey), array('s_name' => 'recaptchaPubKey'));
 		if ($iUpdated > 0) 
 		{
 			osc_add_flash_ok_message(_m('Akismet and reCAPTCHA have been updated'), 'admin');

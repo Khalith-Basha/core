@@ -34,6 +34,7 @@ class CWebUser extends Controller_Default
 		$user = $classLoader->getClassInstance( 'Model_User' )->findByPrimaryKey(Params::getParam('id'));
 		$view = $this->getView();
 		$view->assign('user', $user);
+		$redirectionUrl = $userUrls->getPublicProfileUrl( $user );
 		if ((osc_recaptcha_private_key() != '') && Params::existParam("recaptcha_challenge_field")) 
 		{
 			if (!osc_check_recaptcha()) 
@@ -43,12 +44,11 @@ class CWebUser extends Controller_Default
 				$this->getSession()->_setForm("yourName", Params::getParam('yourName'));
 				$this->getSession()->_setForm("phoneNumber", Params::getParam('phoneNumber'));
 				$this->getSession()->_setForm("message_body", Params::getParam('message'));
-				$this->redirectTo(osc_user_public_profile_url());
-				return false; // BREAK THE PROCESS, THE RECAPTCHA IS WRONG				
+				$this->redirectTo( $redirectionUrl );
 			}
 		}
 		osc_run_hook('hook_email_contact_user', Params::getParam('id'), Params::getParam('yourEmail'), Params::getParam('yourName'), Params::getParam('phoneNumber'), Params::getParam('message'));
-		$this->redirectTo( $userUrls->osc_user_public_profile_url( $user ));
+		$this->redirectTo( $redirectionUrl );
 	}
 }
 

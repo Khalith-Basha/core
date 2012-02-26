@@ -441,14 +441,7 @@ function osc_item_is_expired( array $item )
 		{
 			$date_expiration = strtotime(date("Y-m-d H:i:s", strtotime( osc_item_pub_date( $item ) ) ) . " +$expiration day");
 			$now = strtotime(date('Y-m-d H:i:s'));
-			if ($date_expiration < $now) 
-			{
-				return true;
-			}
-			else
-			{
-				return false;
-			}
+			return ($date_expiration < $now);
 		}
 	}
 }
@@ -728,8 +721,10 @@ function osc_has_item_comments()
  */
 function osc_format_price( array $item, $price )
 {
-	if ($price == null) return osc_apply_filter('item_price_null', __('Check with seller'));
-	if ($price == 0) return osc_apply_filter('item_price_zero', __('Free'));
+	if( $price == null )
+		return osc_apply_filter('item_price_null', __('Check with seller'));
+	if( $price == 0 )
+		return osc_apply_filter('item_price_zero', __('Free'));
 	$price = $price / 1000000;
 	$currencyFormat = osc_locale_currency_format();
 	$currencyFormat = str_replace('{NUMBER}', number_format($price, osc_locale_num_dec(), osc_locale_dec_point(), osc_locale_thousands_sep()), $currencyFormat);
@@ -838,22 +833,5 @@ function osc_item_meta_id()
 function osc_item_meta_slug() 
 {
 	return osc_field(osc_item_meta(), 's_slug', '');
-}
-
-/**
- * Gets the pagination links of comments pagination
- *
- * @return string pagination links
- */
-function osc_comments_pagination( array $item ) 
-{
-	if( 0 === osc_comments_per_page() || 'all' === osc_item_comments_page() )
-		return;
-
-	$classLoader = ClassLoader::getInstance();
-	$itemUrls = $classLoader->getClassInstance( 'Url_Item' );
-	$params = array('total' => ceil(osc_item_total_comments( $item ) / osc_comments_per_page()), 'selected' => osc_item_comments_page(), 'url' => $itemUrls->osc_item_comments_url( $item, '{PAGE}'));
-	return $classLoader->getClassInstance( 'Pagination', true, array( $params ) )
-		->showLinks();
 }
 

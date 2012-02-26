@@ -16,10 +16,11 @@
  * License along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 ?>
-
-<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en-US">
+<!DOCTYPE HTML>
+<html>
+<html dir="ltr" lang="en-US">
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta charset="utf8" />
         <title><?php _e('OpenSourceClassifieds admin panel login'); ?></title>
         <script type="text/javascript" src="<?php echo osc_admin_base_url(); ?>/themes/modern/js/jquery.js"></script>
 	<link type="text/css" href="<?php echo osc_admin_base_url( false ) . '/static/styles/backoffice_login.css'; ?>" media="screen" rel="stylesheet" />
@@ -42,7 +43,7 @@
                 <p>
                     <label>
                         <?php _e('Password'); ?>
-                        <input type="password" name="password" id="user_pass" class="input" size="20" tabindex="20" />
+                        <input type="password" name="password" id="user_pass" class="input" size="20" tabindex="20" required="required" />
                     </label>
                 </p>
 

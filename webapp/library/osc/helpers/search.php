@@ -51,7 +51,23 @@ function osc_search()
  */
 function osc_list_orders() 
 {
-	return array(__('Newly listed') => array('sOrder' => 'pub_date', 'iOrderType' => 'desc'), __('Lower price first') => array('sOrder' => 'i_price', 'iOrderType' => 'asc'), __('Higher price first') => array('sOrder' => 'i_price', 'iOrderType' => 'desc'));
+	return array(
+		__('Newly listed') => array(
+			'sOrder' => 'pub_date',
+			'sOrderType' => 'desc',
+			'iPage' => 0
+		),
+		__('Lower price first') => array(
+			'sOrder' => 'price',
+			'sOrderType' => 'asc',
+			'iPage' => 0
+		),
+		__('Higher price first') => array(
+			'sOrder' => 'price',
+			'sOrderType' => 'desc',
+			'iPage' => 0
+		)
+	);
 }
 /**
  * Gets if "has pic" option is enabled or not in the search

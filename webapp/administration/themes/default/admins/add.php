@@ -21,7 +21,7 @@
     <div style="padding: 20px;">
 
 	<form action="<?php echo osc_admin_base_url(true); ?>" method="post" onSubmit="return checkForm()">
-	    <input type="hidden" name="action" value="add_post" />
+	    <input type="hidden" name="action" value="add" />
 	    <input type="hidden" name="page" value="admins" />
 
 	    <div style="float: left; width: 50%;">

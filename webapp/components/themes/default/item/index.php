@@ -103,8 +103,10 @@ echo $view->render( 'header' );
                                             <?php } ?>
                                         </div>
                                     <?php endforeach; ?>
-                                    <div class="pagination">
-                                        <?php echo osc_comments_pagination( $item ); ?>
+				    <div class="pagination">
+					<?php foreach( $commentsPagination->getPages() as $page ): ?>
+						<a class="<?php echo $page['selected'] ? 'searchPaginationSelected' : 'searchPaginationNonSelected'; ?>" href="<?php echo $page['url']; ?>"><?php echo $page['number']; ?></a>
+					<?php endforeach; ?>
                                     </div>
                                 </div>
                             <?php endif; ?>
@@ -166,7 +168,7 @@ echo $view->render( 'header' );
                             </p>
                         <?php } else { ?>
                             <?php if (osc_item_user_id( $item ) != null)  { ?>
-                                <p class="name"><?php _e('Name', 'modern') ?>: <a href="<?php echo $userUrls->osc_user_public_profile_url( $user ); ?>" ><?php echo osc_item_contact_name( $item ); ?></a></p>
+                                <p class="name"><?php _e('Name', 'modern') ?>: <a href="<?php echo $userUrls->getPublicProfileUrl( $user ); ?>" ><?php echo osc_item_contact_name( $item ); ?></a></p>
                             <?php } else { ?>
                                 <p class="name"><?php _e('Name', 'modern') ?>: <?php echo osc_item_contact_name( $item ); ?></p>
                             <?php } ?>

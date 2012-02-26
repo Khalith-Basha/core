@@ -18,15 +18,10 @@
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-/**
- *
- */
+
 class Model_Widget extends DAO
 {
-	/**
-	 *
-	 */
-	function __construct() 
+	public function __construct() 
 	{
 		parent::__construct();
 		$this->setTableName('t_widget');
@@ -40,7 +35,7 @@ class Model_Widget extends DAO
 	 * @param type $location
 	 * @return array
 	 */
-	function findByLocation($location) 
+	public function findByLocation($location) 
 	{
 		$this->dao->select('*');
 		$this->dao->from($this->getTableName());
@@ -53,3 +48,4 @@ class Model_Widget extends DAO
 		return $result->result();
 	}
 }
+

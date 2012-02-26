@@ -29,7 +29,7 @@ class View_Default
 		$this->variables[ $name ] = $value;
 	}
 
-	public function render( $name = null )
+	public function render( $name = null, array $extraParams = array() )
 	{
 		if( is_null( $name ) )
 			$name = $this->name;
@@ -38,6 +38,8 @@ class View_Default
 			throw new Exception( 'Missing template name with setName() or render(name).' );
 
 		extract( $this->variables );
+		extract( $extraParams );
+
 		$classLoader = $this->classLoader;
 		$urlFactory = $this->classLoader->getClassInstance( 'Url_Abstract' );
 		$view = $this;

@@ -144,42 +144,34 @@ _e('Ajax error, try again.'); ?>");
         </script>
                 <div id="content_header" class="content_header">
                     <div style="float: left;">
-                        <img src="<?php
-echo osc_current_admin_theme_url('images/cat-icon.png'); ?>" title="" alt="" />
+                        <img src="<?php echo osc_current_admin_theme_url('images/cat-icon.png'); ?>" title="" alt="" />
                     </div>
-                    <div id="content_header_arrow">&raquo; <?php
-_e('Custom Fields'); ?></div>
-                    <div style="float:right;"><button id="button_add" onclick="show_add();" ><?php
-_e('Add new field'); ?></button></div>
+                    <div id="content_header_arrow">&raquo; <?php _e('Custom Fields'); ?></div>
+                    <div style="float:right;"><button id="button_add" onclick="show_add();" ><?php _e('Add new field'); ?></button></div>
                     <div id="jsMessage" class="" style="float:right;display:none;"></div>
                     <div style="clear: both;"></div>
                 </div>
                 <div id="content_separator"></div>
-                <?php
-osc_show_flash_message('admin'); ?>
+                <?php osc_show_flash_message('admin'); ?>
 
                 <div id="jsMessage" class="FlashMessage" style="display:none;"></div>
 
                 <div style="clear: both;"></div>
                 <div id="addframe">
                     <div style="padding: 20px;">
-                        <form id="new_field_form" action="<?php
-echo osc_admin_base_url(true); ?>" method="post">
+                        <form id="new_field_form" action="<?php echo osc_admin_base_url(true); ?>" method="post">
                             <input type="hidden" name="page" value="field" />
                             <input type="hidden" name="action" value="add_post" />
                             <div style="float: left; width: 100%;">
                                 <fieldset>
-                                    <legend><?php
-_e('Add new custom field'); ?></legend>
+                                    <legend><?php _e('Add new custom field'); ?></legend>
                                     <div class="FormElement">
-                                        <label for="name"><?php
-_e('Name'); ?></label>
+                                        <label for="name"><?php _e('Name'); ?></label>
                                         <input type="text" name="field_name" id="field_name" value="" />
                                     </div>
                                     <br/>
                                     <div class="FormElement">
-                                        <label><?php
-_e('Type'); ?></label>
+                                        <label><?php _e('Type'); ?></label>
                                         <select name="field_type_new" id="field_type">
                                             <option value="TEXT">TEXT</option>
                                             <option value="TEXTAREA">TEXTAREA</option>
@@ -188,35 +180,29 @@ _e('Type'); ?></label>
                                         </select>
                                     </div>
                                     <div class="FormElement" id="div_field_options">
-                                        <label for="name"><?php
-_e('Options (separeted by commas)'); ?></label>
+                                        <label for="name"><?php _e('Options (separeted by commas)'); ?></label>
                                         <input type="text" name="field_options" id="field_options" value="" />
                                     </div>
                                     <div class="FormElement">
                                         <input type="checkbox" id="field_required" name="field_required" value="1"/>
-                                        <label><?php
-_e('This field is required'); ?></label>
+                                        <label><?php _e('This field is required'); ?></label>
                                     </div>
                                     <div class="FormElement">
                                         <p>
-                                            <?php
-_e('Select the categories where you want to apply these attribute'); ?>:
+                                            <?php _e('Select the categories where you want to apply these attribute'); ?>:
                                         </p>
                                         <p>
                                             <table>
                                                 <tr style="vertical-align: top;">
-                                                    <td style="font-weight: bold;" colspan="<?php
-echo $numCols; ?>">
-                                                        <label for="categories"><?php
-_e("Preset categories"); ?></label><br />
+                                                    <td style="font-weight: bold;" colspan="<?php echo $numCols; ?>">
+                                                        <label for="categories"><?php _e("Preset categories"); ?></label><br />
                                                         <a style="font-size: x-small; color: gray;" href="#" onclick="checkAll('new_field_form', true); return false;"><?php
 _e("Check all"); ?></a> - <a style="font-size: x-small; color: gray;" href="#" onclick="checkAll('new_field_form', false); return false;"><?php
 _e("Uncheck all"); ?></a>
                                                     </td>
                                                     <td>
                                                         <ul id="new_cat_tree">
-                                                            <?php
-$categoryForm->categories_tree($categories, $selected); ?>
+                                                            <?php $categoryForm->categories_tree($categories, $selected); ?>
                                                         </ul>
                                                     </td>
                                                 </tr>
@@ -225,8 +211,7 @@ $categoryForm->categories_tree($categories, $selected); ?>
                                     </div>
                                     <div id="advanced_fields" class="shrink">
                                         <div class="text">
-                                            <span><?php
-_e('Advanced options'); ?></span>
+                                            <span><?php _e('Advanced options'); ?></span>
                                         </div>
                                     </div>
                                     <hr></hr>
@@ -246,12 +231,10 @@ _e('Advanced options'); ?></span>
                                         });
                                     </script>
                                     <div id="more-options" class="FormElement">
-                                        <label for="slug"><?php
-_e('Identifier name (only alphanumeric characters are allowed (a-z0-9_-)'); ?></label>
+                                        <label for="slug"><?php _e('Identifier name (only alphanumeric characters are allowed (a-z0-9_-)'); ?></label>
                                         <input type="text" name="field_slug" id="field_slug" value="" />
                                     </div>
-                                    <span style="float:right;"><input id="button_save" type="submit" value="<?php
-_e('Add'); ?>" /></span>
+                                    <span style="float:right;"><input id="button_save" type="submit" value="<?php _e('Add'); ?>" /></span>
                                 </fieldset>
                             </div>
                             <div style="clear: both;"></div>

@@ -19,9 +19,28 @@ class CAdminAppearance extends Controller_Administration
 {
 	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
-		$info = ClassLoader::getInstance()->getClassInstance( 'Ui_MainTheme' )->loadThemeInfo(osc_theme());
-		$this->getView()->assign("info", $info);
-		$this->doView('appearance/widgets.php');
+		$id = Params::getParam('id');
+		$widgetModel = $this->getClassLoader()
+			->getClassInstance( 'Model_Widget' );
+		$widget = $widgetModel->findByPrimaryKey($id);
+		$this->getView()->assign("widget", $widget);
+		$this->doView('appearance/add_widget.php');
+	}
+
+	public function doPost( HttpRequest $req, HttpResponse $res )
+	{
+		$widgetModel = $this->getClassLoader()
+			->getClassInstance( 'Model_Widget' );
+		$res = $widgetModel->update(array('s_description' => Params::getParam('description'), 's_content' => Params::getParam('content')), array('pk_i_id' => Params::getParam('id')));
+		if ($res) 
+		{
+			osc_add_flash_ok_message(_m('Widget updated correctly'), 'admin');
+		}
+		else
+		{
+			osc_add_flash_ok_message(_m('Widget cannot be updated correctly'), 'admin');
+		}
+		$this->redirectTo(osc_admin_base_url(true) . "?page=appearance&action=widgets");
 	}
 }
 

@@ -19,7 +19,7 @@
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-class Model_LatestSearches extends Model 
+class Model_SearchLatest extends Model 
 {
 	public function insert( $query )
 	{

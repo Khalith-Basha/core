@@ -27,7 +27,6 @@ class CAdminIndex extends Controller_Administration
 		$classLoader->loadFile( 'helpers/feeds' );
 
 		$this->getView()->assign("numUsers", $classLoader->getClassInstance( 'Model_User' )->count());
-		$this->getView()->assign("numAdmins", $classLoader->getClassInstance( 'Model_Admin' )->count());
 		$this->getView()->assign("numItems", $classLoader->getClassInstance( 'Model_Item' )->count());
 		$this->getView()->assign("numItemsPerCategory", osc_get_non_empty_categories());
 		$this->getView()->assign("newsList", osc_listNews());

@@ -297,33 +297,20 @@ class Url_User extends Url_Abstract
 		}
 	}
 
-		/**
-	 * Gets user's profile url
-	 *
+	/**
 	 * @return string
 	 */
-	function osc_user_public_profile_url( array $user, $id = null) 
+	public function getPublicProfileUrl( array $user )
 	{
-		if ($id == null) 
+		if( osc_rewrite_enabled() )
 		{
-			$id = osc_user_id( $user );
-		}
-		if ($id != '') 
-		{
-			if (osc_rewrite_enabled()) 
-			{
-				$path = $this->getBaseUrl() . '/user/profile/' . $id;
-			}
-			else
-			{
-				$path = sprintf($this->getBaseUrl(true) . '?page=user&action=pub_profile&id=%d', $id);
-			}
+			return $this->getBaseUrl() . '/user/profile/' . $user['pk_i_id'];
 		}
 		else
 		{
-			$path = '';
+			return $this->getBaseUrl( true ) . '?page=user&action=pub_profile&id=' . $user['pk_i_id'];
 		}
-		return $path;
+
 	}
 
 	/**

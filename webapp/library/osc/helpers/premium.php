@@ -26,18 +26,8 @@
  */
 function osc_get_premiums( $max = 2 )
 {
-	if (ClassLoader::getInstance()->getClassInstance( 'View_Default' )->varExists('search')) 
-	{
-		$mSearch = ClassLoader::getInstance()->getClassInstance( 'View_Default' )->_get('search');
-	}
-	else
-	{
-		$mSearch = ClassLoader::getInstance()->getClassInstance( 'Model_Search' );
-		ClassLoader::getInstance()->getClassInstance( 'View_Default' )->assign('search', $mSearch);
-	}
-	$mSearch->reconnect();
-	$premiums = $mSearch->getPremiums($max);
-	ClassLoader::getInstance()->getClassInstance( 'View_Default' )->assign('premiums', $premiums);
+	$mSearch = ClassLoader::getInstance()->getClassInstance( 'Model_Search' );
+	$premiums = $mSearch->getPremiums( $max );
 	return $premiums;
 }
 /**

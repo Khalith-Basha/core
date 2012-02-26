@@ -83,6 +83,12 @@ class Ui_MainTheme extends Ui_Theme
 			throw new Exception( "Function '$fxName' of theme '$theme' did not return an array." );
 		$result['int_name'] = $theme;
 
+		$screenshotPath = osc_base_url() . '/components/themes/' . $theme . '/screenshot.png';
+		if( file_exists( $screenshotPath ) )
+		{
+			$result['screenshot'] = $screenshotPath;
+		}
+
 		return $result;
 	}
 }

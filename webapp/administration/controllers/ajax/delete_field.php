@@ -15,13 +15,43 @@
  * You should have received a copy of the GNU Affero General Public
  * License along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-class CAdminAppearance extends Controller_Administration
+
+class CAdminAjax extends Controller_Administration
 {
+	function __construct() 
+	{
+		parent::__construct();
+		$this->ajax = true;
+	}
+
 	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
-		$info = ClassLoader::getInstance()->getClassInstance( 'Ui_MainTheme' )->loadThemeInfo(osc_theme());
-		$this->getView()->assign("info", $info);
-		$this->doView('appearance/widgets.php');
+		$id = Params::getParam("id");
+		$error = 0;
+		try
+		{
+			$fieldManager = $this->getClassLoader()
+				->getClassInstance( 'Model_Field' );
+			$fieldManager->deleteByPrimaryKey($id);
+			$message = __('The custom field have been deleted');
+		}
+		catch(Exception $e) 
+		{
+			$error = 1;
+			$message = __('Error while deleting');
+		}
+		$result = "{";
+		if ($error) 
+		{
+			$result.= '"error" : "';
+			$result.= $message;
+			$result.= '"';
+		}
+		else
+		{
+			$result.= '"ok" : "Saved." ';
+		}
+		$result.= "}";
+		echo $result;
 	}
 }
-

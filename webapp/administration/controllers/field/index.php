@@ -35,7 +35,7 @@ class CAdminField extends Controller_Administration
 			}
 		}
 		$this->getView()->assign("categories", $categories);
-		$this->getView()->assign("default_selected", $selected);
+		$this->getView()->assign("selected", $selected);
 		$this->getView()->assign("fields", $this->fieldManager->listAll());
 		$this->doView("fields/index.php");
 	}

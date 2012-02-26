@@ -31,16 +31,11 @@ class CAdminAppearance extends Controller_Administration
 		$themes = $themeManager->getListThemes();
 		foreach( $themes as $theme )
 		{
+			$themeInfo = $themeManager->loadThemeInfo( $theme );
 			if( $theme === $themeName )
-				$currentTheme = $themeManager->loadThemeInfo( $theme );
+				$currentTheme = $themeInfo;
 			else
-				$availableThemes[] = $themeManager->loadThemeInfo( $theme );
-		}
-
-		$screenshotPath = osc_base_url() . '/components/themes/' . $themeName . '/screenshot.png';
-		if( file_exists( $screenshotPath ) )
-		{
-			$view->assign( 'screenshotPath', $screenshotPath );
+				$availableThemes[] = $themeInfo;
 		}
 
 		$view->assign( 'currentTheme', $currentTheme );

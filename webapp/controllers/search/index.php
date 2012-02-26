@@ -22,6 +22,8 @@ class CWebSearch extends Controller_Default
 		$classLoader = $this->getClassLoader();
 
 		$input = $this->getInput();
+		$view = $this->getView();
+
 		$this->mSearch = $this->getClassLoader()->getClassInstance( 'Model_Search' );
 
 		$classLoader->loadFile( 'helpers/premium' );
@@ -93,7 +95,7 @@ class CWebSearch extends Controller_Default
 		$this->mSearch->setQueryString( $p_sPattern );
 		if( osc_save_latest_searches() && !empty( $p_sPattern ) )
 		{
-			$classLoader->getClassInstance( 'Model_LatestSearches' )
+			$classLoader->getClassInstance( 'Model_SearchLatest' )
 				->insert( $p_sPattern );
 		}
 
@@ -107,24 +109,9 @@ class CWebSearch extends Controller_Default
 		$p_sPriceMin = $input->getFloat( 'sPriceMin' );
 		$p_sPriceMax = $input->getFloat( 'sPriceMax');
 		//WE CAN ONLY USE THE FIELDS RETURNED BY $this->mSearch->getAllowedColumnsForSorting()
-		$p_sOrder = $input->getString( 'sOrder' );
-		if (!in_array($p_sOrder, $this->mSearch->getAllowedColumnsForSorting())) 
-		{
-			$p_sOrder = osc_default_order_field_at_search();
-		}
-		//ONLY 0 ( => 'asc' ), 1 ( => 'desc' ) AS ALLOWED VALUES
-		$p_iOrderType = $input->getString( 'iOrderType' );
-		$allowedTypesForSorting = $this->mSearch->getAllowedTypesForSorting();
-		$orderType = osc_default_order_type_at_search();
-		foreach ($allowedTypesForSorting as $k => $v) 
-		{
-			if ($p_iOrderType == $v) 
-			{
-				$orderType = $k;
-				break;
-			}
-		}
-		$p_iOrderType = $orderType;
+
+		$this->setSearchOrder( $view, $input );
+
 		$p_sFeed = $input->getString( 'sFeed' );
 		if ($p_sFeed != '') 
 		{
@@ -174,7 +161,6 @@ class CWebSearch extends Controller_Default
 			$this->mSearch->withPicture(true);
 		}
 		$this->mSearch->priceRange($p_sPriceMin, $p_sPriceMax);
-		$this->mSearch->order($p_sOrder, $allowedTypesForSorting[$p_iOrderType]);
 
 		$defaultRowsPerPage = osc_default_results_per_page_at_search();
 		$maxRowsPerPage = osc_max_results_per_page_at_search();
@@ -185,7 +171,6 @@ class CWebSearch extends Controller_Default
 
 		osc_run_hook('search_conditions', Params::getParamsAsArray());
 
-		$view = $this->getView();
 		$premiums = array();//osc_get_premiums();
 		$view->assign( 'premiums', $premiums );
 
@@ -203,8 +188,6 @@ class CWebSearch extends Controller_Default
 			$this->getView()->assign('search_start', $iStart);
 			$this->getView()->assign('search_end', $iEnd);
 			$this->getView()->assign('search_category', $p_sCategory);
-			$this->getView()->assign('search_order_type', $p_iOrderType);
-			$this->getView()->assign('search_order', $p_sOrder);
 			$this->getView()->assign('search_pattern', $p_sPattern);
 			$this->getView()->assign('search_from_user', $p_sUser);
 			$this->getView()->assign('search_total_pages', $iNumPages);
@@ -283,6 +266,25 @@ class CWebSearch extends Controller_Default
 				osc_run_hook('feed_' . $p_sFeed, $aItems);
 			}
 		}
+	}
+
+	protected function setSearchOrder( View_Default $view, Input_Get $input )
+	{
+		$p_sOrder = $input->getString( 'sOrder' );
+		if( !in_array( $p_sOrder, $this->mSearch->getAllowedColumnsForSorting() ) )
+		{
+			$p_sOrder = osc_default_order_field_at_search();
+		}
+		$this->mSearch->setOrderColumn( $p_sOrder );
+		$view->assign('search_order', $p_sOrder);
+
+		$p_iOrderType = $input->getString( 'sOrderType' );
+		if( !in_array( $p_iOrderType, $this->mSearch->getAllowedTypesForSorting() ) )
+		{
+			$p_iOrderType = osc_default_order_type_at_search();
+		}
+		$this->mSearch->setOrderDirection( $p_iOrderType );
+		$view->assign('search_order_type', $p_iOrderType);
 	}
 
 	protected function setViewTitle( View_Html $view, Input_Get $input )

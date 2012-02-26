@@ -31,14 +31,11 @@
                 extended_valid_elements : "script[type|src|charset|defer]"
             });
         </script>
-        <?php
-if (isset($action) && $action === "add_widget") 
-{ ?>
+        <?php if (isset($action) && $action === "add_widget")  { ?>
             <script type="text/javascript">
                 $(function() {
                     // change title of the page
-                    $(this).attr("title", "<?php
-	_e('Dashboard - Add New Widget'); ?>") ;
+                    $(this).attr("title", "<?php _e('Dashboard - Add New Widget'); ?>") ;
 
                     // remove stuff that we don't need
                     $('#button_open').remove();
@@ -58,56 +55,43 @@ if (isset($action) && $action === "add_widget")
 
                 <div id="content_header" class="content_header">
                     <div style="float: left;">
-                        <img src="<?php
-echo osc_current_admin_theme_url('images/plugins-icon.png'); ?>" title="" alt="" />
+                        <img src="<?php echo osc_current_admin_theme_url('images/plugins-icon.png'); ?>" title="" alt="" />
                     </div>
-                    <div id="content_header_arrow">&raquo; <?php
-echo sprintf(__('Create widget in %s'), Params::getParam('location')); ?></div>
+                    <div id="content_header_arrow">&raquo; <?php echo sprintf(__('Create widget in %s'), Params::getParam('location')); ?></div>
                     <div style="clear: both;"></div>
                 </div>
 
                 <div id="content_separator"></div>
                 
-                <?php
-osc_show_flash_message('admin'); ?>
+                <?php osc_show_flash_message('admin'); ?>
                 <!-- add new theme form -->
                 <div id="main_div" style="border: 1px solid #ccc; background: #eee; display:block;">
                     <div style="padding: 20px; padding-top: 10px;">
 
-                        <form action="<?php
-echo osc_admin_base_url(true); ?>" method="post">
-                            <input type="hidden" name="action" value="<?php
-echo (Params::getParam('action') == 'edit_widget') ? 'edit_widget_post' : 'add_widget_post'; ?>" />
+                        <form action="<?php echo osc_admin_base_url(true); ?>" method="post">
+                            <input type="hidden" name="action" value="<?php echo (Params::getParam('action') == 'edit_widget') ? 'edit_widget' : 'add_widget'; ?>" />
                             <input type="hidden" name="page" value="appearance" />
-                            <?php
-if (Params::getParam('action') == 'edit_widget') echo '<input type="hidden" name="id" value="' . Params::getParam('id') . '" />'; ?>
-                            <input type="hidden" name="location" value="<?php
-echo $_GET['location']; ?>" />
+                            <?php if (Params::getParam('action') == 'edit_widget') echo '<input type="hidden" name="id" value="' . Params::getParam('id') . '" />'; ?>
+                            <input type="hidden" name="location" value="<?php echo $_GET['location']; ?>" />
 
                             <fieldset>
-                                <legend><?php
-_e('Description (only for internal purposes)'); ?></legend>
-                                <input type="text" name="description" id="description" value="<?php
-if (isset($widget['s_description'])) echo htmlentities($widget['s_description'], null, "UTF-8"); ?>"/>
+                                <legend><?php _e('Description (only for internal purposes)'); ?></legend>
+                                <input type="text" name="description" id="description" value="<?php if (isset($widget['s_description'])) echo htmlentities($widget['s_description'], null, "UTF-8"); ?>"/>
                             </fieldset>
 
                             <fieldset>
-                                <legend><?php
-_e('HTML Code for the Widget'); ?></legend>
+                                <legend><?php _e('HTML Code for the Widget'); ?></legend>
                                 <textarea name="content" id="body" style="width: 100%; height: 300px;"></textarea>
                             </fieldset>
 
-                            <input id="button_save" type="submit" value="<?php
-_e('Publish widget'); ?>" />
+                            <input id="button_save" type="submit" value="<?php _e('Publish widget'); ?>" />
                         </form>
                     </div>
                 </div>
     <script type="text/javascript" >
         $(window).load(function() {
-            <?php
-$str = htmlentities(str_replace(array("\r", "\n"), array("\\r", "\\n"), $widget['s_content']), null, 'UTF-8'); ?>
-            var aux = ('<?php
-echo (addcslashes($str, '\'')); ?>');
+            <?php $str = htmlentities(str_replace(array("\r", "\n"), array("\\r", "\\n"), $widget['s_content']), null, 'UTF-8'); ?>
+            var aux = ('<?php echo (addcslashes($str, '\'')); ?>');
             var str = $("<div/>").html(aux).text();
             tinyMCE.activeEditor.setContent( str.replace("\\n", '\n' ) );
         });

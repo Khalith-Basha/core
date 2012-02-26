@@ -156,7 +156,7 @@ class CAdminAjax extends Controller_Administration
 			$this->getView()->assign("selected", $selected);
 			$this->getView()->assign("field", Field::newInstance()->findByPrimaryKey(Params::getParam("id")));
 			$this->getView()->assign("categories", ClassLoader::getInstance()->getClassInstance( 'Model_Category' )->toTreeAll());
-			$this->doView("fields/iframe.php");
+			osc_current_admin_theme_path( 'fields/iframe.php' );
 			break;
 
 		case 'field_categories_post':
@@ -199,93 +199,6 @@ class CAdminAjax extends Controller_Administration
 			}
 			$result.= "}";
 			echo $result;
-			break;
-
-		case 'delete_field':
-			$id = Params::getParam("id");
-			$error = 0;
-			try
-			{
-				$fieldManager = Field::newInstance();
-				$fieldManager->deleteByPrimaryKey($id);
-				$message = __('The custom field have been deleted');
-			}
-			catch(Exception $e) 
-			{
-				$error = 1;
-				$message = __('Error while deleting');
-			}
-			$result = "{";
-			if ($error) 
-			{
-				$result.= '"error" : "';
-				$result.= $message;
-				$result.= '"';
-			}
-			else
-			{
-				$result.= '"ok" : "Saved." ';
-			}
-			$result.= "}";
-			echo $result;
-			break;
-
-		case 'enable_category':
-			$id = Params::getParam("id");
-			$enabled = (Params::getParam("enabled") != '') ? Params::getParam("enabled") : 0;
-			$error = 0;
-			$result = array();
-			$aUpdated = array();
-			$mCategory = ClassLoader::getInstance()->getClassInstance( 'Model_Category' );
-			$aCategory = $mCategory->findByPrimaryKey($id);
-			if ($aCategory == false) 
-			{
-				$result = array('error' => sprintf(__("It doesn't exist a category with this id: %d"), $id));
-				echo json_encode($result);
-				break;
-			}
-			// root category
-			if ($aCategory['fk_i_parent_id'] == '') 
-			{
-				$mCategory->update(array('b_enabled' => $enabled), array('pk_i_id' => $id));
-				$mCategory->update(array('b_enabled' => $enabled), array('fk_i_parent_id' => $id));
-				$subCategories = $mCategory->findSubcategories($id);
-				$aUpdated[] = array('id' => $id);
-				foreach ($subCategories as $subcategory) 
-				{
-					$aUpdated[] = array('id' => $subcategory['pk_i_id']);
-				}
-				if ($enabled) 
-				{
-					$result = array('ok' => __('The category and its subcategories have been enabled'));
-				}
-				else
-				{
-					$result = array('ok' => __('The category and its subcategories have been disabled'));
-				}
-				$result['affectedIds'] = $aUpdated;
-				echo json_encode($result);
-				break;
-			}
-			// subcategory
-			$parentCategory = $mCategory->findRootCategory($id);
-			if (!$parentCategory['b_enabled']) 
-			{
-				$result = array('error' => __('Parent category is disabled, you can not enable that category'));
-				echo json_encode($result);
-				break;
-			}
-			$mCategory->update(array('b_enabled' => $enabled), array('pk_i_id' => $id));
-			if ($enabled) 
-			{
-				$result = array('ok' => __('The subcategory has been enabled'));
-			}
-			else
-			{
-				$result = array('ok' => __('The subcategory has been disabled'));
-			}
-			$result['affectedIds'] = array(array('id' => $id));
-			echo json_encode($result);
 			break;
 
 		case 'custom': // Execute via AJAX custom file
@@ -401,12 +314,7 @@ class CAdminAjax extends Controller_Administration
 			}
 			break;
 		}
-	$this->getSession()->_dropKeepForm();
-	$this->getSession()->_clearVariables();
-	}
-
-	function doView($file) 
-	{
-		osc_current_admin_theme_path($file);
+		$this->getSession()->_dropKeepForm();
+		$this->getSession()->_clearVariables();
 	}
 }

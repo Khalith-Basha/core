@@ -5,7 +5,7 @@ class CWebSearch extends Controller
 	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
 		$latestSearches = $this->getClassLoader()
-			->getClassInstance( 'Model_LatestSearches' )
+			->getClassInstance( 'Model_SearchLatest' )
 			->selectAll();
 
 		$view = $this->getView();

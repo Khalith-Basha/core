@@ -147,29 +147,6 @@ SQL;
 	{
 		return $this->listWhere("s_contact_email = '%s'", $email);
 	}
-	public function numItems($category, $enabled = true, $active = true) 
-	{
-		$this->dao->select('COUNT(*) AS total');
-		$this->dao->from($this->getTableName());
-		$this->dao->where('fk_i_category_id', $category['pk_i_id']);
-		$this->dao->where('b_enabled', $enabled);
-		$this->dao->where('b_active', $active);
-		if ($category['i_expiration_days'] != 0) 
-		{
-			$this->dao->where('( b_premium = 1 OR ( DATEDIFF(\'' . date('Y-m-d H:i:s') . '\', pub_date) < ' . $category['i_expiration_days'] . ' ) )');
-		}
-		$result = $this->dao->get();
-		if ($result == false) 
-		{
-			return 0;
-		}
-		if ($result->numRows() == 0) 
-		{
-			return 0;
-		}
-		$row = $result->row();
-		return $row['total'];
-	}
 	/**
 	 * Insert title, description and what for a given locale and item id.
 	 *
@@ -222,24 +199,6 @@ SQL;
 		$result = $this->dao->get();
 		$items = $result->result();
 		return $this->extendData($items);
-	}
-	/**
-	 * Count items belong to an user given its id
-	 *
-	 * @access public
-	 * @since unknown
-	 * @param int $userId User id
-	 * @return int number of items
-	 */
-	public function countByUserID($userId) 
-	{
-		$this->dao->select('count(i.pk_i_id) as total');
-		$this->dao->from($this->getTableName() . ' i');
-		$this->dao->where('i.fk_i_user_id', $userId);
-		$this->dao->orderBy('i.pk_i_id', 'DESC');
-		$result = $this->dao->get();
-		$total_ads = $result->row();
-		return $total_ads['total'];
 	}
 	/**
 	 * Find enabled items belong to an user given its id

@@ -33,7 +33,7 @@ class Pagination
 		$this->numItems = 0;
 		$this->selectedPage = 0;
 		$this->itemsPerPage = 10;
-		$this->urlTemplate = $_SERVER['QUERY_STRING'] . '&page=###PAGE###';
+		$this->urlTemplate = $_SERVER['QUERY_STRING'] . '&page=' . self::PLACEHOLDER;
 	}
 
 	public function setUrlTemplate( $urlTemplate )

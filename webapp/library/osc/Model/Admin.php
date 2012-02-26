@@ -25,15 +25,34 @@
  * @subpackage Model
  * @since unknown
  */
-class Model_Admin extends DAO
+class Model_Admin extends Model
 {
-	function __construct() 
+	function d__construct() 
 	{
 		parent::__construct();
 		$this->setTableName('t_admin');
 		$this->setPrimaryKey('pk_i_id');
 		$this->setFields(array('pk_i_id', 's_name', 's_username', 's_password', 's_email', 's_secret'));
 	}
+
+	public function delete( $id )
+	{
+		$sql = <<<SQL
+DELETE FROM
+	/*TABLE_PREFIX*/t_admin
+WHERE
+	pk_i_id = ?
+LIMIT 1
+SQL;
+
+		$stmt = $this->prepareStatement( $sql );
+		$stmt->bind_param( 'd', $id );
+		$result = $stmt->execute();
+		$stmt->close();
+
+		return $result;
+	}
+
 	/**
 	 * Searches for admin information, given an email address.
 	 * If email not exist return false.
@@ -55,26 +74,68 @@ class Model_Admin extends DAO
 		}
 		return $result->row();
 	}
-	/**
-	 * Searches for admin information, given a username.
-	 * If admin not exist return false.
-	 *
-	 * @access public
-	 * @since unknown
-	 * @param string $username
-	 * @return array
-	 */
-	function findByUsername($username) 
+
+	public function listAll()
 	{
-		$this->dao->select();
-		$this->dao->from($this->getTableName());
-		$this->dao->where('s_username', $username);
-		$result = $this->dao->get();
-		if ($result->numRows == 0) 
-		{
-			return false;
-		}
-		return $result->row();
+		$admins = array();
+
+		$sql = <<<SQL
+SELECT
+	pk_i_id, s_name, s_username, s_password, s_email, s_secret
+FROM
+	/*TABLE_PREFIX*/t_admin
+SQL;
+
+		$stmt = $this->prepareStatement( $sql );
+		if( $stmt->execute() )
+			$admins = $this->fetchAll( $stmt );
+		$stmt->close();
+
+		return $admins;
+	}
+
+	public function findByPrimaryKey( $id )
+	{
+		$admin = false;
+
+		$sql = <<<SQL
+SELECT
+	pk_i_id, s_name, s_username, s_password, s_email, s_secret
+FROM
+	/*TABLE_PREFIX*/t_admin
+WHERE
+	pk_i_id = ?
+SQL;
+
+		$stmt = $this->prepareStatement( $sql );
+		$stmt->bind_param( 'd', $id );
+		if( $stmt->execute() )
+			$admin = $this->fetch( $stmt );
+		$stmt->close();
+
+		return $admin;
+	}
+
+	public function findByUsername( $username )
+	{
+		$admin = false;
+
+		$sql = <<<SQL
+SELECT
+	pk_i_id, s_name, s_username, s_password, s_email, s_secret
+FROM
+	/*TABLE_PREFIX*/t_admin
+WHERE
+	s_username = ?
+SQL;
+
+		$stmt = $this->prepareStatement( $sql );
+		$stmt->bind_param( 's', $username );
+		if( $stmt->execute() )
+			$admin = $this->fetch( $stmt );
+		$stmt->close();
+
+		return $admin;
 	}
 	/**
 	 * Searches for admin information, given a admin id and secret.

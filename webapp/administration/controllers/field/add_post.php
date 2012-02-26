@@ -22,7 +22,7 @@ class CAdminField extends Controller_Administration
 {
 	public function doPost( HttpRequest $req, HttpResponse $res )
 	{
-		$this->fieldManager = Field::newInstance();
+		$this->fieldManager = $this->getClassLoader()->getClassInstance( 'Model_Field' );
 		if (Params::getParam('field_name') != '') 
 		{
 			$field = $this->fieldManager->findByName(Params::getParam('field_name'));

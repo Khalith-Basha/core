@@ -83,42 +83,32 @@
             
 			    <div id="content_header" class="content_header">
 					<div style="float: left;">
-                        <img src="<?php
-echo osc_current_admin_theme_url('images/home.png'); ?>" title="" alt=""/>
+                        <img src="<?php echo osc_current_admin_theme_url('images/home.png'); ?>" title="" alt=""/>
                     </div>
-					<div id="content_header_arrow">&raquo; <?php
-_e('Dashboard'); ?></div>
-					<div id="button_open"><?php
-_e('Settings'); ?></div>
+					<div id="content_header_arrow">&raquo; <?php _e('Dashboard'); ?></div>
+					<div id="button_open"><?php _e('Settings'); ?></div>
 					<div style="clear: both;"></div>
 				</div>
-				<?php
-osc_show_flash_message('admin'); ?>
+				<?php osc_show_flash_message('admin'); ?>
 				
 				<!-- settings div -->
 				<div id="main_div">
 					<form id="checkboxes">
-						<div style="margin-bottom: 8px; font-weight: bold;"><?php
-_e('Which of the following do you want to see on your dashboard'); ?>:</div>
+						<div style="margin-bottom: 8px; font-weight: bold;"><?php _e('Which of the following do you want to see on your dashboard'); ?>:</div>
 						<input id="cb_last_items" type="checkbox" />
-						<label for="cb_last_items"><?php
-_e('Latest items'); ?></label>
+						<label for="cb_last_items"><?php _e('Latest items'); ?></label>
 						&nbsp;&nbsp;&nbsp;
 						<input id="cb_statistics" type="checkbox" />
-						<label for="cb_statistics"><?php
-_e('Statistics'); ?></label>
+						<label for="cb_statistics"><?php _e('Statistics'); ?></label>
 						&nbsp;&nbsp;&nbsp;
 						<input id="cb_last_comments" type="checkbox" />
-						<label for="cb_last_comments"><?php
-_e('Latest comments'); ?></label>
+						<label for="cb_last_comments"><?php _e('Latest comments'); ?></label>
 						&nbsp;&nbsp;&nbsp;
 						<input id="cb_last_news" type="checkbox" />
-						<label for="cb_last_news"><?php
-_e('Latest news from OpenSourceClassifieds'); ?></label>
+						<label for="cb_last_news"><?php _e('Latest news from OpenSourceClassifieds'); ?></label>
 					</form>
 					<br />
-					<a href="#" id="button_save"><?php
-_e('Save'); ?></a><br />
+					<a href="#" id="button_save"><?php _e('Save'); ?></a><br />
 				</div>
 
 				<!-- sortable divs -->
@@ -127,15 +117,10 @@ _e('Save'); ?></a><br />
 					<div id="sortable_left" class="sortable_div">
 
 						<div id="last_items" class="ui-widget-content ui-corner-all">
-							<h3 class="ui-state-default"><?php
-_e('Items by category'); ?></h3>
+							<h3 class="ui-state-default"><?php _e('Items by category'); ?></h3>
 							<div id="last_items_body">
-                                <?php
-if (!empty($numItemsPerCategory)) 
-{ ?>
-                                    <?php
-	foreach ($numItemsPerCategory as $c) 
-	{ ?>
+                                <?php if (!empty($numItemsPerCategory))  { ?>
+                                    <?php foreach ($numItemsPerCategory as $c)  { ?>
                                         <a href="<?php
 		echo osc_admin_base_url(true); ?>?page=item&catId=<?php
 		echo $c['pk_i_id']; ?>"><?php
@@ -143,9 +128,7 @@ if (!empty($numItemsPerCategory))
                                         <?php
 		echo "(" . $c['i_num_items'] . "&nbsp;" . (($c['i_num_items'] == 1) ? __('Item') : __('Items')) . ")"; ?>
                                         <br />
-                                        <?php
-		foreach ($c['categories'] as $subc) 
-		{ ?>
+                                        <?php foreach ($c['categories'] as $subc)  { ?>
                                             <?php
 			echo "&nbsp;&nbsp;"; ?>
                                             <a href="<?php
@@ -155,10 +138,8 @@ if (!empty($numItemsPerCategory))
                                             <?php
 			echo "(" . $subc['i_num_items'] . "&nbsp;" . (($subc['i_num_items'] == 1) ? __('Item') : __('Items')) . ")"; ?>
                                             <br />
-                                        <?php
-		} ?>
-                                    <?php
-	} ?>
+                                        <?php } ?>
+                                    <?php } ?>
                                 <?php
 }
 else
@@ -169,18 +150,10 @@ else
 						</div>
 
 						<div id="statistics" class="ui-widget-content ui-corner-all">
-							<h3 class="ui-state-default"><?php
-_e('Statistics'); ?></h3>
+							<h3 class="ui-state-default"><?php _e('Statistics'); ?></h3>
 							<div id="statistics_body">
-								<?php
-_e('Number of items'); ?>: <?php
-echo $numItems; ?><br />
-								<?php
-_e('Number of public users'); ?>: <?php
-echo $numUsers; ?><br />
-								<?php
-_e('Number of administrators'); ?>: <?php
-echo $numAdmins; ?><br />
+								<?php _e('Number of items'); ?>: <?php echo $numItems; ?><br />
+								<?php _e('Number of public users'); ?>: <?php echo $numUsers; ?><br />
 							</div>							
 						</div>
 					</div>
@@ -189,23 +162,12 @@ echo $numAdmins; ?><br />
 					<div id="sortable_right" class="sortable_div">
 
 						<div id="last_comments" class="ui-widget-content ui-corner-all">
-							<h3 class="ui-state-default"><?php
-_e('Latest comments'); ?></h3>
+							<h3 class="ui-state-default"><?php _e('Latest comments'); ?></h3>
 							<div id="statistics_body">
-                                <?php
-if (count($comments) > 0) 
-{ ?>
-                                    <?php
-	foreach ($comments as $c) 
-	{ ?>
-                                        <strong><?php
-		echo $c['s_author_name']; ?></strong> <?php
-		_e('Commented on item'); ?> <i><a title="<?php
-		echo $c['s_body']; ?>" target='_blank' href='<?php
-		echo osc_base_url(true) . '?page=item&id=' . $c['fk_i_item_id']; ?>' id='dt_link'><?php
-		echo $c['s_title']; ?></a></i><br />
-                                    <?php
-	} ?>
+                                <?php if (count($comments) > 0)  { ?>
+                                    <?php foreach ($comments as $c)  { ?>
+                                        <strong><?php echo $c['s_author_name']; ?></strong> <?php _e('Commented on item'); ?> <i><a title="<?php echo $c['s_body']; ?>" target='_blank' href='<?php echo osc_base_url(true) . '?page=item&id=' . $c['fk_i_item_id']; ?>' id='dt_link'><?php echo $c['s_title']; ?></a></i><br />
+                                    <?php } ?>
                                 <?php
 }
 else
@@ -231,10 +193,8 @@ if (is_array($newsList))
 		$new = (strtotime($list['pubDate']) > strtotime('-1 week') ? true : false);
 ?>
                                         <li>
-                                            <a href="<?php
-		echo $list['link']; ?>" target="_blank">
-                                                <?php
-		echo $list['title']; ?>
+                                            <a href="<?php echo $list['link']; ?>" target="_blank">
+                                                <?php echo $list['title']; ?>
                                             </a>
                                             <?php
 		if ($new) 

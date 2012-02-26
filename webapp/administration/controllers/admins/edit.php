@@ -53,7 +53,7 @@ class CAdminAdmins extends Controller_Administration
 
 	public function doPost( HttpRequest $req, HttpResponse $res )
 	{
-		$this->getClassLoader()->loadFile( 'helpers/hValidate' );
+		$this->getClassLoader()->loadFile( 'helpers/sanitize' );
 		    // updating a new admin
 		    $iUpdated = 0;
 		    $adminId  = Params::getParam('id');
