@@ -26,6 +26,7 @@ class PluginManager
 	public function __construct()
 	{
 		$this->hooks = array();
+		ClassLoader::getInstance()->loadFile( 'helpers/plugins' );
 	}
 
 	public function runHook( $hook )
@@ -219,7 +220,7 @@ class PluginManager
 				$plugins_list[] = $path;
 				$data['s_value'] = serialize($plugins_list);
 				$condition = array('s_section' => 'osclass', 's_name' => 'active_plugins');
-				Preference::newInstance()->update($data, $condition);
+				ClassLoader::getInstance()->getClassInstance( 'Model_Preference' )->update($data, $condition);
 				unset($condition);
 				unset($data);
 				$this->reload();
@@ -260,7 +261,7 @@ class PluginManager
 				}
 				$data['s_value'] = serialize($plugins_list);
 				$condition = array('s_section' => 'osclass', 's_name' => 'active_plugins');
-				Preference::newInstance()->update($data, $condition);
+				ClassLoader::getInstance()->getClassInstance( 'Model_Preference' )->update($data, $condition);
 				unset($condition);
 				unset($data);
 				$this->reload();
@@ -297,7 +298,7 @@ class PluginManager
 				$plugins_list[] = $path;
 				$data['s_value'] = serialize($plugins_list);
 				$condition = array('s_section' => 'osclass', 's_name' => 'installed_plugins');
-				Preference::newInstance()->update($data, $condition);
+				ClassLoader::getInstance()->getClassInstance( 'Model_Preference' )->update($data, $condition);
 				unset($condition);
 				unset($data);
 				return true;
@@ -332,7 +333,7 @@ class PluginManager
 				}
 				$data['s_value'] = serialize($plugins_list);
 				$condition = array('s_section' => 'osclass', 's_name' => 'installed_plugins');
-				Preference::newInstance()->update($data, $condition);
+				ClassLoader::getInstance()->getClassInstance( 'Model_Preference' )->update($data, $condition);
 				unset($condition);
 				unset($data);
 				$plugin = $this->getInfo($path);
@@ -427,7 +428,7 @@ class PluginManager
 		$info = $this->getInfo( $plugin );
 		if( !empty( $info['plugin_update_uri'] ) )
 		{
-			$str = osc_file_get_contents( $info['plugin_update_uri'] );
+			$str = @file_get_contents( $info['plugin_update_uri'] );
 			if( false === $str ) 
 			{
 				return false;
@@ -545,7 +546,7 @@ class PluginManager
 
 	public function reload() 
 	{
-		Preference::newInstance()->toArray();
+		ClassLoader::getInstance()->getClassInstance( 'Model_Preference' )->toArray();
 		$this->init();
 	}
 

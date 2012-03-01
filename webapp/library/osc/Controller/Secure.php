@@ -19,18 +19,20 @@
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class Controller_Secure extends Controller_Default
+abstract class Controller_Secure extends Controller_Default
 {
 	public function __construct() 
 	{
 		parent::__construct();
 		if (!$this->isLogged()) 
 		{
-			//If we are not logged or we do not have permissions -> go to the login page
 			$this->logout();
 			$this->showAuthFailPage();
 		}
 	}
+
+	abstract public function isLogged();
+	abstract public function showAuthFailPage();
 
 	public function setGranting($grant) 
 	{

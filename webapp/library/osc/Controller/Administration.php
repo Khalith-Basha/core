@@ -23,12 +23,19 @@ class Controller_Administration extends Controller_Secure
 	public function __construct()
 	{
 		parent::__construct();
-		$this->view->setTheme( $this->getClassLoader()->getClassInstance( 'Ui_AdminTheme' ) );
+		$this->setAdministrationTheme();
 	}
 
 	public function isLogged() 
 	{
 		return osc_is_admin_user_logged_in();
+	}
+
+	private function setAdministrationTheme()
+	{
+		$adminTheme = $this->getClassLoader()->getClassInstance( 'Ui_AdminTheme' );
+		$this->getView()
+			->setTheme( $adminTheme );
 	}
 
 	public function logout() 
@@ -50,7 +57,8 @@ class Controller_Administration extends Controller_Secure
 
 	public function showAuthFailPage() 
 	{
-		echo $this->getView()->render( 'login.php' );
+		$this->setAdministrationTheme();
+		echo $this->getView()->render( 'login' );
 		exit;
 	}
 

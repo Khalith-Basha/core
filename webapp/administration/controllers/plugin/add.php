@@ -27,8 +27,6 @@ class CAdminPlugin extends Controller_Administration
 
 	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
-		parent::doModel();
-
 		$this->doView( 'plugins/add.php' );
 	}
 	
@@ -79,10 +77,10 @@ class CAdminPlugin extends Controller_Administration
 	{
 		if (false === is_null($aError = error_get_last())) 
 		{
-			Plugins::deactivate($pn);
+			ClassLoader::getInstance()->getClassInstance( 'PluginManager' )->deactivate($pn);
 			if ($action == 'install') 
 			{
-				Plugins::uninstall($pn);
+				ClassLoader::getInstance()->getClassInstance( 'PluginManager' )->uninstall($pn);
 			}
 			osc_add_flash_error_message(sprintf(_m('There was a fatal error and the plugin was not installed.<br />Error: "%s" Line: %s<br/>File: %s'), $aError['message'], $aError['line'], $aError['file']), 'admin');
 			$this->redirectTo(osc_admin_base_url(true) . "?page=plugin");

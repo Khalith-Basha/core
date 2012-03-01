@@ -20,10 +20,9 @@
 */
 class CAdminPlugin extends Controller_Administration
 {
-	public function doModel() 
+	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
 		$pluginManager = ClassLoader::getInstance()->getClassInstance( 'PluginManager' );
-		parent::doModel();
 		switch ($this->action) 
 		{
 		case 'renderplugin':

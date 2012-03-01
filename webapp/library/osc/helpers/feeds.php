@@ -17,31 +17,39 @@
  *
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
+
 /**
  * This functions retrieves a news list from http://opensourceclassifieds.org. It uses the Cache services to speed up the process.
+ *
+ * @return array
  */
 function osc_listNews() 
 {
-	$cache = ClassLoader::getInstance()->getClassInstance( 'Services_Cache_Disk', true, array( 'admin-blog_news', 900 ) );
-	if ($cache->check()) 
+	$cacheKey = 'admin-blog_news';
+	$cache = ClassLoader::getInstance()->getClassInstance( 'Services_Cache_Disk', true, array( $cacheKey, 900 ) );
+	if( $cache->check() )
 	{
 		return $cache->retrieve();
 	}
-	else
+
+	$url = 'http://blog.opensourceclassifieds.org/feeds/posts/default';
+	$list = array();
+	$content = file_get_contents( $url );
+	if( $content ) 
 	{
-		$url = 'http://blog.opensourceclassifieds.org/feeds/posts/default';
-		$list = array();
-		$content = file_get_contents( $url );
-		if ($content) 
+		$xml = simplexml_load_string($content);
+		foreach ($xml->entry as $item) 
 		{
-			$xml = simplexml_load_string($content);
-			foreach ($xml->channel->item as $item) 
-			{
-				$list[] = array('link' => strval($item->link), 'title' => strval($item->title), 'pubDate' => strval($item->pubDate));
-			}
+			$link = $item->link[4]['href'];
+			$list[] = array(
+				'link' => strval( $link ),
+				'title' => strval( $item->title ),
+				'pubDate' => strval( $item->pubDate )
+			);
 		}
-		$cache->store($list, null);
 	}
+	$cache->store( $cacheKey, $list );	
 	return $list;
 }
+

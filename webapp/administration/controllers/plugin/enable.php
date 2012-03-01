@@ -20,15 +20,15 @@
 */
 class CAdminPlugin extends Controller_Administration
 {
-	function doModel() 
+	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
 		$pn = Params::getParam("plugin");
 		// CATCH FATAL ERRORS
 		register_shutdown_function(array($this, 'errorHandler'), $pn, 'enable');
-		$enabled = Plugins::activate($pn);
+		$enabled = ClassLoader::getInstance()->getClassInstance( 'PluginManager' )->activate($pn);
 		if ($enabled) 
 		{
-			Plugins::runHook($pn . '_enable');
+			ClassLoader::getInstance()->getClassInstance( 'PluginManager' )->runHook($pn . '_enable');
 			osc_add_flash_ok_message(_m('Plugin enabled'), 'admin');
 		}
 		else
@@ -37,14 +37,15 @@ class CAdminPlugin extends Controller_Administration
 		}
 		$this->redirectTo(osc_admin_base_url(true) . "?page=plugin");
 	}
-	function errorHandler($pn, $action) 
+
+	public function errorHandler($pn, $action) 
 	{
 		if (false === is_null($aError = error_get_last())) 
 		{
-			Plugins::deactivate($pn);
+			ClassLoader::getInstance()->getClassInstance( 'PluginManager' )->deactivate($pn);
 			if ($action == 'install') 
 			{
-				Plugins::uninstall($pn);
+				ClassLoader::getInstance()->getClassInstance( 'PluginManager' )->uninstall($pn);
 			}
 			osc_add_flash_error_message(sprintf(_m('There was a fatal error and the plugin was not installed.<br />Error: "%s" Line: %s<br/>File: %s'), $aError['message'], $aError['line'], $aError['file']), 'admin');
 			$this->redirectTo(osc_admin_base_url(true) . "?page=plugin");

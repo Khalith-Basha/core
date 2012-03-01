@@ -20,9 +20,8 @@
 */
 class CAdminPlugin extends Controller_Administration
 {
-	public function doModel() 
+	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
-		parent::doModel();
 		$pluginManager = ClassLoader::getInstance()->getClassInstance( 'PluginManager' );
 		$pn = Params::getParam("plugin");
 		$pluginManager->runHook($pn . '_uninstall');

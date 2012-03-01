@@ -61,9 +61,9 @@ class Services_Cache_Disk implements CacheService
 	/**
 	 * Stores the object passed as parameter in the cache backend (filesystem).
 	 */
-	public function write($key, $content) 
+	public function write( $key, $content )
 	{
-		$serialized = serialize( $object );
+		$serialized = serialize( $content );
 		file_put_contents( $this->preparePath(), $serialized );
 	}
 

@@ -27,7 +27,7 @@ class CAdminPlugin extends Controller_Administration
 		$this->pluginManager = ClassLoader::getInstance()->getClassInstance( 'PluginManager' );
 	}
 
-	public function doModel() 
+	public function doGet( HttpRequest $req, HttpResponse $res ) 
 	{
 		$pn = Params::getParam("plugin");
 		// CATCH FATAL ERRORS
