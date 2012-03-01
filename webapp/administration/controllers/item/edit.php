@@ -3,7 +3,7 @@
  *      OpenSourceClassifieds – software for creating and publishing online classified
  *                           advertising platforms
  *
- *                        Copyright (C) 2011 OpenSourceClassifieds
+ *                        Copyright (C) 2012 OpenSourceClassifieds
  *
  *       This program is free software: you can redistribute it and/or
  *     modify it under the terms of the GNU Affero General Public License
@@ -36,8 +36,8 @@ class CAdminItem extends Controller_Administration
 		}
 		$this->getView()->assign("item", $item);
 		$this->getView()->assign("new_item", FALSE);
-		osc_current_admin_theme_path( 'items/frm.php' );
-	$this->getSession()->_clearVariables();
+		echo $this->getView()->render( 'items/frm.php' );
+		$this->getSession()->_clearVariables();
 	}
 
 	public function doPost( HttpRequest $req, HttpResponse $res )

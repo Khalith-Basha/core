@@ -3,7 +3,7 @@
  *      OpenSourceClassifieds – software for creating and publishing online classified
  *                           advertising platforms
  *
- *                        Copyright (C) 2011 OpenSourceClassifieds
+ *                        Copyright (C) 2012 OpenSourceClassifieds
  *
  *       This program is free software: you can redistribute it and/or
  *     modify it under the terms of the GNU Affero General Public License
@@ -25,7 +25,7 @@ class CAdminStats extends Controller_Administration
 		$comments = array();
 		if (Params::getParam('type_stat') == 'week') 
 		{
-			$stats_comments = ClassLoader::getInstance()->getClassInstance( 'Stats' )->new_comments_count(date('Y-m-d H:i:s', mktime(0, 0, 0, date("m"), date("d") - 70, date("Y"))), 'week');
+			$stats_comments = ClassLoader::getInstance()->getClassInstance( 'Model_Stats' )->new_comments_count(date('Y-m-d H:i:s', mktime(0, 0, 0, date("m"), date("d") - 70, date("Y"))), 'week');
 			for ($k = 10; $k >= 0; $k--) 
 			{
 				$comments[date('W', mktime(0, 0, 0, date("m"), date("d"), date("Y"))) - $k] = 0;
@@ -33,7 +33,7 @@ class CAdminStats extends Controller_Administration
 		}
 		else if (Params::getParam('type_stat') == 'month') 
 		{
-			$stats_comments = ClassLoader::getInstance()->getClassInstance( 'Stats' )->new_comments_count(date('Y-m-d H:i:s', mktime(0, 0, 0, date("m") - 10, date("d"), date("Y"))), 'month');
+			$stats_comments = ClassLoader::getInstance()->getClassInstance( 'Model_Stats' )->new_comments_count(date('Y-m-d H:i:s', mktime(0, 0, 0, date("m") - 10, date("d"), date("Y"))), 'month');
 			for ($k = 10; $k >= 0; $k--) 
 			{
 				$comments[date('F', mktime(0, 0, 0, date("m") - $k, date("d"), date("Y"))) ] = 0;
@@ -41,7 +41,7 @@ class CAdminStats extends Controller_Administration
 		}
 		else
 		{
-			$stats_comments = ClassLoader::getInstance()->getClassInstance( 'Stats' )->new_comments_count(date('Y-m-d H:i:s', mktime(0, 0, 0, date("m"), date("d") - 10, date("Y"))), 'day');
+			$stats_comments = ClassLoader::getInstance()->getClassInstance( 'Model_Stats' )->new_comments_count(date('Y-m-d H:i:s', mktime(0, 0, 0, date("m"), date("d") - 10, date("Y"))), 'day');
 			for ($k = 10; $k >= 0; $k--) 
 			{
 				$comments[date('Y-m-d', mktime(0, 0, 0, date("m"), date("d") - $k, date("Y"))) ] = 0;
@@ -57,7 +57,7 @@ class CAdminStats extends Controller_Administration
 			}
 		}
 		$this->getView()->assign("comments", $comments);
-		$this->getView()->assign("latest_comments", ClassLoader::getInstance()->getClassInstance( 'Stats' )->latest_comments());
+		$this->getView()->assign("latest_comments", ClassLoader::getInstance()->getClassInstance( 'Model_Stats' )->latest_comments());
 		$this->getView()->assign("max", $max);
 		$this->doView("stats/comments.php");
 	}

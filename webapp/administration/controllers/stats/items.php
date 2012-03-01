@@ -3,7 +3,7 @@
  *      OpenSourceClassifieds – software for creating and publishing online classified
  *                           advertising platforms
  *
- *                        Copyright (C) 2011 OpenSourceClassifieds
+ *                        Copyright (C) 2012 OpenSourceClassifieds
  *
  *       This program is free software: you can redistribute it and/or
  *     modify it under the terms of the GNU Affero General Public License
@@ -26,8 +26,8 @@ class CAdminStats extends Controller_Administration
 		$reports = array();
 		if (Params::getParam('type_stat') == 'week') 
 		{
-			$stats_items = ClassLoader::getInstance()->getClassInstance( 'Stats' )->new_items_count(date('Y-m-d H:i:s', mktime(0, 0, 0, date("m"), date("d") - 70, date("Y"))), 'week');
-			$stats_reports = ClassLoader::getInstance()->getClassInstance( 'Stats' )->new_reports_count(date('Y-m-d', mktime(0, 0, 0, date("m"), date("d") - 70, date("Y"))), 'week');
+			$stats_items = ClassLoader::getInstance()->getClassInstance( 'Model_Stats' )->new_items_count(date('Y-m-d H:i:s', mktime(0, 0, 0, date("m"), date("d") - 70, date("Y"))), 'week');
+			$stats_reports = ClassLoader::getInstance()->getClassInstance( 'Model_Stats' )->new_reports_count(date('Y-m-d', mktime(0, 0, 0, date("m"), date("d") - 70, date("Y"))), 'week');
 			for ($k = 10; $k >= 0; $k--) 
 			{
 				$reports[date('W', mktime(0, 0, 0, date("m"), date("d"), date("Y"))) - $k]['views'] = 0;
@@ -36,8 +36,8 @@ class CAdminStats extends Controller_Administration
 		}
 		else if (Params::getParam('type_stat') == 'month') 
 		{
-			$stats_items = ClassLoader::getInstance()->getClassInstance( 'Stats' )->new_items_count(date('Y-m-d H:i:s', mktime(0, 0, 0, date("m") - 10, date("d"), date("Y"))), 'month');
-			$stats_reports = ClassLoader::getInstance()->getClassInstance( 'Stats' )->new_reports_count(date('Y-m-d', mktime(0, 0, 0, date("m") - 10, date("d"), date("Y"))), 'month');
+			$stats_items = ClassLoader::getInstance()->getClassInstance( 'Model_Stats' )->new_items_count(date('Y-m-d H:i:s', mktime(0, 0, 0, date("m") - 10, date("d"), date("Y"))), 'month');
+			$stats_reports = ClassLoader::getInstance()->getClassInstance( 'Model_Stats' )->new_reports_count(date('Y-m-d', mktime(0, 0, 0, date("m") - 10, date("d"), date("Y"))), 'month');
 			for ($k = 10; $k >= 0; $k--) 
 			{
 				$reports[date('F', mktime(0, 0, 0, date("m") - $k, date("d"), date("Y"))) ]['views'] = 0;
@@ -46,8 +46,8 @@ class CAdminStats extends Controller_Administration
 		}
 		else
 		{
-			$stats_items = ClassLoader::getInstance()->getClassInstance( 'Stats' )->new_items_count(date('Y-m-d H:i:s', mktime(0, 0, 0, date("m"), date("d") - 10, date("Y"))), 'day');
-			$stats_reports = ClassLoader::getInstance()->getClassInstance( 'Stats' )->new_reports_count(date('Y-m-d', mktime(0, 0, 0, date("m"), date("d") - 10, date("Y"))), 'day');
+			$stats_items = ClassLoader::getInstance()->getClassInstance( 'Model_Stats' )->new_items_count(date('Y-m-d H:i:s', mktime(0, 0, 0, date("m"), date("d") - 10, date("Y"))), 'day');
+			$stats_reports = ClassLoader::getInstance()->getClassInstance( 'Model_Stats' )->new_reports_count(date('Y-m-d', mktime(0, 0, 0, date("m"), date("d") - 10, date("Y"))), 'day');
 			for ($k = 10; $k >= 0; $k--) 
 			{
 				$reports[date('Y-m-d', mktime(0, 0, 0, date("m"), date("d") - $k, date("Y"))) ]['views'] = 0;
@@ -74,7 +74,7 @@ class CAdminStats extends Controller_Administration
 		}
 		$this->getView()->assign("reports", $reports);
 		$this->getView()->assign("items", $items);
-		$this->getView()->assign("latest_items", ClassLoader::getInstance()->getClassInstance( 'Stats' )->latest_items());
+		$this->getView()->assign("latest_items", ClassLoader::getInstance()->getClassInstance( 'Model_Stats' )->latest_items());
 		$this->getView()->assign("max", $max);
 		$this->getView()->assign("max_views", $max_views);
 		$this->doView("stats/items.php");

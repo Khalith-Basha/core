@@ -2,7 +2,7 @@
 /**
  * OpenSourceClassifieds – software for creating and publishing online classified advertising platforms
  *
- * Copyright (C) 2011 OpenSourceClassifieds
+ * Copyright (C) 2012 OpenSourceClassifieds
  *
  * This program is free software: you can redistribute it and/or modify it under the terms
  * of the GNU Affero General Public License as published by the Free Software Foundation,
@@ -156,7 +156,7 @@ class CAdminAjax extends Controller_Administration
 			$this->getView()->assign("selected", $selected);
 			$this->getView()->assign("field", Field::newInstance()->findByPrimaryKey(Params::getParam("id")));
 			$this->getView()->assign("categories", ClassLoader::getInstance()->getClassInstance( 'Model_Category' )->toTreeAll());
-			osc_current_admin_theme_path( 'fields/iframe.php' );
+			echo $this->getView()->render( 'fields/iframe.php' );
 			break;
 
 		case 'field_categories_post':

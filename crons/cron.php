@@ -3,7 +3,7 @@
  *      OpenSourceClassifieds – software for creating and publishing online classified
  *                           advertising platforms
  *
- *                        Copyright (C) 2011 OpenSourceClassifieds
+ *                        Copyright (C) 2012 OpenSourceClassifieds
  *
  *       This program is free software: you can redistribute it and/or
  *     modify it under the terms of the GNU Affero General Public License

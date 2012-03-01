@@ -2,7 +2,7 @@
 /**
  * OpenSourceClassifieds – software for creating and publishing online classified advertising platforms
  *
- * Copyright (C) 2011 OpenSourceClassifieds
+ * Copyright (C) 2012 OpenSourceClassifieds
  *
  * This program is free software: you can redistribute it and/or modify it under the terms
  * of the GNU Affero General Public License as published by the Free Software Foundation,
@@ -87,7 +87,7 @@ $javaScripts = array(
 	<div id="content">
             <div id="separator"></div>
 
-            <?php osc_current_admin_theme_path('backoffice_menu.php'); ?>
+            <?php echo $view->render( 'backoffice_menu' ); ?>
             
             <div id="right_column">
 
