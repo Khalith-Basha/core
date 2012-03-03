@@ -21,10 +21,7 @@
 	    <?php endif; ?>
 	    <ul>
 	    <?php foreach( $requirements as $k => $v): ?>
-		<li><?php
-	echo $k; ?> <img src="<?php
-	echo get_absolute_url(); ?>/library/images/<?php
-	echo $v ? 'tick.png' : 'cross.png'; ?>" alt="" title="" /></li>
+		<li><?php echo $k; ?> <img src="<?php echo osc_get_absolute_url(); ?>/library/images/<?php echo $v ? 'tick.png' : 'cross.png'; ?>" alt="" title="" /></li>
 	    <?php endforeach; ?>
 	    </ul>
 	    <div class="more-stats">

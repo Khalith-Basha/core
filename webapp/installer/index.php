@@ -29,6 +29,8 @@ require 'osc/ClassLoader.php';
 $classLoader = ClassLoader::getInstance();
 $classLoader->addSearchPath( LIBRARY_PATH . '/osc' );
 
+$classLoader->loadFile( 'helpers/urls' );
+
 require_once 'osc/Logging/Logger.php';
 require_once 'osc/Database/Connection.php';
 require_once 'osc/Database/Command.php';
@@ -47,7 +49,7 @@ if (!is_numeric($step))
 {
 	$step = 1;
 }
-if (is_osclass_installed()&&false) 
+if (is_osc_installed()&&false) 
 {
 	$message = 'You appear to have already installed OpenSourceClassifieds. To reinstall please clear your old database tables first.';
 	osc_die('OpenSourceClassifieds &raquo; Error', $message);

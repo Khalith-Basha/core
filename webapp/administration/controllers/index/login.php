@@ -23,33 +23,32 @@ class CAdminIndex extends Controller_Default
 	public function doPost( HttpRequest $req, HttpResponse $res )
 	{
 		$classLoader = $this->getClassLoader();
-		$admin = $classLoader->getClassInstance( 'Model_Admin' )->findByUsername(Params::getParam('user'));
-		if ($admin) 
+		$userModel = $classLoader->getClassInstance( 'Model_User' );
+
+		$username = Params::getParam('user');
+		$password = Params::getParam('password');
+		$admin = $userModel->findByUsernamePassword( $username, $password );
+		if( $admin && 1 == $admin['role_id'] )
 		{
-			if ($admin["s_password"] == sha1(Params::getParam('password'))) 
+			if (Params::getParam('remember')) 
 			{
-				if (Params::getParam('remember')) 
-				{
-					$classLoader->loadFile( 'helpers/security' );
-					$secret = osc_genRandomPassword();
-					$this->getClassLoader()->getClassInstance( 'Model_Admin' )->update(array('s_secret' => $secret), array('pk_i_id' => $admin['pk_i_id']));
-					$this->getCookie()->set_expires(osc_time_cookie());
-					$this->getCookie()->push('oc_adminId', $admin['pk_i_id']);
-					$this->getCookie()->push('oc_adminSecret', $secret);
-					$this->getCookie()->push('oc_adminLocale', Params::getParam('locale'));
-					$this->getCookie()->set();
-				}
-				//we are logged in... let's go!
-				$this->getSession()->_set('adminId', $admin['pk_i_id']);
-				$this->getSession()->_set('adminUserName', $admin['s_username']);
-				$this->getSession()->_set('adminName', $admin['s_name']);
-				$this->getSession()->_set('adminEmail', $admin['s_email']);
-				$this->getSession()->_set('adminLocale', Params::getParam('locale'));
+				$classLoader->loadFile( 'helpers/security' );
+				$secret = osc_genRandomPassword();
+				$userModel->update(array('s_secret' => $secret), array('pk_i_id' => $admin['pk_i_id']));
+
+				$cookie = $this->getCookie();
+				$cookie->set_expires(osc_time_cookie());
+				$cookie->push('oc_adminId', $admin['pk_i_id']);
+				$cookie->push('oc_adminSecret', $secret);
+				$cookie->push('oc_adminLocale', Params::getParam('locale'));
+				$cookie->set();
 			}
-			else
-			{
-				osc_add_flash_error_message(_m('The password is incorrect'), 'admin');
-			}
+			$session = $this->getSession();
+			$session->_set('adminId', $admin['pk_i_id']);
+			$session->_set('adminUserName', $admin['s_username']);
+			$session->_set('adminName', $admin['s_name']);
+			$session->_set('adminEmail', $admin['s_email']);
+			$session->_set('adminLocale', Params::getParam('locale'));
 		}
 		else
 		{

@@ -40,12 +40,20 @@ function basic_info()
 	$webtitle = Params::getParam('webtitle');
 
 	$classLoader = ClassLoader::getInstance();
-	$classLoader->getClassInstance( 'Model_Admin' )
-		->insert( array('s_name' => 'Administrator', 's_username' => $admin, 's_password' => sha1($password), 's_email' => $email) );
+	$classLoader->getClassInstance( 'Model_User' )->insert(
+		array(
+			's_name' => 'Administrator',
+			's_username' => $admin,
+			's_password' => sha1( $password ),
+			's_email' => $email,
+			'role_id' => 1
+		)
+	);
 
 	$mPreference = $classLoader->getClassInstance( 'Model_Preference' );
-	$mPreference->insert(array('s_section' => 'osclass', 's_name' => 'pageTitle', 's_value' => $webtitle, 'e_type' => 'STRING'));
-	$mPreference->insert(array('s_section' => 'osclass', 's_name' => 'contactEmail', 's_value' => $email, 'e_type' => 'STRING'));
+	$mPreference->insert(array('s_section' => 'osc', 's_name' => 'version', 's_value' => APP_VERSION, 'e_type' => 'STRING'));
+	$mPreference->insert(array('s_section' => 'osc', 's_name' => 'contactEmail', 's_value' => $email, 'e_type' => 'STRING'));
+	$mPreference->insert(array('s_section' => 'osc', 's_name' => 'contactEmail', 's_value' => $email, 'e_type' => 'STRING'));
 
 	$config = ClassLoader::getInstance()->getClassInstance( 'Config' );
 	$generalConfig = $config->getConfig( 'general' );
@@ -70,7 +78,7 @@ function basic_info()
 		$mail = new PHPMailer(true);
 		$mail->CharSet = "utf-8";
 		$mail->Host = "localhost";
-		$mail->From = 'osclass@' . $sitename;
+		$mail->From = 'admin@' . $sitename;
 		$mail->FromName = 'OpenSourceClassifieds';
 		$mail->Subject = 'OpenSourceClassifieds successfully installed!';
 		$mail->AddAddress($email, 'OpenSourceClassifieds administrator');
@@ -88,27 +96,7 @@ function basic_info()
 
 	return array( $admin, $password );
 }
-/*
- * The url of the site
- *
- * @return string The url of the site
-*/
-function get_absolute_url() 
-{
-	$protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https' : 'http';
-	$pos = strpos( $_SERVER['REQUEST_URI'], '/installer' );
-	return $protocol . '://' . $_SERVER['HTTP_HOST'] . substr( $_SERVER['REQUEST_URI'], 0, $pos );
-}
-/*
- * The relative url on the domain url
- *
- * @return string The relative url on the domain url
-*/
-function get_relative_url() 
-{
-	$url = $_SERVER['REQUEST_URI'];
-	return substr( $url, 0, strpos( $url, '/installer' ) );
-}
+
 /*
  * Get the requirements to install OpenSourceClassifieds
  *
@@ -372,13 +360,13 @@ function create_config_file($dbname, $username, $password, $dbhost, $tableprefix
 	$configGeneral = file_get_contents( ABS_PATH . '/installer/data/config/general.php' );
 	$configGeneral = str_replace(
 		array( '##RELATIVE_WEB_URL##', '##WEB_URL##' ),
-		array( get_absolute_url(), get_relative_url() ),
+		array( osc_get_absolute_url(), osc_get_relative_url() ),
 		$configGeneral
 	);
 	file_put_contents( $configGeneralPath, $configGeneral);
 }
 
-function is_osclass_installed() 
+function is_osc_installed() 
 {
 	/** TODO: FIX THIS! */
 	return false;
@@ -407,23 +395,23 @@ function ping_search_engines($bool)
 	if ($bool == 1) 
 	{
 		$url = $searchUrls->osc_search_url(array('sFeed' => 'rss'));
-		$mPreference->insert(array('s_section' => 'osclass', 's_name' => 'ping_search_engines', 's_value' => '1', 'e_type' => 'BOOLEAN'));
+		$mPreference->insert(array('s_section' => 'osc', 's_name' => 'ping_search_engines', 's_value' => '1', 'e_type' => 'BOOLEAN'));
 		requestUrl('http://www.google.com/webmasters/sitemaps/ping?sitemap=' . urlencode( $url ));
 		requestUrl('http://www.bing.com/webmaster/ping.aspx?siteMap=' . urlencode( $url ));
 		requestUrl('http://search.yahooapis.com/SiteExplorerService/V1/ping?sitemap=' . urlencode( $url ));
 	}
 	else
 	{
-		$mPreference->insert(array('s_section' => 'osclass', 's_name' => 'ping_search_engines', 's_value' => '0', 'e_type' => 'BOOLEAN'));
+		$mPreference->insert(array('s_section' => 'osc', 's_name' => 'ping_search_engines', 's_value' => '0', 'e_type' => 'BOOLEAN'));
 	}
 }
 function savePreferences($password) 
 {
 	$classLoader = ClassLoader::getInstance();
 	$classLoader->loadFile( 'helpers/plugins' );
-	$mAdmin = $classLoader->getClassInstance( 'Model_Admin' );
+	$mAdmin = $classLoader->getClassInstance( 'Model_User' );
 	$mPreference = $classLoader->getClassInstance( 'Model_Preference' );
-	$mPreference->insert(array('s_section' => 'osclass', 's_name' => 'osclass_installed', 's_value' => '1', 'e_type' => 'BOOLEAN'));
+	$mPreference->insert(array('s_section' => 'osc', 's_name' => 'osc_installed', 's_value' => '1', 'e_type' => 'BOOLEAN'));
 	// update categories
 	$mCategories = $classLoader->getClassInstance( 'Model_Category' );
 	if (Params::getParam('submit') != '') 

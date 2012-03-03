@@ -706,7 +706,7 @@ function osc_max_latest_items_at_home()
  * @param string $section
  * @return string
  */
-function osc_get_preference($key, $section = 'osclass') 
+function osc_get_preference($key, $section = 'osc') 
 {
 	return getPreference($key, $section);
 }
@@ -719,7 +719,7 @@ function osc_get_preference($key, $section = 'osclass')
  * @param string $type
  * @return boolean
  */
-function osc_set_preference($key, $value = '', $section = 'osclass', $type = 'STRING') 
+function osc_set_preference($key, $value = '', $section = 'osc', $type = 'STRING') 
 {
 	$_P = ClassLoader::getInstance()->getClassInstance( 'Model_Preference' );
 	return $_P->replace($key, $value, $section, $type);
@@ -731,7 +731,7 @@ function osc_set_preference($key, $value = '', $section = 'osclass', $type = 'ST
  * @param string $section
  * @return boolean
  */
-function osc_delete_preference($key = '', $section = 'osclass') 
+function osc_delete_preference($key = '', $section = 'osc') 
 {
 	$_P = ClassLoader::getInstance()->getClassInstance( 'Model_Preference' );
 	return $_P->delete(array('s_name' => $key, 's_section' => $section));
@@ -815,7 +815,7 @@ function getBoolPreference($key)
  * @param string $section
  * @return string
  */
-function getPreference($key, $section = 'osclass') 
+function getPreference($key, $section = 'osc') 
 {
 	$_P = ClassLoader::getInstance()->getClassInstance( 'Model_Preference' );
 	return ($_P->get($key, $section));

@@ -20,14 +20,24 @@
 */
 class CAdminIndex extends Controller_Default
 {
+	public function init()
+	{
+		$classLoader = $this->getClassLoader();
+		$classLoader->loadFile( 'helpers/security' );
+	}
+
 	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
-		echo $this->getView()->render( 'recover.php' );
+		$adminTheme = $this->getClassLoader()->getClassInstance( 'Ui_AdminTheme' );
+		$this->getView()->setTheme( $adminTheme );
+		echo $this->getView()->render( 'recover' );
 	}
 
 	public function doPost( HttpRequest $req, HttpResponse $res )
 	{
-		$admin = $this->getClassLoader()->getClassInstance( 'Model_Admin' )->findByEmail(Params::getParam('email'));
+		$classLoader = $this->getClassLoader();
+		$userModel = $classLoader->getClassInstance( 'Model_User' );
+		$admin = $userModel->findByEmail(Params::getParam('email'));
 		if ($admin) 
 		{
 			if ((osc_recaptcha_private_key() != '') && Params::existParam("recaptcha_challenge_field")) 
@@ -40,9 +50,8 @@ class CAdminIndex extends Controller_Default
 					
 				}
 			}
-			require_once 'osc/helpers/hSecurity.php';
 			$newPassword = osc_genRandomPassword(40);
-			$this->getClassLoader()->getClassInstance( 'Model_Admin' )->update(array('s_secret' => $newPassword), array('pk_i_id' => $admin['pk_i_id']));
+			$userModel->update(array('s_secret' => $newPassword), array('pk_i_id' => $admin['pk_i_id']));
 			$password_url = osc_forgot_admin_password_confirm_url($admin['pk_i_id'], $newPassword);
 			osc_run_hook('hook_email_user_forgot_password', $admin, $password_url);
 		}

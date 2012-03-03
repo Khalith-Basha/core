@@ -22,7 +22,8 @@ class CAdminIndex extends Controller_Default
 {
 	public function doGet( HttpRequest $req, HttpResponse $res ) 
 	{
-		$admin = $this->getClassLoader()->getClassInstance( 'Model_Admin' )->findByIdSecret(Params::getParam('adminId'), Params::getParam('code'));
+		$userModel = $this->getClassLoader()->getClassInstance( 'Model_User' );
+		$admin = $userModel->findByIdSecret(Params::getParam('adminId'), Params::getParam('code'));
 		if ($admin) 
 		{
 			require osc_admin_base_path() . 'gui/forgot_password.php';
@@ -36,12 +37,13 @@ class CAdminIndex extends Controller_Default
 
 	public function doPost( HttpRequest $req, HttpResponse $res )
 	{
-		$admin = $this->getClassLoader()->getClassInstance( 'Model_Admin' )->findByIdSecret(Params::getParam('adminId'), Params::getParam('code'));
+		$userModel = $this->getClassLoader()->getClassInstance( 'Model_User' );
+		$admin = $userModel->findByIdSecret(Params::getParam('adminId'), Params::getParam('code'));
 		if ($admin) 
 		{
 			if (Params::getParam('new_password') == Params::getParam('new_password2')) 
 			{
-				$this->getClassLoader()->getClassInstance( 'Model_Admin' )->update(array('s_secret' => osc_genRandomPassword(), 's_password' => sha1(Params::getParam('new_password'))), array('pk_i_id' => $admin['pk_i_id']));
+				$userModel->update(array('s_secret' => osc_genRandomPassword(), 's_password' => sha1(Params::getParam('new_password'))), array('pk_i_id' => $admin['pk_i_id']));
 				osc_add_flash_ok_message(_m('The password has been changed'), 'admin');
 				$this->redirectTo(osc_admin_base_url());
 			}

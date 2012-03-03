@@ -76,14 +76,9 @@ $menuBar = array(
 	1 => null,
 
 	'Users' => array(
-                'page=user' => 'Manage users',
+                'page=user' => 'Listing',
                 'page=user&action=create' => 'Add new user',
                 'page=user&action=settings' => 'Settings',
-	),
-	'Administrators' => array(
-                'page=admins' => 'List administrators',
-                'page=admins&action=add' => 'Add new administrator',
-                'page=admins&action=edit' => 'Edit Your Profile',
 	),
 	'Statistics' => array(
                 'page=stats&action=users' => 'Users',

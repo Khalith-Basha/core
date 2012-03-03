@@ -28,7 +28,7 @@ class Model_User extends DAO
 		parent::__construct();
 		$this->setTableName('user');
 		$this->setPrimaryKey('pk_i_id');
-		$array_fields = array('pk_i_id', 'reg_date', 'mod_date', 's_name', 's_password', 's_secret', 's_email', 's_website', 's_phone_land', 's_phone_mobile', 'b_enabled', 'b_active', 's_pass_code', 's_pass_date', 's_pass_question', 's_pass_answer', 's_pass_ip', 'fk_c_country_code', 's_country', 's_address', 's_zip', 'fk_i_region_id', 's_region', 'fk_i_city_id', 's_city', 'fk_i_city_area_id', 's_city_area', 'd_coord_lat', 'd_coord_long', 'i_permissions', 'b_company', 'i_items', 'i_comments');
+		$array_fields = array('pk_i_id', 'reg_date', 'mod_date', 's_name', 's_password', 's_secret', 's_email', 's_website', 's_phone_land', 's_phone_mobile', 'b_enabled', 'b_active', 's_pass_code', 's_pass_date', 's_pass_question', 's_pass_answer', 's_pass_ip', 'fk_c_country_code', 's_country', 's_address', 's_zip', 'fk_i_region_id', 's_region', 'fk_i_city_id', 's_city', 'fk_i_city_area_id', 's_city_area', 'd_coord_lat', 'd_coord_long', 'i_permissions', 'b_company', 'i_items', 'i_comments', 's_username', 'role_id' );
 		$this->setFields($array_fields);
 	}
 	/**
@@ -278,4 +278,32 @@ SQL;
 		}
 		return (bool)$result;
 	}
+
+	public function findByUsernamePassword( $username, $password )
+	{
+		$user = null;
+
+		$sql = <<<SQL
+SELECT
+	*
+FROM
+	/*TABLE_PREFIX*/user
+WHERE
+	s_username = ?
+AND
+	s_password = SHA1( ? )
+LIMIT 1
+SQL;
+
+		$stmt = $this->prepareStatement( $sql );
+		$stmt->bind_param( 'ss', $username, $password );
+		if( $stmt->execute() )
+		{
+			$user = $this->fetch( $stmt );
+		}
+		$stmt->close();
+
+		return $user;
+	}
 }
+

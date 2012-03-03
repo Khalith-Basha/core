@@ -126,24 +126,18 @@ function osc_logged_user_phone()
 function osc_is_admin_user_logged_in() 
 {
 	$classLoader = ClassLoader::getInstance();
+	$userModel = $classLoader->getClassInstance( 'Model_User' );
 	$session = $classLoader->getClassInstance( 'Session' );
 	if ($session->_get("adminId") != '') 
 	{
-		$admin = $classLoader->getClassInstance( 'Model_Admin' )->findByPrimaryKey($session->_get("adminId"));
-		if (isset($admin['pk_i_id'])) 
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
+		$admin = $userModel->findByPrimaryKey($session->_get("adminId"));
+		return (isset($admin['pk_i_id'])); 
 	}
 	//can already be a logged user or not, we'll take a look into the cookie
 	$cookie = $classLoader->getClassInstance( 'Cookie' );
 	if ($cookie->get_value('oc_adminId') != '' && $cookie->get_value('oc_adminSecret') != '') 
 	{
-		$admin = $classLoader->getClassInstance( 'Model_Admin' )->findByIdSecret($cookie->get_value('oc_adminId'), $cookie->get_value('oc_adminSecret'));
+		$admin = $userModel->findByIdSecret($cookie->get_value('oc_adminId'), $cookie->get_value('oc_adminSecret'));
 		if (isset($admin['pk_i_id'])) 
 		{
 			$session->_set('adminId', $admin['pk_i_id']);
@@ -152,10 +146,6 @@ function osc_is_admin_user_logged_in()
 			$session->_set('adminEmail', $admin['s_email']);
 			$session->_set('adminLocale', $cookie->get_value('oc_adminLocale'));
 			return true;
-		}
-		else
-		{
-			return false;
 		}
 	}
 	return false;

@@ -27,7 +27,9 @@ class CAdminUser extends Controller_Administration
 		$aCountries = array();
 		$aRegions = array();
 		$aCities = array();
-		$aUser = $this->userManager->findByPrimaryKey(Params::getParam("id"));
+		$input = $this->getInput();
+		$userId = $input->getInteger( 'id', $_SESSION['adminId'] );
+		$aUser = $this->userManager->findByPrimaryKey( $userId );
 		$aCountries = ClassLoader::getInstance()->getClassInstance( 'Model_Country' )->listAll();
 		$aRegions = array();
 		if ($aUser['fk_c_country_code'] != '') 

@@ -25,6 +25,6 @@
     </table>
 </div>
 <p class="margin20">
-    <a target="_blank" href="<?php echo get_absolute_url() ?>/administration/index.php" class="button">Finish and go to the administration panel</a>
+    <a target="_blank" href="<?php echo osc_get_absolute_url() ?>/administration/index.php" class="button">Finish and go to the administration panel</a>
 </p>
 

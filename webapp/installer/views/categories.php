@@ -31,7 +31,7 @@ if (Params::getParam('error_location') == 1)
             </div>
             <div class="left">
                 <h3>Select your classified categories <span style="font-size:11px;">or</span> <a href="index.php?step=5">Skip</a><img src="<?php
-echo get_absolute_url() ?>installer/data/images/question.png" class="question-skip vtip" title="You can add/remove categories after the installation, using the admin dashboard." alt=""/></h3>
+echo osc_get_absolute_url() ?>installer/data/images/question.png" class="question-skip vtip" title="You can add/remove categories after the installation, using the admin dashboard." alt=""/></h3>
             </div>
         </div>
         <table class="list-categories">

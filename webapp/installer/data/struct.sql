@@ -3,20 +3,6 @@ SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL';
 
 
-CREATE  TABLE IF NOT EXISTS /*TABLE_PREFIX*/t_admin (
-  pk_i_id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT ,
-  s_name VARCHAR(100) NOT NULL ,
-  s_username VARCHAR(40) NOT NULL ,
-  s_password VARCHAR(40) NOT NULL ,
-  s_email VARCHAR(100) NULL DEFAULT NULL ,
-  s_secret VARCHAR(40) NULL DEFAULT NULL ,
-  PRIMARY KEY (pk_i_id) ,
-  UNIQUE INDEX s_username (s_username ASC) ,
-  UNIQUE INDEX s_email (s_email ASC) )
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
-
-
 CREATE  TABLE IF NOT EXISTS /*TABLE_PREFIX*/t_alerts (
   s_email VARCHAR(100) NULL DEFAULT NULL ,
   fk_i_user_id INT(10) UNSIGNED NULL DEFAULT NULL ,
@@ -166,6 +152,14 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
 
+CREATE  TABLE IF NOT EXISTS /*TABLE_PREFIX*/acl_role (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT ,
+  name VARCHAR(45) NULL ,
+  description VARCHAR(45) NULL ,
+  PRIMARY KEY (id) )
+ENGINE = InnoDB;
+
+
 CREATE  TABLE IF NOT EXISTS /*TABLE_PREFIX*/user (
   pk_i_id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT ,
   reg_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
@@ -178,7 +172,7 @@ CREATE  TABLE IF NOT EXISTS /*TABLE_PREFIX*/user (
   s_phone_land VARCHAR(45) NULL DEFAULT NULL ,
   s_phone_mobile VARCHAR(45) NULL DEFAULT NULL ,
   b_enabled TINYINT(1)  NOT NULL DEFAULT TRUE ,
-  b_active TINYINT(1) NOT NULL DEFAULT '0' ,
+  b_active TINYINT(1) NOT NULL DEFAULT 0 ,
   s_pass_code VARCHAR(100) NULL DEFAULT NULL ,
   s_pass_date DATETIME NULL DEFAULT NULL ,
   s_pass_question VARCHAR(100) NULL DEFAULT NULL ,
@@ -196,16 +190,19 @@ CREATE  TABLE IF NOT EXISTS /*TABLE_PREFIX*/user (
   s_city_area VARCHAR(200) NULL DEFAULT NULL ,
   d_coord_lat DECIMAL(10,6) NULL DEFAULT NULL ,
   d_coord_long DECIMAL(10,6) NULL DEFAULT NULL ,
-  i_permissions VARCHAR(2) NULL DEFAULT '0' ,
-  b_company TINYINT(1) NOT NULL DEFAULT '0' ,
-  i_items INT(10) UNSIGNED NULL DEFAULT '0' ,
-  i_comments INT(10) UNSIGNED NULL DEFAULT '0' ,
+  i_permissions VARCHAR(2) NULL DEFAULT NULL ,
+  b_company TINYINT(1) NOT NULL DEFAULT 0 ,
+  i_items INT(10) UNSIGNED NULL DEFAULT 0 ,
+  i_comments INT(10) UNSIGNED NULL DEFAULT 0 ,
+  role_id INT UNSIGNED NOT NULL ,
+  s_username VARCHAR(45) NULL ,
   PRIMARY KEY (pk_i_id) ,
   UNIQUE INDEX s_email (s_email ASC) ,
   INDEX fk_c_country_code (fk_c_country_code ASC) ,
   INDEX fk_i_region_id (fk_i_region_id ASC) ,
   INDEX fk_i_city_id (fk_i_city_id ASC) ,
   INDEX fk_i_city_area_id (fk_i_city_area_id ASC) ,
+  INDEX fk_user_acl_role1 (role_id ASC) ,
   CONSTRAINT t_user_ibfk_1
     FOREIGN KEY (fk_c_country_code )
     REFERENCES /*TABLE_PREFIX*/t_country (pk_c_code ),
@@ -217,7 +214,12 @@ CREATE  TABLE IF NOT EXISTS /*TABLE_PREFIX*/user (
     REFERENCES /*TABLE_PREFIX*/t_city (pk_i_id ),
   CONSTRAINT t_user_ibfk_4
     FOREIGN KEY (fk_i_city_area_id )
-    REFERENCES /*TABLE_PREFIX*/t_city_area (pk_i_id ))
+    REFERENCES /*TABLE_PREFIX*/t_city_area (pk_i_id ),
+  CONSTRAINT fk_user_acl_role1
+    FOREIGN KEY (role_id )
+    REFERENCES /*TABLE_PREFIX*/acl_role (id )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
@@ -556,6 +558,33 @@ CREATE  TABLE IF NOT EXISTS /*TABLE_PREFIX*/bad_word (
   CONSTRAINT fk_bad_word_t_locale1
     FOREIGN KEY (locale_code )
     REFERENCES /*TABLE_PREFIX*/t_locale (pk_c_code )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+CREATE  TABLE IF NOT EXISTS /*TABLE_PREFIX*/acl_permission (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT ,
+  object VARCHAR(45) NOT NULL ,
+  privilege VARCHAR(45) NOT NULL ,
+  PRIMARY KEY (id) )
+ENGINE = InnoDB;
+
+
+CREATE  TABLE IF NOT EXISTS /*TABLE_PREFIX*/acl_role_permission (
+  role_id INT UNSIGNED NOT NULL ,
+  permission_id INT UNSIGNED NOT NULL ,
+  PRIMARY KEY (role_id, permission_id) ,
+  INDEX fk_acl_role_has_acl_permission_acl_permission1 (permission_id ASC) ,
+  INDEX fk_acl_role_has_acl_permission_acl_role1 (role_id ASC) ,
+  CONSTRAINT fk_acl_role_has_acl_permission_acl_role1
+    FOREIGN KEY (role_id )
+    REFERENCES /*TABLE_PREFIX*/acl_role (id )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT fk_acl_role_has_acl_permission_acl_permission1
+    FOREIGN KEY (permission_id )
+    REFERENCES /*TABLE_PREFIX*/acl_permission (id )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;

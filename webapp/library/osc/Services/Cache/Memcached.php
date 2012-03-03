@@ -27,11 +27,12 @@ class Services_Cache_Memcached implements CacheService
 
 	public function __construct() 
 	{
-		$this->service = new Memcached;
+		$this->service = null;
 
 		$config = ClassLoader::getInstance()->getClassInstance( 'Config' );
 		if( $config->hasConfig( 'memcached' ) )
 		{
+			$this->service = new Memcached;
 			$memcachedConfig = $config->getConfig( 'memcached' );
 			foreach( $memcachedConfig['servers'] as $server )
 			{
@@ -45,11 +46,17 @@ class Services_Cache_Memcached implements CacheService
 
 	public function read( $key )
 	{
+		if( is_null( $this->service ) )
+			return null;
+
 		return $this->service->get( $key );
 	}
 
 	public function write( $key, $content, $expiration = 3600 )
 	{
+		if( is_null( $this->service ) )
+			return;
+
 		if( false === $this->service->set( $key, $content, $expiration ) )
 		{
 			trigger_error( $this->service->getResultMessage(), E_USER_ERROR );

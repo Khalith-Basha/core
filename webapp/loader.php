@@ -19,14 +19,24 @@ $classLoader = ClassLoader::getInstance();
 $classLoader->addSearchPath( OVERRIDE_LIBRARY_PATH . '/osc', 'Override_' );
 $classLoader->addSearchPath( LIBRARY_PATH . '/osc' );
 
+$classLoader->loadFile( 'helpers/urls' );
+
 $config = $classLoader->getClassInstance( 'Config' );
 if( false === $config->hasConfig( 'database' ) )
 {
 	$configPath = $config->getConfigPath( 'database' );
-	$title = 'OpenSourceClassifieds &raquo; Error';
-	$message = 'There doesn\'t seem to be a <code>' . $configPath . '</code> file. OpenSourceClassifieds isn\'t installed. <a href="http://forums.opensourceclassifieds.org/">Need more help?</a></p>';
-	$message.= '<p><a class="button" href="' . osc_get_absolute_url() . '/installer/index.php">Install</a></p>';
-	osc_die($title, $message);
+	$absoluteUrl = osc_get_absolute_url();
+	$errorPage = <<<HTML
+<html>
+<head><title>OpenSourceClassifieds &raquo; Error</title></head>
+<body>
+It doesn't seem to be a <code>$configPath</code> file. OpenSourceClassifieds isn't installed. <a href="http://forums.opensourceclassifieds.org/">Need more help?</a></p>
+<p><a class="button" href="$absoluteUrl/installer/index.php">Install</a></p>
+</body>
+</html>
+HTML;
+
+	die( $errorPage );	
 }
 
 $classLoader->loadFile( 'TypedArray' );

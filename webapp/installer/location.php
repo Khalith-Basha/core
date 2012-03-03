@@ -14,10 +14,7 @@ require_once 'osc/default-constants.php';
 require_once 'osc/formatting.php';
 require_once 'osc/install-functions.php';
 require_once 'osc/utils.php';
-if (is_osclass_installed()) 
-{
-	die();
-}
+
 $json_message = array();
 $json_message['status'] = '200';
 $result = basic_info();
