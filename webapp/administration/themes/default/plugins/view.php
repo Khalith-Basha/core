@@ -17,18 +17,18 @@
  */
 ?>
 
-			        <div id="content_header" class="content_header">
-				        <div style="float: left;">
-                            <img src="<?php echo osc_current_admin_theme_url('images/plugins-icon.png'); ?>" title="" alt="" />
-                        </div>
-				        <div id="content_header_arrow">&raquo; <?php _e('Plugins'); ?></div>
-				        <a href="<?php echo osc_admin_base_url(true); ?>?page=plugin&action=add" id="button_open"><?php _e('Add a new plugin'); ?></a>
-				        <div style="clear: both;"></div>
-			        </div>
-			        <?php osc_show_flash_message('admin'); ?>
-			        <div id="content_separator"></div>
-			        <div id="TableToolsToolbar"></div>
-			        <div>
-                        <?php require $file; ?>
-                    </div>
+<div id="content_header" class="content_header">
+	<div style="float: left;">
+	<img src="<?php echo osc_current_admin_theme_url('images/plugins-icon.png'); ?>" title="" alt="" />
+	</div>
+	<div id="content_header_arrow">&raquo; <?php _e('Plugins'); ?></div>
+	<a href="<?php echo osc_admin_base_url(true); ?>?page=plugin&action=add" id="button_open"><?php _e('Add a new plugin'); ?></a>
+	<div style="clear: both;"></div>
+	</div>
+	<?php osc_show_flash_message('admin'); ?>
+	<div id="content_separator"></div>
+	<div id="TableToolsToolbar"></div>
+	<div>
+	<?php require $pluginFilepath; ?>
+</div>
 

@@ -43,7 +43,7 @@ require_once 'osc/helpers/locales.php';
 require_once 'osc/helpers/preference.php';
 require_once 'osc/helpers/search.php';
 require_once 'osc/helpers/paths.php';
-require_once 'functions.php';
+require_once 'library/steps.php';
 $step = Params::getParam('step');
 if (!is_numeric($step)) 
 {
@@ -81,8 +81,12 @@ function showView( $file, array $extraParams = array() )
 switch ($step) 
 {
 	case 1:
-		$requirements = get_requirements();
-		$error = check_requirements($requirements);
+		require 'library/requirements.php';
+		$requirements = array(
+			'mandatory' => getMandatoryRequirements(),
+			'optional' => getOptionalRequirements()
+		);
+		$error = checkRequirements( $requirements['mandatory'] );
 		showView( 'views/welcome.php' );
 		break;
 

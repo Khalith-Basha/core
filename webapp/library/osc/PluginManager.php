@@ -29,6 +29,14 @@ class PluginManager
 		ClassLoader::getInstance()->loadFile( 'helpers/plugins' );
 	}
 
+	public function loadPlugins()
+	{
+		foreach( $this->listAll() as $plugin )
+		{
+			$this->loadPlugin( $plugin );
+		}
+	}
+
 	public function runHook( $hook )
 	{
 		$args = func_get_args();
@@ -99,6 +107,16 @@ class PluginManager
 		return false;
 	}
 
+	public function loadPlugin( $pluginName )
+	{
+		$pluginsPath = osc_plugins_path();
+		$pluginPath = $pluginsPath . "/$pluginName/index.php";
+		if( false === file_exists( $pluginPath ) )
+			throw new Exception( 'Plugin path: ' . $pluginPath );
+
+		require $pluginPath;
+	}
+
 	public function listAll() 
 	{
 		$plugins = array();
@@ -108,42 +126,18 @@ class PluginManager
 		{
 			if (preg_match('/^[a-zA-Z0-9_]+$/', $file, $matches)) 
 			{
-				// This has to change in order to catch any .php file
-				$pluginPath = $pluginsPath . "/$file/index.php";
-				if (file_exists($pluginPath)) 
+				try
 				{
-					$plugins[] = $file . "/index.php";
+					$plugins[] = $file;
 				}
-				else
+				catch ( Exception $e )
 				{
-					trigger_error(sprintf(__('Plugin %s is missing the index.php file %s'), $file, $pluginPath));
+					trigger_error( $e->getMessage() );
 				}
 			}
 		}
 		closedir($dir);
 		return $plugins;
-	}
-
-	public function loadActive() 
-	{
-		$data['s_value'] = osc_active_plugins();
-		$plugins_list = unserialize($data['s_value']);
-		if (is_array($plugins_list)) 
-		{
-			foreach ($plugins_list as $plugin_name) 
-			{
-				$pluginPath = osc_plugins_path() . DIRECTORY_SEPARATOR . $plugin_name;
-				if( file_exists( $pluginPath ) ) 
-				{
-					//This should include the file and adds the hooks
-					include_once $pluginPath;
-				}
-				else
-				{
-					trigger_error( 'Plugin path not found: ' . $pluginPath, E_USER_WARNING );
-				}
-			}
-		}
 	}
 
 	public function listInstalled() 
@@ -219,7 +213,7 @@ class PluginManager
 			{
 				$plugins_list[] = $path;
 				$data['s_value'] = serialize($plugins_list);
-				$condition = array('s_section' => 'osclass', 's_name' => 'active_plugins');
+				$condition = array('s_section' => 'osc', 's_name' => 'active_plugins');
 				ClassLoader::getInstance()->getClassInstance( 'Model_Preference' )->update($data, $condition);
 				unset($condition);
 				unset($data);
@@ -260,7 +254,7 @@ class PluginManager
 					}
 				}
 				$data['s_value'] = serialize($plugins_list);
-				$condition = array('s_section' => 'osclass', 's_name' => 'active_plugins');
+				$condition = array('s_section' => 'osc', 's_name' => 'active_plugins');
 				ClassLoader::getInstance()->getClassInstance( 'Model_Preference' )->update($data, $condition);
 				unset($condition);
 				unset($data);
@@ -297,7 +291,7 @@ class PluginManager
 			{
 				$plugins_list[] = $path;
 				$data['s_value'] = serialize($plugins_list);
-				$condition = array('s_section' => 'osclass', 's_name' => 'installed_plugins');
+				$condition = array('s_section' => 'osc', 's_name' => 'installed_plugins');
 				ClassLoader::getInstance()->getClassInstance( 'Model_Preference' )->update($data, $condition);
 				unset($condition);
 				unset($data);
@@ -332,7 +326,7 @@ class PluginManager
 					}
 				}
 				$data['s_value'] = serialize($plugins_list);
-				$condition = array('s_section' => 'osclass', 's_name' => 'installed_plugins');
+				$condition = array('s_section' => 'osc', 's_name' => 'installed_plugins');
 				ClassLoader::getInstance()->getClassInstance( 'Model_Preference' )->update($data, $condition);
 				unset($condition);
 				unset($data);
@@ -348,79 +342,23 @@ class PluginManager
 
 	public function isThisCategory($name, $id) 
 	{
-		return PluginClassLoader::getInstance()->getClassInstance( 'Model_Category' )->isThisCategory($name, $id);
+		return ClassLoader::getInstance()->getClassInstance( 'Model_PluginCategory' )->isThisCategory($name, $id);
 	}
 
-	public function getInfo($plugin) 
+	public function getInfo( $plugin )
 	{
-		$s_info = file_get_contents(osc_plugins_path() . DIRECTORY_SEPARATOR . $plugin);
-		$info = array();
-		if (preg_match('|Plugin Name:([^\\r\\t\\n]*)|i', $s_info, $match)) 
-		{
-			$info['plugin_name'] = trim($match[1]);
-		}
-		else
-		{
-			$info['plugin_name'] = $plugin;
-		};
-		if (preg_match('|Plugin URI:([^\\r\\t\\n]*)|i', $s_info, $match)) 
-		{
-			$info['plugin_uri'] = trim($match[1]);
-		}
-		else
-		{
-			$info['plugin_uri'] = "";
-		};
-		if (preg_match('|Plugin update URI:([^\\r\\t\\n]*)|i', $s_info, $match)) 
-		{
-			$info['plugin_update_uri'] = trim($match[1]);
-		}
-		else
-		{
-			$info['plugin_update_uri'] = "";
-		};
-		if (preg_match('|Description:([^\\r\\t\\n]*)|i', $s_info, $match)) 
-		{
-			$info['description'] = trim($match[1]);
-		}
-		else
-		{
-			$info['description'] = "";
-		};
-		if (preg_match('|Version:([^\\r\\t\\n]*)|i', $s_info, $match)) 
-		{
-			$info['version'] = trim($match[1]);
-		}
-		else
-		{
-			$info['version'] = "";
-		};
-		if (preg_match('|Author:([^\\r\\t\\n]*)|i', $s_info, $match)) 
-		{
-			$info['author'] = trim($match[1]);
-		}
-		else
-		{
-			$info['author'] = "";
-		};
-		if (preg_match('|Author URI:([^\\r\\t\\n]*)|i', $s_info, $match)) 
-		{
-			$info['author_uri'] = trim($match[1]);
-		}
-		else
-		{
-			$info['author_uri'] = "";
-		};
-		if (preg_match('|Short Name:([^\\r\\t\\n]*)|i', $s_info, $match)) 
-		{
-			$info['short_name'] = trim($match[1]);
-		}
-		else
-		{
-			$info['short_name'] = $info['plugin_name'];
-		};
-		$info['filename'] = $plugin;
-		return $info;
+		$fxName = 'getPluginInfo_' . $plugin;
+		if( !function_exists( $fxName ) )
+			throw new Exception( 'Missing plugin info function: ' . $fxName );
+
+		$pluginInfo = call_user_func( $fxName );
+		$pluginInfo['int_name'] = $plugin;
+		if( empty( $pluginInfo['name'] ) )
+			throw new Exception( 'Missing required plugin info argument: name, ' . $plugin );
+
+		$pluginInfo += array( 'description' => '' );
+
+		return $pluginInfo;
 	}
 
 	public function checkUpdate( $plugin )
@@ -539,7 +477,7 @@ class PluginManager
 		unset( $this->hooks[$hook][$function]);
 	}
 
-	public function getActive() 
+	public function getRegisteredHooks() 
 	{
 		return $this->hooks;
 	}
@@ -547,12 +485,6 @@ class PluginManager
 	public function reload() 
 	{
 		ClassLoader::getInstance()->getClassInstance( 'Model_Preference' )->toArray();
-		$this->init();
-	}
-
-	public function init() 
-	{
-		$this->loadActive();
 	}
 }
 

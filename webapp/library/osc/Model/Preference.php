@@ -116,7 +116,7 @@ class Model_Preference extends DAO
 	 * @param string $section
 	 * @return string
 	 */
-	public function get( $key, $section = 'osclass' ) 
+	public function get( $key, $section = 'osc' ) 
 	{
 		if( !isset( $this->pref[ $section ][ $key ] ) ) 
 		{
@@ -133,7 +133,7 @@ class Model_Preference extends DAO
 	 * @param string$value
 	 * @param string $section
 	 */
-	public function set($key, $value, $section = "osclass") 
+	public function set($key, $value, $section = "osc") 
 	{
 		$this->pref[$section][$key] = $value;
 	}
@@ -148,9 +148,31 @@ class Model_Preference extends DAO
 	 * @param string $type
 	 * @return boolean
 	 */
-	public function replace($key, $value, $section = 'osclass', $type = 'STRING') 
+	public function replace($key, $value, $section = 'osc', $type = 'STRING') 
 	{
 		$array_replace = array('s_name' => $key, 's_value' => $value, 's_section' => $section, 'e_type' => $type);
 		return $this->dao->replace($this->getTableName(), $array_replace);
 	}
+
+	public function insertOrUpdate( $key, $value, $section = 'osc', $type = 'STRING' )
+	{
+		$sql = <<<SQL
+INSERT INTO
+	/*TABLE_PREFIX*/t_preference
+	( s_name, s_value, s_section, e_type )
+VALUES
+	( ?, ?, ?, ? )
+ON DUPLICATE KEY
+UPDATE
+	s_value = ?
+SQL;
+
+		$stmt = $this->prepareStatement( $sql );
+		$stmt->bind_param( 'sssss', $key, $value, $section, $type, $value );
+		$result = $stmt->execute();
+		$stmt->close();
+
+		return $result;
+	}
 }
+

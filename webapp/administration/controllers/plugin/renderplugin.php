@@ -23,61 +23,33 @@ class CAdminPlugin extends Controller_Administration
 	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
 		$pluginManager = ClassLoader::getInstance()->getClassInstance( 'PluginManager' );
-		switch ($this->action) 
+		global $active_plugins;
+		$file = Params::getParam("file");
+		if ($file != "") 
 		{
-		case 'renderplugin':
-			global $active_plugins;
-			$file = Params::getParam("file");
-			if ($file != "") 
+			// We pass the GET variables (in case we have somes)
+			if (preg_match('|(.+?)\?(.*)|', $file, $match)) 
 			{
-				// We pass the GET variables (in case we have somes)
-				if (preg_match('|(.+?)\?(.*)|', $file, $match)) 
+				$file = $match[1];
+				if (preg_match_all('|&([^=]+)=([^&]*)|', urldecode('&' . $match[2] . '&'), $get_vars)) 
 				{
-					$file = $match[1];
-					if (preg_match_all('|&([^=]+)=([^&]*)|', urldecode('&' . $match[2] . '&'), $get_vars)) 
+					for ($var_k = 0; $var_k < count($get_vars[1]); $var_k++) 
 					{
-						for ($var_k = 0; $var_k < count($get_vars[1]); $var_k++) 
-						{
-							//$_GET[$get_vars[1][$var_k]] = $get_vars[2][$var_k];
-							//$_REQUEST[$get_vars[1][$var_k]] = $get_vars[2][$var_k];
-							Params::setParam($get_vars[1][$var_k], $get_vars[2][$var_k]);
-						}
+						//$_GET[$get_vars[1][$var_k]] = $get_vars[2][$var_k];
+						//$_REQUEST[$get_vars[1][$var_k]] = $get_vars[2][$var_k];
+						Params::setParam($get_vars[1][$var_k], $get_vars[2][$var_k]);
 					}
 				}
-				else
-				{
-					$file = $_REQUEST['file'];
-				};
-				$this->getView()->assign("file", osc_plugins_path() . DIRECTORY_SEPARATOR . $file);
-				//osc_renderPluginView($file);
-				$this->doView("plugins/view.php");
 			}
-			break;
-
-		case 'render':
-			$file = Params::getParam("file");
-			if ($file != "") 
+			else
 			{
-				// We pass the GET variables (in case we have somes)
-				if (preg_match('|(.+?)\?(.*)|', $file, $match)) 
-				{
-					$file = $match[1];
-					if (preg_match_all('|&([^=]+)=([^&]*)|', urldecode('&' . $match[2] . '&'), $get_vars)) 
-					{
-						for ($var_k = 0; $var_k < count($get_vars[1]); $var_k++) 
-						{
-							Params::setParam($get_vars[1][$var_k], $get_vars[2][$var_k]);
-						}
-					}
-				}
-				else
-				{
-					$file = $_REQUEST['file'];
-				};
-				$this->getView()->assign("file", ABS_PATH . DIRECTORY_SEPARATOR . $file);
-				$this->doView("theme/view.php");
-			}
-			break;
+				$file = $_REQUEST['file'];
+			};
+			$filePath = osc_plugins_path() . DIRECTORY_SEPARATOR . $file;
+			$view = $this->getView();
+			$view->assign("pluginFilepath", $filePath );
+			//osc_renderPluginView($file);
+			$this->doView("plugins/view.php");
 		}
 	}
 }

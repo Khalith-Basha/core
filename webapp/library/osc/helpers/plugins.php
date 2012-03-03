@@ -111,17 +111,6 @@ function osc_is_this_category($name, $id)
 	return $pluginManager->isThisCategory($name, $id);
 }
 /**
- * Returns plugin's information
- *
- * @param string $plugins
- * @return array
- */
-function osc_plugin_get_info($plugin) 
-{
-	global $pluginManager;
-	return $pluginManager->getInfo($plugin);
-}
-/**
  * Check if there's a new version of the plugin
  *
  * @param string $plugin
@@ -143,38 +132,6 @@ function osc_register_plugin($path, $function)
 {
 	global $pluginManager;
 	$pluginManager->register($path, $function);
-}
-/**
- * Get list of the plugins
- *
- * @return array
- */
-function osc_get_plugins() 
-{
-	global $pluginManager;
-	return $pluginManager->getActive();
-}
-/**
- * Gets if a plugin is installed or not
- *
- * @param string $plugin
- * @return void
- */
-function osc_plugin_is_installed($plugin) 
-{
-	global $pluginManager;
-	return $pluginManager->isInstalled($plugin);
-}
-/**
- * Gets if a plugin is enabled or not
- *
- * @param string $plugin
- * @return void
- */
-function osc_plugin_is_enabled($plugin) 
-{
-	global $pluginManager;
-	return $pluginManager->isEnabled($plugin);
 }
 /**
  * Show the default configure view for plugins (attach them to categories)

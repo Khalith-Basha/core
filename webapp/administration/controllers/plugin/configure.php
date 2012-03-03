@@ -22,16 +22,44 @@ class CAdminPlugin extends Controller_Administration
 {
 	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
+		$classLoader = $this->getClassLoader();
 		$pluginManager = ClassLoader::getInstance()->getClassInstance( 'PluginManager' );
 		$plugin = Params::getParam("plugin");
-		$fxName = $plugin . '_admin';
-		call_user_func( $fxName );
+		if ($plugin != '') 
+		{
+			$plugin_data = $pluginManager->getInfo($plugin);
+			$this->getView()->assign("categories", ClassLoader::getInstance()->getClassInstance( 'Model_Category' )->toTreeAll());
+			$this->getView()->assign("selected", PluginClassLoader::getInstance()->getClassInstance( 'Model_Category' )->listSelected($plugin_data['short_name']));
+			$this->getView()->assign("plugin_data", $plugin_data);
+			$this->doView("plugins/configuration.php");
+		}
+		else
+		{
+			$this->redirectTo(osc_admin_base_url(true) . "?page=plugin");
+		}
 	}
 
 	public function doPost( HttpRequest $req, HttpResponse $res )
 	{
+		$classLoader = $this->getClassLoader();
 		$pluginManager = ClassLoader::getInstance()->getClassInstance( 'PluginManager' );
-		$pluginManager->runHook('admin_post');
+		$plugin_short_name = Params::getParam("plugin_short_name");
+		$categories = Params::getParam("categories");
+		if ($plugin_short_name != "") 
+		{
+			$pluginManager->cleanCategoryFromPlugin($plugin_short_name);
+			if (isset($categories)) 
+			{
+				$pluginManager->addToCategoryPlugin($categories, $plugin_short_name);
+			}
+		}
+		else
+		{
+			osc_add_flash_error_message(_m('No plugin selected'), 'admin');
+			$this->doView("plugins/index.php");
+		}
+		osc_add_flash_ok_message(_m('Configuration was saved'), 'admin');
+		$this->redirectTo(osc_admin_base_url(true) . "?page=plugin");
 	}
 }
 

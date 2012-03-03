@@ -51,47 +51,24 @@ class CAdminPlugin extends Controller_Administration
 			}
 			break;
 
-		case 'configure':
-			$plugin = Params::getParam("plugin");
-			if ($plugin != '') 
-			{
-				$plugin_data = $pluginManager->getInfo($plugin);
-				$this->getView()->assign("categories", ClassLoader::getInstance()->getClassInstance( 'Model_Category' )->toTreeAll());
-				$this->getView()->assign("selected", PluginClassLoader::getInstance()->getClassInstance( 'Model_Category' )->listSelected($plugin_data['short_name']));
-				$this->getView()->assign("plugin_data", $plugin_data);
-				$this->doView("plugins/configuration.php");
-			}
-			else
-			{
-				$this->redirectTo(osc_admin_base_url(true) . "?page=plugin");
-			}
-			break;
-
-		case 'configure_post':
-			$plugin_short_name = Params::getParam("plugin_short_name");
-			$categories = Params::getParam("categories");
-			if ($plugin_short_name != "") 
-			{
-				$pluginManager->cleanCategoryFromPlugin($plugin_short_name);
-				if (isset($categories)) 
-				{
-					$pluginManager->addToCategoryPlugin($categories, $plugin_short_name);
-				}
-			}
-			else
-			{
-				osc_add_flash_error_message(_m('No plugin selected'), 'admin');
-				$this->doView("plugins/index.php");
-			}
-			osc_add_flash_ok_message(_m('Configuration was saved'), 'admin');
-			$this->redirectTo(osc_admin_base_url(true) . "?page=plugin");
-			break;
-
 		default:
 			$classLoader->loadFile( 'helpers/plugins' );
 
-			$this->getView()->assign("plugins", $pluginManager->listAll());
-			$this->doView("plugins/index.php");
+			$plugins = array();
+			$pluginList = $pluginManager->listAll();
+			$registeredHooks = $pluginManager->getRegisteredHooks();
+			foreach( $pluginList as $pluginName )
+			{
+				$plugin = $pluginManager->getInfo( $pluginName );
+
+				$plugin['has_config'] = function_exists( $pluginName . '_admin' );
+				$plugin['installed'] = $pluginManager->isInstalled( $pluginName );
+				$plugin['enabled'] = $pluginManager->isEnabled( $pluginName );
+				$plugins[] = $plugin;
+			}
+			$view = $this->getView();
+			$view->assign( 'plugins', $plugins );
+			$this->doView( 'plugins/index' );
 		}
 	}
 }

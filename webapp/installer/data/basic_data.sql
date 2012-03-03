@@ -67,7 +67,6 @@ VALUES
 	('osc', 'currency', 'USD','STRING'),
 	('osc', 'rewriteEnabled', '0', 'BOOLEAN'),
 	('osc', 'mod_rewrite_loaded', '0', 'BOOLEAN'),
-	('osc', 'rewrite_rules', '', 'STRING'),
 	('osc', 'enableField#f_price@items', '1', 'BOOLEAN'),
 	('osc', 'enableField#images@items', '1', 'BOOLEAN'),
 	('osc', 'numImages@items', '4', 'INTEGER'),

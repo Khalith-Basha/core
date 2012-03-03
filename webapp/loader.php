@@ -77,7 +77,7 @@ $dbConnection = $classLoader->getClassInstance(
 );
 
 $pluginManager = $classLoader->getClassInstance( 'PluginManager' );
-$pluginManager->init();
+$pluginManager->loadPlugins();
 
 $classLoader->loadFile( 'helpers/plugins' );
 $classLoader->loadFile( 'helpers/views' );

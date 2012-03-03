@@ -63,10 +63,10 @@ class View_Default
 		if( !is_null( $filePath ) ) 
 		{
 			ob_start();
-			osc_run_hook('before_html');
+			# @TODO osc_run_hook('before_html');
 			require $filePath;
 			$viewContent = ob_get_contents();
-			osc_run_hook('after_html');
+			# @TODO osc_run_hook('after_html');
 			ob_end_clean();
 		}
 		else

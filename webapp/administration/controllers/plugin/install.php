@@ -29,14 +29,14 @@ class CAdminPlugin extends Controller_Administration
 
 	public function doGet( HttpRequest $req, HttpResponse $res ) 
 	{
+		$pluginName = $this->getInput()->getString( 'plugin' );
 		$pn = Params::getParam("plugin");
-		// CATCH FATAL ERRORS
 		register_shutdown_function(array($this, 'errorHandler'), $pn, 'install');
-		$installed = $this->pluginManager->install($pn);
-		if ($installed) 
+		$installed = $this->pluginManager->install( $pluginName );
+		if( $installed )
 		{
 			//run this after installing the plugin
-			$this->pluginManager->runHook('install_' . $pn);
+			$this->pluginManager->runHook( 'install_' . $pluginName );
 			osc_add_flash_ok_message(_m('Plugin installed'), 'admin');
 		}
 		else
