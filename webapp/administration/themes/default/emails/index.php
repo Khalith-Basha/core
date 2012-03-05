@@ -23,9 +23,7 @@
                 oTable = $('#datatables_list').dataTable({
                     "bAutoWidth": false,
                     "aaData": [
-                        <?php
-foreach ($emails as $email) 
-{ ?>
+                        <?php foreach ($emails as $email)  { ?>
                         <?php
 	if (isset($email['locale'][$prefLocale]) && !empty($email['locale'][$prefLocale]['s_title'])) 
 	{
@@ -33,35 +31,25 @@ foreach ($emails as $email)
 	}
 	else
 	{
-		$title = current($email['locale']);
+		$title = ($email);
 	} ?>
                             [
-                                "<?php
-	echo $email['pk_i_id']; ?>",
-                                '<?php
-	echo $email['s_internal_name']; ?><div><a href="<?php
-	echo osc_admin_base_url(true); ?>?page=email&action=edit&amp;id=<?php
-	echo $email["pk_i_id"]; ?>"><?php
-	_e("Edit"); ?></a></div>',
-                                "<?php
-	echo addcslashes($title['s_title'], '"'); ?>"
-                            ] <?php
-	echo $email != end($emails) ? ',' : ''; ?>
-                        <?php
-} ?>
+                                "<?php echo $email['pk_i_id']; ?>",
+                                '<?php echo $email['s_internal_name']; ?><div><a href="<?php echo osc_admin_base_url(true); ?>?page=email&action=edit&amp;id=<?php echo $email["pk_i_id"]; ?>"><?php _e("Edit"); ?></a></div>',
+                                "<?php echo addcslashes($title['s_title'], '"'); ?>"
+                            ] <?php echo $email != end($emails) ? ',' : ''; ?>
+                        <?php } ?>
                     ],
                     "aoColumns": [
                         {
                             "sTitle": "id"
                         },
                         {
-                            "sTitle": "<?php
-_e('Name'); ?>",
+                            "sTitle": "<?php _e('Name'); ?>",
                             "sWidth": "150px"
                         },
                         {
-                            "sTitle": "<?php
-_e('Title'); ?>",
+                            "sTitle": "<?php _e('Title'); ?>",
                             "sWidth": "auto"
                         }
                     ],
@@ -81,14 +69,11 @@ _e('Title'); ?>",
         <script type="text/javascript" src="<?php echo osc_current_admin_theme_url('js/datatables.post_init.js'); ?>"></script>
                 <div id="content_header" class="content_header">
                     <div style="float: left;">
-                        <img src="<?php
-echo osc_current_admin_theme_url('images/pages-icon.png'); ?>" alt="" title=""/>
+                        <img src="<?php echo osc_current_admin_theme_url('images/pages-icon.png'); ?>" alt="" title=""/>
                     </div>
-                    <div id="content_header_arrow">&raquo; <?php
-_e('Emails & alerts'); ?></div>
+                    <div id="content_header_arrow">&raquo; <?php _e('Emails & alerts'); ?></div>
                     <div style="clear: both;"></div>
                 </div>
-                <?php
-osc_show_flash_message('admin'); ?>
+                <?php osc_show_flash_message('admin'); ?>
                 <table cellpadding="0" cellspacing="0" border="0" class="display" id="datatables_list" style="border-bottom: 1px solid #AAAAAA; border-left: 1px solid #AAAAAA; border-right: 1px solid #AAAAAA;"></table>
 

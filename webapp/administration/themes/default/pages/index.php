@@ -102,7 +102,7 @@ $last_id = $last['pk_i_id'];
 		}
 		else
 		{
-			$body = current($page['locale']);
+			$body = ($page);
 		}
 		$p_body = str_replace("'", "\'", trim(strip_tags($body['s_title']), "\x22\x27"));
 ?>
@@ -136,13 +136,11 @@ $last_id = $last['pk_i_id'];
                          "sWidth": "10px",
                          "bSearchable": false
                          },
-                        {"sTitle": "<?php
-_e('Name'); ?>",
+                        {"sTitle": "<?php _e('Name'); ?>",
                          "bSortable": false,
                          "sWidth": "30%"
                         },
-                        {"sTitle": "<?php
-_e('Description'); ?>",
+                        {"sTitle": "<?php _e('Description'); ?>",
                             "bSortable": false
                         },
                         {"sTitle": "Order",

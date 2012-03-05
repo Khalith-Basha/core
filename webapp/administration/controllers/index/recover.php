@@ -57,6 +57,6 @@ class CAdminIndex extends Controller_Default
 		}
 		osc_add_flash_ok_message(_m('A new password has been sent to your e-mail'), 'admin');
 		$this->redirectTo(osc_admin_base_url());
-
 	}
 }
+

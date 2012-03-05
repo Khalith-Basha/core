@@ -23,10 +23,12 @@ class CAdminPage extends Controller_Administration
 	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
 		$pagesModel = $this->getClassLoader()->getClassInstance( 'Model_Page' );
-		$this->getView()->assign( "prefLocale", osc_current_admin_locale() );
 		$pages = $pagesModel->listAll();
-		$this->getView()->assign( "pages", $pages );
-		$this->doView("pages/index.php");
+
+		$view = $this->getView();
+		$view->assign( "prefLocale", osc_current_admin_locale() );
+		$view->assign( "pages", $pages );
+		$this->doView("pages/index" );
 	}
 }
 

@@ -39,6 +39,7 @@ $javaScripts = array(
 	'jquery.validate.min.js',
 	'jquery.dataTables.min.js'
 );
+$javaScripts = array_merge( $javaScripts, $view->getJavaScripts() );
 ?>
 <!DOCTYPE HTML>
 <head>

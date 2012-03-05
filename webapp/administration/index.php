@@ -47,6 +47,7 @@ require $ctrlPath;
 
 $className = 'CAdmin' . ucfirst( $page );
 $ctrl = new $className;
+$ctrl->init();
 $ctrl->processRequest( new HttpRequest, new HttpResponse );
 
 

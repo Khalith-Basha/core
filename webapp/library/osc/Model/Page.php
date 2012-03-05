@@ -170,14 +170,23 @@ FROM
 	/*TABLE_PREFIX*/t_pages p
 INNER JOIN
 	/*TABLE_PREFIX*/t_pages_description pd ON ( pd.fk_i_pages_id = p.pk_i_id )
+SQL;
+		if( !empty( $locale ) )
+		{
+			$sql .= <<<SQL
 WHERE
 	pd.fk_c_locale_code = ?
+SQL;
+		}
+
+		$sql .= <<<SQL
 ORDER BY
 	i_order ASC
 SQL;
 
 		$stmt = $this->prepareStatement( $sql );
-		$stmt->bind_param( 's', $locale );
+		if( !empty( $locale ) )
+			$stmt->bind_param( 's', $locale );
 		$pages = $this->fetchAll( $stmt );
 		$stmt->close();
 

@@ -22,8 +22,11 @@ class CAdminPage extends Controller_Administration
 {
 	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
-		$this->getView()->assign("page", array());
-		$this->doView("pages/frm.php");
+		$view = $this->getView();
+		$view->assign( 'page', array() );
+		$view->addJavaScript( 'general.js' );
+		$view->addJavaScript( 'pages.js' );
+		$this->doView( "pages/frm" );
 	}
 	
 	public function doPost( HttpRequest $req, HttpResponse $res )

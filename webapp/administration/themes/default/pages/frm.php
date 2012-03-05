@@ -16,77 +16,54 @@
  * License along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 $pageForm = ClassLoader::getInstance()->getClassInstance( 'Form_Page' );
-if (isset($page['pk_i_id'])) 
+$locales = ClassLoader::getInstance()->getClassInstance( 'Model_Locale' )->listAllEnabled();
+
+$edit = isset($page['pk_i_id']);
+if ( $edit ) 
 {
-	//editing...
-	$edit = true;
 	$title = __("Edit page");
 	$action_frm = "edit_post";
 	$btn_text = __("Update");
 }
 else
 {
-	//adding...
-	$edit = false;
 	$title = __("Add page");
 	$action_frm = "add";
 	$btn_text = __('Add');
 }
 ?>
 
-        <div id="update_version" style="display:none;"></div>
-        <script type="text/javascript">
-            tinyMCE.init({
-                mode : "textareas",
-                theme : "advanced",
-                skin: "o2k7",
-                width: "70%",
-                height: "140px",
-                skin_variant : "silver",
-                theme_advanced_buttons1 : "bold,italic,underline,separator,undo,redo,separator,justifycenter,justifyright,justifyfull,separator,bullist,numlist,separator,link,unlink,separator,image,code",
-                theme_advanced_buttons2 : "",
-                theme_advanced_buttons3 : "",
-                theme_advanced_toolbar_align : "left",
-                theme_advanced_toolbar_location : "top",
-                plugins : "media",
-                entity_encoding : "raw",
-            theme_advanced_buttons1_add : "media"
-            });
-        </script>
-                <div id="content_header" class="content_header">
-                    <div style="float: left;">
-                        <img src="<?php echo osc_current_admin_theme_url('images/pages-icon.png'); ?>" title="" alt="" />
-                    </div>
-                    <div id="content_header_arrow">&raquo; <?php _e($title); ?></div>
-                    <div style="clear: both;"></div>
-                </div>
-                <div id="content_separator"></div>
-                <?php osc_show_flash_message('admin'); ?>
-                <!-- add new page form -->
-                <div id="settings_form">
-                    <form name="pages_form" id="pages_form" action="<?php echo osc_admin_base_url(true); ?>?page=page" method="post" onSubmit="return checkForm()">
-                        <input type="hidden" name="action" value="<?php echo $action_frm; ?>" />
-                        <?php $pageForm->primary_input_hidden($page); ?>
-                        <div class="FormElement">
-                            <div class="FormElementName">
-                                <?php _e('Internal name (name to easily identify this page)'); ?>
-                            </div>
-                            <div class="FormElementInput">
-                               <?php $pageForm->internal_name_input_text($page); ?>
-                            </div>
-                        </div>
-                        <div class="clear50"></div>
-<?php
-$locales = ClassLoader::getInstance()->getClassInstance( 'Model_Locale' )->listAllEnabled();
-$pageForm->multilanguage_name_description($locales, $page);
-?>
-                        <div class="FormElement">
-                            <div class="FormElementName"></div>
-                            <div class="FormElementInput">
-                                <button class="formButton" type="button" onclick="window.location='<?php echo osc_admin_base_url(true); ?>?page=page';" ><?php _e('Cancel'); ?></button>
-                                <button class="formButton" type="submit"><?php echo $btn_text; ?></button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+<div id="update_version" style="display:none;"></div>
+<div id="content_header" class="content_header">
+    <div style="float: left;">
+	<img src="<?php echo osc_current_admin_theme_url('images/pages-icon.png'); ?>" title="" alt="" />
+    </div>
+    <div id="content_header_arrow">&raquo; <?php _e($title); ?></div>
+    <div style="clear: both;"></div>
+</div>
+<div id="content_separator"></div>
+<?php osc_show_flash_message('admin'); ?>
+<div id="settings_form">
+    <form name="pages_form" id="pages_form" action="<?php echo osc_admin_base_url(true); ?>?page=page" method="post" onSubmit="return checkForm()">
+	<input type="hidden" name="action" value="<?php echo $action_frm; ?>" />
+	<?php $pageForm->primary_input_hidden($page); ?>
+	<div class="FormElement">
+	    <div class="FormElementName">
+		<?php _e('Internal name (name to easily identify this page)'); ?>
+	    </div>
+	    <div class="FormElementInput">
+	       <?php $pageForm->internal_name_input_text($page); ?>
+	    </div>
+	</div>
+	<?php $pageForm->multilanguage_name_description($locales, $page); ?>
+	<div class="clear50"></div>
+	<div class="FormElement">
+	    <div class="FormElementName"></div>
+	    <div class="FormElementInput">
+		<button class="formButton HistoryBack" type="button"><?php _e('Cancel'); ?></button>
+		<button class="formButton" type="submit"><?php echo $btn_text; ?></button>
+	    </div>
+	</div>
+    </form>
+</div>
 
