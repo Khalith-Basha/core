@@ -46,7 +46,7 @@ class CWebItem extends Controller_Default
 		$this->getView()->assign('locales', $locales);
 		if (osc_reg_user_post() && $this->user == null) 
 		{
-			osc_add_flash_warning_message(_m('Only registered users are allowed to post items'));
+			$this->getSession()->addFlashMessage( _m('Only registered users are allowed to post items'), 'WARNING' );
 			$this->redirectTo( $userUrls->osc_user_login_url());
 		}
 		$countries = $classLoader->getClassInstance( 'Model_Country' )->listAll();

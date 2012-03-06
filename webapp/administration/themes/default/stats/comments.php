@@ -19,29 +19,19 @@
         <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 			    <div id="content_header" class="content_header">
 					<div style="float: left;">
-                        <img src="<?php
-echo osc_current_admin_theme_url('images/settings-icon.png'); ?>" alt="" title="" />
+                        <img src="<?php echo osc_current_admin_theme_url('images/settings-icon.png'); ?>" alt="" title="" />
                     </div>
-					<div id="content_header_arrow">&raquo; <?php
-_e('Item'); ?></div>
+					<div id="content_header_arrow">&raquo; <?php _e('Item'); ?></div>
 					<div style="clear: both;"></div>
 				</div>
 				<div id="content_separator"></div>
-				<?php
-osc_show_flash_message('admin'); ?>
 
                 <div>
                     <div style="padding: 20px;">
                         <p>
-                            <a href="<?php
-echo osc_admin_base_url(true); ?>?page=stats&action=comments&type_stat=day"><?php
-_e('Last 10 days'); ?></a>
-                            <a href="<?php
-echo osc_admin_base_url(true); ?>?page=stats&action=comments&type_stat=week"><?php
-_e('Last 10 weeks'); ?></a>
-                            <a href="<?php
-echo osc_admin_base_url(true); ?>?page=stats&action=comments&type_stat=month"><?php
-_e('Last 10 months'); ?></a>
+                            <a href="<?php echo osc_admin_base_url(true); ?>?page=stats&action=comments&type_stat=day"><?php _e('Last 10 days'); ?></a>
+                            <a href="<?php echo osc_admin_base_url(true); ?>?page=stats&action=comments&type_stat=week"><?php _e('Last 10 weeks'); ?></a>
+                            <a href="<?php echo osc_admin_base_url(true); ?>?page=stats&action=comments&type_stat=month"><?php _e('Last 10 months'); ?></a>
                         </p>
                     </div>
                 </div>

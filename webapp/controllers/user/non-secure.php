@@ -22,7 +22,7 @@ class CWebUserNonSecure extends Controller
 		parent::__construct();
 		if (!osc_users_enabled() && ($this->action != 'activate_alert' && $this->action != 'unsub_alert')) 
 		{
-			osc_add_flash_error_message(_m('Users not enabled'));
+			$this->getSession()->addFlashMessage( _m('Users not enabled'), 'ERROR' );
 			$this->redirectTo(osc_base_url(true));
 		}
 	}
@@ -51,13 +51,13 @@ class CWebUserNonSecure extends Controller
 				}
 				else
 				{
-					osc_add_flash_error_message(_m('Sorry, the link is not valid'));
+					$this->getSession()->addFlashMessage( _m('Sorry, the link is not valid'), 'ERROR' );
 					$this->redirectToBaseUrl();
 				}
 			}
 			else
 			{
-				osc_add_flash_error_message(_m('Sorry, the link is not valid'));
+				$this->getSession()->addFlashMessage( _m('Sorry, the link is not valid'), 'ERROR' );
 				$this->redirectToBaseUrl();
 			}
 			break;
@@ -76,7 +76,7 @@ class CWebUserNonSecure extends Controller
 			}
 			else
 			{
-				osc_add_flash_error_message(_m('Ops! There was a problem trying to activate alert. Please contact the administrator'));
+				$this->getSession()->addFlashMessage( _m('Ops! There was a problem trying to activate alert. Please contact the administrator'), 'ERROR' );
 			}
 			$this->redirectTo(osc_base_url(true));
 			break;
@@ -91,7 +91,7 @@ class CWebUserNonSecure extends Controller
 			}
 			else
 			{
-				osc_add_flash_error_message(_m('Ops! There was a problem trying to unsubscribe you. Please contact the administrator'));
+				$this->getSession()->addFlashMessage( _m('Ops! There was a problem trying to unsubscribe you. Please contact the administrator'), 'ERROR' );
 			}
 			$this->redirectToBaseUrl();
 			break;

@@ -23,12 +23,12 @@ class CWebUser extends Controller_Default
 		parent::__construct();
 		if (!osc_users_enabled()) 
 		{
-			osc_add_flash_error_message(_m('Users not enabled'));
+			$this->getSession()->addFlashMessage( _m('Users not enabled'), 'ERROR' );
 			$this->redirectTo(osc_base_url(true));
 		}
 		if (!osc_user_registration_enabled()) 
 		{
-			osc_add_flash_error_message(_m('User registration is not enabled'));
+			$this->getSession()->addFlashMessage( _m('User registration is not enabled'), 'ERROR' );
 			$this->redirectTo(osc_base_url(true));
 		}
 	}
@@ -37,7 +37,7 @@ class CWebUser extends Controller_Default
 	{
 		if (!osc_users_enabled()) 
 		{
-			osc_add_flash_error_message(_m('Users are not enabled'));
+			$this->getSession()->addFlashMessage( _m('Users are not enabled'), 'ERROR' );
 			$this->redirectToBaseUrl();
 		}
 		osc_run_hook('before_user_register');
@@ -56,22 +56,22 @@ class CWebUser extends Controller_Default
 			break;
 
 		case 3:
-			osc_add_flash_warning_message(_m('The specified e-mail is already in use'));
+			$this->getSession()->addFlashMessage( _m('The specified e-mail is already in use'), 'WARNING' );
 			$template = 'user/register';
 			break;
 
 		case 4:
-			osc_add_flash_error_message(_m('The reCAPTCHA was not introduced correctly'));
+			$this->getSession()->addFlashMessage( _m('The reCAPTCHA was not introduced correctly'), 'ERROR' );
 			$template = 'user/register';
 			break;
 
 		case 5:
-			osc_add_flash_warning_message(_m('The email is not valid'));
+			$this->getSession()->addFlashMessage( _m('The email is not valid'), 'WARNING' );
 			$template = 'user/register';
 			break;
 
 		case 6:
-			osc_add_flash_warning_message(_m('The password cannot be empty'));
+			$this->getSession()->addFlashMessage( _m('The password cannot be empty'), 'WARNING' );
 			$template = 'user/register';
 			break;
 
@@ -80,7 +80,7 @@ class CWebUser extends Controller_Default
 			$template = 'user/register';
 			break;
 		}
-
+		
 		echo $this->getView()->render( $template );
 	}
 }

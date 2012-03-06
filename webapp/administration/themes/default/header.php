@@ -92,3 +92,4 @@ $javaScripts = array_merge( $javaScripts, $view->getJavaScripts() );
             
             <div id="right_column">
 
+		<?php echo $view->render( 'flashMessages' ); ?>

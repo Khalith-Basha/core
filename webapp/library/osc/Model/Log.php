@@ -26,7 +26,7 @@ class Model_Log extends DAO
 	function __construct() 
 	{
 		parent::__construct();
-		$this->setTableName('t_log');
+		$this->setTableName('t_audit');
 		$array_fields = array('dt_date', 's_section', 's_action', 'fk_i_id', 's_data', 's_ip', 's_who', 'fk_i_who_id');
 		$this->setFields($array_fields);
 	}

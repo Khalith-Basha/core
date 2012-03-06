@@ -36,14 +36,10 @@ if (Params::getParam("action_specific") != '')
 	}
 }
 ?>
-    <?php
-osc_show_flash_message('admin'); ?>
     <div id="settings_form" style="border: 1px solid #ccc; background: #eee; ">
         <div style="padding: 20px;">
 
-            <?php
-if (is_writable(ClassLoader::getInstance()->getClassInstance( 'Ui_MainTheme' )->getCurrentThemePath() . "images/")) 
-{ ?>
+            <?php if (is_writable(ClassLoader::getInstance()->getClassInstance( 'Ui_MainTheme' )->getCurrentThemePath() . "images/"))  { ?>
 
             <p style="border-bottom: 1px black solid;padding-bottom: 10px;">
                 <img style="padding-right: 10px;"src="<?php
@@ -59,16 +55,13 @@ if (is_writable(ClassLoader::getInstance()->getClassInstance( 'Ui_MainTheme' )->
 	} ?>
             </p>
 
-            <form action="<?php
-	echo osc_admin_render_theme_url('components/themes/modern/admin/admin_settings.php'); ?>" method="post" enctype="multipart/form-data">
+            <form action="<?php echo osc_admin_render_theme_url('components/themes/modern/admin/admin_settings.php'); ?>" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="action_specific" value="upload_logo" />
                 <p>
-                    <label for="package"><?php
-	_e('Logo image', 'modern'); ?> (png,gif,jpg)</label>
+                    <label for="package"><?php _e('Logo image', 'modern'); ?> (png,gif,jpg)</label>
                     <input type="file" name="logo" id="package" />
                 </p>
-                <input id="button_save" type="submit" value="<?php
-	_e('Upload', 'modern'); ?>" />
+                <input id="button_save" type="submit" value="<?php _e('Upload', 'modern'); ?>" />
             </form>
             <div>
                 <?php
@@ -76,22 +69,17 @@ if (is_writable(ClassLoader::getInstance()->getClassInstance( 'Ui_MainTheme' )->
 	{ ?>
                 <p>
                     Preview:<br>
-                    <img border="0" alt="<?php
-		echo osc_page_title(); ?>" src="<?php
-		echo osc_current_web_theme_url('images/logo.jpg'); ?>"/>
-                    <form action="<?php
-		echo osc_admin_render_theme_url('components/themes/modern/admin/admin_settings.php'); ?>" method="post" enctype="multipart/form-data">
+                    <img border="0" alt="<?php echo osc_page_title(); ?>" src="<?php echo osc_current_web_theme_url('images/logo.jpg'); ?>"/>
+                    <form action="<?php echo osc_admin_render_theme_url('components/themes/modern/admin/admin_settings.php'); ?>" method="post" enctype="multipart/form-data">
                         <input type="hidden" name="action_specific" value="remove" />
-                        <input id="button_remove" type="submit" value="<?php
-		_e('Remove logo', 'modern'); ?>" />
+                        <input id="button_remove" type="submit" value="<?php _e('Remove logo', 'modern'); ?>" />
                     </form>
                 </p>
                 <?php
 	}
 	else
 	{ ?>
-                    <p><?php
-		_e('Has not uploaded any logo image', 'modern'); ?></p>
+                    <p><?php _e('Has not uploaded any logo image', 'modern'); ?></p>
                 <?php
 	} ?>
             </div>
@@ -112,12 +100,10 @@ else
 ?>
                 </p>
                 <p>
-                    <?php
-	_e('To make a directory writable under UNIX execute this command from the shell', 'modern'); ?>:
+                    <?php _e('To make a directory writable under UNIX execute this command from the shell', 'modern'); ?>:
                 </p>
                 <p style="background-color: white; border: 1px solid black; padding: 8px;">
-                    chmod a+w <?php
-	echo ClassLoader::getInstance()->getClassInstance( 'Ui_MainTheme' )->getCurrentThemePath() . "images/"; ?>
+                    chmod a+w <?php echo ClassLoader::getInstance()->getClassInstance( 'Ui_MainTheme' )->getCurrentThemePath() . "images/"; ?>
                 </p>
             </div>
             

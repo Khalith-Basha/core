@@ -63,8 +63,6 @@
 
                 <div id="content_separator"></div>
                 
-                <?php osc_show_flash_message('admin'); ?>
-                <!-- add new theme form -->
                 <div id="main_div" style="border: 1px solid #ccc; background: #eee; display:block;">
                     <div style="padding: 20px; padding-top: 10px;">
 

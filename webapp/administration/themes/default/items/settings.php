@@ -32,21 +32,15 @@
     </script>
                 <div id="content_header" class="content_header">
                     <div style="float: left;">
-                        <img src="<?php
-echo osc_current_admin_theme_url('images/settings-icon.png'); ?>" alt="" title="" />
+                        <img src="<?php echo osc_current_admin_theme_url('images/settings-icon.png'); ?>" alt="" title="" />
                     </div>
-                    <div id="content_header_arrow">&raquo; <?php
-_e('Items'); ?></div>
+                    <div id="content_header_arrow">&raquo; <?php _e('Items'); ?></div>
                     <div style="clear: both;"></div>
                 </div>
                 <div id="content_separator"></div>
-                <?php
-osc_show_flash_message('admin'); ?>
-                <!-- settings form -->
                 <div id="settings_form" style="border: 1px solid #ccc; background: #eee; ">
                     <div style="padding: 20px;">
-                        <form action="<?php
-echo osc_admin_base_url(true); ?>" method="post">
+                        <form action="<?php echo osc_admin_base_url(true); ?>" method="post">
                             <input type="hidden" name="page" value="item" />
                             <input type="hidden" name="action" value="settings" />
 
@@ -101,48 +95,33 @@ _e('Allow attachment files in contact item seller'); ?></label>
 
                             <div style="float: left; width: 50%;">
                                 <fieldset>
-                                    <legend><?php
-_e('Notifications'); ?></legend>
-                                    <input style="height: 20px; padding-left: 4px;padding-top: 4px;" type="checkbox" <?php
-echo (osc_notify_new_item() ? 'checked="true"' : ''); ?> name="notify_new_item" id="notify_new_item" value="1" />
-                                    <label for="notify_new_item"><?php
-_e('Notify admin of new items'); ?></label>
+                                    <legend><?php _e('Notifications'); ?></legend>
+                                    <input style="height: 20px; padding-left: 4px;padding-top: 4px;" type="checkbox" <?php echo (osc_notify_new_item() ? 'checked="true"' : ''); ?> name="notify_new_item" id="notify_new_item" value="1" />
+                                    <label for="notify_new_item"><?php _e('Notify admin of new items'); ?></label>
                                     <br/>
-                                    <input style="height: 20px; padding-left: 4px;padding-top: 4px;" type="checkbox" <?php
-echo (osc_notify_contact_item() ? 'checked="true"' : ''); ?> name="notify_contact_item" id="notify_contact_item" value="1" />
-                                    <label for="notify_contact_item"><?php
-_e('Notify admin of contact items'); ?></label>
+                                    <input style="height: 20px; padding-left: 4px;padding-top: 4px;" type="checkbox" <?php echo (osc_notify_contact_item() ? 'checked="true"' : ''); ?> name="notify_contact_item" id="notify_contact_item" value="1" />
+                                    <label for="notify_contact_item"><?php _e('Notify admin of contact items'); ?></label>
                                     <br/>
-                                    <input style="height: 20px; padding-left: 4px;padding-top: 4px;" type="checkbox" <?php
-echo (osc_notify_contact_friends() ? 'checked="true"' : ''); ?> name="notify_contact_friends" id="notify_contact_friends" value="1" />
-                                    <label for="notify_contact_friends"><?php
-_e('Notify admin of share'); ?></label>
+                                    <input style="height: 20px; padding-left: 4px;padding-top: 4px;" type="checkbox" <?php echo (osc_notify_contact_friends() ? 'checked="true"' : ''); ?> name="notify_contact_friends" id="notify_contact_friends" value="1" />
+                                    <label for="notify_contact_friends"><?php _e('Notify admin of share'); ?></label>
                                 </fieldset>
                             </div>
 
                             <div style="float: left; width: 50%;">
                                 <fieldset>
-                                    <legend><?php
-_e('Optional fields'); ?></legend>
-                                    <input style="height: 20px; padding-left: 4px;padding-top: 4px;" type="checkbox" <?php
-echo (osc_price_enabled_at_items() ? 'checked="true"' : ''); ?> name="enableField#f_price@items" id="enableField#f_price@items" value="1"  />
-                                    <label for="enableField#f_price@items"><?php
-_e('Enable price'); ?></label>
+                                    <legend><?php _e('Optional fields'); ?></legend>
+                                    <input style="height: 20px; padding-left: 4px;padding-top: 4px;" type="checkbox" <?php echo (osc_price_enabled_at_items() ? 'checked="true"' : ''); ?> name="enableField#f_price@items" id="enableField#f_price@items" value="1"  />
+                                    <label for="enableField#f_price@items"><?php _e('Enable price'); ?></label>
                                     <br/>
-                                    <input style="height: 20px; padding-left: 4px;padding-top: 4px;" type="checkbox" <?php
-echo (osc_images_enabled_at_items() ? 'checked="true"' : ''); ?> name="enableField#images@items" id="enableField#images@items" value="1" />
-                                    <label for="enableField#images@items"><?php
-_e('Enable images'); ?></label>
+                                    <input style="height: 20px; padding-left: 4px;padding-top: 4px;" type="checkbox" <?php echo (osc_images_enabled_at_items() ? 'checked="true"' : ''); ?> name="enableField#images@items" id="enableField#images@items" value="1" />
+                                    <label for="enableField#images@items"><?php _e('Enable images'); ?></label>
                                     <br/>
-                                    <label for="numImages@items"><?php
-_e('Maximum number of images per item (0 for unlimited)'); ?></label>
-                                    <input type="text" name="numImages@items" id="numImages@items" value="<?php
-echo osc_max_images_per_item(); ?>" />
+                                    <label for="numImages@items"><?php _e('Maximum number of images per item (0 for unlimited)'); ?></label>
+                                    <input type="text" name="numImages@items" id="numImages@items" value="<?php echo osc_max_images_per_item(); ?>" />
                                 </fieldset>
                             </div>
                             <div style="clear: both;"></div>
-                            <input id="button_save" type="submit" value="<?php
-_e('Update'); ?>" />
+                            <input id="button_save" type="submit" value="<?php _e('Update'); ?>" />
                         </form>
                     </div>
                 </div>

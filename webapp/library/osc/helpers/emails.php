@@ -267,7 +267,7 @@ function fn_email_new_email($new_email, $validation_url)
 	}
 	else
 	{
-		osc_add_flash_error_message(_m('We tried to sent you an e-mail, but it failed. Please, contact the administrator'));
+		$this->getSession()->addFlashMessage( _m('We tried to sent you an e-mail, but it failed. Please, contact the administrator'), 'ERROR' );
 	}
 }
 osc_add_hook('hook_email_new_email', 'fn_email_new_email');
@@ -374,7 +374,7 @@ function fn_email_item_inquiry($aItem)
 		$path = osc_content_path() . 'uploads/' . time() . '_' . $resourceName;
 		if (!is_writable(osc_content_path() . 'uploads/')) 
 		{
-			osc_add_flash_error_message(_m('There has been some errors sending the message'));
+			$this->getSession()->addFlashMessage( _m('There has been some errors sending the message'), 'ERROR' );
 			//$this->redirectTo( osc_base_url() );
 			
 		}

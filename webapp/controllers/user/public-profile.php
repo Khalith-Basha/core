@@ -22,7 +22,7 @@ class CWebUser extends Controller_Default
 		parent::__construct();
 		if (!osc_users_enabled() && ($this->action != 'activate_alert' && $this->action != 'unsub_alert')) 
 		{
-			osc_add_flash_error_message(_m('Users not enabled'));
+			$this->getSession()->addFlashMessage( _m('Users not enabled'), 'ERROR' );
 			$this->redirectTo(osc_base_url(true));
 		}
 	}

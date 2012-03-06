@@ -57,7 +57,7 @@ class CWebItem extends Controller
 			View::newInstance()->assign('item', $item);
 			if ($this->userId == null) 
 			{
-				osc_add_flash_error_message(_m('You must be logged in to delete a comment'));
+				$this->getSession()->addFlashMessage( _m('You must be logged in to delete a comment'), 'ERROR' );
 				$this->redirectTo(osc_item_url());
 			}
 			$commentManager = ClassLoader::getInstance()->getClassInstance( 'Model_ItemComment' );
@@ -69,12 +69,12 @@ class CWebItem extends Controller
 			}
 			if ($aComment['b_active'] != 1) 
 			{
-				osc_add_flash_error_message(_m('The comment is not active, you cannot delete it'));
+				$this->getSession()->addFlashMessage( _m('The comment is not active, you cannot delete it'), 'ERROR' );
 				$this->redirectTo(osc_item_url());
 			}
 			if ($aComment['fk_i_user_id'] != $this->userId) 
 			{
-				osc_add_flash_error_message(_m('The comment was not added by you, you cannot delete it'));
+				$this->getSession()->addFlashMessage( _m('The comment was not added by you, you cannot delete it'), 'ERROR' );
 				$this->redirectTo(osc_item_url());
 			}
 			$commentManager->deleteByPrimaryKey($commentId);

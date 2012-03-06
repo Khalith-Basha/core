@@ -48,7 +48,7 @@ class CWebContact extends Controller_Cacheable
 		{
 			if (!osc_check_recaptcha()) 
 			{
-				osc_add_flash_error_message(_m('The Recaptcha code is wrong'));
+				$this->getSession()->addFlashMessage( _m('The Recaptcha code is wrong'), 'ERROR' );
 				$this->getSession()->_setForm("yourName", $yourName);
 				$this->getSession()->_setForm("yourEmail", $yourEmail);
 				$this->getSession()->_setForm("subject", $subject);
@@ -60,7 +60,7 @@ class CWebContact extends Controller_Cacheable
 		}
 		if (!preg_match('|.*?@.{2,}\..{2,}|', $yourEmail)) 
 		{
-			osc_add_flash_error_message(_m('You have to introduce a correct e-mail'));
+			$this->getSession()->addFlashMessage( _m('You have to introduce a correct e-mail'), 'ERROR' );
 			$this->getSession()->_setForm("yourName", $yourName);
 			$this->getSession()->_setForm("subject", $subject);
 			$this->getSession()->_setForm("message_body", $message);
@@ -76,7 +76,7 @@ class CWebContact extends Controller_Cacheable
 			$path = osc_content_path() . '/uploads/' . time() . '_' . $resourceName;
 			if (!is_writable(osc_content_path() . '/uploads/')) 
 			{
-				osc_add_flash_error_message(_m('There has been some errors sending the message'));
+				$this->getSession()->addFlashMessage( _m('There has been some errors sending the message'), 'ERROR' );
 				$this->redirectToBaseUrl();
 			}
 			if (!move_uploaded_file($tmpName, $path)) 

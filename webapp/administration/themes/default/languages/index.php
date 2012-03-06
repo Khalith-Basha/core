@@ -129,8 +129,6 @@ foreach ($locales as $l)
 
                 <div id="content_separator"></div>
 
-                <?php osc_show_flash_message('admin'); ?>
-
                 <div id="TableToolsToolbar">
                     <select name="action" id="bulk_actions" class="display">
                         <option value=""><?php _e('Bulk Actions'); ?></option>

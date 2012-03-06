@@ -50,68 +50,48 @@ echo osc_admin_base_url(true) ?>?page=ajax&action=test_mail",
         </script>
                 <div id="content_header" class="content_header">
                     <div style="float: left;">
-                        <img src="<?php
-echo osc_current_admin_theme_url('images/settings-icon.png'); ?>" alt="" title=""/>
+                        <img src="<?php echo osc_current_admin_theme_url('images/settings-icon.png'); ?>" alt="" title=""/>
                     </div>
-                    <div id="content_header_arrow">&raquo; <?php
-_e('Mail server'); ?></div>
+                    <div id="content_header_arrow">&raquo; <?php _e('Mail server'); ?></div>
                     <div style="clear: both;"></div>
                 </div>
                 <div id="content_separator"></div>
-                <?php
-osc_show_flash_message('admin'); ?>
                 <!-- settings form -->
                 <div id="settings_form" style="border: 1px solid #ccc; background: #eee; ">
                     <div style="padding: 20px;">
-                        <form id="mailserver_form" action="<?php
-echo osc_admin_base_url(true); ?>" method="post">
+                        <form id="mailserver_form" action="<?php echo osc_admin_base_url(true); ?>" method="post">
                             <input type="hidden" name="page" value="settings" />
                             <input type="hidden" name="action" value="mailserver_post" />
                             <div style="float: left; width: 50%;">
                                 <fieldset>
-                                    <legend><?php
-_e('Configuration'); ?></legend>
-                                    <label><?php
-_e('Server type'); ?></label>
+                                    <legend><?php _e('Configuration'); ?></legend>
+				    <label><?php _e('Server type'); ?></label>
                                     <select name="mailserver_type" id="mailserver_type" onChange="changeServer(this)">
-                                        <option value="custom" <?php
-echo (osc_mailserver_type() == 'custom') ? 'selected="true"' : ''; ?>><?php
-_e('Custom Server'); ?></option>
-                                        <option value="gmail" <?php
-echo (osc_mailserver_type() == 'gmail') ? 'selected="true"' : ''; ?>><?php
-_e('GMail Server'); ?></option>
+                                        <option value="custom" <?php echo (osc_mailserver_type() == 'custom') ? 'selected="true"' : ''; ?>><?php _e('Custom Server'); ?></option>
+                                        <option value="gmail" <?php echo (osc_mailserver_type() == 'gmail') ? 'selected="true"' : ''; ?>><?php _e('GMail Server'); ?></option>
                                     </select>
                                     <p>
-                                        <label><?php
-_e('Hostname'); ?></label>
+                                        <label><?php _e('Hostname'); ?></label>
                                         <br/>
-                                        <input style="height: 20px; padding-left: 4px;padding-top: 4px;" type="text"  name="mailserver_host" id="mailserver_host" value="<?php
-echo osc_mailserver_host(); ?>" />
+                                        <input style="height: 20px; padding-left: 4px;padding-top: 4px;" type="text"  name="mailserver_host" id="mailserver_host" value="<?php echo osc_mailserver_host(); ?>" />
                                     </p>
                                     <p>
-                                        <label><?php
-_e('Server port'); ?></label>
+                                        <label><?php _e('Server port'); ?></label>
                                         <br/>
-                                        <input style="height: 20px; padding-left: 4px;padding-top: 4px;" type="text"  name="mailserver_port" id="mailserver_port" value="<?php
-echo osc_mailserver_port(); ?>" />
+                                        <input style="height: 20px; padding-left: 4px;padding-top: 4px;" type="text"  name="mailserver_port" id="mailserver_port" value="<?php echo osc_mailserver_port(); ?>" />
                                     </p>
                                     <p>
-                                        <label><?php
-_e('Username'); ?></label>
+                                        <label><?php _e('Username'); ?></label>
                                         <br/>
-                                        <input style="height: 20px; padding-left: 4px;padding-top: 4px;" type="text"  name="mailserver_username" id="mailserver_username" value="<?php
-echo osc_mailserver_username(); ?>" />
+                                        <input style="height: 20px; padding-left: 4px;padding-top: 4px;" type="text"  name="mailserver_username" id="mailserver_username" value="<?php echo osc_mailserver_username(); ?>" />
                                     </p>
                                     <p>
-                                        <label><?php
-_e('Password'); ?></label>
+                                        <label><?php _e('Password'); ?></label>
                                         <br/>
-                                        <input style="height: 20px; padding-left: 4px;padding-top: 4px;" type="password"  name="mailserver_password" id="mailserver_password" value="<?php
-echo osc_mailserver_password(); ?>" />
+                                        <input style="height: 20px; padding-left: 4px;padding-top: 4px;" type="password"  name="mailserver_password" id="mailserver_password" value="<?php echo osc_mailserver_password(); ?>" />
                                     </p>
                                     <p>
-                                        <label><?php
-_e('Encryption'); ?></label>
+                                        <label><?php _e('Encryption'); ?></label>
                                         <br/>
                                         <input style="height: 20px; padding-left: 4px;padding-top: 4px;" type="text"  name="mailserver_ssl" id="mailserver_ssl" value="<?php
 echo osc_mailserver_ssl(); ?>" />
@@ -171,14 +151,10 @@ if (function_exists('@apache_get_modules'))
 
                             <div style="float: left; width: 50%;">
                                 <fieldset class="test_email">
-                                    <legend><?php
-_e('Test configuration'); ?></legend>
-                                    <p><?php
-_e('The email will be sent to contact email'); ?>: <?php
-echo osc_contact_email(); ?></p>
+                                    <legend><?php _e('Test configuration'); ?></legend>
+                                    <p><?php _e('The email will be sent to contact email'); ?>: <?php echo osc_contact_email(); ?></p>
                                     <p>
-                                        <button onclick="sendEmail();return false;"><?php
-_e('Send email'); ?></button>
+                                        <button onclick="sendEmail();return false;"><?php _e('Send email'); ?></button>
                                     </p>
                                     <div id="flash_message" style="display: none;">
                                     </div>
@@ -186,8 +162,7 @@ _e('Send email'); ?></button>
                                 </fieldset>
                             </div>
                             <div style="clear: both;"></div>
-                            <input id="button_save" type="submit" value="<?php
-_e('Update'); ?>" />
+                            <input id="button_save" type="submit" value="<?php _e('Update'); ?>" />
                         </form>
                     </div>
                 </div>

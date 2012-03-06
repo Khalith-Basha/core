@@ -40,7 +40,7 @@ SELECT
 FROM
 	/*TABLE_PREFIX*/t_pages p
 INNER JOIN
-	/*TABLE_PREFIX*/t_pages_description pd ON ( pd.fk_i_pages_id = p.pk_i_id )
+	/*TABLE_PREFIX*/t_page_description pd ON ( pd.fk_i_pages_id = p.pk_i_id )
 WHERE
 	s_internal_name = ?
 LIMIT 1
@@ -169,7 +169,7 @@ SELECT
 FROM
 	/*TABLE_PREFIX*/t_pages p
 INNER JOIN
-	/*TABLE_PREFIX*/t_pages_description pd ON ( pd.fk_i_pages_id = p.pk_i_id )
+	/*TABLE_PREFIX*/t_page_description pd ON ( pd.fk_i_pages_id = p.pk_i_id )
 SQL;
 		if( !empty( $locale ) )
 		{
@@ -440,7 +440,7 @@ SQL;
 	}
 	function getDescriptionTableName() 
 	{
-		return $this->getTablePrefix() . 't_pages_description';
+		return $this->getTablePrefix() . 't_page_description';
 	}
 
 	public function findByIdLocale( $id, $locale )
@@ -452,7 +452,7 @@ SELECT
 FROM
 	/*TABLE_PREFIX*/t_pages p
 INNER JOIN
-	/*TABLE_PREFIX*/t_pages_description pd ON ( pd.fk_i_pages_id = p.pk_i_id )
+	/*TABLE_PREFIX*/t_page_description pd ON ( pd.fk_i_pages_id = p.pk_i_id )
 WHERE
 	p.pk_i_id = ?
 AND
@@ -476,7 +476,7 @@ SELECT
 FROM
 	/*TABLE_PREFIX*/t_pages p
 INNER JOIN
-	/*TABLE_PREFIX*/t_pages_description pd ON ( pd.fk_i_pages_id = p.pk_i_id )
+	/*TABLE_PREFIX*/t_page_description pd ON ( pd.fk_i_pages_id = p.pk_i_id )
 WHERE
 	p.b_indelible = FALSE
 AND

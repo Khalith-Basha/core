@@ -22,7 +22,7 @@ class CWebUser extends Controller
 		parent::__construct();
 		if (!osc_users_enabled()) 
 		{
-			osc_add_flash_error_message(_m('Users not enabled'));
+			$this->getSession()->addFlashMessage( _m('Users not enabled'), 'ERROR' );
 			$this->redirectTo(osc_base_url(true));
 		}
 	}
@@ -37,7 +37,7 @@ class CWebUser extends Controller
 		}
 		else
 		{
-			osc_add_flash_error_message(_m('Sorry, the link is not valid'));
+			$this->getSession()->addFlashMessage( _m('Sorry, the link is not valid'), 'ERROR' );
 			$this->redirectToBaseUrl();
 		}
 	}
@@ -46,7 +46,7 @@ class CWebUser extends Controller
 	{
 		if ((Params::getParam('new_password') == '') || (Params::getParam('new_password2') == '')) 
 		{
-			osc_add_flash_warning_message(_m('Password cannot be blank'));
+			$this->getSession()->addFlashMessage( _m('Password cannot be blank'), 'WARNING' );
 			$this->redirectTo(osc_forgot_user_password_confirm_url(Params::getParam('userId'), Params::getParam('code')));
 		}
 		$user = ClassLoader::getInstance()->getClassInstance( 'Model_User' )->findByIdPasswordSecret(Params::getParam('userId'), Params::getParam('code'));
@@ -66,7 +66,7 @@ class CWebUser extends Controller
 		}
 		else
 		{
-			osc_add_flash_error_message(_m('Sorry, the link is not valid'));
+			$this->getSession()->addFlashMessage( _m('Sorry, the link is not valid'), 'ERROR' );
 		}
 		$this->redirectToBaseUrl();
 	}

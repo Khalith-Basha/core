@@ -43,7 +43,7 @@ if( !isset( $category ) )
 	<?php endforeach; ?>
 </head>
 <body>
-<?php osc_show_flash_message(); ?>
+<?php echo $view->render( 'flashMessages' ); ?>
        <div class="container">
 <div id="header">
     <a id="logo" href="<?php echo $urlFactory->getBaseUrl(); ?>/"><strong><?php echo osc_page_title(); ?></strong></a>

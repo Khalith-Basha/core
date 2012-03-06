@@ -19,26 +19,20 @@
 
                 <div id="content_header" class="content_header">
                     <div style="float: left;">
-                        <img src="<?php
-echo osc_current_admin_theme_url('images/settings-icon.png'); ?>" title="" alt="" />
+                        <img src="<?php echo osc_current_admin_theme_url('images/settings-icon.png'); ?>" title="" alt="" />
                     </div>
-                    <div id="content_header_arrow">&raquo; <?php
-_e('Cron'); ?></div>
+                    <div id="content_header_arrow">&raquo; <?php _e('Cron'); ?></div>
                     <div style="clear: both;"></div>
                 </div>
                 <div id="content_separator"></div>
-                <?php
-osc_show_flash_message('admin'); ?>
                 <div id="settings_form" style="border: 1px solid #ccc; background: #eee; ">
                     <div style="padding: 20px;">
-                        <form action="<?php
-echo osc_admin_base_url(true); ?>" method="post">
+                        <form action="<?php echo osc_admin_base_url(true); ?>" method="post">
                             <input type="hidden" name="page" value="settings" />
                             <input type="hidden" name="action" value="cron" />
                             <div style="float: left; width: 100%;">
                                 <fieldset>
-                                    <legend><?php
-_e('Cron system'); ?></legend>
+                                    <legend><?php _e('Cron system'); ?></legend>
                                     <input style="height: 20px; padding-left: 4px;padding-top: 4px;" type="checkbox" <?php
 echo (osc_auto_cron()) ? 'checked="true"' : ''; ?> name="auto_cron" id="auto_cron" />
                                     <label for="auto_cron"><?php

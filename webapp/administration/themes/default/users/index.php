@@ -130,7 +130,6 @@ foreach ($users as $u)
 					<div style="clear: both;"></div>
 				</div>
 				<div id="content_separator"></div>
-				<?php osc_show_flash_message('admin'); ?>
 				<form id="datatablesForm" action="<?php echo osc_admin_base_url(true); ?>?page=user" method="post">
                     <div id="TableToolsToolbar">
                         <select name="action" id="action" class="display">

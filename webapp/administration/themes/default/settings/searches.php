@@ -19,29 +19,22 @@
 
                 <div id="content_header" class="content_header">
                     <div style="float: left;">
-                        <img src="<?php
-echo osc_current_admin_theme_url('images/settings-icon.png'); ?>" alt="" title=""/>
+                        <img src="<?php echo osc_current_admin_theme_url('images/settings-icon.png'); ?>" alt="" title=""/>
                     </div>
-                    <div id="content_header_arrow">&raquo; <?php
-_e('Last Searches'); ?></div>
+                    <div id="content_header_arrow">&raquo; <?php _e('Last Searches'); ?></div>
                     <div style="clear: both;"></div>
                 </div>
                 <div id="content_separator"></div>
-                <?php
-osc_show_flash_message('admin'); ?>
                 <!-- settings form -->
                 <div id="settings_form" style="border: 1px solid #ccc; background: #eee;">
                     <div style="padding: 20px;">
-                        <form action="<?php
-echo osc_admin_base_url(true); ?>" method="post">
+                        <form action="<?php echo osc_admin_base_url(true); ?>" method="post">
                             <input type="hidden" name="page" value="settings" />
                             <input type="hidden" name="action" value="latestsearches" />
                             <div style="float: left; width: 50%;">
                                 <fieldset>
-                                    <legend><?php
-_e('Save latest searches'); ?></legend>
-                                    <input style="height: 20px; padding-left: 4px;padding-top: 4px;" type="checkbox" <?php
-echo (osc_save_latest_searches()) ? 'checked="true"' : ''; ?> name="save_latest_searches" id="save_latest_searches" />
+                                    <legend><?php _e('Save latest searches'); ?></legend>
+                                    <input style="height: 20px; padding-left: 4px;padding-top: 4px;" type="checkbox" <?php echo (osc_save_latest_searches()) ? 'checked="true"' : ''; ?> name="save_latest_searches" id="save_latest_searches" />
                                     <label for="last_searches"><?php
 _e('Save latest searches'); ?></label>
                                     <br/>
@@ -52,33 +45,22 @@ _e('OpenSourceClassifieds could save the latest searches users do on your site. 
 
                             <div style="float: left; width: 50%;">
                                 <fieldset>
-                                    <legend><?php
-_e('Keep last searches'); ?></legend>
+                                    <legend><?php _e('Keep last searches'); ?></legend>
                                     <div style="font-size: small; margin: 0px;">
-                                        <input type="radio" name="purge_searches" id="purge_searches" value="hour" <?php
-echo ((osc_purge_latest_searches() == 'hour') ? 'checked="checked"' : ''); ?> onclick="javascript:document.getElementById('customPurge').value = 'hour' ;" />
-                                        <label for=""><?php
-echo _e('One hour'); ?></label>
+                                        <input type="radio" name="purge_searches" id="purge_searches" value="hour" <?php echo ((osc_purge_latest_searches() == 'hour') ? 'checked="checked"' : ''); ?> onclick="javascript:document.getElementById('customPurge').value = 'hour' ;" />
+                                        <label for=""><?php echo _e('One hour'); ?></label>
                                         <br />
-                                        <input type="radio" name="purge_searches" id="purge_searches" value="day" <?php
-echo ((osc_purge_latest_searches() == 'day') ? 'checked="checked"' : ''); ?> onclick="javascript:document.getElementById('customPurge').value = 'day' ;" />
-                                        <label for=""><?php
-echo _e('One day'); ?></label>
+                                        <input type="radio" name="purge_searches" id="purge_searches" value="day" <?php echo ((osc_purge_latest_searches() == 'day') ? 'checked="checked"' : ''); ?> onclick="javascript:document.getElementById('customPurge').value = 'day' ;" />
+                                        <label for=""><?php echo _e('One day'); ?></label>
                                         <br />
-                                        <input type="radio" name="purge_searches" id="purge_searches" value="week" <?php
-echo ((osc_purge_latest_searches() == 'week') ? 'checked="checked"' : ''); ?> onclick="javascript:document.getElementById('customPurge').value = 'week' ;" />
-                                        <label for=""><?php
-echo _e('One week'); ?></label>
+                                        <input type="radio" name="purge_searches" id="purge_searches" value="week" <?php echo ((osc_purge_latest_searches() == 'week') ? 'checked="checked"' : ''); ?> onclick="javascript:document.getElementById('customPurge').value = 'week' ;" />
+                                        <label for=""><?php echo _e('One week'); ?></label>
                                         <br />
-                                        <input type="radio" name="purge_searches" id="purge_searches" value="forever" <?php
-echo ((osc_purge_latest_searches() == 'forever') ? 'checked="checked"' : ''); ?> onclick="javascript:document.getElementById('customPurge').value = 'forever' ;" />
-                                        <label for=""><?php
-echo _e('Forever (never delete)'); ?></label>
+                                        <input type="radio" name="purge_searches" id="purge_searches" value="forever" <?php echo ((osc_purge_latest_searches() == 'forever') ? 'checked="checked"' : ''); ?> onclick="javascript:document.getElementById('customPurge').value = 'forever' ;" />
+                                        <label for=""><?php echo _e('Forever (never delete)'); ?></label>
                                         <br />
-                                        <input type="radio" name="purge_searches" id="purge_searches" value="1000" <?php
-echo ((osc_purge_latest_searches() == '1000') ? 'checked="checked"' : ''); ?> onclick="javascript:document.getElementById('customPurge').value = '1000' ;" />
-                                        <label for=""><?php
-echo _e('Keep last 1000 searches'); ?></label>
+                                        <input type="radio" name="purge_searches" id="purge_searches" value="1000" <?php echo ((osc_purge_latest_searches() == '1000') ? 'checked="checked"' : ''); ?> onclick="javascript:document.getElementById('customPurge').value = '1000' ;" />
+                                        <label for=""><?php echo _e('Keep last 1000 searches'); ?></label>
                                         <br />
                                         
                                         <?php
@@ -105,8 +87,7 @@ _e('Latest searches functionality could generate a lot of data. It\'s recomended
                             </div>
                             
                             <div style="clear: both;"></div>
-                            <input id="button_save" type="submit" value="<?php
-_e('Update'); ?>" />
+                            <input id="button_save" type="submit" value="<?php _e('Update'); ?>" />
                         </form>
 
                     </div>

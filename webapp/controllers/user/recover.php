@@ -23,7 +23,7 @@ class CWebUser extends Controller_Cacheable
 		parent::__construct();
 		if (!osc_users_enabled()) 
 		{
-			osc_add_flash_error_message(_m('Users not enabled'));
+			$this->getSession()->addFlashMessage( _m('Users not enabled'), 'ERROR' );
 			$this->redirectTo(osc_base_url(true));
 		}
 	}
@@ -52,7 +52,7 @@ class CWebUser extends Controller_Cacheable
 		$email = $this->getInput()->getString( 's_email' );
 		if (!preg_match('|^[a-z0-9\.\_\+\-]+@[a-z0-9\.\-]+\.[a-z]{2,3}$|i', $email )) 
 		{
-			osc_add_flash_error_message(_m('Invalid email address'));
+			$this->getSession()->addFlashMessage( _m('Invalid email address'), 'ERROR' );
 			$this->redirectTo( $userUrls->osc_recover_user_password_url() );
 		}
 		$userActions = $classLoader->getClassInstance( 'Manager_User', false, array( false ) );
@@ -65,12 +65,12 @@ class CWebUser extends Controller_Cacheable
 			break;
 
 		case (1): // e-mail does not exist
-			osc_add_flash_error_message(_m('We were not able to identify you given the information provided'));
+			$this->getSession()->addFlashMessage( _m('We were not able to identify you given the information provided'), 'ERROR' );
 			$this->redirectTo( $userUrls->osc_recover_user_password_url() );
 			break;
 
 		case (2): // recaptcha wrong
-			osc_add_flash_error_message(_m('The recaptcha code is wrong'));
+			$this->getSession()->addFlashMessage( _m('The recaptcha code is wrong'), 'ERROR' );
 			$this->redirectTo( $userUrls->osc_recover_user_password_url() );
 			break;
 		}

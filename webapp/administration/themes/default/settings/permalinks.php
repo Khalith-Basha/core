@@ -24,34 +24,25 @@
         </script>
 				<div id="content_header" class="content_header">
 					<div style="float: left;">
-                        <img src="<?php
-echo osc_current_admin_theme_url('images/settings-icon.png'); ?>" alt="" title=""/>
+                        <img src="<?php echo osc_current_admin_theme_url('images/settings-icon.png'); ?>" alt="" title=""/>
                     </div>
-					<div id="content_header_arrow">&raquo; <?php
-_e('Permalinks settings'); ?></div>
+					<div id="content_header_arrow">&raquo; <?php _e('Permalinks settings'); ?></div>
 					<div style="clear: both;"></div>
 				</div>
 				<div id="content_separator"></div>
-				<?php
-osc_show_flash_message('admin'); ?>
-				<!-- settings form -->
 				<div id="settings_form" style="border: 1px solid #ccc; background: #eee; ">
 					<div style="padding: 20px;">
 
-                        <form action="<?php
-echo osc_admin_base_url(true); ?>" method="post">
+                        <form action="<?php echo osc_admin_base_url(true); ?>" method="post">
                             <input type="hidden" name="page" value="settings" />
                             <input type="hidden" name="action" value="permalinks" />
 						
                             <div style="float: left; width: 100%;">
                                 <fieldset>
-                                    <legend><?php
-_e('Friendly urls'); ?></legend>
-                                    <div><?php
-_e('By default OpenSourceClassifieds uses web URLs which have question marks and lots of numbers in them. However, OpenSourceClassifieds offers you friendly urls. This can improve the aesthetics, usability, and forward-compatibility of your links'); ?>.</div>
+                                    <legend><?php _e('Friendly urls'); ?></legend>
+                                    <div><?php _e('By default OpenSourceClassifieds uses web URLs which have question marks and lots of numbers in them. However, OpenSourceClassifieds offers you friendly urls. This can improve the aesthetics, usability, and forward-compatibility of your links'); ?>.</div>
                                     <br />
-                                    <input style="height: 20px; padding-left: 4px;padding-top: 4px;" type="checkbox" <?php
-echo (osc_rewrite_enabled() ? 'checked="true"' : ''); ?> name="rewrite_enabled" id="rewrite_enabled" value="1" />
+                                    <input style="height: 20px; padding-left: 4px;padding-top: 4px;" type="checkbox" <?php echo (osc_rewrite_enabled() ? 'checked="true"' : ''); ?> name="rewrite_enabled" id="rewrite_enabled" value="1" />
                                     <label for="rewrite_enabled"><?php
 _e('Enable friendly urls'); ?></label>
                                 </fieldset>

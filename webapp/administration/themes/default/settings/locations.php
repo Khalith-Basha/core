@@ -25,37 +25,28 @@
         <script type="text/javascript" src="<?php echo osc_current_admin_theme_js_url('location.js'); ?>"></script>
                 <div id="content_header" class="content_header">
                     <div style="float: left;">
-                        <img src="<?php
-echo osc_current_admin_theme_url('images/settings-icon.png'); ?>" alt="" title=""/>
+                        <img src="<?php echo osc_current_admin_theme_url('images/settings-icon.png'); ?>" alt="" title=""/>
                     </div>
-                    <div id="content_header_arrow">&raquo; <?php
-_e('Locations'); ?></div>
+                    <div id="content_header_arrow">&raquo; <?php _e('Locations'); ?></div>
                     <div style="clear: both;"></div>
                 </div>
                 <div id="content_separator"></div>
-                <?php
-osc_show_flash_message('admin'); ?>
-                <!-- settings form -->
                 <div id="settings_form" class="locations" style="border: 1px solid #ccc; background: #eee; min-height: 200px; ">
                     <!-- Country -->
                     <div style="float:left; width: 33%; ">
                         <div style="border-bottom: 1px dashed black; padding: 4px 4px 0px; width: 90%;" >
                             <div style="float:left;">
                                 <h3>
-                                    <?php
-_e('Countries'); ?>
+                                    <?php _e('Countries'); ?>
                                 </h3>
                             </div>
                             <div style="float:right;">
-                                <a id="b_new_country" href="javascript:void(0);"><?php
-_e('Add new'); ?></a>
+                                <a id="b_new_country" href="javascript:void(0);"><?php _e('Add new'); ?></a>
                             </div>
                             <div style="clear:both;"></div>
                         </div>
                         <div id="l_countries" style="padding: 10px 0;">
-                            <?php
-foreach ($aCountries as $country) 
-{ ?>
+                            <?php foreach ($aCountries as $country)  { ?>
                             <?php
 	$data_array = array();
 	foreach ($country['locales'] as $k => $v) 
@@ -182,10 +173,8 @@ else
                     <?php
 }; ?>
                     <div style="margin-top: 8px; text-align: right; ">
-                        <input type="button" value="<?php
-_e('Cancel'); ?>" onclick="$('#d_add_country').css('display','none');$('#fade').css('display','none');"/>
-                        <input type="submit" name="submit" value="<?php
-_e('Add'); ?>" />
+                        <input type="button" value="<?php _e('Cancel'); ?>" onclick="$('#d_add_country').css('display','none');$('#fade').css('display','none');"/>
+                        <input type="submit" name="submit" value="<?php _e('Add'); ?>" />
                     </div>
                 </form>
             </div>
@@ -240,10 +229,8 @@ else
                     <?php
 }; ?>
                     <div style="margin-top: 8px; text-align: right; ">
-                        <input type="button" value="<?php
-_e('Cancel'); ?>" onclick="$('#d_edit_country').css('display','none');$('#fade').css('display','none');"/>
-                        <input type="submit" name="submit" value="<?php
-_e('Edit'); ?>" />
+                        <input type="button" value="<?php _e('Cancel'); ?>" onclick="$('#d_edit_country').css('display','none');$('#fade').css('display','none');"/>
+                        <input type="submit" name="submit" value="<?php _e('Edit'); ?>" />
                     </div>
                 </form>
             </div>
@@ -284,12 +271,10 @@ _e('Add'); ?>" />
         <!-- Form edit region -->
         <div id="d_edit_region" class="lightbox_country location" style="height: 140px;">
             <div>
-                <h4><?php
-_e('Edit region'); ?></h4>
+                <h4><?php _e('Edit region'); ?></h4>
             </div>
             <div style="padding: 14px;">
-                <form action="<?php
-echo osc_admin_base_url(true); ?>" method="POST" accept-charset="utf-8">
+                <form action="<?php echo osc_admin_base_url(true); ?>" method="POST" accept-charset="utf-8">
                     <input type="hidden" name="page" value="settings" />
                     <input type="hidden" name="action" value="locations" />
                     <input type="hidden" name="type" value="edit_region" />
@@ -347,28 +332,23 @@ _e('Add'); ?>" />
         <!-- Form edit city -->
         <div id="d_edit_city" class="lightbox_country location" style="height: 140px;">
             <div>
-                <h4><?php
-_e('Edit city'); ?></h4>
+                <h4><?php _e('Edit city'); ?></h4>
             </div>
             <div style="padding: 14px;">
-                <form action="<?php
-echo osc_admin_base_url(true); ?>" method="POST" accept-charset="utf-8">
+                <form action="<?php echo osc_admin_base_url(true); ?>" method="POST" accept-charset="utf-8">
                     <input type="hidden" name="page" value="settings" />
                     <input type="hidden" name="action" value="locations" />
                     <input type="hidden" name="type" value="edit_city" />
                     <input type="hidden" name="city_id" value="" />
                     <table>
                         <tr>
-                            <td><?php
-_e('City'); ?>: </td>
+                            <td><?php _e('City'); ?>: </td>
                             <td><input type="text" id="region" name="e_city" value="" /></td>
                         </tr>
                     </table>
                     <div style="margin-top: 8px; text-align: right; ">
-                        <input type="button" value="<?php
-_e('Cancel'); ?>" onclick="$('#d_edit_city').css('display','none');$('#fade').css('display','none');"/>
-                        <input type="submit" name="submit" value="<?php
-_e('Edit'); ?>" />
+                        <input type="button" value="<?php _e('Cancel'); ?>" onclick="$('#d_edit_city').css('display','none');$('#fade').css('display','none');"/>
+                        <input type="submit" name="submit" value="<?php _e('Edit'); ?>" />
                     </div>
                 </form>
             </div>

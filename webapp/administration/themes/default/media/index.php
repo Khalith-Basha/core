@@ -118,7 +118,6 @@ $itemForm = ClassLoader::getInstance()->getClassInstance( 'Form_Item' );
                 </div>
 
                 <div id="content_separator"></div>
-                <?php osc_show_flash_message('admin'); ?>
                 <div>
                     <form id="datatablesForm" action="<?php echo osc_admin_base_url(true); ?>?page=media" method="post">
                         <input type="hidden" name="action" value="bulk_actions" />

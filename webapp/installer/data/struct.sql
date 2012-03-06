@@ -432,7 +432,7 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
 
-CREATE  TABLE IF NOT EXISTS /*TABLE_PREFIX*/t_log (
+CREATE  TABLE IF NOT EXISTS /*TABLE_PREFIX*/t_audit (
   dt_date DATETIME NOT NULL ,
   s_section VARCHAR(50) NOT NULL ,
   s_action VARCHAR(50) NOT NULL ,
@@ -463,20 +463,29 @@ DEFAULT CHARACTER SET = utf8;
 CREATE  TABLE IF NOT EXISTS /*TABLE_PREFIX*/t_pages (
   pk_i_id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT ,
   s_internal_name VARCHAR(50) NULL DEFAULT NULL ,
-  b_indelible TINYINT(1) NOT NULL DEFAULT '0' ,
+  b_indelible TINYINT(1) NOT NULL DEFAULT 0 ,
   dt_pub_date DATETIME NOT NULL ,
   dt_mod_date DATETIME NULL DEFAULT NULL ,
-  i_order INT(3) NOT NULL DEFAULT '0' ,
-  PRIMARY KEY (pk_i_id) )
+  i_order INT(3) NOT NULL DEFAULT 0 ,
+  parent_page_id INT(10) UNSIGNED NOT NULL ,
+  PRIMARY KEY (pk_i_id) ,
+  INDEX fk_t_pages_t_pages1 (parent_page_id ASC) ,
+  CONSTRAINT fk_t_pages_t_pages1
+    FOREIGN KEY (parent_page_id )
+    REFERENCES /*TABLE_PREFIX*/t_pages (pk_i_id )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
 
-CREATE  TABLE IF NOT EXISTS /*TABLE_PREFIX*/t_pages_description (
+CREATE  TABLE IF NOT EXISTS /*TABLE_PREFIX*/t_page_description (
   fk_i_pages_id INT(10) UNSIGNED NOT NULL ,
   fk_c_locale_code CHAR(5) NOT NULL ,
   s_title VARCHAR(255) NOT NULL ,
   s_text TEXT NULL DEFAULT NULL ,
+  tags VARCHAR(245) NULL ,
+  description VARCHAR(2045) NULL ,
   PRIMARY KEY (fk_i_pages_id, fk_c_locale_code) ,
   INDEX fk_c_locale_code (fk_c_locale_code ASC) ,
   CONSTRAINT t_pages_description_ibfk_1

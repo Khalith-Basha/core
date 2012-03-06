@@ -122,7 +122,6 @@ $last_id = $last['pk_i_id'];
                 </div>
 
                 <div id="content_separator"></div>
-                <?php osc_show_flash_message('admin'); ?>
 
                 <form id="datatablesForm" action="<?php osc_admin_base_url(true); ?>" method="post">
                 <div id="TableToolsToolbar">

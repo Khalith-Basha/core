@@ -23,7 +23,7 @@ class CWebUser extends Controller_User
 		parent::__construct();
 		if (!osc_users_enabled()) 
 		{
-			osc_add_flash_error_message(_m('Users not enabled'));
+			$this->getSession()->addFlashMessage( _m('Users not enabled'), 'ERROR' );
 			$this->redirectTo(osc_base_url(true));
 		}
 	}
@@ -57,7 +57,7 @@ class CWebUser extends Controller_User
 			}
 			else
 			{
-				osc_add_flash_error_message(_m('Ops! There was a problem trying to activate alert. Please contact the administrator'));
+				$this->getSession()->addFlashMessage( _m('Ops! There was a problem trying to activate alert. Please contact the administrator'), 'ERROR' );
 			}
 			$this->redirectTo(osc_base_url(true));
 			break;
@@ -72,7 +72,7 @@ class CWebUser extends Controller_User
 			}
 			else
 			{
-				osc_add_flash_error_message(_m('Ops! There was a problem trying to unsubscribe you. Please contact the administrator'));
+				$this->getSession()->addFlashMessage( _m('Ops! There was a problem trying to unsubscribe you. Please contact the administrator'), 'ERROR' );
 			}
 			$this->redirectTo(osc_user_alerts_url());
 			break;

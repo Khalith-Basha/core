@@ -26,7 +26,6 @@ $widgetModel = ClassLoader::getInstance()->getClassInstance( 'Model_Widget' );
     <div style="clear: both;"></div>
 </div>
 <div id="content_separator"></div>
-<?php osc_show_flash_message('admin'); ?>
 <div id="settings_form" style="border: 1px solid #ccc; background: #eee; ">
     <div style="padding: 20px;">
 	<strong><?php echo $info['name']; ?> <?php echo $info['version']; ?> by <a href="<?php echo $info['author_url']; ?>"><?php echo $info['author_name']; ?></a></strong><br />

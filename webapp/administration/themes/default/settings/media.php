@@ -19,43 +19,31 @@
 
         <link rel="stylesheet" media="screen" type="text/css" href="<?php echo osc_current_admin_theme_js_url() ?>colorpicker/css/colorpicker.css" />
         <script type="text/javascript" src="<?php echo osc_current_admin_theme_js_url() ?>colorpicker/js/colorpicker.js"></script>
-        <div class="Header"><?php
-_e('Media settings'); ?></div>
+        <div class="Header"><?php _e('Media settings'); ?></div>
                 <div id="content_header" class="content_header">
                     <div style="float: left;">
-                        <img src="<?php
-echo osc_current_admin_theme_url('images/media-config-icon.png'); ?>" title="" alt=""/>
+                        <img src="<?php echo osc_current_admin_theme_url('images/media-config-icon.png'); ?>" title="" alt=""/>
                     </div>
-                    <div id="content_header_arrow">&raquo; <?php
-_e('Configure media'); ?></div>
+                    <div id="content_header_arrow">&raquo; <?php _e('Configure media'); ?></div>
                     <div style="clear: both;"></div>
                 </div>
                 <div id="content_separator"></div>
-                <?php
-osc_show_flash_message('admin'); ?>
                 <div style="border: 1px solid #ccc; background: #eee;">
                     <div style="padding: 20px;">
-                        <div><?php
-_e('Please set the preferred dimensions for all the images on the website. (format: WIDTHxHEIGHT, eg: 640x480)'); ?></div>
-                        <form action="<?php
-echo osc_admin_base_url(true); ?>" method="post" enctype="multipart/form-data">
+                        <div><?php _e('Please set the preferred dimensions for all the images on the website. (format: WIDTHxHEIGHT, eg: 640x480)'); ?></div>
+                        <form action="<?php echo osc_admin_base_url(true); ?>" method="post" enctype="multipart/form-data">
                             <input type="hidden" name="page" value="settings" />
                             <input type="hidden" name="action" value="media" />
                             <fieldset>
-                                <legend><?php
-_e('Restrictions'); ?></legend>
+                                <legend><?php _e('Restrictions'); ?></legend>
                                 <p>
-                                    <label for="maxSize"><?php
-_e('Maximum size, in KB'); ?></label><br />
-                                    <input type="text" name="maxSizeKb" id="maxSize" value="<?php
-echo osc_max_size_kb(); ?>" />
+                                    <label for="maxSize"><?php _e('Maximum size, in KB'); ?></label><br />
+                                    <input type="text" name="maxSizeKb" id="maxSize" value="<?php echo osc_max_size_kb(); ?>" />
                                 </p>
 
                                 <p>
-                                    <label for="allowedExt"><?php
-_e('Allowed format extensions (eg: png, jpg, gif)'); ?></label><br />
-                                    <input type="text" name="allowedExt" id="allowedExt" value="<?php
-echo osc_allowed_extension(); ?>" />
+                                    <label for="allowedExt"><?php _e('Allowed format extensions (eg: png, jpg, gif)'); ?></label><br />
+                                    <input type="text" name="allowedExt" id="allowedExt" value="<?php echo osc_allowed_extension(); ?>" />
                                 </p>
                                 <?php
 if (extension_loaded('imagick')) 
@@ -73,27 +61,20 @@ if (extension_loaded('imagick'))
                             </fieldset>
 
                             <fieldset>
-                                <legend><?php
-_e('Dimensions'); ?></legend>
+                                <legend><?php _e('Dimensions'); ?></legend>
                                 <p>
-                                    <label for="thumbnail"><?php
-_e('Thumbnail dimensions'); ?></label><br />
-                                    <input type="text" name="dimThumbnail" id="thumbnail" value="<?php
-echo osc_thumbnail_dimensions(); ?>" />
+                                    <label for="thumbnail"><?php _e('Thumbnail dimensions'); ?></label><br />
+                                    <input type="text" name="dimThumbnail" id="thumbnail" value="<?php echo osc_thumbnail_dimensions(); ?>" />
                                 </p>
 
                                 <p>
-                                    <label for="preview"><?php
-_e('Preview dimensions'); ?></label><br />
-                                    <input type="text" name="dimPreview" id="preview" value="<?php
-echo osc_preview_dimensions(); ?>" />
+                                    <label for="preview"><?php _e('Preview dimensions'); ?></label><br />
+                                    <input type="text" name="dimPreview" id="preview" value="<?php echo osc_preview_dimensions(); ?>" />
                                 </p>
 
                                 <p>
-                                    <label for="normal"><?php
-_e('Normal dimensions'); ?></label><br />
-                                    <input type="text" name="dimNormal" id="normal" value="<?php
-echo osc_normal_dimensions(); ?>" />
+                                    <label for="normal"><?php _e('Normal dimensions'); ?></label><br />
+                                    <input type="text" name="dimNormal" id="normal" value="<?php echo osc_normal_dimensions(); ?>" />
                                 </p>
 
                                 <p>
@@ -195,38 +176,24 @@ if (!osc_is_watermark_image())
 	echo "display:none;";
 } ?>">
                                     <p>
-                                        <label for="watermark_image"><?php
-_e('Watermark image'); ?></label><br />
+                                        <label for="watermark_image"><?php _e('Watermark image'); ?></label><br />
                                         <input type="file" name="watermark_image"/>
-                                        *<?php
-_e("Notice that OpenSourceClassifieds don't take care about size of watermark image"); ?>.
+                                        *<?php _e("Notice that OpenSourceClassifieds don't take care about size of watermark image"); ?>.
                                     </p>
                                     <p>
-                                        <label><?php
-_e('Watermark place'); ?></label>
+                                        <label><?php _e('Watermark place'); ?></label>
                                         <select name="watermark_image_place" id="watermark_image_place" >
-                                            <option value="centre" <?php
-echo (osc_watermark_place() == 'centre') ? 'selected="true"' : ''; ?>><?php
-_e('Centre'); ?></option>
-                                            <option value="tl" <?php
-echo (osc_watermark_place() == 'tl') ? 'selected="true"' : ''; ?>><?php
-_e('Top Left'); ?></option>
-                                            <option value="tr" <?php
-echo (osc_watermark_place() == 'tr') ? 'selected="true"' : ''; ?>><?php
-_e('Top Right'); ?></option>
-                                            <option value="bl" <?php
-echo (osc_watermark_place() == 'bl') ? 'selected="true"' : ''; ?>><?php
-_e('Bottom Left'); ?></option>
-                                            <option value="br" <?php
-echo (osc_watermark_place() == 'br') ? 'selected="true"' : ''; ?>><?php
-_e('Bottom Right'); ?></option>
+                                            <option value="centre" <?php echo (osc_watermark_place() == 'centre') ? 'selected="true"' : ''; ?>><?php _e('Centre'); ?></option>
+                                            <option value="tl" <?php echo (osc_watermark_place() == 'tl') ? 'selected="true"' : ''; ?>><?php _e('Top Left'); ?></option>
+                                            <option value="tr" <?php echo (osc_watermark_place() == 'tr') ? 'selected="true"' : ''; ?>><?php _e('Top Right'); ?></option>
+                                            <option value="bl" <?php echo (osc_watermark_place() == 'bl') ? 'selected="true"' : ''; ?>><?php _e('Bottom Left'); ?></option>
+                                            <option value="br" <?php echo (osc_watermark_place() == 'br') ? 'selected="true"' : ''; ?>><?php _e('Bottom Right'); ?></option>
                                         </select>
                                     </p>
                                 </div>
 
                             </fieldset>
-                            <input id="button_save" type="submit" value="<?php
-_e('Update'); ?>" />
+                            <input id="button_save" type="submit" value="<?php _e('Update'); ?>" />
                         </form>
                     </div>
                 </div>
@@ -242,8 +209,7 @@ _e('Update'); ?>" />
                     $('.watermark_text').show();
                     $('.watermark_image').hide();
                     if( !$('input#keep_original_image').attr('checked') ) {
-                        alert("<?php
-_e("Is highly recommended to have 'Keep original image' option active when you want watermarks."); ?>");
+                        alert("<?php _e("Is highly recommended to have 'Keep original image' option active when you want watermarks."); ?>");
                     }
                 }
             });
@@ -252,16 +218,14 @@ _e("Is highly recommended to have 'Keep original image' option active when you w
                     $('.watermark_image').show();
                     $('.watermark_text').hide();
                     if( !$('input#keep_original_image').attr('checked') ) {
-                        alert("<?php
-_e("Is highly recommended to have 'Keep original image' option active when you want watermarks."); ?>");
+                        alert("<?php _e("Is highly recommended to have 'Keep original image' option active when you want watermarks."); ?>");
                     }
                 }
             });
             $('#keep_original_image').change(function(){
                 if( !$(this).attr('checked') ){
                     if( !$('#watermark_none').attr('checked') ) {
-                        alert("<?php
-_e("Is highly recommended to have 'Keep original image' option active when you want watermarks."); ?>");
+                        alert("<?php _e("Is highly recommended to have 'Keep original image' option active when you want watermarks."); ?>");
                     }
                 }
             });

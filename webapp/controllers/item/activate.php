@@ -56,7 +56,7 @@ class CWebItem extends Controller_Default
 		}
 		else
 		{
-			osc_add_flash_error_message(_m('The item has already been validated'));
+			$this->getSession()->addFlashMessage( _m('The item has already been validated'), 'ERROR' );
 		}
 		$this->redirectTo(osc_item_url());
 	}

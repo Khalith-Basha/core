@@ -72,7 +72,7 @@ class CWebItem extends Controller_Default
 		}
 		else if ($item['b_enabled'] == 0) 
 		{
-			osc_add_flash_error_message(_m('The item has been suspended'));
+			$this->getSession()->addFlashMessage( _m('The item has been suspended'), 'ERROR' );
 			$this->redirectToBaseUrl();
 		}
 		$mStats = ClassLoader::getInstance()->getClassInstance( 'Model_ItemStats' );

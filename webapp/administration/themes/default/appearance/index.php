@@ -35,8 +35,6 @@ window.location = 'appearance.php';
 <div style="clear: both;"></div>
 </div>
 
-<?php osc_show_flash_message('admin'); ?>
-
 <div id="content_separator"></div>
 <div id="list_themes_div" style="border: 1px solid #ccc; background: #eee;">
 <div style="padding: 20px;">

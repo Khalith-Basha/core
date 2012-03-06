@@ -112,6 +112,5 @@
                     <a href="<?php echo osc_admin_base_url(true); ?>?page=plugin&action=add" id="button_open"><?php _e('Add a new plugin'); ?></a>
                     <div style="clear: both;"></div>
                 </div>
-                <?php osc_show_flash_message('admin'); ?>
                 <table cellpadding="0" cellspacing="0" border="0" class="display" id="datatables_list" style="border-bottom: 1px solid #AAAAAA; border-left: 1px solid #AAAAAA; border-right: 1px solid #AAAAAA;"></table>
 

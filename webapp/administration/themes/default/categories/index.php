@@ -241,7 +241,6 @@ $last_id = $last['pk_i_id'];
                     <div style="clear: both;"></div>
                 </div>
                 <div id="content_separator"></div>
-                <?php osc_show_flash_message('admin'); ?>
 
                 <div id="jsMessage" class="FlashMessage" style="display:none;"></div>
 

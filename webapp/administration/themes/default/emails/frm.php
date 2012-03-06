@@ -52,32 +52,22 @@ else
         </script>
                 <div id="content_header" class="content_header">
                     <div style="float: left;">
-                        <img src="<?php
-echo osc_current_admin_theme_url('images/pages-icon.png'); ?>" title="" alt=""/>
+                        <img src="<?php echo osc_current_admin_theme_url('images/pages-icon.png'); ?>" title="" alt=""/>
                     </div>
-                    <div id="content_header_arrow">&raquo; <?php
-_e($title); ?></div>
+                    <div id="content_header_arrow">&raquo; <?php _e($title); ?></div>
                     <div style="clear: both;"></div>
                 </div>
                 <div id="content_separator"></div>
-                <?php
-osc_show_flash_message('admin'); ?>
-                <!-- add new page form -->
                 <div id="settings_form">
-                    <form name="emails_form" id="emails_form" action="<?php
-echo osc_admin_base_url(true); ?>?page=email" method="post" onSubmit="return checkForm()">
-                        <input type="hidden" name="action" value="<?php
-echo $action_frm; ?>" />
-                        <?php
-PageForm::primary_input_hidden($email); ?>
+                    <form name="emails_form" id="emails_form" action="<?php echo osc_admin_base_url(true); ?>?page=email" method="post" onSubmit="return checkForm()">
+                        <input type="hidden" name="action" value="<?php echo $action_frm; ?>" />
+                        <?php PageForm::primary_input_hidden($email); ?>
                         <div class="FormElement">
                             <div class="FormElementName">
-                                <?php
-_e('Internal name (name to easily identify this email/alert)'); ?>
+                                <?php _e('Internal name (name to easily identify this email/alert)'); ?>
                             </div>
                             <div class="FormElementInput">
-                               <?php
-PageForm::internal_name_input_text($email); ?>
+                               <?php PageForm::internal_name_input_text($email); ?>
                             </div>
                         </div>
                         <div class="clear50"></div>
@@ -88,11 +78,8 @@ PageForm::multilanguage_name_description($locales, $email);
                         <div class="FormElement">
                             <div class="FormElementName"></div>
                             <div class="FormElementInput">
-                                <button class="formButton" type="button" onclick="window.location='<?php
-echo osc_admin_base_url(true); ?>?page=email';" ><?php
-_e('Cancel'); ?></button>
-                                <button class="formButton" type="submit"><?php
-echo $btn_text; ?></button>
+                                <button class="formButton" type="button" onclick="window.location='<?php echo osc_admin_base_url(true); ?>?page=email';" ><?php _e('Cancel'); ?></button>
+                                <button class="formButton" type="submit"><?php echo $btn_text; ?></button>
                             </div>
                         </div>
                     </form>

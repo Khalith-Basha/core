@@ -47,11 +47,7 @@ class Session
 		session_name( APP_NAME );
 		session_start();
 
-		$this->session = $_SESSION;
-		if ($this->_get('messages') == '') 
-		{
-			$this->_set('messages', array());
-		}
+		$this->session = &$_SESSION;
 		if ($this->_get('keepForm') == '') 
 		{
 			$this->_set('keepForm', array());
@@ -75,32 +71,26 @@ class Session
 		return session_destroy();
 	}
 
-	function _set($key, $value) 
+	public function _set($key, $value) 
 	{
-		$_SESSION[$key] = $value;
 		$this->session[$key] = $value;
 	}
 
-	function _get($key) 
+	public function _get($key) 
 	{
-		if (!isset($this->session[$key])) 
-		{
-			return null;
-		}
-		return ($this->session[$key]);
+		return isset( $this->session[ $key ] ) ?
+			$this->session[ $key ] :
+			null;
 	}
 
 	function remove($key) 
 	{
-		unset($_SESSION[$key]);
 		unset($this->session[$key]);
 	}
 
 	function _setReferer($value) 
 	{
-		$_SESSION['osc_http_referer'] = $value;
 		$this->session['osc_http_referer'] = $value;
-		$_SESSION['osc_http_referer_state'] = 0;
 		$this->session['osc_http_referer_state'] = 0;
 	}
 
@@ -114,38 +104,27 @@ class Session
 		return null;
 	}
 
-	function _dropReferer() 
+	public function addFlashMessage( $text, $type )
 	{
-		unset($_SESSION['osc_http_referer']);
-		unset($this->session['osc_http_referer']);
-		unset($_SESSION['osc_http_referer_state']);
-		unset($this->session['osc_http_referer_state']);
+		$messages = $this->_get( 'messages' );
+		if( is_null( $messages ) )
+			$messages = array();
+	
+		$messages[] = array(
+			'class' => 'FlashMessage',
+			'id' => 'FlashMessage',
+			'text' => $text,
+			'type' => $type
+		);
+
+		$this->session['messages'] = $messages;
 	}
 
-	function _setMessage($key, $value, $type) 
+	public function getFlashMessages()
 	{
-		$messages = $this->_get('messages');
-		$messages[$key]['msg'] = $value;
-		$messages[$key]['type'] = $type;
-		$this->_set('messages', $messages);
-	}
-
-	function _getMessage($key) 
-	{
-		$messages = $this->_get('messages');
-		if (isset($messages[$key])) 
-		{
-			return ($messages[$key]);
-		}
-
-		return null;
-	}
-
-	function _dropMessage($key) 
-	{
-		$messages = $this->_get('messages');
-		unset($messages[$key]);
-		$this->_set('messages', $messages);
+		$messages = $this->_get( 'messages' );
+		unset( $this->session['messages'] );
+		return $messages;
 	}
 
 	function _keepForm($key) 
@@ -207,7 +186,6 @@ class Session
 			{
 				if (!isset($aKeep[$key])) 
 				{
-					unset($_SESSION['form'][$key]);
 					unset($this->session['form'][$key]);
 				}
 			}
@@ -215,10 +193,10 @@ class Session
 		if (isset($this->session['osc_http_referer_state'])) 
 		{
 			$this->session['osc_http_referer_state']++;
-			$_SESSION['osc_http_referer_state']++;
 			if ((int)($this->session['osc_http_referer_state']) >= 2) 
 			{
-				$this->_dropReferer();
+				unset($this->session['osc_http_referer']);
+				unset($this->session['osc_http_referer_state']);
 			}
 		}
 	}

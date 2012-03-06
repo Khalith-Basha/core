@@ -58,7 +58,6 @@ $(document).ready(function(){
                 }
             });
         </script>
-                <?php osc_show_flash_message('admin'); ?>
                 <div class="content_header" id="content_header">
                     <div style="float: left;">
                         <img alt="" title="" src="<?php echo osc_current_admin_theme_url('images/new-folder-icon.png'); ?>">

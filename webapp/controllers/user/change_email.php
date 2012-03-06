@@ -22,7 +22,7 @@ class CWebUser extends Controller_User
 		parent::__construct();
 		if (!osc_users_enabled()) 
 		{
-			osc_add_flash_error_message(_m('Users not enabled'));
+			$this->getSession()->addFlashMessage( _m('Users not enabled'), 'ERROR' );
 			$this->redirectTo(osc_base_url(true));
 		}
 	}
@@ -38,7 +38,7 @@ class CWebUser extends Controller_User
 	{
 		if (!preg_match("/^[_a-z0-9-\+]+(\.[_a-z0-9-\+]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/", Params::getParam('new_email'))) 
 		{
-			osc_add_flash_error_message(_m('The specified e-mail is not valid'));
+			$this->getSession()->addFlashMessage( _m('The specified e-mail is not valid'), 'ERROR' );
 			$this->redirectTo(osc_change_user_email_url());
 		}
 		else
@@ -60,7 +60,7 @@ class CWebUser extends Controller_User
 			}
 			else
 			{
-				osc_add_flash_error_message(_m('The specified e-mail is already in use'));
+				$this->getSession()->addFlashMessage( _m('The specified e-mail is already in use'), 'ERROR' );
 				$this->redirectTo(osc_change_user_email_url());
 			}
 		}

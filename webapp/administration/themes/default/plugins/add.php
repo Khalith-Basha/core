@@ -19,25 +19,18 @@
 
                                 <div id="content_header" class="content_header">
                         <div style="float: left;">
-                            <img src="<?php
-echo osc_current_admin_theme_url('images/plugins-icon.png'); ?>" title="" alt=""/>
+                            <img src="<?php echo osc_current_admin_theme_url('images/plugins-icon.png'); ?>" title="" alt=""/>
                         </div>
-                        <div id="content_header_arrow">&raquo; <?php
-_e('Add a new plugin'); ?></div>
+                        <div id="content_header_arrow">&raquo; <?php _e('Add a new plugin'); ?></div>
                         <div style="clear: both;"></div>
                     </div>
 
                     <div id="content_separator"></div>
-                    <?php
-osc_show_flash_message('admin'); ?>
 
-                    <!-- add new plugin form -->
                     <div id="settings_form" style="border: 1px solid #ccc; background: #eee; ">
                         <div style="padding: 20px;">
 
-                            <?php
-if (is_writable(osc_plugins_path())) 
-{ ?>
+                            <?php if (is_writable(osc_plugins_path()))  { ?>
 
                                 <p style="border-bottom: 1px black solid;padding-bottom: 10px;">
                                     <img style="padding-right: 10px;"src="<?php
@@ -72,12 +65,10 @@ else
 ?>
                                     </p>
                                     <p>
-                                        <?php
-	_e('To make a directory writable under UNIX execute this command from the shell'); ?>:
+                                        <?php _e('To make a directory writable under UNIX execute this command from the shell'); ?>:
                                     </p>
                                     <p style="background-color: white; border: 1px solid black; padding: 8px;">
-                                        chmod a+w <?php
-	echo osc_plugins_path(); ?>
+                                        chmod a+w <?php echo osc_plugins_path(); ?>
                                     </p>
                                 </div>
 

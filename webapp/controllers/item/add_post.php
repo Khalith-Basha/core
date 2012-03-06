@@ -47,7 +47,7 @@ class CWebItem extends Controller_Default
 		$this->getView()->assign('locales', $locales);
 		if (osc_reg_user_post() && $this->user == null) 
 		{
-			osc_add_flash_warning_message(_m('Only registered users are allowed to post items'));
+			$this->getSession()->addFlashMessage( _m('Only registered users are allowed to post items'), 'WARNING' );
 			$this->redirectTo(osc_base_url(true));
 		}
 		$mItems = $classLoader->getClassInstance( 'Manager_Item', false, array( false ) );
@@ -70,7 +70,7 @@ class CWebItem extends Controller_Default
 		{
 			if (!osc_check_recaptcha()) 
 			{
-				osc_add_flash_error_message(_m('The Recaptcha code is wrong'));
+				$this->getSession()->addFlashMessage( _m('The Recaptcha code is wrong'), 'ERROR' );
 				$this->redirectTo(osc_item_post_url());
 				return false; // BREAK THE PROCESS, THE RECAPTCHA IS WRONG
 				

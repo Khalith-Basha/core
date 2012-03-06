@@ -22,12 +22,12 @@ class CWebRegister extends Controller
 		parent::__construct();
 		if (!osc_users_enabled()) 
 		{
-			osc_add_flash_error_message(_m('Users not enabled'));
+			$this->getSession()->addFlashMessage( _m('Users not enabled'), 'ERROR' );
 			$this->redirectTo(osc_base_url(true));
 		}
 		if (!osc_user_registration_enabled()) 
 		{
-			osc_add_flash_error_message(_m('User registration is not enabled'));
+			$this->getSession()->addFlashMessage( _m('User registration is not enabled'), 'ERROR' );
 			$this->redirectTo(osc_base_url(true));
 		}
 	}
@@ -40,12 +40,12 @@ class CWebRegister extends Controller
 		$user = $userManager->findByIdSecret($id, $code);
 		if (!$user) 
 		{
-			osc_add_flash_error_message(_m('The link is not valid anymore. Sorry for the inconvenience!'));
+			$this->getSession()->addFlashMessage( _m('The link is not valid anymore. Sorry for the inconvenience!'), 'ERROR' );
 			$this->redirectToBaseUrl();
 		}
 		if ($user['b_active'] == 1) 
 		{
-			osc_add_flash_error_message(_m('Your account has already been validated'));
+			$this->getSession()->addFlashMessage( _m('Your account has already been validated'), 'ERROR' );
 			$this->redirectToBaseUrl();
 		}
 		$userManager = new User();

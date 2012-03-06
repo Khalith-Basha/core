@@ -30,58 +30,42 @@ echo osc_admin_base_url(); ?>themes/modern/js/jquery.js"></script>
     <body class="login">
         <div id="login">
             <h1>
-                <a href="<?php
-echo osc_base_url(); ?>" title="OpenSourceClassifieds">
+                <a href="<?php echo osc_base_url(); ?>" title="OpenSourceClassifieds">
                     <img src="images/osclass-logo.png" border="0" title="" alt=""/>
                 </a>
             </h1>
-            <?php
-osc_show_flash_message('admin'); ?>
+            <?php osc_show_flash_message('admin'); ?>
             <div class="message warning" style="text-align:center;">
-                <?php
-_e('Type your new password'); ?>.
+                <?php _e('Type your new password'); ?>.
             </div>
 
-                    <form action="<?php
-echo osc_admin_base_url(true); ?>" method="post" >
+                    <form action="<?php echo osc_admin_base_url(true); ?>" method="post" >
                         <input type="hidden" name="page" value="login" />
                         <input type="hidden" name="action" value="forgot_post" />
-                        <input type="hidden" name="adminId" value="<?php
-echo Params::getParam('adminId'); ?>" />
-                        <input type="hidden" name="code" value="<?php
-echo Params::getParam('code'); ?>" />
+                        <input type="hidden" name="adminId" value="<?php echo Params::getParam('adminId'); ?>" />
+                        <input type="hidden" name="code" value="<?php echo Params::getParam('code'); ?>" />
                             <p>
                                 <label for="new_email">
-                                    <?php
-_e('New pasword', 'modern'); ?>
+                                    <?php _e('New pasword', 'modern'); ?>
                                     <input id="user_pass" type="password" name="new_password" value="" />
                                 </label>
                             </p>
                             <p>
                                 <label for="new_email">
-                                    <?php
-_e('Repeat new pasword', 'modern'); ?>
+                                    <?php _e('Repeat new pasword', 'modern'); ?>
                                     <input id="user_pass" type="password" name="new_password2" value="" />
                                 </label>
                             </p>
                             <p class="submit">
-                                <input type="submit" name="submit" id="submit" value="<?php
-_e('Change password', 'modern'); ?>" tabindex="100" />
+                                <input type="submit" name="submit" id="submit" value="<?php _e('Change password', 'modern'); ?>" tabindex="100" />
                             </p>
                     </form>
 
             <p id="nav">
-                <a title="<?php
-_e('Log in'); ?>" href="<?php
-echo osc_admin_base_url(); ?>"><?php
-_e('Log in'); ?></a>
+                <a title="<?php _e('Log in'); ?>" href="<?php echo osc_admin_base_url(); ?>"><?php _e('Log in'); ?></a>
             </p>
 
         </div>
-        <p id="backtoblog"><a href="<?php
-echo osc_base_url(); ?>" title="<?php
-_e('Back to') . ' ' . osc_page_title(); ?>">&larr; <?php
-_e('Back to'); ?> <?php
-echo osc_page_title(); ?></a></p>
+        <p id="backtoblog"><a href="<?php echo osc_base_url(); ?>" title="<?php _e('Back to') . ' ' . osc_page_title(); ?>">&larr; <?php _e('Back to'); ?> <?php echo osc_page_title(); ?></a></p>
     </body>
 </html>

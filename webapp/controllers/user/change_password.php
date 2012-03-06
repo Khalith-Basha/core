@@ -22,7 +22,7 @@ class CWebUser extends Controller_User
 		parent::__construct();
 		if (!osc_users_enabled()) 
 		{
-			osc_add_flash_error_message(_m('Users not enabled'));
+			$this->getSession()->addFlashMessage( _m('Users not enabled'), 'ERROR' );
 			$this->redirectTo(osc_base_url(true));
 		}
 	}
@@ -39,7 +39,7 @@ class CWebUser extends Controller_User
 		$user = ClassLoader::getInstance()->getClassInstance( 'Model_User' )->findByPrimaryKey($this->getSession()->_get('userId'));
 		if ((Params::getParam('password') == '') || (Params::getParam('new_password') == '') || (Params::getParam('new_password2') == '')) 
 		{
-			osc_add_flash_warning_message(_m('Password cannot be blank'));
+			$this->getSession()->addFlashMessage( _m('Password cannot be blank'), 'WARNING' );
 			$this->redirectTo(osc_change_user_password_url());
 		}
 		if ($user['s_password'] != sha1(Params::getParam('password'))) 

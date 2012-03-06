@@ -99,7 +99,7 @@ SQL;
 		$this->dao->delete(DB_TABLE_PREFIX . 't_item_description', $array_where);
 		$this->dao->delete(DB_TABLE_PREFIX . 't_keywords', $array_where);
 		$this->dao->delete(DB_TABLE_PREFIX . 't_user_description', $array_where);
-		$this->dao->delete(DB_TABLE_PREFIX . 't_pages_description', $array_where);
+		$this->dao->delete(DB_TABLE_PREFIX . 't_page_description', $array_where);
 		$this->dao->delete(DB_TABLE_PREFIX . 't_country', $array_where);
 		$result = $this->dao->delete($this->getTableName(), array('pk_c_code' => $locale));
 		return $result;

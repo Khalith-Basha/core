@@ -62,7 +62,6 @@ $classLoader->loadFile( 'helpers/translations' );
 $classLoader->loadFile( 'helpers/items' );
 $classLoader->loadFile( 'helpers/search' );
 $classLoader->loadFile( 'helpers/users' );
-$classLoader->loadFile( 'helpers/flashMessages' );
 
 $generalConfig = $config->getConfig( 'general' );
 define( 'WEB_PATH', $generalConfig['webUrl'] );

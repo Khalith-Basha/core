@@ -52,48 +52,36 @@ _e('Unknown error'); ?>" + x.responseText);
         
                 <div id="content_header" class="content_header">
                     <div style="float: left;">
-                        <img src="<?php
-echo osc_current_admin_theme_url('images/tools-icon.png'); ?>" title="" alt=""/>
+                        <img src="<?php echo osc_current_admin_theme_url('images/tools-icon.png'); ?>" title="" alt=""/>
                     </div>
-                    <div id="content_header_arrow">&raquo; <?php
-_e('Backup OpenSourceClassifieds'); ?></div>
+                    <div id="content_header_arrow">&raquo; <?php _e('Backup OpenSourceClassifieds'); ?></div>
                     <div style="clear: both;"></div>
                 </div>
                 <div id="content_separator"></div>
-                <?php
-osc_show_flash_message('admin'); ?>
                 <!-- add new item form -->
                 <div id="settings_form" style="border: 1px solid #ccc; background: #eee; ">
                     <div style="padding: 20px;">
                         <?php
 _e('You can back up OpenSourceClassifieds here. WARNING: If you don\'t specify a backup folder, the backup files will be created in the root of your OpenSourceClassifieds installation'); ?>
-                        <form action="<?php
-echo osc_admin_base_url(true); ?>" method="post" id="bckform" name="bckform" >
+                        <form action="<?php echo osc_admin_base_url(true); ?>" method="post" id="bckform" name="bckform" >
                             <input type="hidden" name="page" value="tools" />
                             <input type="hidden" name="action" value="" />
 
                             <p>
-                                <label for="data"><?php
-_e('Backup folder'); ?></label>
-                                <input type="text" id="backup_dir" name="bck_dir" value="<?php
-echo osc_base_path(); ?>" />
-                                <?php
-_e('This is the folder in which your backups will be created. We recommend that you choose a non-public path. For more information, please refer to OpenSourceClassifieds\' documentation') ?>.
+                                <label for="data"><?php _e('Backup folder'); ?></label>
+                                <input type="text" id="backup_dir" name="bck_dir" value="<?php echo osc_base_path(); ?>" />
+                                <?php _e('This is the folder in which your backups will be created. We recommend that you choose a non-public path. For more information, please refer to OpenSourceClassifieds\' documentation') ?>.
                             </p>
 
                             <p>
-                                <label for="data"><?php
-_e('Back up database'); ?> (.sql)</label>
-                                <button class="formButton" type="button" onclick="javascript:submitForm(this.form, 'sql');" ><?php
-_e('Backup'); ?></button>
+                                <label for="data"><?php _e('Back up database'); ?> (.sql)</label>
+                                <button class="formButton" type="button" onclick="javascript:submitForm(this.form, 'sql');" ><?php _e('Backup'); ?></button>
                                 <div id="steps_sql"></div>
                             </p>
 
                             <p>
-                                <label for="data"><?php
-_e('Back up OpenSourceClassifieds installation'); ?> (.zip)</label>
-                                <button class="formButton" type="button" onclick="javascript:submitForm(this.form, 'zip');" ><?php
-_e('Backup'); ?></button>
+                                <label for="data"><?php _e('Back up OpenSourceClassifieds installation'); ?> (.zip)</label>
+                                <button class="formButton" type="button" onclick="javascript:submitForm(this.form, 'zip');" ><?php _e('Backup'); ?></button>
                                 <div id="steps_zip"></div>
                             </p>
                         </form>

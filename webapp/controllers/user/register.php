@@ -23,12 +23,12 @@ class CWebUser extends Controller_Cacheable
 		parent::__construct();
 		if (!osc_users_enabled()) 
 		{
-			osc_add_flash_error_message(_m('Users not enabled'));
+			$this->getSession()->addFlashMessage( _m('Users not enabled'), 'ERROR' );
 			$this->redirectTo(osc_base_url(true));
 		}
 		if (!osc_user_registration_enabled()) 
 		{
-			osc_add_flash_error_message(_m('User registration is not enabled'));
+			$this->getSession()->addFlashMessage( _m('User registration is not enabled'), 'ERROR' );
 			$this->redirectTo(osc_base_url(true));
 		}
 	}

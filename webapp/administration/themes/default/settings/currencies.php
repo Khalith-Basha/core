@@ -105,50 +105,36 @@ foreach ($aCurrencies as $c)
                          "sWidth": "10px",
                          "bSearchable": false
                          },
-                        {"sTitle": "<?php
-_e('Code'); ?>",
+                        {"sTitle": "<?php _e('Code'); ?>",
                          "sWidth": "150px" },
-                        {"sTitle": "<?php
-_e('Name'); ?>" },
-                        {"sTitle": "<?php
-_e('Description'); ?>" }
+                        {"sTitle": "<?php _e('Name'); ?>" },
+                        {"sTitle": "<?php _e('Description'); ?>" }
                     ]
                 });
 
             });
         </script>
-        <script type="text/javascript" src="<?php
-echo osc_current_admin_theme_url('js/datatables.post_init.js'); ?>"></script>
+        <script type="text/javascript" src="<?php echo osc_current_admin_theme_url('js/datatables.post_init.js'); ?>"></script>
                 <div id="content_header" class="content_header">
                     <div id="content_header" class="content_header">
                         <div style="float: left;">
-                            <img src="<?php
-echo osc_current_admin_theme_url('images/currencies.gif'); ?>" title="" alt="" />
+                            <img src="<?php echo osc_current_admin_theme_url('images/currencies.gif'); ?>" title="" alt="" />
                         </div>
-                        <div id="content_header_arrow">&raquo; <?php
-_e('Currencies'); ?></div>
-                        <a href="<?php
-echo osc_admin_base_url(true); ?>?page=settings&amp;action=currencies&amp;type=add" id="button_open"><?php
-_e('Add'); ?></a>
+                        <div id="content_header_arrow">&raquo; <?php _e('Currencies'); ?></div>
+                        <a href="<?php echo osc_admin_base_url(true); ?>?page=settings&amp;action=currencies&amp;type=add" id="button_open"><?php _e('Add'); ?></a>
                         <div style="clear: both;"></div>
                     </div>
                 </div>
-                <?php
-osc_show_flash_message('admin'); ?>
                 <div id="content_separator"></div>
                 <div id="TableToolsToolbar">
                     <select id="bulk_actions" class="display">
-                        <option value=""><?php
-_e('Bulk actions'); ?></option>
-                        <option value="delete_all"><?php
-_e('Delete'); ?></option>
+                        <option value=""><?php _e('Bulk actions'); ?></option>
+                        <option value="delete_all"><?php _e('Delete'); ?></option>
                     </select>
-                    &nbsp;<button id="bulk_apply" class="display"><?php
-_e('Apply'); ?></button>
+                    &nbsp;<button id="bulk_apply" class="display"><?php _e('Apply'); ?></button>
                 </div>
 
-                <form id="datatablesForm" action="<?php
-echo osc_admin_base_url(true); ?>" method="post">
+                <form id="datatablesForm" action="<?php echo osc_admin_base_url(true); ?>" method="post">
                     <input type="hidden" name="page" value="settings" />
                     <input type="hidden" name="action" value="currencies" />
                     <input type="hidden" name="type" value="delete" />

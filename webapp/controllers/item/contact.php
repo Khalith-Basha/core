@@ -83,7 +83,7 @@ class CWebItem extends Controller_Default
 		{
 			if (!osc_check_recaptcha()) 
 			{
-				osc_add_flash_error_message(_m('The Recaptcha code is wrong'));
+				$this->getSession()->addFlashMessage( _m('The Recaptcha code is wrong'), 'ERROR' );
 				$this->getSession()->_setForm("yourEmail", Params::getParam('yourEmail'));
 				$this->getSession()->_setForm("yourName", Params::getParam('yourName'));
 				$this->getSession()->_setForm("phoneNumber", Params::getParam('phoneNumber'));

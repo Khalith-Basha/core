@@ -42,7 +42,6 @@ else
     <div style="clear: both;"></div>
 </div>
 <div id="content_separator"></div>
-<?php osc_show_flash_message('admin'); ?>
 <div id="settings_form">
     <form name="pages_form" id="pages_form" action="<?php echo osc_admin_base_url(true); ?>?page=page" method="post" onSubmit="return checkForm()">
 	<input type="hidden" name="action" value="<?php echo $action_frm; ?>" />
@@ -54,6 +53,14 @@ else
 	    <div class="FormElementInput">
 	       <?php $pageForm->internal_name_input_text($page); ?>
 	    </div>
+	</div>
+	<div class="FormElement">
+		<label class="FormElementName" for="tags">Tags</label>
+		<div class="FormElementInput"><input type="text" name="tags" id="tags" /></div>
+	</div>
+	<div class="FormElement">
+		<label class="FormElementName" for="description">Description</label>
+		<div class="FormElementInput"><input type="text" name="description" id="description" /></div>
 	</div>
 	<?php $pageForm->multilanguage_name_description($locales, $page); ?>
 	<div class="clear50"></div>

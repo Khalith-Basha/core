@@ -19,35 +19,24 @@
         <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 			    <div id="content_header" class="content_header">
 					<div style="float: left;">
-                        <img src="<?php
-echo osc_current_admin_theme_url('images/settings-icon.png'); ?>" alt="" title="" />
+                        <img src="<?php echo osc_current_admin_theme_url('images/settings-icon.png'); ?>" alt="" title="" />
                     </div>
-					<div id="content_header_arrow">&raquo; <?php
-_e('Reports'); ?></div>
+					<div id="content_header_arrow">&raquo; <?php _e('Reports'); ?></div>
 					<div style="clear: both;"></div>
 				</div>
 				<div id="content_separator"></div>
-				<?php
-osc_show_flash_message('admin'); ?>
 
                 <div>
                     <div style="padding: 20px;">
                         <p>
-                            <a href="<?php
-echo osc_admin_base_url(true); ?>?page=stats&action=reports&type_stat=day"><?php
-_e('Last 10 days'); ?></a>
-                            <a href="<?php
-echo osc_admin_base_url(true); ?>?page=stats&action=reports&type_stat=week"><?php
-_e('Last 10 weeks'); ?></a>
-                            <a href="<?php
-echo osc_admin_base_url(true); ?>?page=stats&action=reports&type_stat=month"><?php
-_e('Last 10 months'); ?></a>
+                            <a href="<?php echo osc_admin_base_url(true); ?>?page=stats&action=reports&type_stat=day"><?php _e('Last 10 days'); ?></a>
+                            <a href="<?php echo osc_admin_base_url(true); ?>?page=stats&action=reports&type_stat=week"><?php _e('Last 10 weeks'); ?></a>
+                            <a href="<?php echo osc_admin_base_url(true); ?>?page=stats&action=reports&type_stat=month"><?php _e('Last 10 months'); ?></a>
                         </p>
                     </div>
                 </div>
 
-                <h3><?php
-_e('Total number of reports'); ?></h3>
+                <h3><?php _e('Total number of reports'); ?></h3>
                 <div id="placeholder" style="width:600px;height:300px;margin:0 auto;padding-bottom: 45px;">
                     <?php
 if (count($reports) == 0) 
@@ -74,18 +63,12 @@ if (count($reports) > 0)
             function drawChart() {
 
                 var data = new google.visualization.DataTable();
-                data.addColumn('string', '<?php
-	_e('Date'); ?>');
-                data.addColumn('number', '<?php
-	_e('Spam'); ?>');
-                data.addColumn('number', '<?php
-	_e('Repeated'); ?>');
-                data.addColumn('number', '<?php
-	_e('Bad category'); ?>');
-                data.addColumn('number', '<?php
-	_e('Offensive'); ?>');
-                data.addColumn('number', '<?php
-	_e('Expired'); ?>');
+                data.addColumn('string', '<?php _e('Date'); ?>');
+                data.addColumn('number', '<?php _e('Spam'); ?>');
+                data.addColumn('number', '<?php _e('Repeated'); ?>');
+                data.addColumn('number', '<?php _e('Bad category'); ?>');
+                data.addColumn('number', '<?php _e('Offensive'); ?>');
+                data.addColumn('number', '<?php _e('Expired'); ?>');
                 <?php
 	$k = 0;
 	echo "data.addRows(" . count($reports) . ");";

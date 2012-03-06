@@ -21,7 +21,7 @@ class CWebUser extends Controller_Default
 	{
 		if( !osc_users_enabled() )
 		{
-			osc_add_flash_error_message( _m( 'Users are not enabled' ) );
+			$this->getSession()->addFlashMessage( _m( 'Users are not enabled' ), 'ERROR' );
 			$this->redirectToBaseUrl();
 		}
 	}
@@ -37,7 +37,7 @@ class CWebUser extends Controller_Default
 		$user = $userModel->findByEmailPassword( $email, $password );
 		if( is_null( $user ) )
 		{
-			osc_add_flash_error_message( _m( 'The username or password are wrong' ) );
+			$this->getSession()->addFlashMessage( _m( 'The username or password are wrong' ), 'ERROR' );
 
 			$res->sendRedirection( $userUrls->osc_user_login_url() );
 		}
@@ -50,11 +50,11 @@ class CWebUser extends Controller_Default
 		}
 		else if ($logged == 1) 
 		{
-			osc_add_flash_error_message(_m('The user has not been validated yet'));
+			$this->getSession()->addFlashMessage( _m('The user has not been validated yet'), 'ERROR' );
 		}
 		else if ($logged == 2) 
 		{
-			osc_add_flash_error_message(_m('The user has been suspended'));
+			$this->getSession()->addFlashMessage( _m('The user has been suspended'), 'ERROR' );
 		}
 		else if ($logged == 3) 
 		{

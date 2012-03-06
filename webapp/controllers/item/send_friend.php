@@ -53,7 +53,7 @@ class CWebItem extends Controller_Default
 		{
 			if (!osc_check_recaptcha()) 
 			{
-				osc_add_flash_error_message(_m('The Recaptcha code is wrong'));
+				$this->getSession()->addFlashMessage( _m('The Recaptcha code is wrong'), 'ERROR' );
 				$this->redirectTo(osc_item_send_friend_url());
 				return false; // BREAK THE PROCESS, THE RECAPTCHA IS WRONG
 				
