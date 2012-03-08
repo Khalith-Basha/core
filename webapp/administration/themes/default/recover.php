@@ -15,59 +15,29 @@
  * You should have received a copy of the GNU Affero General Public
  * License along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+
+echo $view->render( 'header-simple' );
 ?>
 
-<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en-US">
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <title><?php
-_e('OpenSourceClassifieds admin panel login'); ?></title>
-        <script type="text/javascript" src="<?php
-echo osc_admin_base_url(); ?>themes/modern/js/jquery.js"></script>
-<link type="text/css" href="<?php echo osc_admin_base_url() . '/static/styles/backoffice_login.css'; ?>" media="screen" rel="stylesheet" />
-    </head>
+<div class="message warning" style="text-align:center;">
+	<?php _e('Please enter your username or e-mail address'); ?>.<br />
+	<?php _e('You will receive a new password via e-mail'); ?>.
+</div>
 
-    <body class="login">
-        <div id="login">
-            <h1>
-                <a href="<?php echo osc_base_url(); ?>/" title="OpenSourceClassifieds">
-                    <img src="images/osclass-logo.png" border="0" title="" alt=""/>
-                </a>
-            </h1>
-            <?php
-osc_show_flash_message('admin'); ?>
-            <div class="message warning" style="text-align:center;">
-                <?php
-_e('Please enter your username or e-mail address'); ?>.<br />
-                <?php
-_e('You will receive a new password via e-mail'); ?>.
-            </div>
+<form action="<?php echo osc_admin_base_url(true); ?>" method="post">
+	<input type="hidden" name="action" value="recover" />
+	<p>
+	<label><?php _e('E-mail'); ?><br />
+	<input type="email" name="email" id="user_email" class="input" value="" size="20" tabindex="10" autofocus="autofocus" required="required" /></label>
+	</p>
+	<?php osc_show_recaptcha(); ?>
+	<p class="submit"><input type="submit" name="submit" id="submit" value="<?php _e('Get new password'); ?>" tabindex="100" /></p>
+</form>
 
-            <form action="<?php echo osc_admin_base_url(true); ?>" method="post">
-                <input type="hidden" name="action" value="recover" />
-                <p>
-                    <label><?php
-_e('E-mail'); ?><br />
-                    <input type="text" name="email" id="user_email" class="input" value="" size="20" tabindex="10" autofocus="autofocus" required="required" /></label>
-                </p>
-                <?php
-osc_show_recaptcha(); ?>
-                <p class="submit"><input type="submit" name="submit" id="submit" value="<?php
-_e('Get new password'); ?>" tabindex="100" /></p>
-            </form>
+<p id="nav">
+	<a title="<?php _e('Log in'); ?>" href="<?php echo osc_admin_base_url(); ?>"><?php _e('Log in'); ?></a>
+</p>
 
-            <p id="nav">
-                <a title="<?php
-_e('Log in'); ?>" href="<?php
-echo osc_admin_base_url(); ?>"><?php
-_e('Log in'); ?></a>
-            </p>
+<?php
+echo $view->render( 'footer-simple' );
 
-        </div>
-        <p id="backtoblog"><a href="<?php
-echo osc_base_url(); ?>" title="<?php
-_e('Back to') . ' ' . osc_page_title(); ?>">&larr; <?php
-_e('Back to'); ?> <?php
-echo osc_page_title(); ?></a></p>
-    </body>
-</html>

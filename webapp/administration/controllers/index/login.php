@@ -52,7 +52,7 @@ class CAdminIndex extends Controller_Default
 		}
 		else
 		{
-			osc_add_flash_error_message(_m('That username does not exist'), 'admin');
+			$this->getSession()->addFlashMessage( _m( 'That username does not exist' ), 'ERROR' );
 		}
 		$this->redirectTo(osc_admin_base_url());
 	}

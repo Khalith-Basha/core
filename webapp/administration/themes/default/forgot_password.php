@@ -15,26 +15,10 @@
  * You should have received a copy of the GNU Affero General Public
  * License along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+
+echo $view->render( 'header-simple' );
 ?>
 
-<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en-US">
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <title><?php
-_e('OpenSourceClassifieds admin panel login'); ?></title>
-        <script type="text/javascript" src="<?php
-echo osc_admin_base_url(); ?>themes/modern/js/jquery.js"></script>
-        <link type="text/css" href="style/backoffice_login.css" media="screen" rel="stylesheet" />
-    </head>
-
-    <body class="login">
-        <div id="login">
-            <h1>
-                <a href="<?php echo osc_base_url(); ?>" title="OpenSourceClassifieds">
-                    <img src="images/osclass-logo.png" border="0" title="" alt=""/>
-                </a>
-            </h1>
-            <?php osc_show_flash_message('admin'); ?>
             <div class="message warning" style="text-align:center;">
                 <?php _e('Type your new password'); ?>.
             </div>

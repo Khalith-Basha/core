@@ -467,14 +467,8 @@ CREATE  TABLE IF NOT EXISTS /*TABLE_PREFIX*/t_pages (
   dt_pub_date DATETIME NOT NULL ,
   dt_mod_date DATETIME NULL DEFAULT NULL ,
   i_order INT(3) NOT NULL DEFAULT 0 ,
-  parent_page_id INT(10) UNSIGNED NOT NULL ,
-  PRIMARY KEY (pk_i_id) ,
-  INDEX fk_t_pages_t_pages1 (parent_page_id ASC) ,
-  CONSTRAINT fk_t_pages_t_pages1
-    FOREIGN KEY (parent_page_id )
-    REFERENCES /*TABLE_PREFIX*/t_pages (pk_i_id )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+  parent_page_id INT(10) UNSIGNED NULL DEFAULT NULL ,
+  PRIMARY KEY (pk_i_id) )
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 

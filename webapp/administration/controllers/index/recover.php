@@ -38,15 +38,16 @@ class CAdminIndex extends Controller_Default
 		$classLoader = $this->getClassLoader();
 		$userModel = $classLoader->getClassInstance( 'Model_User' );
 		$admin = $userModel->findByEmail(Params::getParam('email'));
+		$session = $this->getSession();
 		if ($admin) 
 		{
 			if ((osc_recaptcha_private_key() != '') && Params::existParam("recaptcha_challenge_field")) 
 			{
 				if (!osc_check_recaptcha()) 
 				{
-					osc_add_flash_error_message(_m('The Recaptcha code is wrong'), 'admin');
+					$session->addFlashMessage( _m('The Recaptcha code is wrong'), 'ERROR' );
 					$this->redirectTo(osc_admin_base_url(true) . '?page=login&action=recover');
-					return false; // BREAK THE PROCESS, THE RECAPTCHA IS WRONG
+					return false;
 					
 				}
 			}
@@ -55,7 +56,7 @@ class CAdminIndex extends Controller_Default
 			$password_url = osc_forgot_admin_password_confirm_url($admin['pk_i_id'], $newPassword);
 			osc_run_hook('hook_email_user_forgot_password', $admin, $password_url);
 		}
-		osc_add_flash_ok_message(_m('A new password has been sent to your e-mail'), 'admin');
+		$session->addFlashMessage( _m( 'A new password has been sent to your e-mail' ) );
 		$this->redirectTo(osc_admin_base_url());
 	}
 }

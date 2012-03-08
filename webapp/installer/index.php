@@ -24,6 +24,7 @@ define('TRANSLATIONS_PATH', CONTENT_PATH . '/languages');
 define( 'LIBRARY_PATH', ABS_PATH . '/library' );
 set_include_path(get_include_path() . PATH_SEPARATOR . LIBRARY_PATH );
 
+require 'osc/constants.php';
 require 'osc/ClassLoader.php';
 
 $classLoader = ClassLoader::getInstance();
@@ -44,6 +45,7 @@ require_once 'osc/helpers/preference.php';
 require_once 'osc/helpers/search.php';
 require_once 'osc/helpers/paths.php';
 require_once 'library/steps.php';
+
 $step = Params::getParam('step');
 if (!is_numeric($step)) 
 {
@@ -103,9 +105,16 @@ switch ($step)
 		break;
 
 	case 3:
-		if (Params::getParam('dbname') != '') 
+		if( Params::getParam('dbname') != '')
 		{
-			$error = oc_install();
+			try
+			{
+				$error = oc_install();
+			}
+			catch( Exception $e )
+			{
+				$error['error'] = $e->getMessage();
+			}
 		}
 		if (!isset($error["error"])) 
 		{
@@ -119,7 +128,7 @@ switch ($step)
 		break;
 
 	case 4:
-		list($username, $password) = basic_info();
+		list( $username, $password ) = basic_info();
 		$categories = ClassLoader::getInstance()->getClassInstance( 'Model_Category' )->toTreeAll();
 		$numCols = 3;
 		$catsPerCol = ceil(count($categories) / $numCols);

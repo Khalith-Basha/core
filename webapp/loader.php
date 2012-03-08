@@ -1,8 +1,5 @@
 <?php
 
-define( 'APP_NAME', 'OpenSourceClassifieds' );
-define( 'APP_VERSION', '1.0' );
-
 define( 'ABS_PATH', dirname( __FILE__ ) );
 define( 'CONTENT_PATH', ABS_PATH . '/components' );
 define( 'THEMES_PATH', CONTENT_PATH . '/themes' );
@@ -13,6 +10,7 @@ define( 'LIBRARY_PATH', ABS_PATH . '/library' );
 
 set_include_path( get_include_path() . PATH_SEPARATOR . LIBRARY_PATH );
 
+require 'osc/constants.php';
 require 'osc/ClassLoader.php';
 
 $classLoader = ClassLoader::getInstance();

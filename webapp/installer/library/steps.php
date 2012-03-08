@@ -51,9 +51,8 @@ function basic_info()
 	);
 
 	$mPreference = $classLoader->getClassInstance( 'Model_Preference' );
-	$mPreference->insert(array('s_section' => 'osc', 's_name' => 'version', 's_value' => APP_VERSION, 'e_type' => 'STRING'));
-	$mPreference->insert(array('s_section' => 'osc', 's_name' => 'contactEmail', 's_value' => $email, 'e_type' => 'STRING'));
-	$mPreference->insert(array('s_section' => 'osc', 's_name' => 'contactEmail', 's_value' => $email, 'e_type' => 'STRING'));
+	$mPreference->insert( array('s_section' => 'osc', 's_name' => 'version', 's_value' => APP_VERSION, 'e_type' => 'STRING') );
+	$mPreference->insert( array('s_section' => 'osc', 's_name' => 'contactEmail', 's_value' => $email, 'e_type' => 'STRING') );
 
 	$config = ClassLoader::getInstance()->getClassInstance( 'Config' );
 	$generalConfig = $config->getConfig( 'general' );
@@ -200,22 +199,17 @@ function oc_install()
 
 	$sql = file_get_contents(ABS_PATH . '/installer/data/struct.sql');
 	$c_db = $conn->getResource();
-	$comm = new Database_Command($c_db);
-	$comm->importSQL($sql);
-	$error_num = $comm->getErrorLevel();
-	if ($error_num > 0) 
-	{
-		switch ($error_num) 
-		{
-		case 1050:
-			return array('error' => 'There are tables with the same name in the database. Change the table prefix or the database and try again.');
-			break;
+	$comm = new Database_Command( $c_db );
 
-		default:
-			return array('error' => 'Cannot create the database structure. Error number: ' . $error_num . '.');
-			break;
-		}
+	try
+	{
+		$comm->importSQL( $sql );
 	}
+	catch( Exception $e )
+	{
+		return array( 'error' => $e->getMessage() );
+	}
+
 	require_once 'osc/Model/Locale.php';
 	$localeManager = new Model_Locale;
 	$locales = osc_listLocales();
@@ -241,20 +235,14 @@ function oc_install()
 			$sql.= file_get_contents(ABS_PATH . '/installer/data/' . $file);
 		}
 	}
-	$comm->importSQL($sql);
-	$error_num = $comm->getErrorLevel();
-	if ($error_num > 0) 
-	{
-		switch ($error_num) 
-		{
-		case 1471:
-			return array('error' => 'Cannot insert basic configuration. This user has no privileges to \'INSERT\' into the database.');
-			break;
 
-		default:
-			return array('error' => 'Cannot insert basic configuration. Error number: ' . $error_num . '.');
-			break;
-		}
+	try
+	{
+		$comm->importSQL( $sql );
+	}
+	catch( Exception $e )
+	{
+		return array( 'error' => $e->getMessage() );
 	}
 	return false;
 }
