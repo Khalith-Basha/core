@@ -58,7 +58,7 @@ class CWebRegister extends Controller
 		$this->getSession()->_set('userEmail', $user['s_email']);
 		$phone = ($user['s_phone_mobile']) ? $user['s_phone_mobile'] : $user['s_phone_land'];
 		$this->getSession()->_set('userPhone', $phone);
-		osc_add_flash_ok_message(_m('Your account has been validated'));
+		$this->getSession()->addFlashMessage( _m('Your account has been validated') );
 		$this->redirectToBaseUrl();
 	}
 }

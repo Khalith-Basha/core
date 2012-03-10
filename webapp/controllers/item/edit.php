@@ -69,7 +69,7 @@ class CWebItem extends Controller_Default
 		else
 		{
 			// add a flash message [ITEM NO EXISTE]
-			osc_add_flash_error_message(_m('Sorry, we don\'t have any items with that ID'));
+			$this->getSession()->addFlashMessage( _m('Sorry, we don\'t have any items with that ID'), 'ERROR' );
 			if ($this->user != null) 
 			{
 				$this->redirectTo(osc_user_list_items_url());
@@ -120,12 +120,12 @@ class CWebItem extends Controller_Default
 			osc_run_hook('edited_item', ClassLoader::getInstance()->getClassInstance( 'Model_Item' )->findByPrimaryKey($id));
 			if ($success == 1) 
 			{
-				osc_add_flash_ok_message(_m('Great! We\'ve just updated your item'));
+				$this->getSession()->addFlashMessage( _m('Great! We\'ve just updated your item') );
 				$this->redirectTo(osc_base_url(true) . "?page=item&id=$id");
 			}
 			else
 			{
-				osc_add_flash_error_message($success);
+				$this->getSession()->addFlashMessage( $success, 'ERROR' );
 				$this->redirectTo(osc_item_edit_url($secret));
 			}
 		}

@@ -39,12 +39,12 @@ class CAdminItem extends Controller_Administration
 						$item = $this->itemManager->findByPrimaryKey($_id);
 						CategoryClassLoader::getInstance()->getClassInstance( 'Stats' )->increaseNumItems($item['fk_i_category_id']);
 					}
-					osc_add_flash_ok_message(sprintf(_mn('%d item has been enabled', '%d items have been enabled', $count), $count), 'admin');
+					$this->getSession()->addFlashMessage( sprintf(_mn('%d item has been enabled', '%d items have been enabled', $count), $count), 'admin' );
 				}
 			}
 			catch(Exception $e) 
 			{
-				osc_add_flash_error_message(sprintf(_m('Error: %s'), $e->getMessage()), 'admin');
+				$this->getSession()->addFlashMessage( sprintf(_m('Error: %s'), $e->getMessage()), 'admin', 'ERROR' );
 			}
 			break;
 
@@ -62,12 +62,12 @@ class CAdminItem extends Controller_Administration
 						$item = $this->itemManager->findByPrimaryKey($_id);
 						CategoryClassLoader::getInstance()->getClassInstance( 'Stats' )->decreaseNumItems($item['fk_i_category_id']);
 					}
-					osc_add_flash_ok_message(sprintf(_mn('%d item has been disabled', '%d items have been disabled', $count), $count), 'admin');
+					$this->getSession()->addFlashMessage( sprintf(_mn('%d item has been disabled', '%d items have been disabled', $count), $count), 'admin' );
 				}
 			}
 			catch(Exception $e) 
 			{
-				osc_add_flash_error_message(sprintf(_m('Error: %s'), $e->getMessage()), 'admin');
+				$this->getSession()->addFlashMessage( sprintf(_m('Error: %s'), $e->getMessage()), 'admin', 'ERROR' );
 			}
 			break;
 
@@ -85,12 +85,12 @@ class CAdminItem extends Controller_Administration
 						$item = $this->itemManager->findByPrimaryKey($_id);
 						CategoryClassLoader::getInstance()->getClassInstance( 'Stats' )->increaseNumItems($item['fk_i_category_id']);
 					}
-					osc_add_flash_ok_message(sprintf(_mn('%d item has been activated', '%d items have been activated', $count), $count), 'admin');
+					$this->getSession()->addFlashMessage( sprintf(_mn('%d item has been activated', '%d items have been activated', $count), $count), 'admin' );
 				}
 			}
 			catch(Exception $e) 
 			{
-				osc_add_flash_error_message(sprintf(_m('Error: %s'), $e->getMessage()), 'admin');
+				$this->getSession()->addFlashMessage( sprintf(_m('Error: %s'), $e->getMessage()), 'admin', 'ERROR' );
 			}
 			break;
 
@@ -108,12 +108,12 @@ class CAdminItem extends Controller_Administration
 						$item = $this->itemManager->findByPrimaryKey($_id);
 						CategoryClassLoader::getInstance()->getClassInstance( 'Stats' )->decreaseNumItems($item['fk_i_category_id']);
 					}
-					osc_add_flash_ok_message(sprintf(_m('%d item has been deactivated', '%d items have been deactivated', $count), $count), 'admin');
+					$this->getSession()->addFlashMessage( sprintf(_m('%d item has been deactivated', '%d items have been deactivated', $count), $count), 'admin' );
 				}
 			}
 			catch(Exception $e) 
 			{
-				osc_add_flash_error_message(sprintf(_m('Error: %s'), $e->getMessage()), 'admin');
+				$this->getSession()->addFlashMessage( sprintf(_m('Error: %s'), $e->getMessage()), 'admin', 'ERROR' );
 			}
 			break;
 
@@ -130,12 +130,12 @@ class CAdminItem extends Controller_Administration
 					{
 						$mItems->premium($_id);
 					}
-					osc_add_flash_ok_message(sprintf(_mn('%d item has been marked as premium', '%d items have been marked as premium', $count), $count), 'admin');
+					$this->getSession()->addFlashMessage( sprintf(_mn('%d item has been marked as premium', '%d items have been marked as premium', $count), $count), 'admin' );
 				}
 			}
 			catch(Exception $e) 
 			{
-				osc_add_flash_error_message(sprintf(_m('Error: %s'), $e->getMessage()), 'admin');
+				$this->getSession()->addFlashMessage( sprintf(_m('Error: %s'), $e->getMessage()), 'admin', 'ERROR' );
 			}
 			break;
 
@@ -152,12 +152,12 @@ class CAdminItem extends Controller_Administration
 					{
 						$mItems->premium($_id, false);
 					}
-					osc_add_flash_ok_message(sprintf(_mn('%d change has been made', '%d changes have been made', $count), $count), 'admin');
+					$this->getSession()->addFlashMessage( sprintf(_mn('%d change has been made', '%d changes have been made', $count), $count), 'admin' );
 				}
 			}
 			catch(Exception $e) 
 			{
-				osc_add_flash_error_message(sprintf(_m('Error: %s'), $e->getMessage()), 'admin');
+				$this->getSession()->addFlashMessage( sprintf(_m('Error: %s'), $e->getMessage()), 'admin', 'ERROR' );
 			}
 			break;
 
@@ -173,12 +173,12 @@ class CAdminItem extends Controller_Administration
 					{
 						$this->itemManager->update(array('b_spam' => $value), array('pk_i_id' => $_id));
 					}
-					osc_add_flash_ok_message(sprintf(_mn('%d item has been marked as spam', '%d items have been marked as spam', $count), $count), 'admin');
+					$this->getSession()->addFlashMessage( sprintf(_mn('%d item has been marked as spam', '%d items have been marked as spam', $count), $count), 'admin' );
 				}
 			}
 			catch(Exception $e) 
 			{
-				osc_add_flash_error_message(sprintf(_m('Error: %s'), $e->getMessage()), 'admin');
+				$this->getSession()->addFlashMessage( sprintf(_m('Error: %s'), $e->getMessage()), 'admin', 'ERROR' );
 			}
 			break;
 
@@ -194,12 +194,12 @@ class CAdminItem extends Controller_Administration
 					{
 						$this->itemManager->update(array('b_spam' => $value), array('pk_i_id' => $_id));
 					}
-					osc_add_flash_ok_message(sprintf(_mn('%d change have been made', '%d changes have been made', $count), $count), 'admin');
+					$this->getSession()->addFlashMessage( sprintf(_mn('%d change have been made', '%d changes have been made', $count), $count), 'admin' );
 				}
 			}
 			catch(Exception $e) 
 			{
-				osc_add_flash_error_message(sprintf(_m('Error: %s'), $e->getMessage()), 'admin');
+				$this->getSession()->addFlashMessage( sprintf(_m('Error: %s'), $e->getMessage()), 'admin', 'ERROR' );
 			}
 			break;
 
@@ -221,11 +221,11 @@ class CAdminItem extends Controller_Administration
 			}
 			if ($success) 
 			{
-				osc_add_flash_ok_message(sprintf(_mn('%d item has been deleted', '%d items have been deleted', $count), $count), 'admin');
+				$this->getSession()->addFlashMessage( sprintf(_mn('%d item has been deleted', '%d items have been deleted', $count), $count), 'admin' );
 			}
 			else
 			{
-				osc_add_flash_error_message(_m('The item couldn\'t be deleted'), 'admin');
+				$this->getSession()->addFlashMessage( _m('The item couldn\'t be deleted'), 'admin', 'ERROR' );
 			}
 			$this->redirectTo(osc_admin_base_url(true) . "?page=item");
 			break;

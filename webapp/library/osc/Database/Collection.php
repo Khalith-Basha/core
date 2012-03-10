@@ -20,7 +20,6 @@
  *
  * @package OpenSourceClassifieds
  * @subpackage Database
- * @since 2.3
  */
 class Database_Collection 
 {
@@ -28,7 +27,6 @@ class Database_Collection
 	 * Database connection object to OpenSourceClassifieds database
 	 *
 	 * @access public
-	 * @since 2.3
 	 * @var mysqli
 	 */
 	public $connId;
@@ -36,7 +34,6 @@ class Database_Collection
 	 * Database result object
 	 *
 	 * @access public
-	 * @since 2.3
 	 * @var MySQLi_Result
 	 */
 	public $resultId;
@@ -44,7 +41,6 @@ class Database_Collection
 	 * Result array
 	 *
 	 * @access private
-	 * @since 2.3
 	 * @var array
 	 */
 	public $resultArray;
@@ -52,7 +48,6 @@ class Database_Collection
 	 * Result object
 	 *
 	 * @access private
-	 * @since 2.3
 	 * @var object
 	 */
 	public $resultObject;
@@ -60,38 +55,28 @@ class Database_Collection
 	 * Current row
 	 *
 	 * @access private
-	 * @since 2.3
 	 * @var int
 	 */
 	protected $currentRow;
-	/**
-	 * Number of rows
-	 *
-	 * @access public
-	 * @since 2.3
-	 * @var int
-	 */
-	public $numRows;
+
 	/**
 	 * Initializate Recordset Class
 	 *
 	 * @param mysqli $connId
 	 * @param MySQLi_Result $resultId
 	 */
-	function __construct($connId = null, $resultId = null) 
+	function __construct($connId= null, $resultId = null) 
 	{
 		$this->connId = $connId;
 		$this->resultId = $resultId;
 		$this->resultArray = array();
 		$this->resultObject = array();
 		$this->currentRow = 0;
-		$this->numRows = 0;
 	}
 	/**
 	 * Get the results of MySQLi_Result object
 	 *
 	 * @access public
-	 * @since 2.3
 	 * @param string $type
 	 * @return mixed It can be an array or an object
 	 */
@@ -107,7 +92,6 @@ class Database_Collection
 	 * Get the results of MySQLi_Result object in array format
 	 *
 	 * @access public
-	 * @since 2.3
 	 * @return array
 	 */
 	function resultArray() 
@@ -127,7 +111,6 @@ class Database_Collection
 	 * Get the results of MySQLi_Result object in object format
 	 *
 	 * @access public
-	 * @since 2.3
 	 * @return object
 	 */
 	function resultObject() 
@@ -147,7 +130,6 @@ class Database_Collection
 	 * Adjust resultId pointer to the selected row
 	 *
 	 * @access private
-	 * @since 2.3
 	 * @param int $offset Must be between zero and the total number of rows minus one
 	 * @return bool true on success or false on failure
 	 */
@@ -159,7 +141,6 @@ class Database_Collection
 	 * Returns the current row of a result set as an object
 	 *
 	 * @access private
-	 * @since 2.3
 	 * @return object
 	 */
 	function _fetchObject() 
@@ -170,7 +151,6 @@ class Database_Collection
 	 * Returns the current row of a result set as an array
 	 *
 	 * @access private
-	 * @since 2.3
 	 * @return array
 	 */
 	function _fetchArray() 
@@ -200,7 +180,6 @@ class Database_Collection
 	 * Get a result row as an object
 	 *
 	 * @access public
-	 * @since 2.3
 	 * @param int $n
 	 * @return object
 	 */
@@ -221,7 +200,6 @@ class Database_Collection
 	 * Get a result row as an array
 	 *
 	 * @access public
-	 * @since 2.3
 	 * @param int $n
 	 * @return array
 	 */
@@ -242,7 +220,6 @@ class Database_Collection
 	 * Get the first row as an array or object
 	 *
 	 * @access public
-	 * @since 2.3
 	 * @param string $type
 	 * @return mixed
 	 */
@@ -259,7 +236,6 @@ class Database_Collection
 	 * Get the last row as an array or object
 	 *
 	 * @access public
-	 * @since 2.3
 	 * @param string $type
 	 * @return mixed
 	 */
@@ -276,7 +252,6 @@ class Database_Collection
 	 * Get next row as an array or object
 	 *
 	 * @access public
-	 * @since 2.3
 	 * @param string $type
 	 * @return mixed
 	 */
@@ -297,7 +272,6 @@ class Database_Collection
 	 * Get previous row as an array or object
 	 *
 	 * @access public
-	 * @since 2.3
 	 * @param string $type
 	 * @return mixed
 	 */
@@ -318,7 +292,6 @@ class Database_Collection
 	 * Get number of rows
 	 *
 	 * @access public
-	 * @since 2.3
 	 * @return int
 	 */
 	function numRows() 
@@ -329,7 +302,6 @@ class Database_Collection
 	 * Get the number of fields in a result
 	 *
 	 * @access public
-	 * @since 2.3
 	 * @return int
 	 */
 	function numFields() 
@@ -340,7 +312,6 @@ class Database_Collection
 	 * Get the name of the fields in an array
 	 *
 	 * @access public
-	 * @since 2.3
 	 * @return array
 	 */
 	function listFields() 

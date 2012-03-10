@@ -52,33 +52,33 @@ class CAdminPage extends Controller_Administration
 		{
 			if ($page_indelible == 1) 
 			{
-				osc_add_flash_error_message(_m('One page can\'t be deleted because it is indelible'), 'admin');
+				$this->getSession()->addFlashMessage( _m('One page can\'t be deleted because it is indelible'), 'admin', 'ERROR' );
 			}
 			else
 			{
-				osc_add_flash_error_message($page_indelible . ' ' . _m('pages couldn\'t be deleted because are indelible'), 'admin');
+				$this->getSession()->addFlashMessage( $page_indelible . ' ' . _m('pages couldn\'t be deleted because are indelible'), 'admin', 'ERROR' );
 			}
 		}
 		if ($page_deleted_error > 0) 
 		{
 			if ($page_deleted_error == 1) 
 			{
-				osc_add_flash_error_message(_m('One page couldn\'t be deleted'), 'admin');
+				$this->getSession()->addFlashMessage( _m('One page couldn\'t be deleted'), 'admin', 'ERROR' );
 			}
 			else
 			{
-				osc_add_flash_error_message($page_deleted_error . ' ' . _m('pages couldn\'t be deleted'), 'admin');
+				$this->getSession()->addFlashMessage( $page_deleted_error . ' ' . _m('pages couldn\'t be deleted'), 'admin', 'ERROR' );
 			}
 		}
 		if ($page_deleted_correcty > 0) 
 		{
 			if ($page_deleted_correcty == 1) 
 			{
-				osc_add_flash_ok_message(_m('One page has been deleted correctly'), 'admin');
+				$this->getSession()->addFlashMessage( _m('One page has been deleted correctly'), 'admin' );
 			}
 			else
 			{
-				osc_add_flash_ok_message($page_deleted_correcty . ' ' . _m('pages have been deleted correctly'), 'admin');
+				$this->getSession()->addFlashMessage( $page_deleted_correcty . ' ' . _m('pages have been deleted correctly'), 'admin' );
 			}
 		}
 		$this->redirectTo(osc_admin_base_url(true) . "?page=page");

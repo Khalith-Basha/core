@@ -263,7 +263,7 @@ function fn_email_new_email($new_email, $validation_url)
 		$body = osc_mailBeauty(osc_apply_filter('email_description', osc_apply_filter('email_new_email_description', $content['s_text'])), $words);
 		$params = array('subject' => $title, 'to' => $new_email, 'to_name' => ClassLoader::getInstance()->getClassInstance( 'Session' )->_get('userName'), 'body' => $body, 'alt_body' => $body);
 		osc_sendMail($params);
-		osc_add_flash_ok_message(_m('We have sent you an e-mail. Follow the instructions to validate the changes'));
+		$this->getSession()->addFlashMessage( _m('We have sent you an e-mail. Follow the instructions to validate the changes') );
 	}
 	else
 	{

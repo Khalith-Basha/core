@@ -21,13 +21,6 @@
 
 require '../loader.php';
 
-define( 'OC_ADMIN', 'true');
-
-if (file_exists(ABS_PATH . '.maintenance')) 
-{
-	define('__OSC_MAINTENANCE__', true);
-}
-
 require_once 'osc/Controller/Secure.php';
 require_once 'osc/Controller/Administration.php';
 

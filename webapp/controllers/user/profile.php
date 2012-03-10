@@ -71,7 +71,7 @@ class CWebUser extends Controller_User
 		$userUrls = $this->getClassLoader()
 			->getClassInstance( 'Url_User' );
 		$success = $userActions->edit($userId);
-		osc_add_flash_ok_message(_m('Your profile has been updated successfully'));
+		$this->getSession()->addFlashMessage( _m('Your profile has been updated successfully') );
 		$this->redirectTo( $userUrls->osc_user_profile_url() );
 	}
 }

@@ -104,7 +104,7 @@ class Session
 		return null;
 	}
 
-	public function addFlashMessage( $text, $type )
+	public function addFlashMessage( $text, $type = 'INFO' )
 	{
 		$messages = $this->_get( 'messages' );
 		if( is_null( $messages ) )

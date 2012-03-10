@@ -44,7 +44,7 @@ class CAdminPage extends Controller_Administration
 		$s_internal_name = Params::getParam("s_internal_name");
 		if (false) 
 		{
-			osc_add_flash_error_message(_m('You have to set a different internal name'), 'admin');
+			$this->getSession()->addFlashMessage( _m('You have to set a different internal name'), 'admin', 'ERROR' );
 			$this->redirectTo(osc_admin_base_url(true) . "?page=page?action=edit&id=" . $id);
 		}
 		$aFieldsDescription = array();
@@ -73,14 +73,14 @@ class CAdminPage extends Controller_Administration
 				{
 					$this->pageManager->updateInternalName($id, $s_internal_name);
 				}
-				osc_add_flash_ok_message(_m('The page has been updated'), 'admin');
+				$this->getSession()->addFlashMessage( _m('The page has been updated'), 'admin' );
 				$this->redirectTo(osc_admin_base_url(true) . "?page=page");
 			}
-			osc_add_flash_error_message(_m('You can\'t repeat internal name'), 'admin');
+			$this->getSession()->addFlashMessage( _m('You can\'t repeat internal name'), 'admin', 'ERROR' );
 		}
 		else
 		{
-			osc_add_flash_error_message(_m('The page couldn\'t be updated, at least one title should not be empty'), 'admin');
+			$this->getSession()->addFlashMessage( _m('The page couldn\'t be updated, at least one title should not be empty'), 'admin', 'ERROR' );
 		}
 		$this->redirectTo(osc_admin_base_url(true) . "?page=page?action=edit&id=" . $id);
 	}

@@ -81,16 +81,16 @@ class CAdminSettings extends Controller_Administration
 		{
 			if ($error != '') 
 			{
-				osc_add_flash_error_message($error . "<br/>" . _m('General settings have been updated'), 'admin');
+				$this->getSession()->addFlashMessage( $error . "<br/>" . _m('General settings have been updated'), 'admin', 'ERROR' );
 			}
 			else
 			{
-				osc_add_flash_ok_message(_m('General settings have been updated'), 'admin');
+				$this->getSession()->addFlashMessage( _m('General settings have been updated'), 'admin' );
 			}
 		}
 		else if ($error != '') 
 		{
-			osc_add_flash_error_message($error, 'admin');
+			$this->getSession()->addFlashMessage( $error, 'admin', 'ERROR' );
 		}
 		$this->redirectTo(osc_admin_base_url(true) . '?page=settings');
 	}

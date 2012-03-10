@@ -45,7 +45,7 @@ class CWebItem extends Controller_Default
 		$item = $this->itemManager->findByPrimaryKey(Params::getParam('id'));
 		if (empty($item)) 
 		{
-			osc_add_flash_error_message(_m('This item doesn\'t exist'));
+			$this->getSession()->addFlashMessage( _m('This item doesn\'t exist'), 'ERROR' );
 			$this->redirectTo(osc_base_url(true));
 		}
 		else
@@ -56,7 +56,7 @@ class CWebItem extends Controller_Default
 			$view->addJavaScript( '/static/scripts/contact.js' );
 			if (osc_item_is_expired()) 
 			{
-				osc_add_flash_error_message(_m('We\'re sorry, but the item has expired. You can\'t contact the seller'));
+				$this->getSession()->addFlashMessage( _m('We\'re sorry, but the item has expired. You can\'t contact the seller'), 'ERROR' );
 				$this->redirectTo(osc_item_url());
 			}
 			if (osc_reg_user_can_contact() && osc_is_web_user_logged_in() || !osc_reg_user_can_contact()) 
@@ -66,7 +66,7 @@ class CWebItem extends Controller_Default
 			}
 			else
 			{
-				osc_add_flash_error_message(_m('You can\'t contact the seller, only registered users can'));
+				$this->getSession()->addFlashMessage( _m('You can\'t contact the seller, only registered users can'), 'ERROR' );
 				$this->redirectTo(osc_item_url());
 			}
 		}
@@ -101,7 +101,7 @@ class CWebItem extends Controller_Default
 			if ($item_date < $date && $item['b_premium'] != 1) 
 			{
 				// The item is expired, we can not contact the seller
-				osc_add_flash_error_message(_m('We\'re sorry, but the item has expired. You can\'t contact the seller'));
+				$this->getSession()->addFlashMessage( _m('We\'re sorry, but the item has expired. You can\'t contact the seller'), 'ERROR' );
 				$this->redirectTo(osc_item_url());
 			}
 		}
@@ -133,11 +133,11 @@ class CWebItem extends Controller_Default
 		if ($flash_error ==false ) 
 		{
 			osc_run_hook('hook_email_item_inquiry', $aItem);
-			osc_add_flash_ok_message(_m('We\'ve just sent an e-mail to the seller'));
+			$this->getSession()->addFlashMessage( _m('We\'ve just sent an e-mail to the seller') );
 		}
 		else
 		{
-			osc_add_flash_error_message($result);
+			$this->getSession()->addFlashMessage( $result, 'ERROR' );
 		}
 		$itemUrls = $classLoader->getClassInstance( 'Url_Item' );
 		$this->redirectTo( $itemUrls->getDetailsUrl( $item ) );

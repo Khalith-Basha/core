@@ -22,7 +22,7 @@ class CAdminAppearance extends Controller_Administration
 		$widgetModel = $this->getClassLoader()
 			->getClassInstance( 'Model_Widget' );
 		$widgetModel->delete(array('pk_i_id' => Params::getParam('id')));
-		osc_add_flash_ok_message(_m('Widget removed correctly'), 'admin');
+		$this->getSession()->addFlashMessage( _m('Widget removed correctly'), 'admin' );
 		$this->redirectTo(osc_admin_base_url(true) . "?page=appearance&action=widgets");
 	}
 }

@@ -47,11 +47,11 @@ class CWebItem extends Controller_Default
 			$success = $mItems->activate($item[0]['pk_i_id'], $item[0]['s_secret']);
 			if ($success) 
 			{
-				osc_add_flash_ok_message(_m('The item has been validated'));
+				$this->getSession()->addFlashMessage( _m('The item has been validated') );
 			}
 			else
 			{
-				osc_add_flash_error_message(_m('The item can\'t be validated'));
+				$this->getSession()->addFlashMessage( _m('The item can\'t be validated'), 'ERROR' );
 			}
 		}
 		else

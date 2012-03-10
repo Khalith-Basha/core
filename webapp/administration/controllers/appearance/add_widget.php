@@ -34,7 +34,7 @@ class CAdminAppearance extends Controller_Administration
 				's_content' => Params::getParam('content')
 			)
 		);
-		osc_add_flash_ok_message(_m('Widget added correctly'), 'admin');
+		$this->getSession()->addFlashMessage( _m('Widget added correctly'), 'admin' );
 		$this->redirectTo(osc_admin_base_url(true) . "?page=appearance&action=widgets");
 	}
 }

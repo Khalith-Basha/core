@@ -79,7 +79,7 @@ class CWebItem extends Controller_Default
 		$success = $mItems->add();
 		if ($success != 1 && $success != 2) 
 		{
-			osc_add_flash_error_message($success);
+			$this->getSession()->addFlashMessage( $success, 'ERROR' );
 			$this->redirectTo(osc_item_post_url());
 		}
 		else
@@ -87,11 +87,11 @@ class CWebItem extends Controller_Default
 			$this->getSession()->_dropkeepForm('meta_' . $key);
 			if ($success == 1) 
 			{
-				osc_add_flash_ok_message(_m('Check your inbox to verify your email address'));
+				$this->getSession()->addFlashMessage( _m('Check your inbox to verify your email address') );
 			}
 			else
 			{
-				osc_add_flash_ok_message(_m('Your item has been published'));
+				$this->getSession()->addFlashMessage( _m('Your item has been published') );
 			}
 			$itemId = Params::getParam('itemId');
 			$item = $this->itemManager->findByPrimaryKey($itemId);

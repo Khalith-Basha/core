@@ -92,11 +92,11 @@ class CWebContact extends Controller_Cacheable
 		try
 		{
 			osc_sendMail($params);
-			osc_add_flash_ok_message(_m('Your e-mail has been sent properly. Thank your for contacting us!'));
+			$this->getSession()->addFlashMessage( _m('Your e-mail has been sent properly. Thank your for contacting us!') );
 		}
 		catch( Exception $e )
 		{
-			osc_add_flash_ok_message(_m('There was a problem trying to send contact form.'));
+			$this->getSession()->addFlashMessage( _m('There was a problem trying to send contact form.') );
 		}
 		$this->redirectToBaseUrl();
 	}

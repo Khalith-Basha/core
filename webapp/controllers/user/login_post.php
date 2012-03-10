@@ -46,7 +46,7 @@ class CWebUser extends Controller_Default
 			->bootstrap_login( $user['pk_i_id'] );
 		if ($logged == 0) 
 		{
-			osc_add_flash_error_message(_m('The username doesn\'t exist'));
+			$this->getSession()->addFlashMessage( _m('The username doesn\'t exist'), 'ERROR' );
 		}
 		else if ($logged == 1) 
 		{

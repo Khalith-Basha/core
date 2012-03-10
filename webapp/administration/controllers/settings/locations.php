@@ -40,7 +40,7 @@ class CAdminSettings extends Controller_Administration
 			$exists = $mCountries->findByCode($countryCode);
 			if (isset($exists['s_name'])) 
 			{
-				osc_add_flash_error_message(sprintf(_m('%s already was in the database'), $countryName), 'admin');
+				$this->getSession()->addFlashMessage( sprintf(_m('%s already was in the database'), $countryName), 'admin', 'ERROR' );
 			}
 			else
 			{
@@ -105,7 +105,7 @@ class CAdminSettings extends Controller_Administration
 						}
 					}
 				}
-				osc_add_flash_ok_message(sprintf(_m('%s has been added as a new country'), $countryName), 'admin');
+				$this->getSession()->addFlashMessage( sprintf(_m('%s has been added as a new country'), $countryName), 'admin' );
 			}
 			$this->redirectTo(osc_admin_base_url(true) . '?page=settings&action=locations');
 			break;
@@ -124,11 +124,11 @@ class CAdminSettings extends Controller_Administration
 			}
 			if ($ok) 
 			{
-				osc_add_flash_ok_message(_m('Country has been edited'), 'admin');
+				$this->getSession()->addFlashMessage( _m('Country has been edited'), 'admin' );
 			}
 			else
 			{
-				osc_add_flash_error_message(_m('There were some problems editing the country'), 'admin');
+				$this->getSession()->addFlashMessage( _m('There were some problems editing the country'), 'admin', 'ERROR' );
 			}
 			$this->redirectTo(osc_admin_base_url(true) . '?page=settings&action=locations');
 			break;
@@ -149,11 +149,11 @@ class CAdminSettings extends Controller_Administration
 					$mRegions->delete(array('pk_i_id' => $region['pk_i_id']));
 				}
 				$mCountries->delete(array('pk_c_code' => $aCountries['pk_c_code']));
-				osc_add_flash_ok_message(sprintf(_m('%s has been deleted'), $aCountries['s_name']), 'admin');
+				$this->getSession()->addFlashMessage( sprintf(_m('%s has been deleted'), $aCountries['s_name']), 'admin' );
 			}
 			else
 			{
-				osc_add_flash_error_message(sprintf(_m('%s can not be deleted, some items are located in it'), $aCountries['s_name']), 'admin');
+				$this->getSession()->addFlashMessage( sprintf(_m('%s can not be deleted, some items are located in it'), $aCountries['s_name']), 'admin', 'ERROR' );
 			}
 			$this->redirectTo(osc_admin_base_url(true) . '?page=settings&action=locations');
 			break;
@@ -173,11 +173,11 @@ class CAdminSettings extends Controller_Administration
 				{
 					$data = array('fk_c_country_code' => $countryCode, 's_name' => $regionName);
 					$mRegions->insert($data);
-					osc_add_flash_ok_message(sprintf(_m('%s has been added as a new region'), $regionName), 'admin');
+					$this->getSession()->addFlashMessage( sprintf(_m('%s has been added as a new region'), $regionName), 'admin' );
 				}
 				else
 				{
-					osc_add_flash_error_message(sprintf(_m('%s already was in the database'), $regionName), 'admin');
+					$this->getSession()->addFlashMessage( sprintf(_m('%s already was in the database'), $regionName), 'admin', 'ERROR' );
 				}
 			}
 			$this->redirectTo(osc_admin_base_url(true) . '?page=settings&action=locations');
@@ -194,12 +194,12 @@ class CAdminSettings extends Controller_Administration
 				{
 					$mRegions->update(array('s_name' => $newRegion), array('pk_i_id' => $regionId));
 					ClassLoader::getInstance()->getClassInstance( 'Model_ItemLocation' )->update(array('s_region' => $newRegion), array('fk_i_region_id' => $regionId));
-					osc_add_flash_ok_message(sprintf(_m('%s has been edited'), $newRegion), 'admin');
+					$this->getSession()->addFlashMessage( sprintf(_m('%s has been edited'), $newRegion), 'admin' );
 				}
 			}
 			else
 			{
-				osc_add_flash_error_message(sprintf(_m('%s already was in the database'), $newRegion), 'admin');
+				$this->getSession()->addFlashMessage( sprintf(_m('%s already was in the database'), $newRegion), 'admin', 'ERROR' );
 			}
 			$this->redirectTo(osc_admin_base_url(true) . '?page=settings&action=locations');
 			break;
@@ -213,7 +213,7 @@ class CAdminSettings extends Controller_Administration
 				$aRegion = $mRegion->findByPrimaryKey($regionId);
 				$mCities->delete(array('fk_i_region_id' => $regionId));
 				$mRegion->delete(array('pk_i_id' => $regionId));
-				osc_add_flash_ok_message(sprintf(_m('%s has been deleted'), $aRegion['s_name']), 'admin');
+				$this->getSession()->addFlashMessage( sprintf(_m('%s has been deleted'), $aRegion['s_name']), 'admin' );
 			}
 			$this->redirectTo(osc_admin_base_url(true) . '?page=settings&action=locations');
 			break;
@@ -227,11 +227,11 @@ class CAdminSettings extends Controller_Administration
 			if (!isset($exists['s_name'])) 
 			{
 				$mCities->insert(array('fk_i_region_id' => $regionId, 's_name' => $newCity, 'fk_c_country_code' => $countryCode));
-				osc_add_flash_ok_message(sprintf(_m('%s has been added as a new city'), $newCity), 'admin');
+				$this->getSession()->addFlashMessage( sprintf(_m('%s has been added as a new city'), $newCity), 'admin' );
 			}
 			else
 			{
-				osc_add_flash_error_message(sprintf(_m('%s already was in the database'), $newCity), 'admin');
+				$this->getSession()->addFlashMessage( sprintf(_m('%s already was in the database'), $newCity), 'admin', 'ERROR' );
 			}
 			$this->redirectTo(osc_admin_base_url(true) . '?page=settings&action=locations');
 			break;
@@ -245,11 +245,11 @@ class CAdminSettings extends Controller_Administration
 			{
 				$mCities->update(array('s_name' => $newCity), array('pk_i_id' => $cityId));
 				ClassLoader::getInstance()->getClassInstance( 'Model_ItemLocation' )->update(array('s_city' => $newCity), array('fk_i_city_id' => $cityId));
-				osc_add_flash_ok_message(sprintf(_m('%s has been edited'), $newCity), 'admin');
+				$this->getSession()->addFlashMessage( sprintf(_m('%s has been edited'), $newCity), 'admin' );
 			}
 			else
 			{
-				osc_add_flash_error_message(sprintf(_m('%s already was in the database'), $newCity), 'admin');
+				$this->getSession()->addFlashMessage( sprintf(_m('%s already was in the database'), $newCity), 'admin', 'ERROR' );
 			}
 			$this->redirectTo(osc_admin_base_url(true) . '?page=settings&action=locations');
 			break;
@@ -259,7 +259,7 @@ class CAdminSettings extends Controller_Administration
 			$cityId = Params::getParam('id');
 			$aCity = $mCities->findByPrimaryKey($cityId);
 			$mCities->delete(array('pk_i_id' => $cityId));
-			osc_add_flash_ok_message(sprintf(_m('%s has been deleted'), $aCity['s_name']), 'admin');
+			$this->getSession()->addFlashMessage( sprintf(_m('%s has been deleted'), $aCity['s_name']), 'admin' );
 			$this->redirectTo(osc_admin_base_url(true) . '?page=settings&action=locations');
 			break;
 		}

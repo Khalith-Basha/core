@@ -31,7 +31,7 @@ class CAdminCategory extends Controller_Administration
 		$updated = Preference::newInstance()->update(array('s_value' => $selectableParent), array('s_name' => 'selectable_parent_categories'));
 		if ($updated > 0) 
 		{
-			osc_add_flash_ok_message(_m('Categories\' settings have been updated'), 'admin');
+			$this->getSession()->addFlashMessage( _m('Categories\' settings have been updated'), 'admin' );
 		}
 		$this->redirectTo(osc_admin_base_url(true) . '?page=category&action=settings');
 	}

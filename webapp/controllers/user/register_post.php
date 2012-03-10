@@ -43,15 +43,16 @@ class CWebUser extends Controller_Default
 		osc_run_hook('before_user_register');
 		$userActions = $this->getClassLoader()->getClassInstance( 'Manager_User', false, array( false ) );
 		$success = $userActions->add();
+		$session = $this->getSession();
 		switch ($success) 
 		{
 		case 1:
-			osc_add_flash_ok_message(_m('The user has been created. An activation email has been sent'));
+			$session->addFlashMessage(_m('The user has been created. An activation email has been sent'));
 			$this->redirectToBaseUrl();
 			break;
 
 		case 2:
-			osc_add_flash_ok_message(_m('Your account has been created successfully'));
+			$session->addFlashMessage(_m('Your account has been created successfully'));
 			$template = 'user-login.php';
 			break;
 
@@ -76,7 +77,7 @@ class CWebUser extends Controller_Default
 			break;
 
 		case 7:
-			osc_add_flash_warning_message(_m("Passwords don't match"));
+			$session->addFlashMessage(_m("Passwords don't match"), 'WARNING' );
 			$template = 'user/register';
 			break;
 		}

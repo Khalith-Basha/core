@@ -43,25 +43,25 @@ class CAdminComment extends Controller_Administration
 				$this->sendCommentActivated($id);
 			}
 			osc_add_hook("activate_comment", $id);
-			osc_add_flash_ok_message(_m('The comment has been approved'), 'admin');
+			$this->getSession()->addFlashMessage( _m('The comment has been approved'), 'admin' );
 		}
 		else if ($value == 'INACTIVE') 
 		{
 			$iUpdated = $this->itemCommentManager->update(array('b_active' => 1), array('pk_i_id' => $id));
 			osc_add_hook("deactivate_comment", $id);
-			osc_add_flash_ok_message(_m('The comment has been disapproved'), 'admin');
+			$this->getSession()->addFlashMessage( _m('The comment has been disapproved'), 'admin' );
 		}
 		else if ($value == 'ENABLE') 
 		{
 			$iUpdated = $this->itemCommentManager->update(array('b_enabled' => 1), array('pk_i_id' => $id));
 			osc_add_hook("enable_comment", $id);
-			osc_add_flash_ok_message(_m('The comment has been enabled'), 'admin');
+			$this->getSession()->addFlashMessage( _m('The comment has been enabled'), 'admin' );
 		}
 		else if ($value == 'DISABLE') 
 		{
 			$iUpdated = $this->itemCommentManager->update(array('b_enabled' => 0), array('pk_i_id' => $id));
 			osc_add_hook("disable_comment", $id);
-			osc_add_flash_ok_message(_m('The comment has been disabled'), 'admin');
+			$this->getSession()->addFlashMessage( _m('The comment has been disabled'), 'admin' );
 		}
 		$this->redirectTo(osc_admin_base_url(true) . "?page=comment");
 	}

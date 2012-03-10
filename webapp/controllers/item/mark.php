@@ -28,7 +28,7 @@ class CWebItem extends Controller_Default
 		$as = Params::getParam('as');
 		$item = $classLoader->getClassInstance( 'Model_Item' )->findByPrimaryKey($id);
 		$mItem->mark($id, $as);
-		osc_add_flash_ok_message(_m('Thanks! That\'s very helpful'));
+		$this->getSession()->addFlashMessage( _m('Thanks! That\'s very helpful') );
 		$this->redirectTo( $itemUrls->getDetailsUrl( $item ) );
 	}
 }

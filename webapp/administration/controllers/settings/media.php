@@ -98,7 +98,7 @@ class CAdminSettings extends Controller_Administration
 		$iUpdated+= Preference::newInstance()->update(array('s_value' => $use_imagick), array('s_name' => 'use_imagick'));
 		if ($iUpdated > 0) 
 		{
-			osc_add_flash_ok_message(_m('Media config has been updated'), 'admin');
+			$this->getSession()->addFlashMessage( _m('Media config has been updated'), 'admin' );
 		}
 		$this->redirectTo(osc_admin_base_url(true) . '?page=settings&action=media');
 	}

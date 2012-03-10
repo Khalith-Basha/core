@@ -25,7 +25,7 @@ class CAdminPlugin extends Controller_Administration
 		$pn = Params::getParam("plugin");
 		ClassLoader::getInstance()->getClassInstance( 'PluginManager' )->runHook($pn . '_disable');
 		ClassLoader::getInstance()->getClassInstance( 'PluginManager' )->deactivate($pn);
-		osc_add_flash_ok_message(_m('Plugin disabled'), 'admin');
+		$this->getSession()->addFlashMessage( _m('Plugin disabled'), 'admin' );
 		$this->redirectTo(osc_admin_base_url(true) . "?page=plugin");
 	}
 }

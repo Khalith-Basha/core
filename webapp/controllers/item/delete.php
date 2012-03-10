@@ -52,11 +52,11 @@ class CWebItem extends Controller_Default
 			$success = $mItems->delete($item[0]['s_secret'], $item[0]['pk_i_id']);
 			if ($success) 
 			{
-				osc_add_flash_ok_message(_m('Your item has been deleted'));
+				$this->getSession()->addFlashMessage( _m('Your item has been deleted') );
 			}
 			else
 			{
-				osc_add_flash_error_message(_m('The item you are trying to delete couldn\'t be deleted'));
+				$this->getSession()->addFlashMessage( _m('The item you are trying to delete couldn\'t be deleted'), 'ERROR' );
 			}
 			if ($this->user != null) 
 			{
@@ -69,7 +69,7 @@ class CWebItem extends Controller_Default
 		}
 		else
 		{
-			osc_add_flash_error_message(_m('The item you are trying to delete couldn\'t be deleted'));
+			$this->getSession()->addFlashMessage( _m('The item you are trying to delete couldn\'t be deleted'), 'ERROR' );
 			$this->redirectToBaseUrl();
 		}
 	}

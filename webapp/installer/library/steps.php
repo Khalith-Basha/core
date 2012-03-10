@@ -124,23 +124,23 @@ function oc_install()
 			switch ($error_num) 
 			{
 			case 1049:
-				return array('error' => 'The database doesn\'t exist. You should check the "Create DB" checkbox and fill username and password with the right privileges');
+				return array('message' => 'The database doesn\'t exist. You should check the "Create DB" checkbox and fill username and password with the right privileges');
 				break;
 
 			case 1045:
-				return array('error' => 'Cannot connect to the database. Check if the user has privileges.');
+				return array('message' => 'Cannot connect to the database. Check if the user has privileges.');
 				break;
 
 			case 1044:
-				return array('error' => 'Cannot connect to the database. Check if the username and password are correct.');
+				return array('message' => 'Cannot connect to the database. Check if the username and password are correct.');
 				break;
 
 			case 2005:
-				return array('error' => 'Cannot resolve MySQL host. Check if the host is correct.');
+				return array('message' => 'Cannot resolve MySQL host. Check if the host is correct.');
 				break;
 
 			default:
-				return array('error' => 'Cannot connect to database. Error number: ' . $error_num . '.');
+				return array('message' => 'Cannot connect to database. Error number: ' . $error_num . '.');
 				break;
 			}
 		}
@@ -152,9 +152,9 @@ function oc_install()
 		{
 			if (in_array($error_num, array(1006, 1044, 1045))) 
 			{
-				return array('error' => 'Cannot create the database. Check if the admin username and password are correct.');
+				return array('message' => 'Cannot create the database. Check if the admin username and password are correct.');
 			}
-			return array('error' => 'Cannot create the database. Error number: ' . $error_num . '.');
+			return array('message' => 'Cannot create the database. Error number: ' . $error_num . '.');
 		}
 		unset($conn);
 		unset($comm);
@@ -169,45 +169,53 @@ function oc_install()
 		switch ($error_num) 
 		{
 		case 1049:
-			return array('error' => 'The database doesn\'t exist. You should check the "Create DB" checkbox and fill username and password with the right privileges');
+			return array('message' => 'The database doesn\'t exist. You should check the "Create DB" checkbox and fill username and password with the right privileges');
 			break;
 
 		case 1045:
-			return array('error' => 'Cannot connect to the database. Check if the user has privileges.');
+			return array('message' => 'Cannot connect to the database. Check if the user has privileges.');
 			break;
 
 		case 1044:
-			return array('error' => 'Cannot connect to the database. Check if the username and password are correct.');
+			return array('message' => 'Cannot connect to the database. Check if the username and password are correct.');
 			break;
 
 		case 2005:
-			return array('error' => 'Cannot resolve MySQL host. Check if the host is correct.');
+			return array('message' => 'Cannot resolve MySQL host. Check if the host is correct.');
 			break;
 
 		default:
-			return array('error' => 'Cannot connect to database. Error number: ' . $error_num . '.');
+			return array('message' => 'Cannot connect to database. Error number: ' . $error_num . '.');
 			break;
 		}
 	}
 	/*
 	if (!is_writable(DEFAULT_CONFIG_PATH)) 
 	{
-		return array('error' => 'Cannot write in ' . DEFAULT_CONFIG_PATH . ' file. Check if the file is writable.');
+		return array('message' => 'Cannot write in ' . DEFAULT_CONFIG_PATH . ' file. Check if the file is writable.');
 	}
 	*/
 	create_config_file($dbname, $username, $password, $dbhost, $tableprefix);
 
-	$sql = file_get_contents(ABS_PATH . '/installer/data/struct.sql');
-	$c_db = $conn->getResource();
-	$comm = new Database_Command( $c_db );
+	$comm = new Database_Command( $conn->getResource() );
+
+	$sql = file_get_contents( ABS_PATH . '/installer/data/struct.sql' );
+	$queries = explode( ';', $sql );
 
 	try
 	{
-		$comm->importSQL( $sql );
+		foreach( $queries as $query )
+		{
+			$comm->importSQL( $query );
+		}
+	}
+	catch( Database_Exception $e )
+	{
+		return array( 'message' => $e->getMessage(), 'description' => $e->getSql() );
 	}
 	catch( Exception $e )
 	{
-		return array( 'error' => $e->getMessage() );
+		return array( 'message' => $e->getMessage() );
 	}
 
 	require_once 'osc/Model/Locale.php';
@@ -215,7 +223,19 @@ function oc_install()
 	$locales = osc_listLocales();
 	foreach ($locales as $locale) 
 	{
-		$values = array('pk_c_code' => $locale['code'], 's_name' => $locale['name'], 's_short_name' => $locale['short_name'], 's_description' => $locale['description'], 's_version' => $locale['version'], 's_author_name' => $locale['author_name'], 's_author_url' => $locale['author_url'], 's_currency_format' => $locale['currency_format'], 's_date_format' => $locale['date_format'], 'b_enabled' => ($locale['code'] == 'en_US') ? 1 : 0, 'b_enabled_bo' => 1);
+		$values = array(
+			'pk_c_code' => $locale['code'],
+			's_name' => $locale['name'],
+			's_short_name' => $locale['short_name'],
+			's_description' => $locale['description'],
+			's_version' => $locale['version'],
+			's_author_name' => $locale['author_name'],
+			's_author_url' => $locale['author_url'],
+			's_currency_format' => $locale['currency_format'],
+			's_date_format' => $locale['date_format'],
+			'b_enabled' => ($locale['code'] == 'en_US') ? 1 : 0,
+			'b_enabled_bo' => 1
+		);
 		if (isset($locale['stop_words'])) 
 		{
 			$values['s_stop_words'] = $locale['stop_words'];
@@ -228,7 +248,7 @@ function oc_install()
 	{
 		if (!file_exists(ABS_PATH . '/installer/data/' . $file)) 
 		{
-			return array('error' => 'the file ' . $file . ' doesn\'t exist in data folder');
+			return array('message' => 'the file ' . $file . ' doesn\'t exist in data folder');
 		}
 		else
 		{
@@ -242,7 +262,7 @@ function oc_install()
 	}
 	catch( Exception $e )
 	{
-		return array( 'error' => $e->getMessage() );
+		return array( 'message' => $e->getMessage() );
 	}
 	return false;
 }

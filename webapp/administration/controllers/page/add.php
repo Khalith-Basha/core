@@ -40,12 +40,12 @@ class CAdminPage extends Controller_Administration
 		$s_internal_name = Params::getParam("s_internal_name");
 		if ($s_internal_name == '') 
 		{
-			osc_add_flash_error_message(_m('You have to set an internal name'), 'admin');
+			$this->getSession()->addFlashMessage( _m('You have to set an internal name'), 'admin', 'ERROR' );
 			$this->redirectTo(osc_admin_base_url(true) . "?page=page&action=add");
 		}
 		if (false) 
 		{
-			osc_add_flash_error_message(_m('You have to set a different internal name'), 'admin');
+			$this->getSession()->addFlashMessage( _m('You have to set a different internal name'), 'admin', 'ERROR' );
 			$this->redirectTo(osc_admin_base_url(true) . "?page=page&action=add");
 		}
 		$page = $this->pageManager->findByInternalName($s_internal_name);
@@ -69,16 +69,16 @@ class CAdminPage extends Controller_Administration
 			if ($not_empty) 
 			{
 				$result = $this->pageManager->insert($aFields, $aFieldsDescription);
-				osc_add_flash_ok_message(_m('The page has been added'), 'admin');
+				$this->getSession()->addFlashMessage( _m('The page has been added'), 'admin' );
 			}
 			else
 			{
-				osc_add_flash_error_message(_m('The page couldn\'t be added, at least one title should not be empty'), 'admin');
+				$this->getSession()->addFlashMessage( _m('The page couldn\'t be added, at least one title should not be empty'), 'admin', 'ERROR' );
 			}
 		}
 		else
 		{
-			osc_add_flash_error_message(_m('Oops! That internal name is already in use. We can\'t made the changes'), 'admin');
+			$this->getSession()->addFlashMessage( _m('Oops! That internal name is already in use. We can\'t made the changes'), 'admin', 'ERROR' );
 		}
 		$this->redirectTo(osc_admin_base_url(true) . "?page=page");
 	}

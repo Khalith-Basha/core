@@ -416,14 +416,7 @@ SQL;
 	 */
 	public function extendCategoryName($items) 
 	{
-		if (defined('OC_ADMIN')) 
-		{
-			$prefLocale = osc_current_admin_locale();
-		}
-		else
-		{
-			$prefLocale = osc_current_user_locale();
-		}
+		$prefLocale = osc_current_user_locale();
 		$results = array();
 		foreach ($items as $item) 
 		{
@@ -460,14 +453,7 @@ SQL;
 	 */
 	public function extendData( array $items)
 	{
-		if (defined('OC_ADMIN')) 
-		{
-			$prefLocale = osc_current_admin_locale();
-		}
-		else
-		{
-			$prefLocale = osc_current_user_locale();
-		}
+		$prefLocale = osc_current_user_locale();
 		$results = array();
 		foreach ($items as $item) 
 		{

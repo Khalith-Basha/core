@@ -46,29 +46,29 @@ class CAdminPlugin extends Controller_Administration
 		{
 		case (0):
 			$msg = _m('The plugin folder is not writable');
-			osc_add_flash_error_message($msg, 'admin');
+			$this->getSession()->addFlashMessage( $msg, 'admin', 'ERROR' );
 			break;
 
 		case (1):
 			$msg = _m('The plugin has been uploaded correctly');
-			osc_add_flash_ok_message($msg, 'admin');
+			$this->getSession()->addFlashMessage( $msg, 'admin' );
 			break;
 
 		case (2):
 			$msg = _m('The zip file is not valid');
-			osc_add_flash_error_message($msg, 'admin');
+			$this->getSession()->addFlashMessage( $msg, 'admin', 'ERROR' );
 			break;
 
 		case (3):
 			$msg = _m('No file was uploaded');
-			osc_add_flash_error_message($msg, 'admin');
+			$this->getSession()->addFlashMessage( $msg, 'admin', 'ERROR' );
 			$this->redirectTo(osc_admin_base_url(true) . "?page=plugin&action=add");
 			break;
 
 		case (-1):
 		default:
 			$msg = _m('There was a problem adding the plugin');
-			osc_add_flash_error_message($msg, 'admin');
+			$this->getSession()->addFlashMessage( $msg, 'admin', 'ERROR' );
 			break;
 		}
 		$this->redirectTo(osc_admin_base_url(true) . "?page=plugin");
@@ -82,7 +82,7 @@ class CAdminPlugin extends Controller_Administration
 			{
 				ClassLoader::getInstance()->getClassInstance( 'PluginManager' )->uninstall($pn);
 			}
-			osc_add_flash_error_message(sprintf(_m('There was a fatal error and the plugin was not installed.<br />Error: "%s" Line: %s<br/>File: %s'), $aError['message'], $aError['line'], $aError['file']), 'admin');
+			$this->getSession()->addFlashMessage( sprintf(_m('There was a fatal error and the plugin was not installed.<br />Error: "%s" Line: %s<br/>File: %s'), $aError['message'], $aError['line'], $aError['file']), 'admin', 'ERROR' );
 			$this->redirectTo(osc_admin_base_url(true) . "?page=plugin");
 		}
 	}

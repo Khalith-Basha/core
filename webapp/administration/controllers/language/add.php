@@ -32,41 +32,42 @@ class CAdminLanguage extends Controller_Administration
 		{
 			$path = osc_translations_path();
 			$status = osc_unzip_file($filePackage['tmp_name'], $path);
+			$session = $this->getSession();
 			switch ($status) 
 			{
 			case (0):
 				$msg = _m('The translation folder is not writable');
-				osc_add_flash_error_message($msg, 'admin');
+				$session->addFlashMessage($msg, 'ERROR' );
 				break;
 
 			case (1):
 				if (osc_checkLocales()) 
 				{
 					$msg = _m('The language has been installed correctly');
-					osc_add_flash_ok_message($msg, 'admin');
+					$session->addFlashMessage($msg );
 				}
 				else
 				{
 					$msg = _m('There was a problem adding the language');
-					osc_add_flash_error_message($msg, 'admin');
+					$session->addFlashMessage($msg, 'ERROR' );
 				}
 				break;
 
 			case (2):
 				$msg = _m('The zip file is not valid');
-				osc_add_flash_error_message($msg, 'admin');
+				$session->addFlashMessage($msg, 'ERROR' );
 				break;
 
 			case (3):
 				$msg = _m('No file was uploaded');
-				osc_add_flash_warning_message($msg, 'admin');
+				$session->addFlashMessage($msg, 'WARNING' );
 				$this->redirectTo(osc_admin_base_url(true) . "?page=language&action=add");
 				break;
 
 			case (-1):
 			default:
 				$msg = _m('There was a problem adding the language');
-				osc_add_flash_error_message($msg, 'admin');
+				$session->addFlashMessage($msg, 'ERROR' );
 				break;
 			}
 		}

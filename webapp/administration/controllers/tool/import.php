@@ -36,16 +36,16 @@ class CAdminTool extends Controller_Administration
 			$comm = $this->getClassLoader()->getClassInstance( 'Database_Command', false, array( $c_db ) );
 			if ($comm->importSQL($content_file)) 
 			{
-				osc_add_flash_ok_message(_m('Import complete'), 'admin');
+				$this->getSession()->addFlashMessage( _m('Import complete') );
 			}
 			else
 			{
-				osc_add_flash_error_message(_m('There was a problem importing data to the database'), 'admin');
+				$this->getSession()->addFlashMessage( _m('There was a problem importing data to the database'), 'ERROR' );
 			}
 		}
 		else
 		{
-			osc_add_flash_error_message(_m('No file was uploaded'), 'admin');
+			$this->getSession()->addFlashMessage( _m('No file was uploaded'), 'admin', 'ERROR' );
 		}
 		$this->redirectTo(osc_admin_base_url(true) . '?page=tool&action=import');
 	}

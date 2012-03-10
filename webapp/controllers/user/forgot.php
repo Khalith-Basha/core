@@ -55,12 +55,12 @@ class CWebUser extends Controller
 			if (Params::getParam('new_password') == Params::getParam('new_password2')) 
 			{
 				ClassLoader::getInstance()->getClassInstance( 'Model_User' )->update(array('s_pass_code' => osc_genRandomPassword(50), 's_pass_date' => date('Y-m-d H:i:s', 0), 's_pass_ip' => $_SERVER['REMOTE_ADDR'], 's_password' => sha1(Params::getParam('new_password'))), array('pk_i_id' => $user['pk_i_id']));
-				osc_add_flash_ok_message(_m('The password has been changed'));
+				$this->getSession()->addFlashMessage( _m('The password has been changed') );
 				$this->redirectTo(osc_user_login_url());
 			}
 			else
 			{
-				osc_add_flash_error_message(_m('Error, the password don\'t match'));
+				$this->getSession()->addFlashMessage( _m('Error, the password don\'t match'), 'ERROR' );
 				$this->redirectTo(osc_forgot_user_password_confirm_url(Params::getParam('userId'), Params::getParam('code')));
 			}
 		}

@@ -44,21 +44,21 @@ class CWebUser extends Controller_User
 		}
 		if ($user['s_password'] != sha1(Params::getParam('password'))) 
 		{
-			osc_add_flash_error_message(_m('Current password doesn\'t match'));
+			$this->getSession()->addFlashMessage( _m('Current password doesn\'t match'), 'ERROR' );
 			$this->redirectTo(osc_change_user_password_url());
 		}
 		if (!Params::getParam('new_password')) 
 		{
-			osc_add_flash_error_message(_m('Passwords can\'t be empty'));
+			$this->getSession()->addFlashMessage( _m('Passwords can\'t be empty'), 'ERROR' );
 			$this->redirectTo(osc_change_user_password_url());
 		}
 		if (Params::getParam('new_password') != Params::getParam('new_password2')) 
 		{
-			osc_add_flash_error_message(_m('Passwords don\'t match'));
+			$this->getSession()->addFlashMessage( _m('Passwords don\'t match'), 'ERROR' );
 			$this->redirectTo(osc_change_user_password_url());
 		}
 		ClassLoader::getInstance()->getClassInstance( 'Model_User' )->update(array('s_password' => sha1(Params::getParam('new_password'))), array('pk_i_id' => $this->getSession()->_get('userId')));
-		osc_add_flash_ok_message(_m('Password has been changed'));
+		$this->getSession()->addFlashMessage( _m('Password has been changed') );
 		$this->redirectTo(osc_user_profile_url());
 	}
 }

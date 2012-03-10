@@ -22,35 +22,38 @@ class CAdminTool extends Controller_Administration
 {
 	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
+		$file = $this->getClassLoader()->getClassInstance( 'FileMaintenance' );
+
 		$mode = Params::getParam('mode');
 		if ($mode == 'on') 
 		{
-			$maintenance_file = ABS_PATH . '.maintenance';
-			$fileHandler = @fopen($maintenance_file, 'w');
-			if ($fileHandler) 
+			try
 			{
-				osc_add_flash_ok_message(_m('Maintenance mode is ON'), 'admin');
+				$theme = $this->getView()->getTheme();
+				$tmpPath = $theme->getCurrentThemePath() . '/maintenance.html';
+				$file->copyFrom( $tmpPath );
+				$this->getSession()->addFlashMessage( _m('Maintenance mode is ON') );
 			}
-			else
+			catch( Exception $e )
 			{
-				osc_add_flash_error_message(_m('There was an error creating .maintenance file, please create it manually at the root folder'), 'admin');
+				$this->getSession()->addFlashMessage( _m('There was an error creating .maintenance file, please create it manually at the root folder'), 'ERROR' );
 			}
-			fclose($fileHandler);
 			$this->redirectTo(osc_admin_base_url(true) . '?page=tool&action=maintenance');
 		}
 		else if ($mode == 'off') 
 		{
-			$deleted = @unlink(ABS_PATH . '.maintenance');
-			if ($deleted) 
+			try
 			{
-				osc_add_flash_ok_message(_m('Maintenance mode is OFF'), 'admin');
-			}
-			else
+				$file->delete();
+				$this->getSession()->addFlashMessage( _m('Maintenance mode is OFF') );
+			} catch( Exception $e )
 			{
-				osc_add_flash_error_message(_m('There was an error removing .maintenance file, please remove it manually from the root folder'), 'admin');
+				$this->getSession()->addFlashMessage( _m('There was an error removing .maintenance file, please remove it manually from the root folder'), 'ERROR' );
 			}
 			$this->redirectTo(osc_admin_base_url(true) . '?page=tool&action=maintenance');
 		}
+
+		$this->getView()->assign( 'maintenanceModeEnabled', $file->exists() );
 		$this->doView('tools/maintenance.php');
 	}
 }

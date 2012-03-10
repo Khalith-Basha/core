@@ -42,7 +42,7 @@ class CAdminUser extends Controller_Administration
 		$iUpdated+= Preference::newInstance()->update(array('s_value' => $notifyNewUser), array('s_name' => 'notify_new_user'));
 		if ($iUpdated > 0) 
 		{
-			osc_add_flash_ok_message(_m('Users\' settings have been updated'), 'admin');
+			$this->getSession()->addFlashMessage( _m('Users\' settings have been updated'), 'admin' );
 		}
 		$this->redirectTo(osc_admin_base_url(true) . '?page=user&action=settings');
 	}

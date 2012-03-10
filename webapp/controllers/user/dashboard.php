@@ -53,7 +53,7 @@ class CWebUser extends Controller_User
 			}
 			if ($result == 1) 
 			{
-				osc_add_flash_ok_message(_m('Alert activated'));
+				$this->getSession()->addFlashMessage( _m('Alert activated') );
 			}
 			else
 			{
@@ -68,7 +68,7 @@ class CWebUser extends Controller_User
 			if ($email != '' && $secret != '') 
 			{
 				Alerts::newInstance()->delete(array('s_email' => $email, 's_secret' => $secret));
-				osc_add_flash_ok_message(_m('Unsubscribed correctly'));
+				$this->getSession()->addFlashMessage( _m('Unsubscribed correctly') );
 			}
 			else
 			{

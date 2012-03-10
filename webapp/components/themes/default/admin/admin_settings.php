@@ -9,16 +9,16 @@ if (Params::getParam("action_specific") != '')
 		{
 			if (move_uploaded_file($package['tmp_name'], ClassLoader::getInstance()->getClassInstance( 'Ui_MainTheme' )->getCurrentThemePath() . "images/logo.jpg")) 
 			{
-				osc_add_flash_ok_message(_m('The logo image has been uploaded correctly'), 'admin');
+				$this->getSession()->addFlashMessage( _m('The logo image has been uploaded correctly'), 'admin' );
 			}
 			else
 			{
-				osc_add_flash_error_message(_m("An error has occurred, please try again"), 'admin');
+				$this->getSession()->addFlashMessage( _m("An error has occurred, please try again"), 'admin', 'ERROR' );
 			}
 		}
 		else
 		{
-			osc_add_flash_error_message(_m("An error has occurred, please try again"), 'admin');
+			$this->getSession()->addFlashMessage( _m("An error has occurred, please try again"), 'admin', 'ERROR' );
 		}
 		break;
 
@@ -26,11 +26,11 @@ if (Params::getParam("action_specific") != '')
 		if (file_exists(ClassLoader::getInstance()->getClassInstance( 'Ui_MainTheme' )->getCurrentThemePath() . "images/logo.jpg")) 
 		{
 			unlink(ClassLoader::getInstance()->getClassInstance( 'Ui_MainTheme' )->getCurrentThemePath() . "images/logo.jpg");
-			osc_add_flash_ok_message(_m('The logo image has been removed'), 'admin');
+			$this->getSession()->addFlashMessage( _m('The logo image has been removed'), 'admin' );
 		}
 		else
 		{
-			osc_add_flash_error_message(_m("Image not found"), 'admin');
+			$this->getSession()->addFlashMessage( _m("Image not found"), 'admin', 'ERROR' );
 		}
 		break;
 	}

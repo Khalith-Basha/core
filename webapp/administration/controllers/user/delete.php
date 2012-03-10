@@ -27,7 +27,7 @@ class CAdminUser extends Controller_Administration
 		$userId = Params::getParam('id');
 		if (!is_array($userId)) 
 		{
-			osc_add_flash_error_message(_m('User id isn\'t in the correct format'), 'admin');
+			$this->getSession()->addFlashMessage( _m('User id isn\'t in the correct format'), 'admin', 'ERROR' );
 		}
 		foreach ($userId as $id) 
 		{
@@ -52,7 +52,7 @@ class CAdminUser extends Controller_Administration
 			$msg = sprintf(_m('%s users have been deleted'), $iDeleted);
 			break;
 		}
-		osc_add_flash_ok_message($msg, 'admin');
+		$this->getSession()->addFlashMessage( $msg, 'admin' );
 		$this->redirectTo(osc_admin_base_url(true) . '?page=user');
 	}
 }

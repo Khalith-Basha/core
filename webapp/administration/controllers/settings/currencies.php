@@ -40,18 +40,18 @@ class CAdminSettings extends Controller_Administration
 			$currencyCode = trim($currencyCode);
 			if (!preg_match('/^.{1,3}$/', $currencyCode)) 
 			{
-				osc_add_flash_error_message(_m('Error: the currency code is not in the correct format'), 'admin');
+				$this->getSession()->addFlashMessage( _m('Error: the currency code is not in the correct format'), 'admin', 'ERROR' );
 				$this->redirectTo(osc_admin_base_url(true) . '?page=settings&action=currencies');
 			}
 			$fields = array('pk_c_code' => $currencyCode, 's_name' => $currencyName, 's_description' => $currencyDescription);
 			$isInserted = ClassLoader::getInstance()->getClassInstance( 'Model_Currency' )->insert($fields);
 			if ($isInserted) 
 			{
-				osc_add_flash_ok_message(_m('New currency has been added'), 'admin');
+				$this->getSession()->addFlashMessage( _m('New currency has been added'), 'admin' );
 			}
 			else
 			{
-				osc_add_flash_error_message(_m('Error: currency couldn\'t be added'), 'admin');
+				$this->getSession()->addFlashMessage( _m('Error: currency couldn\'t be added'), 'admin', 'ERROR' );
 			}
 			$this->redirectTo(osc_admin_base_url(true) . '?page=settings&action=currencies');
 			break;
@@ -62,13 +62,13 @@ class CAdminSettings extends Controller_Administration
 			$currencyCode = trim($currencyCode);
 			if ($currencyCode == '') 
 			{
-				osc_add_flash_error_message(_m('Error: the currency code is not in the correct format'), 'admin');
+				$this->getSession()->addFlashMessage( _m('Error: the currency code is not in the correct format'), 'admin', 'ERROR' );
 				$this->redirectTo(osc_admin_base_url(true) . '?page=settings&action=currencies');
 			}
 			$aCurrency = ClassLoader::getInstance()->getClassInstance( 'Model_Currency' )->findByPrimaryKey($currencyCode);
 			if (count($aCurrency) == 0) 
 			{
-				osc_add_flash_error_message(_m('Error: the currency doesn\'t exist'), 'admin');
+				$this->getSession()->addFlashMessage( _m('Error: the currency doesn\'t exist'), 'admin', 'ERROR' );
 				$this->redirectTo(osc_admin_base_url(true) . '?page=settings&action=currencies');
 			}
 			$this->getView()->assign('aCurrency', $aCurrency);
@@ -86,13 +86,13 @@ class CAdminSettings extends Controller_Administration
 			$currencyCode = trim($currencyCode);
 			if (!preg_match('/.{1,3}/', $currencyCode)) 
 			{
-				osc_add_flash_error_message(_m('Error: the currency code is not in the correct format'), 'admin');
+				$this->getSession()->addFlashMessage( _m('Error: the currency code is not in the correct format'), 'admin', 'ERROR' );
 				$this->redirectTo(osc_admin_base_url(true) . '?page=settings&action=currencies');
 			}
 			$iUpdated = ClassLoader::getInstance()->getClassInstance( 'Model_Currency' )->update(array('s_name' => $currencyName, 's_description' => $currencyDescription), array('pk_c_code' => $currencyCode));
 			if ($iUpdated == 1) 
 			{
-				osc_add_flash_ok_message(_m('Currency has been updated'), 'admin');
+				$this->getSession()->addFlashMessage( _m('Currency has been updated'), 'admin' );
 			}
 			$this->redirectTo(osc_admin_base_url(true) . '?page=settings&action=currencies');
 			break;
@@ -102,7 +102,7 @@ class CAdminSettings extends Controller_Administration
 			$aCurrencyCode = Params::getParam('code');
 			if (!is_array($aCurrencyCode)) 
 			{
-				osc_add_flash_error_message(_m('Error: the currency code is not in the correct format'), 'admin');
+				$this->getSession()->addFlashMessage( _m('Error: the currency code is not in the correct format'), 'admin', 'ERROR' );
 				$this->redirectTo(osc_admin_base_url(true) . '?page=settings&action=currencies');
 			}
 			$msg_current = '';
@@ -122,22 +122,22 @@ class CAdminSettings extends Controller_Administration
 			{
 			case ('0'):
 				$msg = _m('No currencies have been deleted');
-				osc_add_flash_error_message($msg . $msg_current, 'admin');
+				$this->getSession()->addFlashMessage( $msg . $msg_current, 'admin', 'ERROR' );
 				break;
 
 			case ('1'):
 				$msg = _m('One currency has been deleted');
-				osc_add_flash_ok_message($msg . $msg_current, 'admin');
+				$this->getSession()->addFlashMessage( $msg . $msg_current, 'admin' );
 				break;
 
 			case ('-1'):
 				$msg = sprintf(_m("%s could not be deleted because this currency still in use"), $currencyCode);
-				osc_add_flash_error_message($msg . $msg_current, 'admin');
+				$this->getSession()->addFlashMessage( $msg . $msg_current, 'admin', 'ERROR' );
 				break;
 
 			default:
 				$msg = sprintf(_m('%s currencies have been deleted'), $rowChanged);
-				osc_add_flash_ok_message($msg . $msg_current, 'admin');
+				$this->getSession()->addFlashMessage( $msg . $msg_current, 'admin' );
 				break;
 			}
 			$this->redirectTo(osc_admin_base_url(true) . '?page=settings&action=currencies');

@@ -18,12 +18,26 @@
 
 require_once 'osc/Database/Collection.php';
 
+class Database_Exception extends Exception
+{
+	private $sql;
+
+	public function setSql( $sql )
+	{
+		$this->sql = $sql;
+	}
+
+	public function getSql()
+	{
+		return $this->sql;
+	}
+}
+
 /**
  * Database command object
  *
  * @package OpenSourceClassifieds
  * @subpackage Database
- * @since 2.3
  */
 class Database_Command
 {
@@ -31,43 +45,9 @@ class Database_Command
 	 * Database connection object to OpenSourceClassifieds database
 	 *
 	 * @access private
-	 * @since 2.3
 	 * @private mysqli
 	 */
 	private $connId;
-	/**
-	 * Database result object
-	 *
-	 * @access public
-	 * @since 2.3
-	 * @var MySQLi_Result
-	 */
-	private $resultId;
-	/**
-	 *
-	 * @var array
-	 */
-	private $queries;
-	/**
-	 *
-	 * @var array
-	 */
-	private $queryTimes;
-	/**
-	 *
-	 * @var int
-	 */
-	private $queryCount;
-	/**
-	 *
-	 * @var int
-	 */
-	private $errorLevel;
-	/**
-	 *
-	 * @var string
-	 */
-	private $errorDesc;
 	/**
 	 *
 	 * @var array
@@ -144,12 +124,6 @@ class Database_Command
 	public function __construct( mysqli &$connId )
 	{
 		$this->connId = & $connId;
-		$this->resultId = 0;
-		$this->queries = array();
-		$this->queryTimes = array();
-		$this->queryCount = 0;
-		$this->errorLevel = 0;
-		$this->errorDesc = "";
 		$this->aSelect = array();
 		$this->aFrom = array();
 		$this->aJoin = array();
@@ -164,18 +138,9 @@ class Database_Command
 		$this->aWherein = array();
 	}
 	/**
-	 * Unset connection and result objects
-	 */
-	public function __destruct() 
-	{
-		unset($this->connId);
-		unset($this->resultId);
-	}
-	/**
 	 * Set SELECT clause
 	 *
 	 * @access public
-	 * @since 2.3
 	 * @param mixed $select It can be a string or array
 	 * @return DBCommandClass
 	 */
@@ -224,7 +189,6 @@ class Database_Command
 	 * Set JOIN clause
 	 *
 	 * @access public
-	 * @since 2.3
 	 * @param string $table
 	 * @param string $cond
 	 * @param string $type It can be: LEFT, RIGHT, OUTER, INNER, LEFT OUTER or RIGHT OUTER
@@ -252,7 +216,6 @@ class Database_Command
 	 * Set WHERE clause using OR operator
 	 *
 	 * @access public
-	 * @since 2.3
 	 * @param mixed $key
 	 * @param mixed $value
 	 * @return DBCommandClass
@@ -265,7 +228,6 @@ class Database_Command
 	 * Set WHERE clause using OR operator
 	 *
 	 * @access public
-	 * @since 2.3
 	 * @param mixed $key
 	 * @param mixed $value
 	 * @return DBCommandClass
@@ -278,7 +240,6 @@ class Database_Command
 	 * Set WHERE clause
 	 *
 	 * @access private
-	 * @since 2.3
 	 * @param mixed $key
 	 * @param mixed $value
 	 * @param string $type
@@ -310,7 +271,6 @@ class Database_Command
 	 * Set WHERE IN clause using AND operator
 	 *
 	 * @access public
-	 * @since 2.3
 	 * @param mixed $key
 	 * @param mixed $values
 	 * @return DBCommandClass
@@ -323,7 +283,6 @@ class Database_Command
 	 * Set WHERE IN clause using OR operator
 	 *
 	 * @access public
-	 * @since 2.3
 	 * @param mixed $key
 	 * @param mixed $values
 	 * @return DBCommandClass
@@ -336,7 +295,6 @@ class Database_Command
 	 * Set WHERE NOT IN clause using AND operator
 	 *
 	 * @access public
-	 * @since 2.3
 	 * @param mixed $key
 	 * @param mixed $values
 	 * @return DBCommandClass
@@ -349,7 +307,6 @@ class Database_Command
 	 * Set WHERE NOT IN clause using OR operator
 	 *
 	 * @access public
-	 * @since 2.3
 	 * @param mixed $key
 	 * @param mixed $values
 	 * @return DBCommandClass
@@ -362,7 +319,6 @@ class Database_Command
 	 * Set WHERE IN clause
 	 *
 	 * @access private
-	 * @since 2.3
 	 * @param mixed $key
 	 * @param mixed $values
 	 * @param bool $not
@@ -403,7 +359,6 @@ class Database_Command
 	 * Set NOT LIKE clause using AND operator
 	 *
 	 * @access public
-	 * @since 2.3
 	 * @param string $field
 	 * @param string $match
 	 * @param string $side
@@ -417,7 +372,6 @@ class Database_Command
 	 * Set LIKE clause using OR operator
 	 *
 	 * @access public
-	 * @since 2.3
 	 * @param string $field
 	 * @param string $match
 	 * @param type $side
@@ -431,7 +385,6 @@ class Database_Command
 	 * Set NOT LIKE clause using OR operator
 	 *
 	 * @access public
-	 * @since 2.3
 	 * @param string $field
 	 * @param string $match
 	 * @param string $side
@@ -445,7 +398,6 @@ class Database_Command
 	 * Set LIKE clause
 	 *
 	 * @access private
-	 * @since 2.3
 	 * @param string $field
 	 * @param string $match
 	 * @param string $type Types: AND, OR
@@ -486,7 +438,6 @@ class Database_Command
 	 * Fields for GROUP BY clause
 	 *
 	 * @access public
-	 * @since 2.3
 	 * @param mixed $by
 	 * @return DBCommandClass
 	 */
@@ -553,7 +504,6 @@ class Database_Command
 	 * Set ORDER BY clause
 	 *
 	 * @access public
-	 * @since 2.3
 	 * @param string $orderby
 	 * @param string $direction Accepted directions: random, asc, desc
 	 */
@@ -574,7 +524,6 @@ class Database_Command
 	 * Set LIMIT clause
 	 *
 	 * @access public
-	 * @since 2.3
 	 * @param int $value
 	 * @param int $offset
 	 * @return DBCommandClass
@@ -592,7 +541,6 @@ class Database_Command
 	 * Set the offset in the LIMIT clause
 	 *
 	 * @access public
-	 * @since 2.3
 	 * @param int $offset
 	 * @return DBCommandClass
 	 */
@@ -605,7 +553,6 @@ class Database_Command
 	 * Create the INSERT sql and perform the query
 	 *
 	 * @access public
-	 * @since 2.3
 	 * @param mixed $table
 	 * @param mixed $set
 	 * @return boolean
@@ -636,7 +583,6 @@ class Database_Command
 	 * Create the INSERT sql string
 	 *
 	 * @access private
-	 * @since 2.3
 	 * @param string $table
 	 * @param array $keys
 	 * @param array $values
@@ -651,7 +597,6 @@ class Database_Command
 	 * Create the REPLACE INTO sql and perform the query
 	 *
 	 * @access public
-	 * @since 2.3
 	 * @param mixed $table
 	 * @param mixed $set
 	 * @return boolean
@@ -682,7 +627,6 @@ class Database_Command
 	 * Create the REPLACE INTO sql string
 	 *
 	 * @access private
-	 * @since 2.3
 	 * @param string $table
 	 * @param array $key
 	 * @param array $values
@@ -696,7 +640,6 @@ class Database_Command
 	 * Create the UPDATE sql and perform the query
 	 *
 	 * @access public
-	 * @since 2.3
 	 * @param mixed $table
 	 * @param mixed $set
 	 * @param mixed $where
@@ -737,7 +680,6 @@ class Database_Command
 	 * Create the UPDATE sql string
 	 *
 	 * @access private
-	 * @since 2.3
 	 * @param string $table
 	 * @param array $values
 	 * @param array $where
@@ -757,7 +699,6 @@ class Database_Command
 	 * Create the DELETE sql and perform the query
 	 *
 	 * @access public
-	 * @since 2.3
 	 * @param mixed $table
 	 * @param mixed $where
 	 * @return mixed
@@ -793,7 +734,6 @@ class Database_Command
 	 * Create the DELETE sql string
 	 *
 	 * @access private
-	 * @since 2.3
 	 * @param string $table
 	 * @param array $where
 	 * @param array $like
@@ -820,7 +760,6 @@ class Database_Command
 	 * getting the rows of one table
 	 *
 	 * @access public
-	 * @since 2.3
 	 * @param mixed $table
 	 * @param mixed $limit
 	 * @param mixed $offset
@@ -845,67 +784,49 @@ class Database_Command
 	 * Performs a query on the database
 	 *
 	 * @access public
-	 * @since 2.3
 	 * @param string $sql
 	 * @return mixed
 	 */
-	function query( $sql )
-	{
-		if( empty( $sql ) ) throw new Exception( 'Empty SQL' );
-
-		$this->queries[] = $sql;
-		$timeStart = list($sm, $ss) = explode(' ', microtime());
-		$this->resultId = $this->_execute($sql);
-		if (false === $this->resultId) 
-		{
-			return false;
-		}
-		$timeEnd = list($em, $es) = explode(' ', microtime());
-		$this->queryTimes[] = ($em + $es) - ($sm + $ss);
-		$this->queryCount++;
-		if ($this->isWriteType($sql) === true) 
-		{
-			return true;
-		}
-		$rs = new Database_Collection();
-		$rs->connId = $this->connId;
-		$rs->resultId = $this->resultId;
-		$rs->numRows = $rs->numRows();
-		return $rs;
-	}
-	/**
-	 * Performs a query on the database
-	 *
-	 * @access private
-	 * @since 2.3
-	 * @param string $sql
-	 * @return mixed
-	 */
-	protected function _execute($sql) 
+	public function query( $sql )
 	{
 		if( empty( $this->connId ) )
 		{
 			throw new Exception( 'Wrong connection resource' );
 		}
 
-		$result = $this->connId->query( $sql );
-		if( false === $result )
+		if( empty( $sql ) )
 		{
-			throw new Exception( $this->connId->error );
+			throw new Exception( 'Empty SQL' );
 		}
 
-		return $result;
+		$resultId = $this->connId->query( $sql );
+		if( false === $resultId )
+		{
+			$dbException = new Database_Exception( $this->connId->error );
+			$dbException->setSql( $sql );
+			throw $dbException;
+		}
+
+		if( $this->isWriteType( $sql ) === true )
+		{
+			return $resultId;
+		}
+
+		$rs = new Database_Collection();
+		$rs->connId = $this->connId;
+		$rs->resultId = $resultId;
+
+		return $rs;
 	}
 	/**
 	 * Execute queries sql. We replace TABLE_PREFIX for the real prefix: DB_TABLE_PREFIX
 	 * The executions is stopped if some query throws an error.
 	 *
 	 * @access public
-	 * @since 2.3
 	 * @param string $sql
 	 * @return boolean true if it's succesful, false if not
 	 */
-	function importSQL($sql) 
+	function importSQL( $sql )
 	{
 		$sql = str_replace('/*TABLE_PREFIX*/', DB_TABLE_PREFIX, $sql);
 		$sql = preg_replace('#/\*(?:[^*]*(?:\*(?!/))*)*\*/#', '', ($sql));
@@ -924,20 +845,9 @@ class Database_Command
 		return true;
 	}
 	/**
-	 * Check if $table exist into array $struct_queries
-	 *
-	 * @param string $table
-	 * @param array $struct_queries
-	 */
-	private function existTableIntoStruct($table, $struct_queries) 
-	{
-		return array_key_exists(strtolower($table), $struct_queries);
-	}
-	/**
 	 * Set aSet array
 	 *
 	 * @access public
-	 * @since 2.3
 	 * @param mixed $key
 	 * @param mixed $value
 	 * @return DBCommandClass
@@ -965,7 +875,6 @@ class Database_Command
 	 * Create SELECT sql statement
 	 *
 	 * @access private
-	 * @since 2.3
 	 * @return string
 	 */
 	function _getSelect() 
@@ -1050,7 +959,6 @@ class Database_Command
 	 * Gets the number of affected rows in a previous MySQL operation
 	 *
 	 * @access public
-	 * @since 2.3
 	 * @return int
 	 */
 	function affectedRows() 
@@ -1058,21 +966,9 @@ class Database_Command
 		return $this->connId->affected_rows;
 	}
 	/**
-	 * Get last SQL query
-	 *
-	 * @access public
-	 * @since 2.3
-	 * @return string
-	 */
-	function lastQuery() 
-	{
-		return end($this->queries);
-	}
-	/**
 	 * Get the ID generated from the previous INSERT operation
 	 *
 	 * @access public
-	 * @since 2.3
 	 * @return mixed
 	 */
 	function insertedId() 
@@ -1083,7 +979,6 @@ class Database_Command
 	 * Check if the string has an operator
 	 *
 	 * @access private
-	 * @since 2.3
 	 * @param string $str
 	 * @return bool
 	 */
@@ -1096,7 +991,6 @@ class Database_Command
 	 * Check if the sql is a select
 	 *
 	 * @access private
-	 * @since 2.3
 	 * @param string $sql
 	 * @return bool
 	 */
@@ -1108,7 +1002,6 @@ class Database_Command
 	 * Check if the sql is a write type such as INSERT, UPDATE, UPDATE...
 	 *
 	 * @access private
-	 * @since 2.3
 	 * @param string $sql
 	 * @return bool
 	 */
@@ -1120,7 +1013,6 @@ class Database_Command
 	 * Add the apostrophe if it's an string; 0 or 1 if it's a number; NULL
 	 *
 	 * @access private
-	 * @since 2.3
 	 * @param string $str
 	 * @return string
 	 */
@@ -1144,7 +1036,6 @@ class Database_Command
 	 * Escape the string if it's necessary
 	 *
 	 * @access private
-	 * @since 2.3
 	 * @param string $str
 	 * @return string
 	 */
@@ -1168,7 +1059,6 @@ class Database_Command
 	 * Reset variables used in write sql: aSet, aFrom, aWhere, aLike, aOrderby, aLimit, aOrder
 	 *
 	 * @access private
-	 * @since 2.3
 	 */
 	function _resetWrite() 
 	{
@@ -1180,7 +1070,6 @@ class Database_Command
 	 * aOrderby, aWherein, aLimit, aOffset, aOrder
 	 *
 	 * @access private
-	 * @since 2.3
 	 */
 	function _resetSelect() 
 	{
@@ -1191,7 +1080,6 @@ class Database_Command
 	 * Initializate $aReset variables
 	 *
 	 * @access private
-	 * @since 2.3
 	 * @param array $aReset
 	 */
 	function _resetRun($aReset) 

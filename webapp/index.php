@@ -32,19 +32,12 @@ if( osc_timezone() != '' )
 	date_default_timezone_set(osc_timezone());
 }
 
-if( file_exists( ABS_PATH . '/.maintenance' ) ) 
+$maintenanceFile = $classLoader->getClassInstance( 'FileMaintenance' );
+if( $maintenanceFile->exists() && false === osc_is_admin_user_logged_in() )
 {
-	if (!osc_is_admin_user_logged_in()) 
-	{
-		$title = 'OpenSourceClassifieds &raquo; Error';
-		$message = sprintf(__('We are sorry for any inconvenience. %s is under maintenance mode') . '.', osc_page_title());
-		osc_die($title, $message);
-	}
-	else
-	{
-		define('__OSC_MAINTENANCE__', true);
-	}
+	die( $maintenanceFile->getContents() );
 }
+
 if (!osc_users_enabled() && osc_is_web_user_logged_in()) 
 {
 	$session = $classLoader->getClassInstance( 'Session' );

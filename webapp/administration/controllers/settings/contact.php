@@ -39,7 +39,7 @@ class CAdminSettings extends Controller_Administration
 		$iUpdated = $preferenceModel->update(array('s_value' => $enabled_attachment), array('s_name' => 'contact_attachment'));
 		if ($iUpdated > 0) 
 		{
-			osc_add_flash_ok_message(_m('Contact configuration has been updated'), 'admin');
+			$this->getSession()->addFlashMessage( _m('Contact configuration has been updated'), 'admin' );
 		}
 		$this->redirectTo(osc_admin_base_url(true) . '?page=settings&action=contact');
 	}

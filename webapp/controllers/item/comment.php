@@ -51,7 +51,7 @@ class CWebItem extends Controller
 			$item = ClassLoader::getInstance()->getClassInstance( 'Model_Item' )->findByPrimaryKey($itemId);
 			if (count($item) == 0) 
 			{
-				osc_add_flash_error_message(_m('This item doesn\'t exist'));
+				$this->getSession()->addFlashMessage( _m('This item doesn\'t exist'), 'ERROR' );
 				$this->redirectTo(osc_base_url(true));
 			}
 			View::newInstance()->assign('item', $item);
@@ -64,7 +64,7 @@ class CWebItem extends Controller
 			$aComment = $commentManager->findByPrimaryKey($commentId);
 			if (count($aComment) == 0) 
 			{
-				osc_add_flash_error_message(_m('The comment doesn\'t exist'));
+				$this->getSession()->addFlashMessage( _m('The comment doesn\'t exist'), 'ERROR' );
 				$this->redirectTo(osc_item_url());
 			}
 			if ($aComment['b_active'] != 1) 
@@ -78,7 +78,7 @@ class CWebItem extends Controller
 				$this->redirectTo(osc_item_url());
 			}
 			$commentManager->deleteByPrimaryKey($commentId);
-			osc_add_flash_ok_message(_m('The comment has been deleted'));
+			$this->getSession()->addFlashMessage( _m('The comment has been deleted') );
 			$this->redirectTo(osc_item_url());
 			break;
 		}

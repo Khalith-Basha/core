@@ -53,12 +53,12 @@ class CAdminItem extends Controller_Administration
 		$success = $mItem->add();
 		if ($success == 1 || $success == 2) 
 		{
-			osc_add_flash_ok_message(_m('A new item has been added'), 'admin');
+			$this->getSession()->addFlashMessage( _m('A new item has been added'), 'admin' );
 			$this->redirectTo(osc_admin_base_url(true) . "?page=item");
 		}
 		else
 		{
-			osc_add_flash_error_message($success, 'admin');
+			$this->getSession()->addFlashMessage( $success, 'admin', 'ERROR' );
 			$this->redirectTo(osc_admin_base_url(true) . "?page=item&action=post");
 		}
 	}

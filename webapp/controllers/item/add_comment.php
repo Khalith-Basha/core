@@ -44,38 +44,41 @@ class CWebItem extends Controller_Default
 		$item = $this->getClassLoader()->getClassInstance( 'Model_Item' )->findByPrimaryKey(Params::getParam('id'));
 		$itemUrl = $this->getClassLoader()->getClassInstance( 'Url_Item' )->getDetailsUrl( $item );
 		$status = $mItem->add_comment();
+
+		$session = $this->getSession();
 		switch ($status)
 		{
 		case -1:
 			$msg = _m('Sorry, we could not save your comment. Try again later');
-			osc_add_flash_error_message($msg);
+			$session->addFlashMessage( $msg, 'ERROR' );
 			break;
 
 		case 1:
 			$msg = _m('Your comment is awaiting moderation');
-			osc_add_flash_info_message($msg);
+			$this->getSession()->addFlashMessage( $msg, 'INFO' );
 			break;
 
 		case 2:
 			$msg = _m('Your comment has been approved');
-			osc_add_flash_ok_message($msg);
+			$session->addFlashMessage( $msg );
 			break;
 
 		case 3:
 			$msg = _m('Please fill the required fields (name, email)');
-			osc_add_flash_warning_message($msg);
+			$session->addFlashMessage( $msg, 'WARNING' );
 			break;
 
 		case 4:
 			$msg = _m('Please type a comment');
-			osc_add_flash_warning_message($msg);
+			$session->addFlashMessage( $msg, 'WARNING' );
 			break;
 
 		case 5:
 			$msg = _m('Your comment has been marked as spam');
-			osc_add_flash_error_message($msg);
+			$session->addFlashMessage( $msg, 'ERROR' );
 			break;
 		}
 		$this->redirectTo( $itemUrl );
 	}
 }
+

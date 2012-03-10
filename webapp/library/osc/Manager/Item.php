@@ -879,7 +879,7 @@ class Manager_Item
 			}
 			if (!$success) 
 			{
-				osc_add_flash_error_message(_m("One of the files you tried to upload exceeds the maximum size"));
+				$this->getSession()->addFlashMessage( _m("One of the files you tried to upload exceeds the maximum size"), 'ERROR' );
 			}
 		}
 		return $success;
@@ -934,7 +934,7 @@ class Manager_Item
 			}
 			if (!$success) 
 			{
-				osc_add_flash_error_message(_m("The file you tried to upload does not have an allowed extension"));
+				$this->getSession()->addFlashMessage( _m("The file you tried to upload does not have an allowed extension"), 'ERROR' );
 			}
 		}
 		return $success;

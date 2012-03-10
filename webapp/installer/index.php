@@ -105,6 +105,7 @@ switch ($step)
 		break;
 
 	case 3:
+		$error = false;
 		if( Params::getParam('dbname') != '')
 		{
 			try
@@ -113,10 +114,10 @@ switch ($step)
 			}
 			catch( Exception $e )
 			{
-				$error['error'] = $e->getMessage();
+				$error = $e->getMessage();
 			}
 		}
-		if (!isset($error["error"])) 
+		if( false === $error )
 		{
 			showView( 'views/target.php' );
 		}

@@ -103,5 +103,10 @@ class View_Default
 	{
 		unset( $this->variables[ $key ] );
 	}
+
+	public function getTheme()
+	{
+		return $this->theme;
+	}
 }
 

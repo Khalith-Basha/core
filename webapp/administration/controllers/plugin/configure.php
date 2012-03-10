@@ -55,10 +55,10 @@ class CAdminPlugin extends Controller_Administration
 		}
 		else
 		{
-			osc_add_flash_error_message(_m('No plugin selected'), 'admin');
+			$this->getSession()->addFlashMessage( _m('No plugin selected'), 'admin', 'ERROR' );
 			$this->doView("plugins/index.php");
 		}
-		osc_add_flash_ok_message(_m('Configuration was saved'), 'admin');
+		$this->getSession()->addFlashMessage( _m('Configuration was saved'), 'admin' );
 		$this->redirectTo(osc_admin_base_url(true) . "?page=plugin");
 	}
 }

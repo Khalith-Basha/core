@@ -52,7 +52,7 @@ class CWebItem extends Controller_Default
 		// if item doesn't exist redirect to base url
 		if( count($item) == 0 )
 		{
-			osc_add_flash_error_message(_m('This item doesn\'t exist'));
+			$this->getSession()->addFlashMessage( _m('This item doesn\'t exist'), 'ERROR' );
 			$this->redirectToBaseUrl();
 		}
 
@@ -62,11 +62,11 @@ class CWebItem extends Controller_Default
 		{
 			if ($this->userId == $item['fk_i_user_id']) 
 			{
-				osc_add_flash_error_message(_m('The item hasn\'t been validated. Please validate it in order to show it to the rest of users'));
+				$this->getSession()->addFlashMessage( _m('The item hasn\'t been validated. Please validate it in order to show it to the rest of users'), 'ERROR' );
 			}
 			else
 			{
-				osc_add_flash_error_message(_m('This item hasn\'t been validated'));
+				$this->getSession()->addFlashMessage( _m('This item hasn\'t been validated'), 'ERROR' );
 				$this->redirectToBaseUrl();
 			}
 		}

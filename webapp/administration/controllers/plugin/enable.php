@@ -29,11 +29,11 @@ class CAdminPlugin extends Controller_Administration
 		if ($enabled) 
 		{
 			ClassLoader::getInstance()->getClassInstance( 'PluginManager' )->runHook($pn . '_enable');
-			osc_add_flash_ok_message(_m('Plugin enabled'), 'admin');
+			$this->getSession()->addFlashMessage( _m('Plugin enabled'), 'admin' );
 		}
 		else
 		{
-			osc_add_flash_error_message(_m('Error: Plugin already enabled'), 'admin');
+			$this->getSession()->addFlashMessage( _m('Error: Plugin already enabled'), 'admin', 'ERROR' );
 		}
 		$this->redirectTo(osc_admin_base_url(true) . "?page=plugin");
 	}
@@ -47,7 +47,7 @@ class CAdminPlugin extends Controller_Administration
 			{
 				ClassLoader::getInstance()->getClassInstance( 'PluginManager' )->uninstall($pn);
 			}
-			osc_add_flash_error_message(sprintf(_m('There was a fatal error and the plugin was not installed.<br />Error: "%s" Line: %s<br/>File: %s'), $aError['message'], $aError['line'], $aError['file']), 'admin');
+			$this->getSession()->addFlashMessage( sprintf(_m('There was a fatal error and the plugin was not installed.<br />Error: "%s" Line: %s<br/>File: %s'), $aError['message'], $aError['line'], $aError['file']), 'admin', 'ERROR' );
 			$this->redirectTo(osc_admin_base_url(true) . "?page=plugin");
 		}
 	}

@@ -41,7 +41,7 @@ class CAdminSettings extends Controller_Administration
 		$mailserverSsl = Params::getParam('mailserver_ssl');
 		if (!in_array($mailserverType, array('custom', 'gmail'))) 
 		{
-			osc_add_flash_error_message(_m('Mail server type is incorrect'), 'admin');
+			$this->getSession()->addFlashMessage( _m('Mail server type is incorrect'), 'admin', 'ERROR' );
 			$this->redirectTo(osc_admin_base_url(true) . '?page=settings&action=mailserver');
 		}
 		$iUpdated+= Preference::newInstance()->update(array('s_value' => $mailserverAuth), array('s_name' => 'mailserver_auth'));
@@ -54,7 +54,7 @@ class CAdminSettings extends Controller_Administration
 		$iUpdated+= Preference::newInstance()->update(array('s_value' => $mailserverSsl), array('s_name' => 'mailserver_ssl'));
 		if ($iUpdated > 0) 
 		{
-			osc_add_flash_ok_message(_m('Mail server configuration has changed'), 'admin');
+			$this->getSession()->addFlashMessage( _m('Mail server configuration has changed'), 'admin' );
 		}
 		$this->redirectTo(osc_admin_base_url(true) . '?page=settings&action=mailserver');
 	}

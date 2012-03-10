@@ -64,15 +64,15 @@ class CAdminUser extends Controller_Administration
 		switch ($success) 
 		{
 		case (1):
-			osc_add_flash_error_message(_m('Passwords don\'t match'), 'admin');
+			$this->getSession()->addFlashMessage( _m('Passwords don\'t match'), 'admin', 'ERROR' );
 			break;
 
 		case (2):
-			osc_add_flash_ok_message(_m('The user has been updated and activated'), 'admin');
+			$this->getSession()->addFlashMessage( _m('The user has been updated and activated'), 'admin' );
 			break;
 
 		default:
-			osc_add_flash_ok_message(_m('The user has been updated'), 'admin');
+			$this->getSession()->addFlashMessage( _m('The user has been updated'), 'admin' );
 			break;
 		}
 		$this->redirectTo(osc_admin_base_url(true) . '?page=user');

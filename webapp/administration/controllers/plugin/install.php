@@ -37,11 +37,11 @@ class CAdminPlugin extends Controller_Administration
 		{
 			//run this after installing the plugin
 			$this->pluginManager->runHook( 'install_' . $pluginName );
-			osc_add_flash_ok_message(_m('Plugin installed'), 'admin');
+			$this->getSession()->addFlashMessage( _m('Plugin installed'), 'admin' );
 		}
 		else
 		{
-			osc_add_flash_error_message(_m('Error: Plugin already installed'), 'admin');
+			$this->getSession()->addFlashMessage( _m('Error: Plugin already installed'), 'admin', 'ERROR' );
 		}
 		$this->redirectTo(osc_admin_base_url(true) . "?page=plugin");
 	}
@@ -55,7 +55,7 @@ class CAdminPlugin extends Controller_Administration
 			{
 				$this->pluginManager->uninstall($pn);
 			}
-			osc_add_flash_error_message(sprintf(_m('There was a fatal error and the plugin was not installed.<br />Error: "%s" Line: %s<br/>File: %s'), $aError['message'], $aError['line'], $aError['file']), 'admin');
+			$this->getSession()->addFlashMessage( sprintf(_m('There was a fatal error and the plugin was not installed.<br />Error: "%s" Line: %s<br/>File: %s'), $aError['message'], $aError['line'], $aError['file']), 'admin', 'ERROR' );
 			$this->redirectTo(osc_admin_base_url(true) . "?page=plugin");
 		}
 	}

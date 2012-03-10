@@ -46,7 +46,7 @@ class CWebUserNonSecure extends Controller
 					Alerts::newInstance()->update(array('s_email' => $userEmailTmp['s_new_email']), array('fk_i_user_id' => $userEmailTmp['fk_i_user_id']));
 					$this->getSession()->_set('userEmail', $userEmailTmp['s_new_email']);
 					UserEmailTmp::newInstance()->delete(array('s_new_email' => $userEmailTmp['s_new_email']));
-					osc_add_flash_ok_message(_m('Your email has been changed successfully'));
+					$this->getSession()->addFlashMessage( _m('Your email has been changed successfully') );
 					$this->redirectTo(osc_user_profile_url());
 				}
 				else
@@ -72,7 +72,7 @@ class CWebUserNonSecure extends Controller
 			}
 			if ($result == 1) 
 			{
-				osc_add_flash_ok_message(_m('Alert activated'));
+				$this->getSession()->addFlashMessage( _m('Alert activated') );
 			}
 			else
 			{
@@ -87,7 +87,7 @@ class CWebUserNonSecure extends Controller
 			if ($email != '' && $secret != '') 
 			{
 				Alerts::newInstance()->delete(array('s_email' => $email, 'S_secret' => $secret));
-				osc_add_flash_ok_message(_m('Unsubscribed correctly'));
+				$this->getSession()->addFlashMessage( _m('Unsubscribed correctly') );
 			}
 			else
 			{

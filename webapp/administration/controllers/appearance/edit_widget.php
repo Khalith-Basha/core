@@ -34,11 +34,11 @@ class CAdminAppearance extends Controller_Administration
 		$res = $widgetModel->update(array('s_description' => Params::getParam('description'), 's_content' => Params::getParam('content')), array('pk_i_id' => Params::getParam('id')));
 		if ($res) 
 		{
-			osc_add_flash_ok_message(_m('Widget updated correctly'), 'admin');
+			$this->getSession()->addFlashMessage( _m('Widget updated correctly'), 'admin' );
 		}
 		else
 		{
-			osc_add_flash_ok_message(_m('Widget cannot be updated correctly'), 'admin');
+			$this->getSession()->addFlashMessage( _m('Widget cannot be updated correctly'), 'admin' );
 		}
 		$this->redirectTo(osc_admin_base_url(true) . "?page=appearance&action=widgets");
 	}

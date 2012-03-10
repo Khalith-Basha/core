@@ -60,7 +60,7 @@ class CWebUser extends Controller_Cacheable
 		switch ($success) 
 		{
 		case (0): // recover ok
-			osc_add_flash_ok_message(_m('We have sent you an email with the instructions to reset your password'));
+			$this->getSession()->addFlashMessage( _m('We have sent you an email with the instructions to reset your password') );
 			$this->redirectToBaseUrl();
 			break;
 

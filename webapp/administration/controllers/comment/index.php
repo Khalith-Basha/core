@@ -44,7 +44,7 @@ class CAdminComment extends Controller_Administration
 						$iUpdated = $this->itemCommentManager->delete(array('pk_i_id' => $_id));
 						osc_add_hook("delete_comment", $_id);
 					}
-					osc_add_flash_ok_message(_m('The comments have been deleted'), 'admin');
+					$this->getSession()->addFlashMessage( _m('The comments have been deleted'), 'admin' );
 					break;
 
 				case 'activate_all':
@@ -57,7 +57,7 @@ class CAdminComment extends Controller_Administration
 						}
 						osc_add_hook("activate_comment", $_id);
 					}
-					osc_add_flash_ok_message(_m('The comments have been approved'), 'admin');
+					$this->getSession()->addFlashMessage( _m('The comments have been approved'), 'admin' );
 					break;
 
 				case 'deactivate_all':
@@ -66,7 +66,7 @@ class CAdminComment extends Controller_Administration
 						$this->itemCommentManager->update(array('b_active' => 0), array('pk_i_id' => $_id));
 						osc_add_hook("deactivate_comment", $_id);
 					}
-					osc_add_flash_ok_message(_m('The comments have been disapproved'), 'admin');
+					$this->getSession()->addFlashMessage( _m('The comments have been disapproved'), 'admin' );
 					break;
 
 				case 'enable_all':
@@ -79,7 +79,7 @@ class CAdminComment extends Controller_Administration
 						}
 						osc_add_hook("enable_comment", $_id);
 					}
-					osc_add_flash_ok_message(_m('The comments have been approved'), 'admin');
+					$this->getSession()->addFlashMessage( _m('The comments have been approved'), 'admin' );
 					break;
 
 				case 'disable_all':
@@ -88,7 +88,7 @@ class CAdminComment extends Controller_Administration
 						$this->itemCommentManager->update(array('b_enabled' => 0), array('pk_i_id' => $_id));
 						osc_add_hook("disable_comment", $_id);
 					}
-					osc_add_flash_ok_message(_m('The comments have been disapproved'), 'admin');
+					$this->getSession()->addFlashMessage( _m('The comments have been disapproved'), 'admin' );
 					break;
 				}
 			}

@@ -38,7 +38,7 @@ class CAdminSettings extends Controller_Administration
 			$preferenceModel->update(array('s_value' => 0), array('s_name' => 'save_latest_searches'));
 		}
 		$preferenceModel->update(array('s_value' => Params::getParam('customPurge')), array('s_name' => 'purge_latest_searches'));
-		osc_add_flash_ok_message(_m('Settings have been updated'), 'admin');
+		$this->getSession()->addFlashMessage( _m('Settings have been updated'), 'admin' );
 		$this->redirectTo(osc_admin_base_url(true) . '?page=settings&action=latestsearches');
 	}
 }

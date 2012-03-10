@@ -46,30 +46,31 @@ class CAdminUser extends Controller_Administration
 	{
 		$userActions = $this->getClassLoader()->getClassInstance( 'Manager_User', false, array( true ) );
 		$success = $userActions->add();
+		$session = $this->getSession();
 		switch ($success) 
 		{
 		case 1:
-			osc_add_flash_ok_message(_m('The user has been created. We\'ve sent an activation e-mail'), 'admin');
+			$session->addFlashMessage(_m('The user has been created. We\'ve sent an activation e-mail') );
 			break;
 
 		case 2:
-			osc_add_flash_ok_message(_m('The user has been created successfully'), 'admin');
+			$session->addFlashMessage(_m('The user has been created successfully') );
 			break;
 
 		case 3:
-			osc_add_flash_warning_message(_m('Sorry, but that e-mail is already in use'), 'admin');
+			$session->addFlashMessage(_m('Sorry, but that e-mail is already in use'), 'WARNING' );
 			break;
 
 		case 5:
-			osc_add_flash_warning_message(_m('The specified e-mail is not valid'), 'admin');
+			$session->addFlashMessage(_m('The specified e-mail is not valid'), 'WARNING' );
 			break;
 
 		case 6:
-			osc_add_flash_warning_message(_m('Sorry, the password cannot be empty'), 'admin');
+			$session->addFlashMessage(_m('Sorry, the password cannot be empty'), 'WARNING' );
 			break;
 
 		case 7:
-			osc_add_flash_warning_message(_m("Sorry, passwords don't match"), 'admin');
+			$session->addFlashMessage(_m("Sorry, passwords don't match"), 'WARNING' );
 			break;
 		}
 		$this->redirectTo(osc_admin_base_url(true) . '?page=user');

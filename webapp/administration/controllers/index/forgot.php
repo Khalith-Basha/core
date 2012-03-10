@@ -30,7 +30,7 @@ class CAdminIndex extends Controller_Default
 		}
 		else
 		{
-			osc_add_flash_error_message(_m('Sorry, the link is not valid'), 'admin');
+			$this->getSession()->addFlashMessage( _m('Sorry, the link is not valid'), 'admin', 'ERROR' );
 			$this->redirectTo(osc_admin_base_url());
 		}
 	}
@@ -44,18 +44,18 @@ class CAdminIndex extends Controller_Default
 			if (Params::getParam('new_password') == Params::getParam('new_password2')) 
 			{
 				$userModel->update(array('s_secret' => osc_genRandomPassword(), 's_password' => sha1(Params::getParam('new_password'))), array('pk_i_id' => $admin['pk_i_id']));
-				osc_add_flash_ok_message(_m('The password has been changed'), 'admin');
+				$this->getSession()->addFlashMessage( _m('The password has been changed'), 'admin' );
 				$this->redirectTo(osc_admin_base_url());
 			}
 			else
 			{
-				osc_add_flash_error_message(_m('Error, the password don\'t match'), 'admin');
+				$this->getSession()->addFlashMessage( _m('Error, the password don\'t match'), 'admin', 'ERROR' );
 				$this->redirectTo(osc_forgot_admin_password_confirm_url(Params::getParam('adminId'), Params::getParam('code')));
 			}
 		}
 		else
 		{
-			osc_add_flash_error_message(_m('Sorry, the link is not valid'), 'admin');
+			$this->getSession()->addFlashMessage( _m('Sorry, the link is not valid'), 'admin', 'ERROR' );
 		}
 		$this->redirectTo(osc_admin_base_url());
 	}

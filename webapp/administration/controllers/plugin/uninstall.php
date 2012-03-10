@@ -26,7 +26,7 @@ class CAdminPlugin extends Controller_Administration
 		$pn = Params::getParam("plugin");
 		$pluginManager->runHook($pn . '_uninstall');
 		$pluginManager->uninstall($pn);
-		osc_add_flash_ok_message(_m('Plugin uninstalled'), 'admin');
+		$this->getSession()->addFlashMessage( _m('Plugin uninstalled'), 'admin' );
 		$this->redirectTo(osc_admin_base_url(true) . "?page=plugin");
 	}
 }

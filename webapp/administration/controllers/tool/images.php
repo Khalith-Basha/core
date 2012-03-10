@@ -106,7 +106,7 @@ class CAdminTool extends Controller_Administration
 					
 				}
 			}
-			osc_add_flash_ok_message(_m('Re-generation complete'), 'admin');
+			$this->getSession()->addFlashMessage( _m('Re-generation complete'), 'admin' );
 			$this->redirectTo(osc_admin_base_url(true) . '?page=tool&action=images');
 			break;
 		}

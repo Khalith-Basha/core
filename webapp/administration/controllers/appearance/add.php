@@ -38,29 +38,29 @@ class CAdminAppearance extends Controller_Administration
 		{
 		case (0):
 			$msg = _m('The theme folder is not writable');
-			osc_add_flash_error_message($msg, 'admin');
+			$this->getSession()->addFlashMessage( $msg, 'admin', 'ERROR' );
 			break;
 
 		case (1):
 			$msg = _m('The theme has been installed correctly');
-			osc_add_flash_ok_message($msg, 'admin');
+			$this->getSession()->addFlashMessage( $msg, 'admin' );
 			break;
 
 		case (2):
 			$msg = _m('The zip file is not valid');
-			osc_add_flash_error_message($msg, 'admin');
+			$this->getSession()->addFlashMessage( $msg, 'admin', 'ERROR' );
 			break;
 
 		case (3):
 			$msg = _m('No file was uploaded');
-			osc_add_flash_error_message($msg, 'admin');
+			$this->getSession()->addFlashMessage( $msg, 'admin', 'ERROR' );
 			$this->redirectTo(osc_admin_base_url(true) . "?page=appearance&action=add");
 			break;
 
 		case (-1):
 		default:
 			$msg = _m('There was a problem adding the theme');
-			osc_add_flash_error_message($msg, 'admin');
+			$this->getSession()->addFlashMessage( $msg, 'admin', 'ERROR' );
 			break;
 		}
 		$this->redirectTo(osc_admin_base_url(true) . "?page=appearance");

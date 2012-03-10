@@ -24,7 +24,7 @@ class CAdminComment extends Controller_Administration
 	{
 		$this->itemCommentManager = ClassLoader::getInstance()->getClassInstance( 'Model_ItemComment' );
 		$this->itemCommentManager->deleteByPrimaryKey(Params::getParam('id'));
-		osc_add_flash_ok_message(_m('The comment have been deleted'), 'admin');
+		$this->getSession()->addFlashMessage( _m('The comment have been deleted'), 'admin' );
 		osc_run_hook('delete_comment', Params::getParam('id'));
 		$this->redirectTo(osc_admin_base_url(true) . "?page=comment");
 	}

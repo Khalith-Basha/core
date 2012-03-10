@@ -38,7 +38,7 @@ class CAdminMedia extends Controller_Administration
 					}
 					$this->resourcesManager->deleteResourcesIds($ids);
 				}
-				osc_add_flash_ok_message(_m('Resource deleted'), 'admin');
+				$this->getSession()->addFlashMessage( _m('Resource deleted'), 'admin' );
 				break;
 
 			default:

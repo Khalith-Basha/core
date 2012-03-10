@@ -56,7 +56,7 @@ class CAdminSettings extends Controller_Administration
 		$iUpdated+= $preference->update(array('s_value' => $regUserPostComments), array('s_name' => 'reg_user_post_comments'));
 		if ($iUpdated > 0) 
 		{
-			osc_add_flash_ok_message(_m('Comments\' settings have been updated'), 'admin');
+			$this->getSession()->addFlashMessage( _m('Comments\' settings have been updated'), 'admin' );
 		}
 		$this->redirectTo(osc_admin_base_url(true) . '?page=settings&action=comments');
 	}

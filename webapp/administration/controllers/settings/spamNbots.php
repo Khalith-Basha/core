@@ -41,7 +41,7 @@ class CAdminSettings extends Controller_Administration
 		$iUpdated+= $preferenceModel->update(array('s_value' => $recaptchaPubKey), array('s_name' => 'recaptchaPubKey'));
 		if ($iUpdated > 0) 
 		{
-			osc_add_flash_ok_message(_m('Akismet and reCAPTCHA have been updated'), 'admin');
+			$this->getSession()->addFlashMessage( _m('Akismet and reCAPTCHA have been updated'), 'admin' );
 		}
 		$this->redirectTo(osc_admin_base_url(true) . '?page=settings&action=spamNbots');
 	}

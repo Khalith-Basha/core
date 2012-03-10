@@ -81,7 +81,7 @@ class CWebItem extends Controller_Default
 		$item_url = $classLoader->getClassInstance( 'Url_Item' )->getDetailsUrl( $item );
 		$item_url = '<a href="' . $item_url . '" >' . $item_url . '</a>';
 		Params::setParam('item_url', $item_url);
-		osc_add_flash_ok_message(sprintf(_m('We just send your message to %s'), $aItem['friendName']));
+		$this->getSession()->addFlashMessage( sprintf(_m('We just send your message to %s'), $aItem['friendName']) );
 
 		$success = true;
 		if ($success) 

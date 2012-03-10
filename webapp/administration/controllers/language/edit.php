@@ -33,13 +33,13 @@ class CAdminLanguage extends Controller_Administration
 		$sLocale = Params::getParam('id');
 		if (!preg_match('/.{2}_.{2}/', $sLocale)) 
 		{
-			osc_add_flash_error_message(_m('Language id isn\'t in the correct format'), 'admin');
+			$this->getSession()->addFlashMessage( _m('Language id isn\'t in the correct format'), 'admin', 'ERROR' );
 			$this->redirectTo(osc_admin_base_url(true) . '?page=language');
 		}
 		$aLocale = $this->localeManager->findByPrimaryKey($sLocale);
 		if (count($aLocale) == 0) 
 		{
-			osc_add_flash_error_message(_m('Language id doesn\'t exist'), 'admin');
+			$this->getSession()->addFlashMessage( _m('Language id doesn\'t exist'), 'admin', 'ERROR' );
 			$this->redirectTo(osc_admin_base_url(true) . '?page=language');
 		}
 		$this->getView()->assign("aLocale", $aLocale);
@@ -64,7 +64,7 @@ class CAdminLanguage extends Controller_Administration
 		// formatting variables
 		if (!preg_match('/.{2}_.{2}/', $languageCode)) 
 		{
-			osc_add_flash_error_message(_m('Language id isn\'t in the correct format'), 'admin');
+			$this->getSession()->addFlashMessage( _m('Language id isn\'t in the correct format'), 'admin', 'ERROR' );
 			$this->redirectTo(osc_admin_base_url(true) . '?page=language');
 		}
 		$enabledWebstie = ($enabledWebstie != '' ? true : false);
@@ -73,21 +73,21 @@ class CAdminLanguage extends Controller_Administration
 		$languageName = trim($languageName);
 		if ($languageName == '') 
 		{
-			osc_add_flash_error_message(_m('Language name can\'t be empty'), 'admin');
+			$this->getSession()->addFlashMessage( _m('Language name can\'t be empty'), 'admin', 'ERROR' );
 			$this->redirectTo(osc_admin_base_url(true) . '?page=language');
 		}
 		$languageShortName = strip_tags($languageShortName);
 		$languageShortName = trim($languageShortName);
 		if ($languageShortName == '') 
 		{
-			osc_add_flash_error_message(_m('Language short name can\'t be empty'), 'admin');
+			$this->getSession()->addFlashMessage( _m('Language short name can\'t be empty'), 'admin', 'ERROR' );
 			$this->redirectTo(osc_admin_base_url(true) . '?page=language');
 		}
 		$languageDescription = strip_tags($languageDescription);
 		$languageDescription = trim($languageDescription);
 		if ($languageDescription == '') 
 		{
-			osc_add_flash_error_message(_m('Language description can\'t be empty'), 'admin');
+			$this->getSession()->addFlashMessage( _m('Language description can\'t be empty'), 'admin', 'ERROR' );
 			$this->redirectTo(osc_admin_base_url(true) . '?page=language');
 		}
 		$languageCurrencyFormat = strip_tags($languageCurrencyFormat);
@@ -100,7 +100,7 @@ class CAdminLanguage extends Controller_Administration
 		$iUpdated = $this->localeManager->update($array, array('pk_c_code' => $languageCode));
 		if ($iUpdated > 0) 
 		{
-			osc_add_flash_ok_message(sprintf(_m('%s has been updated'), $languageShortName), 'admin');
+			$this->getSession()->addFlashMessage( sprintf(_m('%s has been updated'), $languageShortName), 'admin' );
 		}
 		$this->redirectTo(osc_admin_base_url(true) . '?page=language');
 	}

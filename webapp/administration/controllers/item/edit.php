@@ -71,12 +71,12 @@ class CAdminItem extends Controller_Administration
 			{
 				ClassLoader::getInstance()->getClassInstance( 'Model_Item' )->update(array('fk_i_user_id' => NULL, 's_contact_name' => Params::getParam('contactName'), 's_contact_email' => Params::getParam('contactEmail')), array('pk_i_id' => Params::getParam('id'), 's_secret' => Params::getParam('secret')));
 			}
-			osc_add_flash_ok_message(_m('Changes saved correctly'), 'admin');
+			$this->getSession()->addFlashMessage( _m('Changes saved correctly'), 'admin' );
 			$this->redirectTo(osc_admin_base_url(true) . "?page=item");
 		}
 		else
 		{
-			osc_add_flash_error_message($success, 'admin');
+			$this->getSession()->addFlashMessage( $success, 'admin', 'ERROR' );
 			$this->redirectTo(osc_admin_base_url(true) . "?page=item&action=edit&id=" . Params::getParam('id'));
 		}
 	}

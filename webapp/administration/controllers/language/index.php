@@ -39,7 +39,7 @@ class CAdminLanguage extends Controller_Administration
 			{
 				if ($action == 'enable' && $default_lang == $id && $enabled == 0) 
 				{
-					osc_add_flash_error_message(sprintf(_m('The language can\'t be disabled because it\'s the default language. You can change modify it in General Settings'), $i), 'admin');
+					$this->getSession()->addFlashMessage( sprintf(_m('The language can\'t be disabled because it\'s the default language. You can change modify it in General Settings'), $i), 'admin', 'ERROR' );
 				}
 				else
 				{
@@ -53,11 +53,11 @@ class CAdminLanguage extends Controller_Administration
 					$aValues = array('b_enabled_bo' => $enabled);
 					$this->localeManager->update($aValues, array('pk_c_code' => $id));
 				}
-				osc_add_flash_ok_message($msg, 'admin');
+				$this->getSession()->addFlashMessage( $msg, 'admin' );
 			}
 			else
 			{
-				osc_add_flash_error_message(_m('There was a problem updating the language. The language id was lost'), 'admin');
+				$this->getSession()->addFlashMessage( _m('There was a problem updating the language. The language id was lost'), 'admin', 'ERROR' );
 			}
 			$this->redirectTo(osc_admin_base_url(true) . '?page=language');
 			break;
@@ -72,11 +72,11 @@ class CAdminLanguage extends Controller_Administration
 				{
 					$this->localeManager->update($aValues, array('pk_c_code' => $i));
 				}
-				osc_add_flash_ok_message($msg, 'admin');
+				$this->getSession()->addFlashMessage( $msg, 'admin' );
 			}
 			else
 			{
-				osc_add_flash_error_message(_m('There was a problem updating the languages. The language ids were lost'), 'admin');
+				$this->getSession()->addFlashMessage( _m('There was a problem updating the languages. The language ids were lost'), 'admin', 'ERROR' );
 			}
 			$this->redirectTo(osc_admin_base_url(true) . '?page=language');
 			break;
@@ -99,11 +99,11 @@ class CAdminLanguage extends Controller_Administration
 						$this->localeManager->update($aValues, array('pk_c_code' => $i));
 					}
 				}
-				osc_add_flash_ok_message($msg, 'admin');
+				$this->getSession()->addFlashMessage( $msg, 'admin' );
 			}
 			else
 			{
-				osc_add_flash_error_message(_m('There was a problem updating the languages. The language ids were lost'), 'admin');
+				$this->getSession()->addFlashMessage( _m('There was a problem updating the languages. The language ids were lost'), 'admin', 'ERROR' );
 			}
 			$this->redirectTo(osc_admin_base_url(true) . '?page=language');
 			break;
@@ -118,11 +118,11 @@ class CAdminLanguage extends Controller_Administration
 				{
 					$this->localeManager->update($aValues, array('pk_c_code' => $i));
 				}
-				osc_add_flash_ok_message($msg, 'admin');
+				$this->getSession()->addFlashMessage( $msg, 'admin' );
 			}
 			else
 			{
-				osc_add_flash_error_message(_m('There was a problem updating the languages. The language ids were lost'), 'admin');
+				$this->getSession()->addFlashMessage( _m('There was a problem updating the languages. The language ids were lost'), 'admin', 'ERROR' );
 			}
 			$this->redirectTo(osc_admin_base_url(true) . '?page=language');
 			break;
@@ -137,11 +137,11 @@ class CAdminLanguage extends Controller_Administration
 				{
 					$this->localeManager->update($aValues, array('pk_c_code' => $i));
 				}
-				osc_add_flash_ok_message($msg, 'admin');
+				$this->getSession()->addFlashMessage( $msg, 'admin' );
 			}
 			else
 			{
-				osc_add_flash_error_message(_m('There was a problem updating the languages. The language ids were lost'), 'admin');
+				$this->getSession()->addFlashMessage( _m('There was a problem updating the languages. The language ids were lost'), 'admin', 'ERROR' );
 			}
 			$this->redirectTo(osc_admin_base_url(true) . '?page=language');
 			break;
@@ -157,16 +157,16 @@ class CAdminLanguage extends Controller_Administration
 						$this->localeManager->deleteLocale($code);
 						if (!osc_deleteDir(osc_translations_path() . $code)) 
 						{
-							osc_add_flash_error_message(sprintf(_m('Directory "%s" couldn\'t be removed'), $code), 'admin');
+							$this->getSession()->addFlashMessage( sprintf(_m('Directory "%s" couldn\'t be removed'), $code), 'admin', 'ERROR' );
 						}
 						else
 						{
-							osc_add_flash_ok_message(sprintf(_m('Directory "%s" has been successfully removed'), $code), 'admin');
+							$this->getSession()->addFlashMessage( sprintf(_m('Directory "%s" has been successfully removed'), $code), 'admin' );
 						}
 					}
 					else
 					{
-						osc_add_flash_error_message(sprintf(_m('Directory "%s" couldn\'t be removed because it\'s the default language. Set another language as default first and try again'), $code), 'admin');
+						$this->getSession()->addFlashMessage( sprintf(_m('Directory "%s" couldn\'t be removed because it\'s the default language. Set another language as default first and try again'), $code), 'admin', 'ERROR' );
 					}
 				}
 			}
