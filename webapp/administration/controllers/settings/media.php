@@ -42,16 +42,16 @@ class CAdminSettings extends Controller_Administration
 		switch ($type_watermark) 
 		{
 		case 'none':
-			$iUpdated+= Preference::newInstance()->update(array('s_value' => ''), array('s_name' => 'watermark_text_color'));
-			$iUpdated+= Preference::newInstance()->update(array('s_value' => ''), array('s_name' => 'watermark_text'));
-			$iUpdated+= Preference::newInstance()->update(array('s_value' => ''), array('s_name' => 'watermark_image'));
+			$iUpdated+= ClassLoader::getInstance()->getClassInstance( 'Model_Preference' )->update(array('s_value' => ''), array('s_name' => 'watermark_text_color'));
+			$iUpdated+= ClassLoader::getInstance()->getClassInstance( 'Model_Preference' )->update(array('s_value' => ''), array('s_name' => 'watermark_text'));
+			$iUpdated+= ClassLoader::getInstance()->getClassInstance( 'Model_Preference' )->update(array('s_value' => ''), array('s_name' => 'watermark_image'));
 			break;
 
 		case 'text':
-			$iUpdated+= Preference::newInstance()->update(array('s_value' => $watermark_color), array('s_name' => 'watermark_text_color'));
-			$iUpdated+= Preference::newInstance()->update(array('s_value' => $watermark_text), array('s_name' => 'watermark_text'));
-			$iUpdated+= Preference::newInstance()->update(array('s_value' => ''), array('s_name' => 'watermark_image'));
-			$iUpdated+= Preference::newInstance()->update(array('s_value' => Params::getParam('watermark_text_place')), array('s_name' => 'watermark_place'));
+			$iUpdated+= ClassLoader::getInstance()->getClassInstance( 'Model_Preference' )->update(array('s_value' => $watermark_color), array('s_name' => 'watermark_text_color'));
+			$iUpdated+= ClassLoader::getInstance()->getClassInstance( 'Model_Preference' )->update(array('s_value' => $watermark_text), array('s_name' => 'watermark_text'));
+			$iUpdated+= ClassLoader::getInstance()->getClassInstance( 'Model_Preference' )->update(array('s_value' => ''), array('s_name' => 'watermark_image'));
+			$iUpdated+= ClassLoader::getInstance()->getClassInstance( 'Model_Preference' )->update(array('s_value' => Params::getParam('watermark_text_place')), array('s_name' => 'watermark_place'));
 			break;
 
 		case 'image':
@@ -62,16 +62,16 @@ class CAdminSettings extends Controller_Administration
 				$path = osc_content_path() . 'uploads/watermark.png';
 				if (move_uploaded_file($tmpName, $path)) 
 				{
-					$iUpdated+= Preference::newInstance()->update(array('s_value' => $path), array('s_name' => 'watermark_image'));
+					$iUpdated+= ClassLoader::getInstance()->getClassInstance( 'Model_Preference' )->update(array('s_value' => $path), array('s_name' => 'watermark_image'));
 				}
 				else
 				{
-					$iUpdated+= Preference::newInstance()->update(array('s_value' => ''), array('s_name' => 'watermark_image'));
+					$iUpdated+= ClassLoader::getInstance()->getClassInstance( 'Model_Preference' )->update(array('s_value' => ''), array('s_name' => 'watermark_image'));
 				}
 			}
-			$iUpdated+= Preference::newInstance()->update(array('s_value' => ''), array('s_name' => 'watermark_text_color'));
-			$iUpdated+= Preference::newInstance()->update(array('s_value' => ''), array('s_name' => 'watermark_text'));
-			$iUpdated+= Preference::newInstance()->update(array('s_value' => Params::getParam('watermark_image_place')), array('s_name' => 'watermark_place'));
+			$iUpdated+= ClassLoader::getInstance()->getClassInstance( 'Model_Preference' )->update(array('s_value' => ''), array('s_name' => 'watermark_text_color'));
+			$iUpdated+= ClassLoader::getInstance()->getClassInstance( 'Model_Preference' )->update(array('s_value' => ''), array('s_name' => 'watermark_text'));
+			$iUpdated+= ClassLoader::getInstance()->getClassInstance( 'Model_Preference' )->update(array('s_value' => Params::getParam('watermark_image_place')), array('s_name' => 'watermark_place'));
 			break;
 
 		default:
@@ -89,13 +89,13 @@ class CAdminSettings extends Controller_Administration
 		{
 			$use_imagick = false;
 		}
-		$iUpdated+= Preference::newInstance()->update(array('s_value' => $maxSizeKb), array('s_name' => 'maxSizeKb'));
-		$iUpdated+= Preference::newInstance()->update(array('s_value' => $allowedExt), array('s_name' => 'allowedExt'));
-		$iUpdated+= Preference::newInstance()->update(array('s_value' => $dimThumbnail), array('s_name' => 'dimThumbnail'));
-		$iUpdated+= Preference::newInstance()->update(array('s_value' => $dimPreview), array('s_name' => 'dimPreview'));
-		$iUpdated+= Preference::newInstance()->update(array('s_value' => $dimNormal), array('s_name' => 'dimNormal'));
-		$iUpdated+= Preference::newInstance()->update(array('s_value' => $keepOriginalImage), array('s_name' => 'keep_original_image'));
-		$iUpdated+= Preference::newInstance()->update(array('s_value' => $use_imagick), array('s_name' => 'use_imagick'));
+		$iUpdated+= ClassLoader::getInstance()->getClassInstance( 'Model_Preference' )->update(array('s_value' => $maxSizeKb), array('s_name' => 'maxSizeKb'));
+		$iUpdated+= ClassLoader::getInstance()->getClassInstance( 'Model_Preference' )->update(array('s_value' => $allowedExt), array('s_name' => 'allowedExt'));
+		$iUpdated+= ClassLoader::getInstance()->getClassInstance( 'Model_Preference' )->update(array('s_value' => $dimThumbnail), array('s_name' => 'dimThumbnail'));
+		$iUpdated+= ClassLoader::getInstance()->getClassInstance( 'Model_Preference' )->update(array('s_value' => $dimPreview), array('s_name' => 'dimPreview'));
+		$iUpdated+= ClassLoader::getInstance()->getClassInstance( 'Model_Preference' )->update(array('s_value' => $dimNormal), array('s_name' => 'dimNormal'));
+		$iUpdated+= ClassLoader::getInstance()->getClassInstance( 'Model_Preference' )->update(array('s_value' => $keepOriginalImage), array('s_name' => 'keep_original_image'));
+		$iUpdated+= ClassLoader::getInstance()->getClassInstance( 'Model_Preference' )->update(array('s_value' => $use_imagick), array('s_name' => 'use_imagick'));
 		if ($iUpdated > 0) 
 		{
 			$this->getSession()->addFlashMessage( _m('Media config has been updated'), 'admin' );

@@ -36,10 +36,10 @@ class CAdminUser extends Controller_Administration
 		$enabledUsers = (($enabledUsers != '') ? true : false);
 		$notifyNewUser = Params::getParam('notify_new_user');
 		$notifyNewUser = (($notifyNewUser != '') ? true : false);
-		$iUpdated+= Preference::newInstance()->update(array('s_value' => $enabledUserValidation), array('s_name' => 'enabled_user_validation'));
-		$iUpdated+= Preference::newInstance()->update(array('s_value' => $enabledUserRegistration), array('s_name' => 'enabled_user_registration'));
-		$iUpdated+= Preference::newInstance()->update(array('s_value' => $enabledUsers), array('s_name' => 'enabled_users'));
-		$iUpdated+= Preference::newInstance()->update(array('s_value' => $notifyNewUser), array('s_name' => 'notify_new_user'));
+		$iUpdated+= ClassLoader::getInstance()->getClassInstance( 'Model_Preference' )->update(array('s_value' => $enabledUserValidation), array('s_name' => 'enabled_user_validation'));
+		$iUpdated+= ClassLoader::getInstance()->getClassInstance( 'Model_Preference' )->update(array('s_value' => $enabledUserRegistration), array('s_name' => 'enabled_user_registration'));
+		$iUpdated+= ClassLoader::getInstance()->getClassInstance( 'Model_Preference' )->update(array('s_value' => $enabledUsers), array('s_name' => 'enabled_users'));
+		$iUpdated+= ClassLoader::getInstance()->getClassInstance( 'Model_Preference' )->update(array('s_value' => $notifyNewUser), array('s_name' => 'notify_new_user'));
 		if ($iUpdated > 0) 
 		{
 			$this->getSession()->addFlashMessage( _m('Users\' settings have been updated'), 'admin' );

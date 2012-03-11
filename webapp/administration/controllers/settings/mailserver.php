@@ -44,14 +44,14 @@ class CAdminSettings extends Controller_Administration
 			$this->getSession()->addFlashMessage( _m('Mail server type is incorrect'), 'admin', 'ERROR' );
 			$this->redirectTo(osc_admin_base_url(true) . '?page=settings&action=mailserver');
 		}
-		$iUpdated+= Preference::newInstance()->update(array('s_value' => $mailserverAuth), array('s_name' => 'mailserver_auth'));
-		$iUpdated+= Preference::newInstance()->update(array('s_value' => $mailserverPop), array('s_name' => 'mailserver_pop'));
-		$iUpdated+= Preference::newInstance()->update(array('s_value' => $mailserverType), array('s_name' => 'mailserver_type'));
-		$iUpdated+= Preference::newInstance()->update(array('s_value' => $mailserverHost), array('s_name' => 'mailserver_host'));
-		$iUpdated+= Preference::newInstance()->update(array('s_value' => $mailserverPort), array('s_name' => 'mailserver_port'));
-		$iUpdated+= Preference::newInstance()->update(array('s_value' => $mailserverUsername), array('s_name' => 'mailserver_username'));
-		$iUpdated+= Preference::newInstance()->update(array('s_value' => $mailserverPassword), array('s_name' => 'mailserver_password'));
-		$iUpdated+= Preference::newInstance()->update(array('s_value' => $mailserverSsl), array('s_name' => 'mailserver_ssl'));
+		$iUpdated+= ClassLoader::getInstance()->getClassInstance( 'Model_Preference' )->update(array('s_value' => $mailserverAuth), array('s_name' => 'mailserver_auth'));
+		$iUpdated+= ClassLoader::getInstance()->getClassInstance( 'Model_Preference' )->update(array('s_value' => $mailserverPop), array('s_name' => 'mailserver_pop'));
+		$iUpdated+= ClassLoader::getInstance()->getClassInstance( 'Model_Preference' )->update(array('s_value' => $mailserverType), array('s_name' => 'mailserver_type'));
+		$iUpdated+= ClassLoader::getInstance()->getClassInstance( 'Model_Preference' )->update(array('s_value' => $mailserverHost), array('s_name' => 'mailserver_host'));
+		$iUpdated+= ClassLoader::getInstance()->getClassInstance( 'Model_Preference' )->update(array('s_value' => $mailserverPort), array('s_name' => 'mailserver_port'));
+		$iUpdated+= ClassLoader::getInstance()->getClassInstance( 'Model_Preference' )->update(array('s_value' => $mailserverUsername), array('s_name' => 'mailserver_username'));
+		$iUpdated+= ClassLoader::getInstance()->getClassInstance( 'Model_Preference' )->update(array('s_value' => $mailserverPassword), array('s_name' => 'mailserver_password'));
+		$iUpdated+= ClassLoader::getInstance()->getClassInstance( 'Model_Preference' )->update(array('s_value' => $mailserverSsl), array('s_name' => 'mailserver_ssl'));
 		if ($iUpdated > 0) 
 		{
 			$this->getSession()->addFlashMessage( _m('Mail server configuration has changed'), 'admin' );

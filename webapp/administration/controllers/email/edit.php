@@ -32,7 +32,7 @@ class CAdminEmail extends Controller_Administration
 	{
 		if (Params::getParam("id") == '') 
 		{
-			$this->redirectTo(osc_admin_base_url(true) . "?page=emails");
+			$this->redirectTo(osc_admin_base_url(true) . "?page=email");
 		}
 		$this->getView()->assign("email", $this->emailManager->findByPrimaryKey(Params::getParam("id")));
 		$this->doView("emails/frm.php");
@@ -40,8 +40,9 @@ class CAdminEmail extends Controller_Administration
 
 	public function doPost( HttpRequest $req, HttpResponse $res )
 	{
+		$input = $this->getInput();
 		$id = Params::getParam("id");
-		$s_internal_name = Params::getParam("s_internal_name");
+		$s_internal_name = $input->getString( 's_internal_name' );
 		$aFieldsDescription = array();
 		$postParams = Params::getParamsAsArray();
 		$not_empty = false;
@@ -69,7 +70,7 @@ class CAdminEmail extends Controller_Administration
 					$this->emailManager->updateInternalName($id, $s_internal_name);
 				}
 				$this->getSession()->addFlashMessage( _m('The email/alert has been updated'), 'admin' );
-				$this->redirectTo(osc_admin_base_url(true) . "?page=emails");
+				$this->redirectTo(osc_admin_base_url(true) . "?page=email");
 			}
 			$this->getSession()->addFlashMessage( _m('You can\'t repeat internal name'), 'admin', 'ERROR' );
 		}
@@ -77,7 +78,7 @@ class CAdminEmail extends Controller_Administration
 		{
 			$this->getSession()->addFlashMessage( _m('The email couldn\'t be updated, at least one title should not be empty'), 'admin', 'ERROR' );
 		}
-		$this->redirectTo(osc_admin_base_url(true) . "?page=emails?action=edit&id=" . $id);
+		$this->redirectTo(osc_admin_base_url(true) . "?page=email&action=edit&id=" . $id);
 	}
 }
 

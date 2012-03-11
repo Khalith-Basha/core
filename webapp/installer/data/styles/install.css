@@ -1,8 +1,11 @@
-/* RESET */
 
 html, body {
     padding: 0;
     margin: 0;
+}
+
+html {
+    background: #f7f7f7;
 }
 
 body {
@@ -21,11 +24,27 @@ img {
     height: 0;
 }
 
-/* LAYOUT */
+div.ProgressBar
+{
+	width: 200px;
+	background-color: #ccc;
+	height: 15px;
+	padding: 2px;
+	border: 1px solid gray;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+	div.ProgressBar > div
+	{
+		width: 25%;
+		height: 100%;
+		background-color: #3067AE;
+	}
+
 #wrapper {
-    padding: 20px 30px;
     width: 900px;
-    margin: 20px auto;
+    margin: 0px auto;
     border-radius: 10px;
     -khtml-border-radius: 10px;
     -moz-border-radius: 10px;
@@ -47,21 +66,22 @@ img {
     margin: auto;
 }
 
-ul#nav {
-    list-style-type: none;
-    text-align: center;
-    margin-left: 150px;
+ol.StepList {
+	margin-left: auto;
+	margin-right: auto;
+	width: 100%;
+	display: inline-block;
 }
 
-ul#nav li {
-    float:left;
-    padding: 10px 30px;
-}
-
-/* PRINT */
-html {
-    background: #f7f7f7;
-}
+	ol.StepList li {
+		margin: 0px 10px;
+		padding: 0px 10px;
+		float: left;
+	}
+	
+	ol.StepList li.past { color: gray; }
+	ol.StepList li.actual { color: black; font-weight: bold; }
+	ol.StepList li.next { color: blue; }
 
 #wrapper {
     background-color: white;
@@ -97,8 +117,6 @@ a:hover {
 
 .installation {
     text-align: center;
-    /*border-bottom:1px solid grey;*/
-    /*margin-bottom: 20px;*/
 }
 
 ul#nav {
@@ -116,19 +134,6 @@ ul#nav {
 
 .margin20 {
     margin: 20px 0;
-}
-
-.past {
-    background: url('images/past.gif') repeat-x scroll 0 32px transparent;
-}
-
-.actual {
-    background: url('images/past.gif') repeat-x scroll 0 32px transparent;
-    font-weight: bold;
-}
-
-.next {
-    background: url('images/next.gif') repeat-x scroll 0 32px transparent;
 }
 
 .form-table {
@@ -234,14 +239,6 @@ ul#nav {
     color: #666666;
     border-bottom: 1px solid grey;
     margin-top: 0;
-}
-
-.welcome {
-    width: 125px;
-    font-weight: normal;
-    color: #666666;
-    border-bottom: 1px solid grey;
-    font-size: 28px;
 }
 
 h2.title {
@@ -446,8 +443,6 @@ table.list-categories td {
     position: absolute;
 }
 
-/* AUTOCOMPLETE */
-
 .ui-autocomplete {
     list-style: none;
     width: 500px;
@@ -484,11 +479,6 @@ table.list-categories td {
 .question {
     margin-top: 15px;
     margin-left: 10px;
-}
-
-.question-skip {
-   margin-top:2px;
-   margin-left:5px;
 }
 
 #footer {
@@ -620,3 +610,4 @@ label.error,
     font-size: 14px;
     text-decoration: none;
 }
+

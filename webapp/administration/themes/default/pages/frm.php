@@ -22,7 +22,7 @@ $edit = isset($page['pk_i_id']);
 if ( $edit ) 
 {
 	$title = __("Edit page");
-	$action_frm = "edit_post";
+	$action_frm = "edit";
 	$btn_text = __("Update");
 }
 else

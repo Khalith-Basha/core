@@ -49,18 +49,18 @@ class CAdminSettings extends Controller_Administration
 		$maxLatestItems = (int)strip_tags($maxLatestItems);
 		$numItemsSearch = (int)$numItemsSearch;
 		$error = "";
-		$iUpdated+= $preference->update(array('s_value' => $sPageTitle), array('s_section' => 'osclass', 's_name' => 'pageTitle'));
-		$iUpdated+= $preference->update(array('s_value' => $sPageDesc), array('s_section' => 'osclass', 's_name' => 'pageDesc'));
-		$iUpdated+= $preference->update(array('s_value' => $sContactEmail), array('s_section' => 'osclass', 's_name' => 'contactEmail'));
-		$iUpdated+= $preference->update(array('s_value' => $sLanguage), array('s_section' => 'osclass', 's_name' => 'language'));
-		$iUpdated+= $preference->update(array('s_value' => $sDateFormat), array('s_section' => 'osclass', 's_name' => 'dateFormat'));
-		$iUpdated+= $preference->update(array('s_value' => $sCurrency), array('s_section' => 'osclass', 's_name' => 'currency'));
-		$iUpdated+= $preference->update(array('s_value' => $sWeekStart), array('s_section' => 'osclass', 's_name' => 'weekStart'));
-		$iUpdated+= $preference->update(array('s_value' => $sTimeFormat), array('s_section' => 'osclass', 's_name' => 'timeFormat'));
-		$iUpdated+= $preference->update(array('s_value' => $sTimezone), array('s_section' => 'osclass', 's_name' => 'timezone'));
+		$iUpdated+= $preference->update(array('s_value' => $sPageTitle), array('s_section' => 'osc', 's_name' => 'pageTitle'));
+		$iUpdated+= $preference->update(array('s_value' => $sPageDesc), array('s_section' => 'osc', 's_name' => 'pageDesc'));
+		$iUpdated+= $preference->update(array('s_value' => $sContactEmail), array('s_section' => 'osc', 's_name' => 'contactEmail'));
+		$iUpdated+= $preference->update(array('s_value' => $sLanguage), array('s_section' => 'osc', 's_name' => 'language'));
+		$iUpdated+= $preference->update(array('s_value' => $sDateFormat), array('s_section' => 'osc', 's_name' => 'dateFormat'));
+		$iUpdated+= $preference->update(array('s_value' => $sCurrency), array('s_section' => 'osc', 's_name' => 'currency'));
+		$iUpdated+= $preference->update(array('s_value' => $sWeekStart), array('s_section' => 'osc', 's_name' => 'weekStart'));
+		$iUpdated+= $preference->update(array('s_value' => $sTimeFormat), array('s_section' => 'osc', 's_name' => 'timeFormat'));
+		$iUpdated+= $preference->update(array('s_value' => $sTimezone), array('s_section' => 'osc', 's_name' => 'timezone'));
 		if (is_int($sNumRssItems)) 
 		{
-			$iUpdated+= $preference->update(array('s_value' => $sNumRssItems), array('s_section' => 'osclass', 's_name' => 'num_rss_items'));
+			$iUpdated+= $preference->update(array('s_value' => $sNumRssItems), array('s_section' => 'osc', 's_name' => 'num_rss_items'));
 		}
 		else
 		{
@@ -69,14 +69,14 @@ class CAdminSettings extends Controller_Administration
 		}
 		if (is_int($maxLatestItems)) 
 		{
-			$iUpdated+= $preference->update(array('s_value' => $maxLatestItems), array('s_section' => 'osclass', 's_name' => 'maxLatestItems@home'));
+			$iUpdated+= $preference->update(array('s_value' => $maxLatestItems), array('s_section' => 'osc', 's_name' => 'maxLatestItems@home'));
 		}
 		else
 		{
 			if ($error != '') $error.= "<br/>";
 			$error.= _m('Number of recent items displayed at home must be integer');
 		}
-		$iUpdated+= $preference->update(array('s_value' => $numItemsSearch), array('s_section' => 'osclass', 's_name' => 'defaultResultsPerPage@search'));
+		$iUpdated+= $preference->update(array('s_value' => $numItemsSearch), array('s_section' => 'osc', 's_name' => 'defaultResultsPerPage@search'));
 		if ($iUpdated > 0) 
 		{
 			if ($error != '') 

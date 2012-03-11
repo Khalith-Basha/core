@@ -79,16 +79,16 @@ class Manager_User
 		ClassLoader::getInstance()->getClassInstance( 'Model_User' )->update(array('b_active' => '1'), array('pk_i_id' => $userId));
 		return 2;
 	}
-	//edit...
-	function edit($userId) 
+	
+	public function edit($userId) 
 	{
-		$input = $this->prepareData(false);
-		$this->manager->update($input, array('pk_i_id' => $userId));
+		$input = $this->prepareData( false );
+		$this->manager->update( $input, array('pk_i_id' => $userId) );
 		if ($this->is_admin) 
 		{
 			ClassLoader::getInstance()->getClassInstance( 'Model_Item' )->update(array('s_contact_name' => $input['s_name'], 's_contact_email' => $input['s_email']), array('fk_i_user_id' => $userId));
 			ClassLoader::getInstance()->getClassInstance( 'Model_ItemComment' )->update(array('s_author_name' => $input['s_name'], 's_author_email' => $input['s_email']), array('fk_i_user_id' => $userId));
-			Alerts::newInstance()->update(array('s_email' => $input['s_email']), array('fk_i_user_id' => $userId));
+			ClassLoader::getInstance()->getClassInstance( 'Model_Alerts' )->update(array('s_email' => $input['s_email']), array('fk_i_user_id' => $userId));
 			ClassLoader::getInstance()->getClassInstance( 'Logging_Logger' )->insertLog('user', 'edit', $userId, $input['s_email'], $this->is_admin ? 'admin' : 'user', $this->is_admin ? osc_logged_admin_id() : osc_logged_user_id());
 		}
 		else
@@ -167,7 +167,8 @@ class Manager_User
 		}
 		return false;
 	}
-	function prepareData($is_add) 
+
+	public function prepareData($is_add) 
 	{
 		$classLoader = ClassLoader::getInstance();
 		$classLoader->loadFile( 'helpers/security' );

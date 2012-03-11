@@ -22,8 +22,8 @@
             </tbody>
         </table>
         <div class="admin-user">
-            A password will be automatically generated for you if you leave this blank.
-            <img src="<?php echo osc_get_absolute_url() ?>installer/data/images/question.png" class="question-skip vtip" title="You can modify username and password if you like, only need change the inputs value." alt=""/>
+		<p>A password will be automatically generated for you if you leave this blank.</p>
+		<p>You can modify username and password if you like, only need change the inputs value.</p>
         </div>
         <h2 class="title">Contact information</h2>
         <table class="contact-info">

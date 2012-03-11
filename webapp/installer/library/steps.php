@@ -197,7 +197,8 @@ function oc_install()
 	*/
 	create_config_file($dbname, $username, $password, $dbhost, $tableprefix);
 
-	$comm = new Database_Command( $conn->getResource() );
+	$dbHandle = $conn->getResource();
+	$comm = new Database_Command( $dbHandle );
 
 	$sql = file_get_contents( ABS_PATH . '/installer/data/struct.sql' );
 	$queries = explode( ';', $sql );

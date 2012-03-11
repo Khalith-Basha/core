@@ -18,18 +18,16 @@
 $userForm = ClassLoader::getInstance()->getClassInstance( 'Form_User' );
 if (isset($user['pk_i_id'])) 
 {
-	// editing...
 	$edit = true;
 	$title = __('Edit');
-	$action_frm = 'edit_post';
+	$action_frm = 'edit';
 	$btn_text = __('Update');
 }
 else
 {
-	// adding...
 	$edit = false;
 	$title = __('Add');
-	$action_frm = 'create_post';
+	$action_frm = 'create';
 	$btn_text = __('Add');
 }
 ?>
@@ -43,58 +41,41 @@ else
         </script>
                 <div id="content_header" class="content_header">
                     <div style="float: left;">
-                        <img src="<?php
-echo osc_current_admin_theme_url('images/user-group-icon.png'); ?>" title="" alt=""/>
+                        <img src="<?php echo osc_current_admin_theme_url('images/user-group-icon.png'); ?>" title="" alt=""/>
                     </div>
-                    <div id="content_header_arrow">&raquo; <?php
-echo $title; ?></div>
+                    <div id="content_header_arrow">&raquo; <?php echo $title; ?></div>
                     <div style="clear: both;"></div>
                 </div>
                 <div id="content_separator"></div>
                 <!-- add new item form -->
                 <div id="settings_form" style="border: 1px solid #ccc; background: #eee; ">
                     <div style="padding: 20px;">
-                        <form action="<?php
-echo osc_admin_base_url(true); ?>" method="post" onSubmit="return checkForm()">
-                            <input type="hidden" name="page" value="users" />
-                            <input type="hidden" name="action" value="<?php
-echo $action_frm; ?>"/>
-                            <?php
-$userForm->primary_input_hidden($user); ?>
-                            <?php
-if ($edit) 
-{ ?>
-                                <input type="hidden" name="b_enabled" value="<?php
-	echo $user['b_enabled']; ?>" />
-                                <input type="hidden" name="b_active" value="<?php
-	echo $user['b_active']; ?>" />
-                            <?php
-} ?>
+                        <form action="<?php echo osc_admin_base_url(true); ?>" method="post" onSubmit="return checkForm()">
+                            <input type="hidden" name="page" value="user" />
+                            <input type="hidden" name="action" value="<?php echo $action_frm; ?>"/>
+                            <?php $userForm->primary_input_hidden($user); ?>
+                            <?php if ($edit)  { ?>
+                                <input type="hidden" name="b_enabled" value="<?php echo $user['b_enabled']; ?>" />
+                                <input type="hidden" name="b_active" value="<?php echo $user['b_active']; ?>" />
+                            <?php } ?>
                             <div style="float: left; width: 50%;">
                                 <fieldset>
-                                    <legend><?php
-_e('E-mail'); ?></legend>
-                                    <?php
-$userForm->email_text($user); ?>
+                                    <legend><?php _e('E-mail'); ?></legend>
+                                    <?php $userForm->email_text($user); ?>
                                 </fieldset>
                             </div>
 
                             <div style="float: left; width: 50%;">
                                 <fieldset style="float:left;">
-                                    <legend><?php
-_e('Password'); ?></legend>
-                                    <?php
-$userForm->password_text($user); ?>
+                                    <legend><?php _e('Password'); ?></legend>
+                                    <?php $userForm->password_text($user); ?>
                                 </fieldset>
                                 <fieldset style="float:left;">
-                                    <legend><?php
-_e('Re-type the password'); ?> </legend>
-                                    <?php
-$userForm->check_password_text($user); ?>
+                                    <legend><?php _e('Re-type the password'); ?> </legend>
+                                    <?php $userForm->check_password_text($user); ?>
                                 </fieldset>
                                 <p id="password-error" style="display:none;">
-                                    <?php
-_e('Passwords don\'t match'); ?>.
+                                    <?php _e('Passwords don\'t match'); ?>.
                                 </p>
                             </div>
 
@@ -102,77 +83,54 @@ _e('Passwords don\'t match'); ?>.
 
                             <div style="float: left; width: 50%;">
                                 <fieldset>
-                                    <legend><?php
-_e('Real name'); ?></legend>
-                                    <?php
-$userForm->name_text($user); ?>
+                                    <legend><?php _e('Real name'); ?></legend>
+                                    <?php $userForm->name_text($user); ?>
                                 </fieldset>
                                 <fieldset>
-                                    <legend><?php
-_e('Cell phone'); ?></legend>
-                                    <?php
-$userForm->mobile_text($user); ?>
+                                    <legend><?php _e('Cell phone'); ?></legend>
+                                    <?php $userForm->mobile_text($user); ?>
                                 </fieldset>
                                 <fieldset>
-                                    <legend><?php
-_e('Phone'); ?></legend>
-                                    <?php
-$userForm->phone_land_text($user); ?>
+                                    <legend><?php _e('Phone'); ?></legend>
+                                    <?php $userForm->phone_land_text($user); ?>
                                 </fieldset>
                                 <fieldset>
-                                    <legend><?php
-_e('Website'); ?></legend>
-                                    <?php
-$userForm->website_text($user); ?>
+                                    <legend><?php _e('Website'); ?></legend>
+                                    <?php $userForm->website_text($user); ?>
                                 </fieldset>
                                 <fieldset style="min-height: 166px;">
-                                    <legend><?php
-_e('Additional information'); ?></legend>
-                                    <?php
-$userForm->multilanguage_info($locales, $user); ?>
+                                    <legend><?php _e('Additional information'); ?></legend>
+                                    <?php $userForm->multilanguage_info($locales, $user); ?>
                                 </fieldset>
                             </div>
                             <div style="float: left; width: 50%;">
                                 <fieldset>
-                                    <legend><?php
-_e('Country'); ?></legend>
-                                    <?php
-$userForm->country_select($countries, $user); ?>
+                                    <legend><?php _e('Country'); ?></legend>
+                                    <?php $userForm->country_select($countries, $user); ?>
                                 </fieldset>
                                 <fieldset>
-                                    <legend><?php
-_e('Region'); ?></legend>
-                                    <?php
-$userForm->region_select($regions, $user); ?>
+                                    <legend><?php _e('Region'); ?></legend>
+                                    <?php $userForm->region_select($regions, $user); ?>
                                 </fieldset>
                                 <fieldset>
-                                    <legend><?php
-_e('City'); ?></legend>
-                                    <?php
-$userForm->city_select($cities, $user); ?>
+                                    <legend><?php _e('City'); ?></legend>
+                                    <?php $userForm->city_select($cities, $user); ?>
                                 </fieldset>
                                 <fieldset>
-                                    <legend><?php
-_e('City Area'); ?></legend>
-                                    <?php
-$userForm->city_area_text($user); ?>
+                                    <legend><?php _e('City Area'); ?></legend>
+                                    <?php $userForm->city_area_text($user); ?>
                                 </fieldset>
                                 <fieldset>
-                                    <legend><?php
-_e('Address'); ?></legend>
-                                    <?php
-$userForm->address_text($user); ?>
+                                    <legend><?php _e('Address'); ?></legend>
+                                    <?php $userForm->address_text($user); ?>
                                 </fieldset>
                                 <fieldset>
-                                    <legend><?php
-_e('User type'); ?></legend>
-                                    <?php
-$userForm->is_company_select($user); ?>
+                                    <legend><?php _e('User type'); ?></legend>
+                                    <?php $userForm->is_company_select($user); ?>
                                 </fieldset>
                             </div>
                             <div style="clear: both;"></div>
-                            <input id="button_save" type="submit" value="<?php
-echo $btn_text; ?>" />
+                            <input id="button_save" type="submit" value="<?php echo $btn_text; ?>" />
                         </form>
                     </div>
                 </div>

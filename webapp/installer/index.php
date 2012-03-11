@@ -46,8 +46,18 @@ require_once 'osc/helpers/search.php';
 require_once 'osc/helpers/paths.php';
 require_once 'library/steps.php';
 
-$step = Params::getParam('step');
-if (!is_numeric($step)) 
+// List of steps on the installer.
+$steps = array(
+	1 => 'Welcome and requirements',
+	2 => 'Database',
+	3 => 'Target',
+	4 => 'Categories',
+	5 => 'Congratulations'
+);
+$numSteps = count( $steps );
+
+$step = intval( Params::getParam('step') );
+if( $step < 1 || $step > $numSteps ) 
 {
 	$step = 1;
 }
@@ -93,13 +103,13 @@ switch ($step)
 		break;
 
 	case 2:
-		if (Params::getParam('ping_engines') == '1' || isset($_COOKIE['osclass_ping_engines'])) 
+		if (Params::getParam('ping_engines') == '1' || isset($_COOKIE['osc_ping_engines'])) 
 		{
-			setcookie('osclass_ping_engines', 1, time() + (24 * 60 * 60));
+			setcookie('osc_ping_engines', 1, time() + (24 * 60 * 60));
 		}
 		else
 		{
-			setcookie('osclass_ping_engines', 0, time() + (24 * 60 * 60));
+			setcookie('osc_ping_engines', 0, time() + (24 * 60 * 60));
 		}
 		showView( 'views/db_config.php' );
 		break;
@@ -138,8 +148,8 @@ switch ($step)
 
 	case 5:
 		$password = Params::getParam('password');
-		ping_search_engines($_COOKIE['osclass_ping_engines']);
-		setcookie('osclass_ping_engines', '', time() - 3600);
+		ping_search_engines($_COOKIE['osc_ping_engines']);
+		setcookie('osc_ping_engines', '', time() - 3600);
 		$data = savePreferences( $password );
 		showView( 'views/finish.php', array( 'data' => $data ) );
 		break;

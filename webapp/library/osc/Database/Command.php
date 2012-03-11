@@ -776,7 +776,7 @@ class Database_Command
 			$this->limit($limit, $offset);
 		}
 		$sql = $this->_getSelect();
-		$result = $this->query($sql);
+		$result = $this->query( $sql );
 		$this->_resetSelect();
 		return $result;
 	}

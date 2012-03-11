@@ -9,8 +9,10 @@
     </head>
     <body class="login">
         <div id="login">
-            <h1>
-                <a href="<?php echo osc_base_url(); ?>" title="OpenSourceClassifieds"><img src="images/osclass-logo.png" border="0" title="" alt=""/></a>
-	    </h1>
+	<div class="OpenSourceClassifieds_Logo" style="font-family: serif; width: 60%; position: relative; background-color: white; height: 100px; margin-left: auto; margin-right: auto;">
+		<h2 style="color: #2960EC; font-weight: normal; position: absolute;; font-size: 2.2em; padding-left: 36%; margin: 0px;">OpenSource</h2>
+		<h1 style="color: #2F3A8F; font-weight: bold; text-align: center; font-size: 5.4em; padding-top: 3%;">Classifieds</h1>
+		<br style="clear: both;" />
+	</div>
 	<?php echo $view->render( 'flashMessages' ); ?>
 

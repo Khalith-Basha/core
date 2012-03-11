@@ -29,7 +29,6 @@ require_once 'osc/Model/Default.php';
  *
  * @package OpenSourceClassifieds
  * @subpackage Model
- * @since 2.3
  */
 class DAO extends Model
 {
@@ -37,46 +36,43 @@ class DAO extends Model
 	 * DBCommandClass object
 	 *
 	 * @acces public
-	 * @since 2.3
-	 * @var DBCommandClass
+	 * @private DBCommandClass
 	 */
-	var $dao;
+	protected $dao;
 	/**
 	 * Table name
 	 *
 	 * @access private
 	 * @since unknown
-	 * @var string
+	 * @private string
 	 */
-	var $tableName;
+	protected $tableName;
 	/**
 	 * Table prefix
 	 *
 	 * @access private
 	 * @since unknown
-	 * @var string
+	 * @private string
 	 */
-	var $tablePrefix;
+	protected $tablePrefix;
 	/**
 	 * Primary key of the table
 	 *
 	 * @access private
-	 * @since 2.3
-	 * @var string
+	 * @private string
 	 */
-	var $primaryKey;
+	private $primaryKey;
 	/**
 	 * Fields of the table
 	 *
 	 * @access private
-	 * @since 2.3
-	 * @var array
+	 * @private array
 	 */
-	var $fields;
+	private $fields;
 	/**
 	 * Init connection of the database and create DBCommandClass object
 	 */
-	function __construct()
+	public function __construct()
 	{
 		parent::__construct();
 		$conn = ClassLoader::getInstance()->getClassInstance( 'Database_Connection' ); 
@@ -92,7 +88,7 @@ class DAO extends Model
 	 * @param string $value
 	 * @return mixed If the result has been found, it return the array row. If not, it returns false
 	 */
-	function findByPrimaryKey($value) 
+	public function findByPrimaryKey($value) 
 	{
 		$this->dao->select($this->fields);
 		$this->dao->from($this->getTableName());
@@ -118,7 +114,7 @@ class DAO extends Model
 	 * @return mixed It return the number of affected rows if the update has been
 	 * correct or false if nothing has been modified
 	 */
-	function updateByPrimaryKey($values, $key) 
+	public function updateByPrimaryKey( array $values, $key) 
 	{
 		$cond = array($this->getPrimaryKey() => $key);
 		return $this->update($values, $cond);
@@ -132,7 +128,7 @@ class DAO extends Model
 	 * @return mixed It return the number of affected rows if the delete has been
 	 * correct or false if nothing has been modified
 	 */
-	function deleteByPrimaryKey($value) 
+	public function deleteByPrimaryKey($value) 
 	{
 		$cond = array($this->getPrimaryKey() => $value);
 		return $this->delete($cond);
@@ -144,7 +140,7 @@ class DAO extends Model
 	 * @since unknown
 	 * @return array
 	 */
-	function listAll() 
+	public function listAll() 
 	{
 		$this->dao->select($this->getFields());
 		$this->dao->from($this->getTableName());
@@ -163,7 +159,7 @@ class DAO extends Model
 	 * @param array $values
 	 * @return boolean
 	 */
-	function insert( array $values ) 
+	public function insert( array $values ) 
 	{
 		if( !$this->checkFieldKeys( array_keys( $values ) ) ) 
 		{
@@ -184,7 +180,7 @@ class DAO extends Model
 	 * @return mixed It return the number of affected rows if the update has been
 	 * correct or false if nothing has been modified
 	 */
-	function update($values, $where) 
+	public function update( array $values, array $where ) 
 	{
 		$valuesKeys = array_keys( $values );
 		if( !$this->checkFieldKeys( $valuesKeys ) )
@@ -211,7 +207,7 @@ class DAO extends Model
 	 * @return mixed It return the number of affected rows if the delete has been
 	 * correct or false if nothing has been modified
 	 */
-	function delete($where) 
+	public function delete( array $where )
 	{
 		if (!$this->checkFieldKeys(array_keys($where))) 
 		{
@@ -228,7 +224,7 @@ class DAO extends Model
 	 * @since unknown
 	 * @param string $table
 	 */
-	function setTableName($table) 
+	public function setTableName($table) 
 	{
 		$this->tableName = $this->tablePrefix . $table;
 	}
@@ -239,7 +235,7 @@ class DAO extends Model
 	 * @since unknown
 	 * @return string
 	 */
-	function getTableName() 
+	public function getTableName() 
 	{
 		return $this->tableName;
 	}
@@ -250,7 +246,7 @@ class DAO extends Model
 	 * @since unknown
 	 * @param string $key
 	 */
-	function setPrimaryKey($key) 
+	public function setPrimaryKey($key) 
 	{
 		$this->primaryKey = $key;
 	}
@@ -261,7 +257,7 @@ class DAO extends Model
 	 * @since unknown
 	 * @return string
 	 */
-	function getPrimaryKey() 
+	public function getPrimaryKey() 
 	{
 		return $this->primaryKey;
 	}
@@ -269,10 +265,9 @@ class DAO extends Model
 	 * Set fields array
 	 *
 	 * @access private
-	 * @since 2.3
 	 * @param array $fields
 	 */
-	function setFields($fields) 
+	public function setFields( array $fields )
 	{
 		$this->fields = $fields;
 	}
@@ -280,10 +275,9 @@ class DAO extends Model
 	 * Get fields array
 	 *
 	 * @access public
-	 * @since 2.3
 	 * @return array
 	 */
-	function getFields() 
+	public function getFields() 
 	{
 		return $this->fields;
 	}
@@ -291,11 +285,10 @@ class DAO extends Model
 	 * Check if the keys of the array exist in the $fields array
 	 *
 	 * @access private
-	 * @since 2.3
 	 * @param array $aKey
 	 * @return boolean
 	 */
-	function checkFieldKeys( array $aKey)
+	public function checkFieldKeys( array $aKey)
 	{
 		$modelKeys = $this->getFields();
 		foreach( $aKey as $key ) 
@@ -312,34 +305,11 @@ class DAO extends Model
 	 * Get table prefix
 	 *
 	 * @access public
-	 * @since 2.3
 	 * @return string
 	 */
-	function getTablePrefix() 
+	public function getTablePrefix() 
 	{
 		return $this->tablePrefix;
-	}
-	/**
-	 * Returns the last error code for the most recent mysqli function call
-	 *
-	 * @access public
-	 * @since 2.3
-	 * @return int
-	 */
-	function getErrorLevel() 
-	{
-		return $this->dao->getErrorLevel();
-	}
-	/**
-	 * Returns a string description of the last error for the most recent MySQLi function call
-	 *
-	 * @access public
-	 * @since 2.3
-	 * @return string
-	 */
-	function getErrorDesc() 
-	{
-		return $this->dao->getErrorDesc();
 	}
 	/**
 	 * Returns the number of rows in the table represented by this object.

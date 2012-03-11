@@ -34,7 +34,6 @@ class File
 
 	public function copyFrom( $path )
 	{
-		var_dump($path, $this->path);
 		return copy( $path, $this->path );
 	}
 

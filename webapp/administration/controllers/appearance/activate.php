@@ -21,7 +21,7 @@ class CAdminAppearance extends Controller_Administration
 	{
 		$preferenceModel = $this->getClassLoader()
 			->getClassInstance( 'Model_Preference' );
-		$preferenceModel->update( array( 's_value' => Params::getParam('theme')), array('s_section' => 'osclass', 's_name' => 'theme'));
+		$preferenceModel->update( array( 's_value' => Params::getParam('theme')), array('s_section' => 'osc', 's_name' => 'theme'));
 		$this->getSession()->addFlashMessage( _m('Theme activated correctly'), 'admin' );
 		osc_run_hook("theme_activate", Params::getParam('theme'));
 		$this->redirectTo( osc_admin_base_url( true ) . "?page=appearance" );

@@ -427,16 +427,22 @@ SQL;
 	 */
 	function internalNameExists($id, $internalName) 
 	{
-		$this->dao->select();
-		$this->dao->from($this->tableName);
-		$this->dao->where('s_internal_name', $internalName);
-		$this->dao->where('pk_i_id <> ' . $id);
-		$result = $this->dao->get();
-		if ($result->numRows() > 0) 
-		{
-			return true;
-		}
-		return false;
+		$sql = <<<SQL
+SELECT
+	1
+FROM
+	/*TABLE_PREFIX*/t_pages
+WHERE
+	s_internal_name = ?
+AND
+	pk_i_id <> ?
+LIMIT 1
+SQL;
+		$stmt = $this->prepareStatement( $sql );
+		$result = $this->fetch( $stmt );
+		$stmt->close();
+
+		return !is_null( $result );
 	}
 	function getDescriptionTableName() 
 	{

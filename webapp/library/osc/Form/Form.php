@@ -64,7 +64,7 @@ class Form
 		if (!$autocomplete)
 			echo ' autocomplete="off" ';
 		if ($readOnly)
-			echo 'disabled readonly ';
+			echo 'disabled="disabled" readonly="readonly" ';
 		echo '/>';
 	}
 	protected function generic_password($name, $value, $maxLength = null, $readOnly = false) 
@@ -73,7 +73,7 @@ class Form
 		if (isset($maxLength))
 			echo 'maxlength="' . $maxLength . '" ';
 		if ($readOnly)
-			echo 'disabled readonly ';
+			echo 'disabled="disabled" readonly="readonly" ';
 		echo '/>';
 	}
 	protected function generic_input_hidden($name, $value) 

@@ -100,7 +100,13 @@ class Database_Connection
 	 */
 	public function __destruct() 
 	{
-		$this->db->close();
+		if( $this->db instanceof mysqli )
+		{
+			if( false === @$this->db->close() )
+			{
+				// Do nothing.
+			}
+		}
 	}
 	/**
 	 * Set error num error and error description

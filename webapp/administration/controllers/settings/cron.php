@@ -30,7 +30,7 @@ class CAdminSettings extends Controller_Administration
 		$iUpdated = 0;
 		$bAutoCron = Params::getParam('auto_cron');
 		$bAutoCron = ($bAutoCron != '' ? true : false);
-		$iUpdated+= Preference::newInstance()->update(array('s_value' => $bAutoCron), array('s_name' => 'auto_cron'));
+		$iUpdated+= ClassLoader::getInstance()->getClassInstance( 'Model_Preference' )->update(array('s_value' => $bAutoCron), array('s_name' => 'auto_cron'));
 		if ($iUpdated > 0) 
 		{
 			$this->getSession()->addFlashMessage( _m('Cron config has been updated'), 'admin' );

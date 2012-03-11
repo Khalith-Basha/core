@@ -539,7 +539,7 @@ SQL;
 	 * @param array $aFieldsDescriptions
 	 * @param int $pk primary key
 	 */
-	public function updateByPrimaryKey($data, $pk) 
+	public function updateByPrimaryKey( array $data, $pk) 
 	{
 		$fields = $data['fields'];
 		$aFieldsDescription = $data['aFieldsDescription'];

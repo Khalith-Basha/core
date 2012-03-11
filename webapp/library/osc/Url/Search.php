@@ -105,7 +105,7 @@ class Url_Search extends Url_Abstract
 	function osc_update_search_url($params, $delimiter = '&amp;') 
 	{
 		$request = Params::getParamsAsArray('get');
-		unset($request['osclass']);
+		unset($request['osc']);
 		if (isset($request['sCategory[0]'])) 
 		{
 			unset($request['sCategory']);

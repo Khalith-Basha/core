@@ -15,20 +15,19 @@
  * You should have received a copy of the GNU Affero General Public
  * License along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+$pageForm = $classLoader->getClassInstance( 'Form_Page' );
 if (isset($email['pk_i_id'])) 
 {
-	//editing...
 	$edit = true;
 	$title = __("Edit email/alert");
-	$action_frm = "edit_post";
+	$action_frm = "edit";
 	$btn_text = __("Update");
 }
 else
 {
-	//adding...
 	$edit = false;
 	$title = __("Add an email/alert");
-	$action_frm = "add_post";
+	$action_frm = "add";
 	$btn_text = __('Add');
 }
 ?>
@@ -59,21 +58,22 @@ else
                 </div>
                 <div id="content_separator"></div>
                 <div id="settings_form">
-                    <form name="emails_form" id="emails_form" action="<?php echo osc_admin_base_url(true); ?>?page=email" method="post" onSubmit="return checkForm()">
+                    <form name="emails_form" id="emails_form" action="<?php echo osc_admin_base_url(true); ?>" method="post" onSubmit="return checkForm()">
                         <input type="hidden" name="action" value="<?php echo $action_frm; ?>" />
-                        <?php PageForm::primary_input_hidden($email); ?>
+                        <input type="hidden" name="page" value="email" />
+                        <?php $pageForm->primary_input_hidden($email); ?>
                         <div class="FormElement">
                             <div class="FormElementName">
                                 <?php _e('Internal name (name to easily identify this email/alert)'); ?>
                             </div>
-                            <div class="FormElementInput">
-                               <?php PageForm::internal_name_input_text($email); ?>
+			    <div class="FormElementInput">
+				<input id="s_internal_name" type="text" name="s_internal_name" value="email_item_inquiry" disabled="disabled" readonly="readonly" />
                             </div>
                         </div>
                         <div class="clear50"></div>
                         <?php
 $locales = ClassLoader::getInstance()->getClassInstance( 'Model_Locale' )->listAllEnabled();
-PageForm::multilanguage_name_description($locales, $email);
+$pageForm->multilanguage_name_description($locales, $email);
 ?>
                         <div class="FormElement">
                             <div class="FormElementName"></div>
