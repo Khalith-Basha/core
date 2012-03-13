@@ -42,10 +42,10 @@ class Model_Preference extends DAO
 	 */
 	function findValueByName($name) 
 	{
-		$this->dao->select('s_value');
-		$this->dao->from($this->getTableName());
-		$this->dao->where('s_name', $name);
-		$result = $this->dao->get();
+		$this->dbCommand->select('s_value');
+		$this->dbCommand->from($this->getTableName());
+		$this->dbCommand->where('s_name', $name);
+		$result = $this->dbCommand->get();
 		if ($result == false) 
 		{
 			return false;
@@ -67,10 +67,10 @@ class Model_Preference extends DAO
 	 */
 	public function findBySection($name) 
 	{
-		$this->dao->select();
-		$this->dao->from($this->getTableName());
-		$this->dao->where('s_section', $name);
-		$result = $this->dao->get();
+		$this->dbCommand->select();
+		$this->dbCommand->from($this->getTableName());
+		$this->dbCommand->where('s_section', $name);
+		$result = $this->dbCommand->get();
 		if ($result == false) 
 		{
 			return array();
@@ -89,9 +89,9 @@ class Model_Preference extends DAO
 	 */
 	public function toArray() 
 	{
-		$this->dao->select();
-		$this->dao->from($this->getTableName());
-		$result = $this->dao->get();
+		$this->dbCommand->select();
+		$this->dbCommand->from($this->getTableName());
+		$result = $this->dbCommand->get();
 		if ($result == false) 
 		{
 			return false;
@@ -151,7 +151,7 @@ class Model_Preference extends DAO
 	public function replace($key, $value, $section = 'osc', $type = 'STRING') 
 	{
 		$array_replace = array('s_name' => $key, 's_value' => $value, 's_section' => $section, 'e_type' => $type);
-		return $this->dao->replace($this->getTableName(), $array_replace);
+		return $this->dbCommand->replace($this->getTableName(), $array_replace);
 	}
 
 	public function insertOrUpdate( $key, $value, $section = 'osc', $type = 'STRING' )

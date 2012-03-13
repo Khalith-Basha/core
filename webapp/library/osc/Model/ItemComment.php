@@ -48,10 +48,10 @@ class Model_ItemComment extends DAO
 	 */
 	function findByItemIDAll($id) 
 	{
-		$this->dao->select();
-		$this->dao->from($this->getTableName());
-		$this->dao->where('fk_i_item_id', $id);
-		$result = $this->dao->get();
+		$this->dbCommand->select();
+		$this->dbCommand->from($this->getTableName());
+		$this->dbCommand->where('fk_i_item_id', $id);
+		$result = $this->dbCommand->get();
 		if ($result == false) 
 		{
 			return false;
@@ -86,15 +86,15 @@ class Model_ItemComment extends DAO
 		{
 			$commentsPerPage = osc_comments_per_page();
 		}
-		$this->dao->select();
-		$this->dao->from($this->getTableName());
+		$this->dbCommand->select();
+		$this->dbCommand->from($this->getTableName());
 		$conditions = array('fk_i_item_id' => $id, 'b_active' => 1, 'b_enabled' => 1);
-		$this->dao->where($conditions);
+		$this->dbCommand->where($conditions);
 		if (($page !== 'all') || ($commentsPerPage > 0)) 
 		{
-			$this->dao->limit(($page * $commentsPerPage), $commentsPerPage);
+			$this->dbCommand->limit(($page * $commentsPerPage), $commentsPerPage);
 		}
-		$result = $this->dao->get();
+		$result = $this->dbCommand->get();
 		if ($result == false) 
 		{
 			return false;
@@ -128,12 +128,12 @@ class Model_ItemComment extends DAO
 	 */
 	function totalComments($id) 
 	{
-		$this->dao->select('count(pk_i_id) as total');
-		$this->dao->from($this->getTableName());
+		$this->dbCommand->select('count(pk_i_id) as total');
+		$this->dbCommand->from($this->getTableName());
 		$conditions = array('fk_i_item_id' => $id, 'b_active' => 1, 'b_enabled' => 1);
-		$this->dao->where($conditions);
-		$this->dao->groupBy('fk_i_item_id');
-		$result = $this->dao->get();
+		$this->dbCommand->where($conditions);
+		$this->dbCommand->groupBy('fk_i_item_id');
+		$result = $this->dbCommand->get();
 		if ($result == false) 
 		{
 			return false;
@@ -158,11 +158,11 @@ class Model_ItemComment extends DAO
 	 */
 	function findByAuthorID($id) 
 	{
-		$this->dao->select();
-		$this->dao->from($this->getTableName());
+		$this->dbCommand->select();
+		$this->dbCommand->from($this->getTableName());
 		$conditions = array('fk_i_user_id' => $id, 'b_active' => 1, 'b_enabled' => 1);
-		$this->dao->where($conditions);
-		$result = $this->dao->get();
+		$this->dbCommand->where($conditions);
+		$result = $this->dbCommand->get();
 		if ($result == false) 
 		{
 			return false;
@@ -182,9 +182,9 @@ class Model_ItemComment extends DAO
 	 */
 	function getAllComments($itemId = null) 
 	{
-		$this->dao->select('c.*');
-		$this->dao->from($this->getTableName() . ' c');
-		$this->dao->from(DB_TABLE_PREFIX . 'item i');
+		$this->dbCommand->select('c.*');
+		$this->dbCommand->from($this->getTableName() . ' c');
+		$this->dbCommand->from(DB_TABLE_PREFIX . 'item i');
 		$conditions = array();
 		if (is_null($itemId)) 
 		{
@@ -194,9 +194,9 @@ class Model_ItemComment extends DAO
 		{
 			$conditions = array('i.pk_i_id' => $itemId, 'c.fk_i_item_id' => $itemId);
 		}
-		$this->dao->where($conditions);
-		$this->dao->orderBy('c.dt_pub_date', 'DESC');
-		$aux = $this->dao->get();
+		$this->dbCommand->where($conditions);
+		$this->dbCommand->orderBy('c.dt_pub_date', 'DESC');
+		$aux = $this->dbCommand->get();
 		$comments = $aux->result();
 		return $this->extendData($comments);
 	}
@@ -212,13 +212,13 @@ class Model_ItemComment extends DAO
 	{
 		if (!intval($num)) return false;
 		$lang = osc_current_user_locale();
-		$this->dao->select('c.*,c.s_title as comment_title, d.s_title');
-		$this->dao->from($this->getTableName() . ' c');
-		$this->dao->join(DB_TABLE_PREFIX . 'item i', 'i.pk_i_id = c.fk_i_item_id');
-		$this->dao->join(DB_TABLE_PREFIX . 't_item_description d', 'd.fk_i_item_id = c.fk_i_item_id');
-		$this->dao->orderBy('c.pk_i_id', 'DESC');
-		$this->dao->limit(0, $num);
-		$result = $this->dao->get();
+		$this->dbCommand->select('c.*,c.s_title as comment_title, d.s_title');
+		$this->dbCommand->from($this->getTableName() . ' c');
+		$this->dbCommand->join(DB_TABLE_PREFIX . 'item i', 'i.pk_i_id = c.fk_i_item_id');
+		$this->dbCommand->join(DB_TABLE_PREFIX . 't_item_description d', 'd.fk_i_item_id = c.fk_i_item_id');
+		$this->dbCommand->orderBy('c.pk_i_id', 'DESC');
+		$this->dbCommand->limit(0, $num);
+		$result = $this->dbCommand->get();
 		return $result->result();
 	}
 	/**
@@ -235,10 +235,10 @@ class Model_ItemComment extends DAO
 		$results = array();
 		foreach ($items as $item) 
 		{
-			$this->dao->select();
-			$this->dao->from(DB_TABLE_PREFIX . 't_item_description');
-			$this->dao->where('fk_i_item_id', $item['fk_i_item_id']);
-			$aux = $this->dao->get();
+			$this->dbCommand->select();
+			$this->dbCommand->from(DB_TABLE_PREFIX . 't_item_description');
+			$this->dbCommand->where('fk_i_item_id', $item['fk_i_item_id']);
+			$aux = $this->dbCommand->get();
 			$descriptions = $aux->result();
 			$item['locale'] = array();
 			foreach ($descriptions as $desc) 

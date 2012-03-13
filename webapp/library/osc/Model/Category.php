@@ -79,7 +79,7 @@ class Model_Category extends DAO
 			$sql = vsprintf($format, $args);
 			break;
 		}
-		$result = $this->dao->query(sprintf('SELECT * FROM (SELECT * FROM %s as a INNER JOIN %st_category_description as b ON a.pk_i_id = b.fk_i_category_id WHERE b.s_name != \'\' AND %s  ORDER BY a.i_position DESC) dummytable LEFT JOIN %st_category_stats as c ON dummytable.pk_i_id = c.fk_i_category_id GROUP BY pk_i_id ORDER BY i_position ASC', $this->getTableName(), DB_TABLE_PREFIX, $sql, DB_TABLE_PREFIX));
+		$result = $this->dbCommand->query(sprintf('SELECT * FROM (SELECT * FROM %s as a INNER JOIN %st_category_description as b ON a.pk_i_id = b.fk_i_category_id WHERE b.s_name != \'\' AND %s  ORDER BY a.i_position DESC) dummytable LEFT JOIN %st_category_stats as c ON dummytable.pk_i_id = c.fk_i_category_id GROUP BY pk_i_id ORDER BY i_position ASC', $this->getTableName(), DB_TABLE_PREFIX, $sql, DB_TABLE_PREFIX));
 		if ($result) 
 		{
 			return $result->result();
@@ -267,9 +267,9 @@ SQL;
 		{
 			return $this->listWhere('1 = 1');
 		}
-		$this->dao->select($this->getFields());
-		$this->dao->from($this->getTableName());
-		$result = $this->dao->get();
+		$this->dbCommand->select($this->getFields());
+		$this->dbCommand->from($this->getTableName());
+		$result = $this->dbCommand->get();
 		if ($result == false) 
 		{
 			return array();
@@ -431,7 +431,7 @@ SQL;
 	}
 	/**
 	 * Return a category given an id
-	 * This overwrite findByPrimaryKey of DAO model because we store the
+	 * This overwrite findByPrimaryKey of dbCommand model because we store the
 	 * categories on an array for the tree and it's faster than a SQL query
 	 *
 	 * @access public
@@ -457,10 +457,10 @@ SQL;
 		}
 		else
 		{
-			$this->dao->select($this->getFields());
-			$this->dao->from($this->getTableName());
-			$this->dao->where('pk_i_id', $categoryID);
-			$result = $this->dao->get();
+			$this->dbCommand->select($this->getFields());
+			$this->dbCommand->from($this->getTableName());
+			$this->dbCommand->where('pk_i_id', $categoryID);
+			$result = $this->dbCommand->get();
 			if ($result == false) 
 			{
 				return false;
@@ -471,11 +471,11 @@ SQL;
 		{
 			throw new Exception( 'Category does not have a primary key: ' . var_export( $category, true ) );
 		}
-		$this->dao->select();
-		$this->dao->from($this->getTablePrefix() . 't_category_description');
-		$this->dao->where('fk_i_category_id', $category['pk_i_id']);
-		$this->dao->orderBy('fk_c_locale_code');
-		$result = $this->dao->get();
+		$this->dbCommand->select();
+		$this->dbCommand->from($this->getTablePrefix() . 't_category_description');
+		$this->dbCommand->where('fk_i_category_id', $category['pk_i_id']);
+		$this->dbCommand->orderBy('fk_c_locale_code');
+		$result = $this->dbCommand->get();
 		if ($result == false) 
 		{
 			return false;
@@ -521,14 +521,14 @@ SQL;
 			$itemsModel->deleteByPrimaryKey($item["pk_i_id"]);
 		}
 		osc_run_hook("delete_category", $pk);
-		$this->dao->delete(DB_TABLE_PREFIX . 't_plugin_category', array("fk_i_category_id", $pk));
-		$this->dao->delete(DB_TABLE_PREFIX . 't_category_description', array("fk_i_category_id", $pk));
-		$this->dao->delete(DB_TABLE_PREFIX . 't_category_stats', array("fk_i_category_id", $pk));
-		$this->dao->delete(DB_TABLE_PREFIX . 't_category', array("pk_i_id", $pk));
-		$this->dao->query(sprintf("DELETE FROM %st_plugin_category WHERE fk_i_category_id = '%s'", DB_TABLE_PREFIX, $pk));
-		$this->dao->query(sprintf("DELETE FROM %st_category_description WHERE fk_i_category_id = '%s'", DB_TABLE_PREFIX, $pk));
-		$this->dao->query(sprintf("DELETE FROM %st_category_stats WHERE fk_i_category_id = '%s'", DB_TABLE_PREFIX, $pk));
-		$this->dao->query(sprintf("DELETE FROM %s WHERE pk_i_id = '%s'", $this->tableName, $pk));
+		$this->dbCommand->delete(DB_TABLE_PREFIX . 't_plugin_category', array("fk_i_category_id", $pk));
+		$this->dbCommand->delete(DB_TABLE_PREFIX . 't_category_description', array("fk_i_category_id", $pk));
+		$this->dbCommand->delete(DB_TABLE_PREFIX . 't_category_stats', array("fk_i_category_id", $pk));
+		$this->dbCommand->delete(DB_TABLE_PREFIX . 't_category', array("pk_i_id", $pk));
+		$this->dbCommand->query(sprintf("DELETE FROM %st_plugin_category WHERE fk_i_category_id = '%s'", DB_TABLE_PREFIX, $pk));
+		$this->dbCommand->query(sprintf("DELETE FROM %st_category_description WHERE fk_i_category_id = '%s'", DB_TABLE_PREFIX, $pk));
+		$this->dbCommand->query(sprintf("DELETE FROM %st_category_stats WHERE fk_i_category_id = '%s'", DB_TABLE_PREFIX, $pk));
+		$this->dbCommand->query(sprintf("DELETE FROM %s WHERE pk_i_id = '%s'", $this->tableName, $pk));
 	}
 	/**
 	 * Update a category
@@ -544,7 +544,7 @@ SQL;
 		$fields = $data['fields'];
 		$aFieldsDescription = $data['aFieldsDescription'];
 		//UPDATE for category
-		$this->dao->update($this->getTableName(), $fields, array('pk_i_id' => $pk));
+		$this->dbCommand->update($this->getTableName(), $fields, array('pk_i_id' => $pk));
 		foreach ($aFieldsDescription as $k => $fieldsDescription) 
 		{
 			//UPDATE for description of categories
@@ -567,10 +567,10 @@ SQL;
 			}
 			$fieldsDescription['s_slug'] = $slug;
 			$array_where = array('fk_i_category_id' => $pk, 'fk_c_locale_code' => $fieldsDescription["fk_c_locale_code"]);
-			$rs = $this->dao->update(DB_TABLE_PREFIX . 't_category_description', $fieldsDescription, $array_where);
+			$rs = $this->dbCommand->update(DB_TABLE_PREFIX . 't_category_description', $fieldsDescription, $array_where);
 			if ($rs == 0) 
 			{
-				$rows = $this->dao->query(sprintf("SELECT * FROM %s as a INNER JOIN %st_category_description as b ON a.pk_i_id = b.fk_i_category_id WHERE a.pk_i_id = '%s' AND b.fk_c_locale_code = '%s'", $this->tableName, DB_TABLE_PREFIX, $pk, $k));
+				$rows = $this->dbCommand->query(sprintf("SELECT * FROM %s as a INNER JOIN %st_category_description as b ON a.pk_i_id = b.fk_i_category_id WHERE a.pk_i_id = '%s' AND b.fk_c_locale_code = '%s'", $this->tableName, DB_TABLE_PREFIX, $pk, $k));
 				if ($rows->numRows == 0) 
 				{
 					$this->insertDescription($fieldsDescription);
@@ -588,8 +588,8 @@ SQL;
 	 */
 	public function insert( array $fields, $aFieldsDescription = null) 
 	{
-		$this->dao->insert($this->getTableName(), $fields);
-		$category_id = $this->dao->insertedId();
+		$this->dbCommand->insert($this->getTableName(), $fields);
+		$category_id = $this->dbCommand->insertedId();
 		foreach ($aFieldsDescription as $k => $fieldsDescription) 
 		{
 			$fieldsDescription['fk_i_category_id'] = $category_id;
@@ -609,7 +609,7 @@ SQL;
 				}
 			}
 			$fieldsDescription['s_slug'] = $slug;
-			$this->dao->insert(DB_TABLE_PREFIX . 't_category_description', $fieldsDescription);
+			$this->dbCommand->insert(DB_TABLE_PREFIX . 't_category_description', $fieldsDescription);
 		}
 		return $category_id;
 	}
@@ -624,7 +624,7 @@ SQL;
 	{
 		if (!empty($fields_description['s_name'])) 
 		{
-			$this->dao->insert(DB_TABLE_PREFIX . 't_category_description', $fields_description);
+			$this->dbCommand->insert(DB_TABLE_PREFIX . 't_category_description', $fields_description);
 		}
 	}
 	/**
@@ -639,7 +639,7 @@ SQL;
 	public function updateOrder($pk_i_id, $order) 
 	{
 		$sql = 'UPDATE ' . $this->tableName . " SET `i_position` = '" . $order . "' WHERE `pk_i_id` = " . $pk_i_id;
-		return $this->dao->query($sql);
+		return $this->dbCommand->query($sql);
 	}
 	/**
 	 * update name of a category
@@ -655,7 +655,7 @@ SQL;
 	{
 		$array_set = array('s_name' => $name);
 		$array_where = array('fk_i_category_id' => $pk_i_id, 'fk_c_locale_code' => $locale);
-		return $this->dao->update(DB_TABLE_PREFIX . 't_category_description', $array_set);
+		return $this->dbCommand->update(DB_TABLE_PREFIX . 't_category_description', $array_set);
 	}
 	/**
 	 * Formats a value before being inserted in DB.

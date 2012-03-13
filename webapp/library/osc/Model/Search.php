@@ -21,15 +21,8 @@
 
 require 'osc/Model/SearchAbstract.php';
 
-/**
- *
- */
 class Model_Search extends Model_SearchAbstract
 {
-	/**
-	 *
-	 * @var type
-	 */
 	private $conditions;
 	private $tables;
 	private $sql;
@@ -46,10 +39,8 @@ class Model_Search extends Model_SearchAbstract
 	private $total_results;
 
 	private $queryString;
-	/**
-	 *
-	 */
-	function __construct($expired = false) 
+
+	public function __construct($expired = false) 
 	{
 		$this->city_areas = array();
 		$this->cities = array();
@@ -699,9 +690,9 @@ SQL;
 	public function doSearch($extended = true) 
 	{
 		$sql = $this->makeSQL( false );
-		$result = $this->dao->query( $sql );
+		$result = $this->dbCommand->query( $sql );
 		// get total items
-		$datatmp = $this->dao->query('SELECT FOUND_ROWS() as totalItems');
+		$datatmp = $this->dbCommand->query('SELECT FOUND_ROWS() as totalItems');
 		$data = $datatmp->row();
 		if (isset($data['totalItems'])) 
 		{
@@ -838,7 +829,7 @@ SQL;
 		$sql.= 'RIGHT JOIN ' . DB_TABLE_PREFIX . 't_country ON ' . DB_TABLE_PREFIX . 't_country.pk_c_code = b.pk_c_code ';
 		$sql.= 'HAVING items ' . $zero . ' 0 ';
 		$sql.= 'ORDER BY ' . $order;
-		$result = $this->dao->query($sql);
+		$result = $this->dbCommand->query($sql);
 		if ($result == false) 
 		{
 			return array();
@@ -875,11 +866,11 @@ SQL;
 		$sql.= 'RIGHT JOIN ' . DB_TABLE_PREFIX . 't_region ON ' . DB_TABLE_PREFIX . 't_region.pk_i_id = b.region_id ';
 		if ($country != '%%%%') 
 		{
-			$sql.= 'WHERE ' . DB_TABLE_PREFIX . 't_region.fk_c_country_code = \'' . $this->dao->connId->real_escape_string($country) . '\' ';
+			$sql.= 'WHERE ' . DB_TABLE_PREFIX . 't_region.fk_c_country_code = \'' . $this->dbCommand->connId->real_escape_string($country) . '\' ';
 		}
 		$sql.= 'HAVING items ' . $zero . ' 0 ';
 		$sql.= 'ORDER BY ' . $order;
-		$result = $this->dao->query($sql);
+		$result = $this->dbCommand->query($sql);
 		if ($result == false) 
 		{
 			return array();
@@ -905,24 +896,24 @@ SQL;
 		$location_table = $this->getTablePrefix() . 't_item_location';
 		$item_table = $this->getTablePrefix() . 'item';
 		$category_table = $this->getTablePrefix() . 't_category';
-		$this->dao->select(array($location_table . '.fk_i_city_id as city_id', $location_table . '.s_city as city_name', 'count(*) as items',));
-		$this->dao->from(array($item_table, $location_table, $category_table,));
-		$this->dao->where($item_table . '.pk_i_id = ' . $location_table . '.fk_i_item_id');
-		$this->dao->where($category_table . '.pk_i_id = ' . $item_table . '.fk_i_category_id');
-		$this->dao->where($item_table . '.b_enabled', '1');
-		$this->dao->where($item_table . '.b_active', '1');
-		$this->dao->where($item_table . '.b_spam', '0');
-		$this->dao->where($category_table . '.b_enabled', '1');
-		$this->dao->where($location_table . '.fk_i_city_id IS NOT NULL');
-		$this->dao->where('(' . $item_table . '.b_premium = 1 || ' . $category_table . '.i_expiration_days = 0 || DATEDIFF(\'' . date('Y-m-d H:i:s') . '\', ' . $item_table . '.pub_date) < ' . $category_table . '.i_expiration_days)');
+		$this->dbCommand->select(array($location_table . '.fk_i_city_id as city_id', $location_table . '.s_city as city_name', 'count(*) as items',));
+		$this->dbCommand->from(array($item_table, $location_table, $category_table,));
+		$this->dbCommand->where($item_table . '.pk_i_id = ' . $location_table . '.fk_i_item_id');
+		$this->dbCommand->where($category_table . '.pk_i_id = ' . $item_table . '.fk_i_category_id');
+		$this->dbCommand->where($item_table . '.b_enabled', '1');
+		$this->dbCommand->where($item_table . '.b_active', '1');
+		$this->dbCommand->where($item_table . '.b_spam', '0');
+		$this->dbCommand->where($category_table . '.b_enabled', '1');
+		$this->dbCommand->where($location_table . '.fk_i_city_id IS NOT NULL');
+		$this->dbCommand->where('(' . $item_table . '.b_premium = 1 || ' . $category_table . '.i_expiration_days = 0 || DATEDIFF(\'' . date('Y-m-d H:i:s') . '\', ' . $item_table . '.pub_date) < ' . $category_table . '.i_expiration_days)');
 		if (is_numeric($region)) 
 		{
-			$this->dao->where($location_table . '.fk_i_region_id', $region);
+			$this->dbCommand->where($location_table . '.fk_i_region_id', $region);
 		}
-		$this->dao->groupBy($location_table . '.fk_i_city_id');
-		$this->dao->having('items > 0');
-		$this->dao->orderBy($order);
-		$rs = $this->dao->get();
+		$this->dbCommand->groupBy($location_table . '.fk_i_city_id');
+		$this->dbCommand->having('items > 0');
+		$this->dbCommand->orderBy($order);
+		$rs = $this->dbCommand->get();
 		if ($rs == false) 
 		{
 			return array();
@@ -959,28 +950,28 @@ SQL;
 	{
 		$aOrder = split(' ', $order);
 		$nOrder = count($aOrder);
-		if ($nOrder == 2) $this->dao->orderBy($aOrder[0], $aOrder[1]);
-		else if ($nOrder == 1) $this->dao->orderBy($aOrder[0], 'DESC');
-		else $this->dao->orderBy('item', 'DESC');
-		$this->dao->select('fk_i_city_area_id as city_area_id, s_city_area as city_area_name, fk_i_city_id , s_city as city_name, fk_i_region_id as region_id, s_region as region_name, fk_c_country_code as pk_c_code, s_country  as country_name, count(*) as items, ' . DB_TABLE_PREFIX . 't_country.fk_c_locale_code');
-		$this->dao->from(DB_TABLE_PREFIX . 'item, ' . DB_TABLE_PREFIX . 't_item_location, ' . DB_TABLE_PREFIX . 't_category, ' . DB_TABLE_PREFIX . 't_country');
-		$this->dao->where(DB_TABLE_PREFIX . 'item.pk_i_id = ' . DB_TABLE_PREFIX . 't_item_location.fk_i_item_id');
-		$this->dao->where(DB_TABLE_PREFIX . 'item.b_enabled = 1');
-		$this->dao->where(DB_TABLE_PREFIX . 'item.b_active = 1');
-		$this->dao->where(DB_TABLE_PREFIX . 'item.b_spam = 0');
-		$this->dao->where(DB_TABLE_PREFIX . 't_category.b_enabled = 1');
-		$this->dao->where(DB_TABLE_PREFIX . 't_category.pk_i_id = ' . DB_TABLE_PREFIX . 'item.fk_i_category_id');
-		$this->dao->where('(' . DB_TABLE_PREFIX . 'item.b_premium = 1 || ' . DB_TABLE_PREFIX . 't_category.i_expiration_days = 0 || DATEDIFF(\'' . date('Y-m-d H:i:s') . '\',' . DB_TABLE_PREFIX . 'item.pub_date) < ' . DB_TABLE_PREFIX . 't_category.i_expiration_days)');
-		$this->dao->where('fk_i_city_area_id IS NOT NULL');
-		$this->dao->where(DB_TABLE_PREFIX . 't_country.pk_c_code = fk_c_country_code');
-		$this->dao->groupBy('fk_i_city_area_id');
-		$this->dao->having("items $zero 0");
+		if ($nOrder == 2) $this->dbCommand->orderBy($aOrder[0], $aOrder[1]);
+		else if ($nOrder == 1) $this->dbCommand->orderBy($aOrder[0], 'DESC');
+		else $this->dbCommand->orderBy('item', 'DESC');
+		$this->dbCommand->select('fk_i_city_area_id as city_area_id, s_city_area as city_area_name, fk_i_city_id , s_city as city_name, fk_i_region_id as region_id, s_region as region_name, fk_c_country_code as pk_c_code, s_country  as country_name, count(*) as items, ' . DB_TABLE_PREFIX . 't_country.fk_c_locale_code');
+		$this->dbCommand->from(DB_TABLE_PREFIX . 'item, ' . DB_TABLE_PREFIX . 't_item_location, ' . DB_TABLE_PREFIX . 't_category, ' . DB_TABLE_PREFIX . 't_country');
+		$this->dbCommand->where(DB_TABLE_PREFIX . 'item.pk_i_id = ' . DB_TABLE_PREFIX . 't_item_location.fk_i_item_id');
+		$this->dbCommand->where(DB_TABLE_PREFIX . 'item.b_enabled = 1');
+		$this->dbCommand->where(DB_TABLE_PREFIX . 'item.b_active = 1');
+		$this->dbCommand->where(DB_TABLE_PREFIX . 'item.b_spam = 0');
+		$this->dbCommand->where(DB_TABLE_PREFIX . 't_category.b_enabled = 1');
+		$this->dbCommand->where(DB_TABLE_PREFIX . 't_category.pk_i_id = ' . DB_TABLE_PREFIX . 'item.fk_i_category_id');
+		$this->dbCommand->where('(' . DB_TABLE_PREFIX . 'item.b_premium = 1 || ' . DB_TABLE_PREFIX . 't_category.i_expiration_days = 0 || DATEDIFF(\'' . date('Y-m-d H:i:s') . '\',' . DB_TABLE_PREFIX . 'item.pub_date) < ' . DB_TABLE_PREFIX . 't_category.i_expiration_days)');
+		$this->dbCommand->where('fk_i_city_area_id IS NOT NULL');
+		$this->dbCommand->where(DB_TABLE_PREFIX . 't_country.pk_c_code = fk_c_country_code');
+		$this->dbCommand->groupBy('fk_i_city_area_id');
+		$this->dbCommand->having("items $zero 0");
 		$city_int = (int)$city;
 		if (is_numeric($city_int) && $city_int != 0) 
 		{
-			$this->dao->where("fk_i_city_id = $city_int");
+			$this->dbCommand->where("fk_i_city_id = $city_int");
 		}
-		$result = $this->dao->get();
+		$result = $this->dbCommand->get();
 		return $result->result();
 	}
 }

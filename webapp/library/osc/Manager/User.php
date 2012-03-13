@@ -18,9 +18,10 @@
 
 class Manager_User
 {
-	var $is_admin;
-	var $manager;
-	function __construct($is_admin) 
+	private $is_admin;
+	private $manager;
+
+	public function __construct($is_admin) 
 	{
 		$this->is_admin = $is_admin;
 		$this->manager = ClassLoader::getInstance()->getClassInstance( 'Model_User' );
@@ -55,8 +56,11 @@ class Manager_User
 		{
 			return 3;
 		}
+
+		$this->assignDefaultRole( $input );
+
 		$this->manager->insert($input);
-		$userId = $this->manager->dao->insertedId();
+		$userId = $this->manager->dbCommand->insertedId();
 		if (is_array(Params::getParam('s_info'))) 
 		{
 			foreach (Params::getParam('s_info') as $key => $value) 
@@ -361,5 +365,13 @@ class Manager_User
 		$session->_set('userEmail', $user['s_email']);
 		$session->_set('userPhone', $phone);
 		return 3;
+	}
+
+	/**
+	 * @TODO Remove the hardcoded constant in this method.
+	 */
+	protected function assignDefaultRole( array &$user )
+	{
+		$user['role_id'] = 2;
 	}
 }

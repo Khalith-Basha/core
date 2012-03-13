@@ -37,10 +37,10 @@ class Model_Widget extends DAO
 	 */
 	public function findByLocation($location) 
 	{
-		$this->dao->select('*');
-		$this->dao->from($this->getTableName());
-		$this->dao->where('s_location', $location);
-		$result = $this->dao->get();
+		$this->dbCommand->select('*');
+		$this->dbCommand->from($this->getTableName());
+		$this->dbCommand->where('s_location', $location);
+		$result = $this->dbCommand->get();
 		if ($result == false) 
 		{
 			return array();

@@ -22,9 +22,14 @@ class CAdminCategory extends Controller_Administration
 {
 	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
-		$this->categoryManager = ClassLoader::getInstance()->getClassInstance( 'Model_Category' );
-		$this->getView()->assign("categories", $this->categoryManager->toTreeAll());
-		$this->doView("categories/index.php");
+		$categoryModel = $this->getClassLoader()
+			->getClassInstance( 'Model_Category' );
+
+		$view = $this->getView();
+		$view->addJavaScript( 'jquery.jstree.js' );
+		$view->addJavaScript( 'categories_index.js' );
+		$view->assign( 'categories', $categoryModel->toTreeAll() );
+		$this->doView( 'categories/index' );
 	}
 }
 

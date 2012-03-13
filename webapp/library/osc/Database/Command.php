@@ -144,7 +144,7 @@ class Database_Command
 	 * @param mixed $select It can be a string or array
 	 * @return DBCommandClass
 	 */
-	function select($select = '*') 
+	public function select($select = '*') 
 	{
 		if (is_string($select)) 
 		{
@@ -166,7 +166,7 @@ class Database_Command
 	 * @param mixed $from It can be a string or array
 	 * @return DBCommandClass
 	 */
-	function from($from) 
+	public function from($from) 
 	{
 		if (!is_array($from)) 
 		{
@@ -194,7 +194,7 @@ class Database_Command
 	 * @param string $type It can be: LEFT, RIGHT, OUTER, INNER, LEFT OUTER or RIGHT OUTER
 	 * @return DBCommandClass
 	 */
-	function join($table, $cond, $type = '') 
+	public function join($table, $cond, $type = '') 
 	{
 		if ($type != '') 
 		{
@@ -220,7 +220,7 @@ class Database_Command
 	 * @param mixed $value
 	 * @return DBCommandClass
 	 */
-	function where($key, $value = null) 
+	public function where($key, $value = null) 
 	{
 		return $this->_where($key, $value, 'AND ');
 	}
@@ -232,7 +232,7 @@ class Database_Command
 	 * @param mixed $value
 	 * @return DBCommandClass
 	 */
-	function orWhere($key, $value = null) 
+	public function orWhere($key, $value = null) 
 	{
 		return $this->_where($key, $value, 'OR ');
 	}
@@ -245,7 +245,7 @@ class Database_Command
 	 * @param string $type
 	 * @return DBCommandClass
 	 */
-	function _where($key, $value = null, $type = 'AND ') 
+	public function _where($key, $value = null, $type = 'AND ') 
 	{
 		if (!is_array($key)) 
 		{
@@ -275,7 +275,7 @@ class Database_Command
 	 * @param mixed $values
 	 * @return DBCommandClass
 	 */
-	function whereIn($key = null, $values = null) 
+	public function whereIn($key = null, $values = null) 
 	{
 		return $this->_whereIn($key, $values, false, 'AND ');
 	}
@@ -287,7 +287,7 @@ class Database_Command
 	 * @param mixed $values
 	 * @return DBCommandClass
 	 */
-	function orWhereIn($key = null, $values = null) 
+	public function orWhereIn($key = null, $values = null) 
 	{
 		return $this->_whereIn($key, $values, false, 'OR ');
 	}
@@ -299,7 +299,7 @@ class Database_Command
 	 * @param mixed $values
 	 * @return DBCommandClass
 	 */
-	function whereNotIn($key = null, $values = null) 
+	public function whereNotIn($key = null, $values = null) 
 	{
 		return $this->_whereIn($key, $values, true, 'AND ');
 	}
@@ -311,7 +311,7 @@ class Database_Command
 	 * @param mixed $values
 	 * @return DBCommandClass
 	 */
-	function orWhereNotIn($key = null, $values = null) 
+	public function orWhereNotIn($key = null, $values = null) 
 	{
 		return $this->_whereIn($key, $values, true, 'OR ');
 	}
@@ -325,7 +325,7 @@ class Database_Command
 	 * @param string $type
 	 * @return DBCommandClass
 	 */
-	function _whereIn($key = null, $values = null, $not = false, $type = 'AND ') 
+	public function _whereIn($key = null, $values = null, $not = false, $type = 'AND ') 
 	{
 		if (!is_array($values)) 
 		{
@@ -351,7 +351,7 @@ class Database_Command
 	 * @param type $side
 	 * @return DBCommandClass
 	 */
-	function like($field, $match = '', $side = 'both') 
+	public function like($field, $match = '', $side = 'both') 
 	{
 		return $this->_like($field, $match, 'AND ', $side);
 	}
@@ -364,7 +364,7 @@ class Database_Command
 	 * @param string $side
 	 * @return DBCommandClass
 	 */
-	function notLike($field, $match = '', $side = 'both') 
+	public function notLike($field, $match = '', $side = 'both') 
 	{
 		return $this->_like($field, $match, 'AND ', $side, 'NOT');
 	}
@@ -377,7 +377,7 @@ class Database_Command
 	 * @param type $side
 	 * @return string
 	 */
-	function orLike($field, $match = '', $side = 'both') 
+	public function orLike($field, $match = '', $side = 'both') 
 	{
 		return $this->_like($field, $match, 'OR ', $side);
 	}
@@ -390,7 +390,7 @@ class Database_Command
 	 * @param string $side
 	 * @return DBCommandClass
 	 */
-	function orNotLike($field, $match = '', $side = 'both') 
+	public function orNotLike($field, $match = '', $side = 'both') 
 	{
 		return $this->_like($field, $match, 'OR ', $side, 'NOT');
 	}
@@ -405,7 +405,7 @@ class Database_Command
 	 * @param string $not Two possibilities: blank or NOT
 	 * @return DBCommandClass
 	 */
-	function _like($field, $match = '', $type = 'AND ', $side = 'both', $not = '') 
+	public function _like($field, $match = '', $type = 'AND ', $side = 'both', $not = '') 
 	{
 		$likeStatement = '';
 		if (!is_array($field)) 
@@ -441,7 +441,7 @@ class Database_Command
 	 * @param mixed $by
 	 * @return DBCommandClass
 	 */
-	function groupBy($by) 
+	public function groupBy($by) 
 	{
 		if (is_string($by)) 
 		{
@@ -463,7 +463,7 @@ class Database_Command
 	 * @param type $value
 	 * @return type
 	 */
-	function having($key, $value = '') 
+	public function having($key, $value = '') 
 	{
 		return $this->_having($key, $value, 'AND ');
 	}
@@ -473,7 +473,7 @@ class Database_Command
 	 * @param type $value
 	 * @return type
 	 */
-	function orHaving($key, $value = '') 
+	public function orHaving($key, $value = '') 
 	{
 		return $this->_having($key, $value, 'OR ');
 	}
@@ -483,7 +483,7 @@ class Database_Command
 	 * @param type $value
 	 * @param type $type
 	 */
-	function _having($key, $value = '', $type = 'AND ') 
+	public function _having($key, $value = '', $type = 'AND ') 
 	{
 		if (!is_array($key)) 
 		{
@@ -507,7 +507,7 @@ class Database_Command
 	 * @param string $orderby
 	 * @param string $direction Accepted directions: random, asc, desc
 	 */
-	function orderBy($orderby, $direction = '') 
+	public function orderBy($orderby, $direction = '') 
 	{
 		if (strtolower($direction) == 'random') 
 		{
@@ -528,7 +528,7 @@ class Database_Command
 	 * @param int $offset
 	 * @return DBCommandClass
 	 */
-	function limit($value, $offset = '') 
+	public function limit($value, $offset = '') 
 	{
 		$this->aLimit = $value;
 		if ($offset != '') 
@@ -544,7 +544,7 @@ class Database_Command
 	 * @param int $offset
 	 * @return DBCommandClass
 	 */
-	function offset($offset) 
+	public function offset($offset) 
 	{
 		$this->aOffset = $offset;
 		return $this;
@@ -557,7 +557,7 @@ class Database_Command
 	 * @param mixed $set
 	 * @return boolean
 	 */
-	function insert($table = '', $set = null) 
+	public function insert($table = '', $set = null) 
 	{
 		if (!is_null($set)) 
 		{
@@ -575,23 +575,9 @@ class Database_Command
 			}
 			$table = $this->aFrom[0];
 		}
-		$sql = $this->_insert($table, array_keys($this->aSet), array_values($this->aSet));
+		$sql = 'INSERT INTO ' . $table . ' (' . implode(', ', array_keys($this->aSet)) . ') VALUES (' . implode(', ', array_values($this->aSet)) . ')';
 		$this->_resetWrite();
 		return $this->query($sql);
-	}
-	/**
-	 * Create the INSERT sql string
-	 *
-	 * @access private
-	 * @param string $table
-	 * @param array $keys
-	 * @param array $values
-	 * @return string
-	 */
-	function _insert( $table, array $keys, array $values ) 
-	{
-		$sql = 'INSERT INTO ' . $table . ' (' . implode(', ', $keys) . ') VALUES (' . implode(', ', $values) . ')';
-		return $sql;
 	}
 	/**
 	 * Create the REPLACE INTO sql and perform the query
@@ -601,7 +587,7 @@ class Database_Command
 	 * @param mixed $set
 	 * @return boolean
 	 */
-	function replace($table = '', $set = null) 
+	public function replace($table = '', $set = null) 
 	{
 		if (!is_null($set)) 
 		{
@@ -619,22 +605,9 @@ class Database_Command
 			}
 			$table = $this->aFrom[0];
 		}
-		$sql = $this->_replace($table, array_keys($this->aSet), array_values($this->aSet));
+		$sql = 'REPLACE INTO ' . $table . ' (' . implode(', ', array_keys( $this->aSet )) . ') VALUES (' . implode(', ', array_values($this->aSet)) . ')';
 		$this->_resetWrite();
 		return $this->query($sql);
-	}
-	/**
-	 * Create the REPLACE INTO sql string
-	 *
-	 * @access private
-	 * @param string $table
-	 * @param array $key
-	 * @param array $values
-	 * @return string
-	 */
-	function _replace($table, $keys, $values) 
-	{
-		return 'REPLACE INTO ' . $table . ' (' . implode(', ', $keys) . ') VALUES (' . implode(', ', $values) . ')';
 	}
 	/**
 	 * Create the UPDATE sql and perform the query
@@ -645,7 +618,7 @@ class Database_Command
 	 * @param mixed $where
 	 * @return mixed
 	 */
-	function update($table = '', $set = null, $where = null) 
+	public function update($table = '', $set = null, $where = null) 
 	{
 		if (!is_null($set)) 
 		{
@@ -685,7 +658,7 @@ class Database_Command
 	 * @param array $where
 	 * @return string
 	 */
-	function _update($table, $values, $where) 
+	public function _update($table, $values, $where) 
 	{
 		foreach ($values as $k => $v) 
 		{
@@ -703,7 +676,7 @@ class Database_Command
 	 * @param mixed $where
 	 * @return mixed
 	 */
-	function delete( $table = '', $where = '' )
+	public function delete( $table = '', $where = '' )
 	{
 		if ($table == '') 
 		{
@@ -739,7 +712,7 @@ class Database_Command
 	 * @param array $like
 	 * @return string
 	 */
-	function _delete($table, $where, $like) 
+	public function _delete($table, $where, $like) 
 	{
 		$conditions = '';
 		if (count($where) > 0 || count($like) > 0) 
@@ -765,7 +738,7 @@ class Database_Command
 	 * @param mixed $offset
 	 * @return mixed
 	 */
-	function get($table = '', $limit = null, $offset = null) 
+	public function get($table = '', $limit = null, $offset = null) 
 	{
 		if ($table != '') 
 		{
@@ -826,7 +799,7 @@ class Database_Command
 	 * @param string $sql
 	 * @return boolean true if it's succesful, false if not
 	 */
-	function importSQL( $sql )
+	public function importSQL( $sql )
 	{
 		$sql = str_replace('/*TABLE_PREFIX*/', DB_TABLE_PREFIX, $sql);
 		$sql = preg_replace('#/\*(?:[^*]*(?:\*(?!/))*)*\*/#', '', ($sql));
@@ -852,7 +825,7 @@ class Database_Command
 	 * @param mixed $value
 	 * @return DBCommandClass
 	 */
-	function set($key, $value = '', $escape = true) 
+	public function set($key, $value = '', $escape = true) 
 	{
 		if (!is_array($key)) 
 		{
@@ -877,7 +850,7 @@ class Database_Command
 	 * @access private
 	 * @return string
 	 */
-	function _getSelect() 
+	public function _getSelect() 
 	{
 		$sql = 'SELECT ';
 		// "SELECT" portion of the query
@@ -961,7 +934,7 @@ class Database_Command
 	 * @access public
 	 * @return int
 	 */
-	function affectedRows() 
+	public function affectedRows() 
 	{
 		return $this->connId->affected_rows;
 	}
@@ -971,7 +944,7 @@ class Database_Command
 	 * @access public
 	 * @return mixed
 	 */
-	function insertedId() 
+	public function insertedId() 
 	{
 		return $this->connId->insert_id;
 	}
@@ -982,7 +955,7 @@ class Database_Command
 	 * @param string $str
 	 * @return bool
 	 */
-	function _hasOperator($str) 
+	public function _hasOperator($str) 
 	{
 		$str = trim($str);
 		return preg_match('/(\s|<|>|!|=|is null|is not null)/i', $str);
@@ -994,7 +967,7 @@ class Database_Command
 	 * @param string $sql
 	 * @return bool
 	 */
-	function isSelectType($sql) 
+	public function isSelectType($sql) 
 	{
 		return preg_match('/^\s*"?(SELECT)\s+/i', $sql);
 	}
@@ -1005,7 +978,7 @@ class Database_Command
 	 * @param string $sql
 	 * @return bool
 	 */
-	function isWriteType($sql) 
+	public function isWriteType($sql) 
 	{
 		return preg_match('/^\s*"?(SET|INSERT|UPDATE|DELETE|REPLACE|CREATE|DROP|TRUNCATE|LOAD DATA|COPY|ALTER|GRANT|REVOKE|LOCK|UNLOCK)\s+/i', $sql);
 	}
@@ -1016,7 +989,7 @@ class Database_Command
 	 * @param string $str
 	 * @return string
 	 */
-	function escape($str) 
+	public function escape($str) 
 	{
 		if (is_string($str)) 
 		{
@@ -1039,7 +1012,7 @@ class Database_Command
 	 * @param string $str
 	 * @return string
 	 */
-	function escapeStr($str, $like = false) 
+	public function escapeStr($str, $like = false) 
 	{
 		if (is_object($this->connId)) 
 		{
@@ -1060,7 +1033,7 @@ class Database_Command
 	 *
 	 * @access private
 	 */
-	function _resetWrite() 
+	public function _resetWrite() 
 	{
 		$aReset = array('aSet' => array(), 'aFrom' => array(), 'aWhere' => array(), 'aLike' => array(), 'aOrderby' => array(), 'aLimit' => false, 'aOrder' => false);
 		$this->_resetRun($aReset);
@@ -1071,7 +1044,7 @@ class Database_Command
 	 *
 	 * @access private
 	 */
-	function _resetSelect() 
+	public function _resetSelect() 
 	{
 		$aReset = array('aSelect' => array(), 'aFrom' => array(), 'aJoin' => array(), 'aWhere' => array(), 'aLike' => array(), 'aGroupby' => array(), 'aHaving' => array(), 'aOrderby' => array(), 'aWherein' => array(), 'aLimit' => false, 'aOffset' => false, 'aOrder' => false);
 		$this->_resetRun($aReset);
@@ -1082,7 +1055,7 @@ class Database_Command
 	 * @access private
 	 * @param array $aReset
 	 */
-	function _resetRun($aReset) 
+	public function _resetRun($aReset) 
 	{
 		foreach ($aReset as $item => $defaultValue) 
 		{

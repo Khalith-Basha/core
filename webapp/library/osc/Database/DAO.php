@@ -38,7 +38,7 @@ class DAO extends Model
 	 * @acces public
 	 * @private DBCommandClass
 	 */
-	protected $dao;
+	public $dbCommand;
 	/**
 	 * Table name
 	 *
@@ -77,7 +77,7 @@ class DAO extends Model
 		parent::__construct();
 		$conn = ClassLoader::getInstance()->getClassInstance( 'Database_Connection' ); 
 		$data = $conn->getResource();
-		$this->dao = new Database_Command($data);
+		$this->dbCommand = new Database_Command($data);
 		$this->tablePrefix = $conn->getTablePrefix();
 	}
 	/**
@@ -90,10 +90,10 @@ class DAO extends Model
 	 */
 	public function findByPrimaryKey($value) 
 	{
-		$this->dao->select($this->fields);
-		$this->dao->from($this->getTableName());
-		$this->dao->where($this->getPrimaryKey(), $value);
-		$result = $this->dao->get();
+		$this->dbCommand->select($this->fields);
+		$this->dbCommand->from($this->getTableName());
+		$this->dbCommand->where($this->getPrimaryKey(), $value);
+		$result = $this->dbCommand->get();
 		if ($result === false) 
 		{
 			return null;
@@ -142,9 +142,9 @@ class DAO extends Model
 	 */
 	public function listAll() 
 	{
-		$this->dao->select($this->getFields());
-		$this->dao->from($this->getTableName());
-		$result = $this->dao->get();
+		$this->dbCommand->select($this->getFields());
+		$this->dbCommand->from($this->getTableName());
+		$result = $this->dbCommand->get();
 		if ($result == false) 
 		{
 			return array();
@@ -165,9 +165,9 @@ class DAO extends Model
 		{
 			return false;
 		}
-		$this->dao->from($this->getTableName());
-		$this->dao->set($values);
-		return $this->dao->insert();
+		$this->dbCommand->from($this->getTableName());
+		$this->dbCommand->set($values);
+		return $this->dbCommand->insert();
 	}
 	/**
 	 * Basic update. It returns false if the keys from $values or $where doesn't
@@ -192,10 +192,10 @@ class DAO extends Model
 		{
 			throw new Exception( 'Invalid "where" columns: ' . implode( ', ', $whereKeys ) );
 		}
-		$this->dao->from($this->getTableName());
-		$this->dao->set($values);
-		$this->dao->where($where);
-		return $this->dao->update();
+		$this->dbCommand->from($this->getTableName());
+		$this->dbCommand->set($values);
+		$this->dbCommand->where($where);
+		return $this->dbCommand->update();
 	}
 	/**
 	 * Basic delete. It returns false if the keys from $where doesn't
@@ -213,9 +213,9 @@ class DAO extends Model
 		{
 			return false;
 		}
-		$this->dao->from($this->getTableName());
-		$this->dao->where($where);
-		return $this->dao->delete();
+		$this->dbCommand->from($this->getTableName());
+		$this->dbCommand->where($where);
+		return $this->dbCommand->delete();
 	}
 	/**
 	 * Set table name, adding the DB_TABLE_PREFIX at the beginning

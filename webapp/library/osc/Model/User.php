@@ -42,23 +42,23 @@ class Model_User extends DAO
 	 */
 	public function findByPrimaryKey($id, $locale = null) 
 	{
-		$this->dao->select();
-		$this->dao->from($this->getTableName());
-		$this->dao->where($this->getPrimaryKey(), $id);
-		$result = $this->dao->get();
+		$this->dbCommand->select();
+		$this->dbCommand->from($this->getTableName());
+		$this->dbCommand->where($this->getPrimaryKey(), $id);
+		$result = $this->dbCommand->get();
 		$row = $result->row();
 		if ($result->numRows() != 1) 
 		{
 			return array();
 		}
-		$this->dao->select();
-		$this->dao->from(DB_TABLE_PREFIX . 't_user_description');
-		$this->dao->where('fk_i_user_id', $id);
+		$this->dbCommand->select();
+		$this->dbCommand->from(DB_TABLE_PREFIX . 't_user_description');
+		$this->dbCommand->where('fk_i_user_id', $id);
 		if (!is_null($locale)) 
 		{
-			$this->dao->where('fk_c_locale_code', $locale);
+			$this->dbCommand->where('fk_c_locale_code', $locale);
 		}
-		$result = $this->dao->get();
+		$result = $this->dbCommand->get();
 		$descriptions = $result->result();
 		$row['locale'] = array();
 		foreach ($descriptions as $sub_row) 
@@ -101,10 +101,10 @@ SQL;
 	 */
 	public function findByEmail($email) 
 	{
-		$this->dao->select();
-		$this->dao->from($this->getTableName());
-		$this->dao->where('s_email', $email);
-		$result = $this->dao->get();
+		$this->dbCommand->select();
+		$this->dbCommand->from($this->getTableName());
+		$this->dbCommand->where('s_email', $email);
+		$result = $this->dbCommand->get();
 		if ($result == false) 
 		{
 			return false;
@@ -128,11 +128,11 @@ SQL;
 	 */
 	public function findByIdSecret($id, $secret) 
 	{
-		$this->dao->select();
-		$this->dao->from($this->getTableName());
+		$this->dbCommand->select();
+		$this->dbCommand->from($this->getTableName());
 		$conditions = array('pk_i_id' => $id, 's_secret' => $secret);
-		$this->dao->where($conditions);
-		$result = $this->dao->get();
+		$this->dbCommand->where($conditions);
+		$result = $this->dbCommand->get();
 		if ($result == false) 
 		{
 			return false;
@@ -162,12 +162,12 @@ SQL;
 			return null;
 		}
 		$date = date("Y-m-d H:i:s", (time() - (24 * 3600)));
-		$this->dao->select();
-		$this->dao->from($this->getTableName());
+		$this->dbCommand->select();
+		$this->dbCommand->from($this->getTableName());
 		$conditions = array('pk_i_id' => $id, 's_pass_code' => $secret);
-		$this->dao->where($conditions);
-		$this->dao->where("s_pass_date >= '$date'");
-		$result = $this->dao->get();
+		$this->dbCommand->where($conditions);
+		$this->dbCommand->where("s_pass_date >= '$date'");
+		$result = $this->dbCommand->get();
 		if ($result == false) 
 		{
 			return false;
@@ -192,10 +192,10 @@ SQL;
 	public function deleteUser( $id ) 
 	{
 		osc_run_hook('delete_user', $id);
-		$this->dao->select('pk_i_id, fk_i_category_id');
-		$this->dao->from(DB_TABLE_PREFIX . "item");
-		$this->dao->where('fk_i_user_id', $id);
-		$result = $this->dao->get();
+		$this->dbCommand->select('pk_i_id, fk_i_category_id');
+		$this->dbCommand->from(DB_TABLE_PREFIX . "item");
+		$this->dbCommand->where('fk_i_user_id', $id);
+		$result = $this->dbCommand->get();
 		$items = $result->result();
 		$itemManager = ClassLoader::getInstance()->getClassInstance( 'Model_Item' );
 		foreach ($items as $item) 
@@ -203,10 +203,10 @@ SQL;
 			$itemManager->deleteByPrimaryKey($item['pk_i_id']);
 		}
 		ClassLoader::getInstance()->getClassInstance( 'Model_ItemComment' )->delete(array('fk_i_user_id' => $id));
-		$this->dao->delete(DB_TABLE_PREFIX . 't_user_email_tmp', array('fk_i_user_id' => $id));
-		$this->dao->delete(DB_TABLE_PREFIX . 't_user_description', array('fk_i_user_id' => $id));
-		$this->dao->delete(DB_TABLE_PREFIX . 't_alerts', array('fk_i_user_id' => $id));
-		return $this->dao->delete($this->getTableName(), array('pk_i_id' => $id));
+		$this->dbCommand->delete(DB_TABLE_PREFIX . 't_user_email_tmp', array('fk_i_user_id' => $id));
+		$this->dbCommand->delete(DB_TABLE_PREFIX . 't_user_description', array('fk_i_user_id' => $id));
+		$this->dbCommand->delete(DB_TABLE_PREFIX . 't_alerts', array('fk_i_user_id' => $id));
+		return $this->dbCommand->delete($this->getTableName(), array('pk_i_id' => $id));
 	}
 	/**
 	 * Insert users' description
@@ -221,7 +221,7 @@ SQL;
 	private function insertDescription($id, $locale, $info) 
 	{
 		$array_set = array('fk_i_user_id' => $id, 'fk_c_locale_code' => $locale, 's_info' => $info);
-		$res = $this->dao->insert(DB_TABLE_PREFIX . 't_user_description', $array_set);
+		$res = $this->dbCommand->insert(DB_TABLE_PREFIX . 't_user_description', $array_set);
 		if ($res) 
 		{
 			return true;
@@ -251,7 +251,7 @@ SQL;
 			return $result;
 		}
 		$array_where = array('fk_c_locale_code' => $locale, 'fk_i_user_id' => $id);
-		$result = $this->dao->update(DB_TABLE_PREFIX . 't_user_description', array('s_info' => $info), $array_where);
+		$result = $this->dbCommand->update(DB_TABLE_PREFIX . 't_user_description', array('s_info' => $info), $array_where);
 		return $result;
 	}
 	/**
@@ -264,10 +264,10 @@ SQL;
 	 */
 	private function existDescription($conditions) 
 	{
-		$this->dao->select();
-		$this->dao->from(DB_TABLE_PREFIX . 't_user_description');
-		$this->dao->where($conditions);
-		$result = $this->dao->get();
+		$this->dbCommand->select();
+		$this->dbCommand->from(DB_TABLE_PREFIX . 't_user_description');
+		$this->dbCommand->where($conditions);
+		$result = $this->dbCommand->get();
 		if ($result == false || $result->numRows() == 0) 
 		{
 			return false;

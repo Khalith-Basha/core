@@ -329,9 +329,9 @@ function ping_search_engines($bool)
 	{
 		$url = $searchUrls->osc_search_url(array('sFeed' => 'rss'));
 		$mPreference->insert(array('s_section' => 'osc', 's_name' => 'ping_search_engines', 's_value' => '1', 'e_type' => 'BOOLEAN'));
-		requestUrl('http://www.google.com/webmasters/sitemaps/ping?sitemap=' . urlencode( $url ));
-		requestUrl('http://www.bing.com/webmaster/ping.aspx?siteMap=' . urlencode( $url ));
-		requestUrl('http://search.yahooapis.com/SiteExplorerService/V1/ping?sitemap=' . urlencode( $url ));
+		$encodedUrl = urlencode( $url );
+		requestUrl('http://www.google.com/webmasters/sitemaps/ping?sitemap=' . $encodedUrl );
+		requestUrl('http://www.bing.com/webmaster/ping.aspx?siteMap=' . $encodedUrl );
 	}
 	else
 	{
