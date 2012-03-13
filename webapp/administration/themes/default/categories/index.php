@@ -35,12 +35,12 @@
 <div id="categoriesTree">
 <ul>
 <?php foreach( $categories as $category ): ?>
-	<li id="nodeCategory_<?php echo $category['pk_i_id']; ?>">
+	<li data-categoryId="<?php echo $subCategory['pk_i_id']; ?>">
 		<a href="#"><?php echo $category['s_name']; ?></a>
 		<?php if( 0 < count( $category['categories'] ) ): ?>
 			<ul>
 				<?php foreach( $category['categories'] as $subCategory ): ?>
-					<li id="nodeCategory_<?php echo $subCategory['pk_i_id']; ?>"><a href="#"><?php echo $subCategory['s_name']; ?></a></li>
+					<li data-categoryId="<?php echo $subCategory['pk_i_id']; ?>"><a href="#"><?php echo $subCategory['s_name']; ?></a></li>
 				<?php endforeach; ?>
 			</ul>
 		<?php endif; ?>
