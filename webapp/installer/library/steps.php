@@ -200,7 +200,7 @@ function oc_install()
 	$dbHandle = $conn->getResource();
 	$comm = new Database_Command( $dbHandle );
 
-	$sql = file_get_contents( ABS_PATH . '/installer/data/struct.sql' );
+	$sql = file_get_contents( ABS_PATH . '/installer/data/sql/struct.sql' );
 	$queries = explode( ';', $sql );
 
 	try
@@ -243,17 +243,17 @@ function oc_install()
 		}
 		$localeManager->insert($values);
 	}
-	$required_files = array('basic_data.sql', 'categories.sql', 'pages.sql');
+	$required_files = array( 'basic_data.sql', 'categories.sql', 'countries.sql', 'pages.sql' );
 	$sql = '';
 	foreach ($required_files as $file) 
 	{
-		if (!file_exists(ABS_PATH . '/installer/data/' . $file)) 
+		if (!file_exists(ABS_PATH . '/installer/data/sql/' . $file)) 
 		{
 			return array('message' => 'the file ' . $file . ' doesn\'t exist in data folder');
 		}
 		else
 		{
-			$sql.= file_get_contents(ABS_PATH . '/installer/data/' . $file);
+			$sql .= file_get_contents(ABS_PATH . '/installer/data/sql/' . $file);
 		}
 	}
 

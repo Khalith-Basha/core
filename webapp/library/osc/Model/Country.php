@@ -75,10 +75,10 @@ SQL;
 	 */
 	public function findByName($name) 
 	{
-		$this->dao->select('*');
-		$this->dao->from($this->getTableName());
-		$this->dao->where('s_name', $name);
-		$result = $this->dao->get();
+		$this->dbCommand->select('*');
+		$this->dbCommand->from($this->getTableName());
+		$this->dbCommand->where('s_name', $name);
+		$result = $this->dbCommand->get();
 		return $result->row();
 	}
 	/**
@@ -135,12 +135,34 @@ SQL;
 		{
 			$language = osc_current_user_locale();
 		}
-		$result = $this->dao->query(sprintf('SELECT * FROM (SELECT *, FIELD(fk_c_locale_code, \'%s\', \'%s\') as sorter FROM %st_country WHERE s_name != \'\' ORDER BY sorter DESC) dummytable GROUP BY pk_c_code ORDER BY s_name ASC', osc_current_user_locale(), $language, DB_TABLE_PREFIX));
-		$countries_temp = $result->result();
+
+		$currentLocale = osc_current_user_locale();
+		$sql = <<<SQL
+SELECT
+	*
+FROM
+	(
+		SELECT
+			*, FIELD( fk_c_locale_code, ?, ? ) as sorter
+		FROM
+			/*TABLE_PREFIX*/t_country
+		WHERE
+			s_name != ''
+		ORDER BY
+			sorter DESC
+	) dummytable
+GROUP BY
+	pk_c_code
+ORDER BY
+	s_name ASC
+SQL;
+		$stmt = $this->prepareStatement( $sql );
+		$stmt->bind_param( 'ss', $currentLocale, $language );
+		$countryList = $this->fetchAll( $stmt );
 		$countries = array();
-		foreach ($countries_temp as $country) 
+		foreach ($countryList as $country) 
 		{
-			$locales = $this->dao->query(sprintf("SELECT * FROM %st_country WHERE pk_c_code = '%s'", DB_TABLE_PREFIX, $country['pk_c_code']));
+			$locales = $this->dbCommand->query(sprintf("SELECT * FROM %st_country WHERE pk_c_code = '%s'", DB_TABLE_PREFIX, $country['pk_c_code']));
 			$locales = $locales->result();
 			foreach ($locales as $locale) 
 			{
@@ -162,16 +184,16 @@ SQL;
 	 */
 	public function updateLocale($code, $locale, $name) 
 	{
-		$this->dao->select('*');
-		$this->dao->from($this->getTableName());
-		$this->dao->where('pk_c_code', addslashes($code));
-		$this->dao->where('fk_c_locale_code', addslashes($locale));
-		$this->dao->limit(1);
-		$result = $this->dao->get();
+		$this->dbCommand->select('*');
+		$this->dbCommand->from($this->getTableName());
+		$this->dbCommand->where('pk_c_code', addslashes($code));
+		$this->dbCommand->where('fk_c_locale_code', addslashes($locale));
+		$this->dbCommand->limit(1);
+		$result = $this->dbCommand->get();
 		$country = $result->result();
 		if ($country) 
 		{
-			return $this->dao->update($this->getTableName(), array('s_name' => $name), array('pk_c_code' => $code, 'fk_c_locale_code' => $locale));
+			return $this->dbCommand->update($this->getTableName(), array('s_name' => $name), array('pk_c_code' => $code, 'fk_c_locale_code' => $locale));
 		}
 		else
 		{
@@ -188,11 +210,11 @@ SQL;
 	 */
 	public function ajax($query) 
 	{
-		$this->dao->select('pk_c_code as id, s_name as label, s_name as value');
-		$this->dao->from($this->getTableName());
-		$this->dao->like('s_name', $query, 'after');
-		$this->dao->limit(5);
-		$result = $this->dao->get();
+		$this->dbCommand->select('pk_c_code as id, s_name as label, s_name as value');
+		$this->dbCommand->from($this->getTableName());
+		$this->dbCommand->like('s_name', $query, 'after');
+		$this->dbCommand->limit(5);
+		$result = $this->dbCommand->get();
 		return $result->result();
 	}
 }
