@@ -1,6 +1,4 @@
 [submodule "webapp/library/aws"]
 	path = webapp/library/aws
 	url = git://github.com/amazonwebservices/aws-sdk-for-php.git
-[submodule "webapp/library/cuore"]
-	path = webapp/library/cuore
-	url = git@github.com:cuore/framework.git
+
