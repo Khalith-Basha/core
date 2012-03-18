@@ -30,7 +30,14 @@
                     <div id="content_header_arrow">&raquo; <?php _e('Locations'); ?></div>
                     <div style="clear: both;"></div>
                 </div>
-                <div id="content_separator"></div>
+		<div id="content_separator"></div>
+
+		<ul>
+		<?php foreach( $aCountries as $country ): ?>
+			<li><?php echo $country['s_name']; ?></li>
+		<?php endforeach; ?>
+		</ul>
+
                 <div id="settings_form" class="locations" style="border: 1px solid #ccc; background: #eee; min-height: 200px; ">
                     <!-- Country -->
                     <div style="float:left; width: 33%; ">

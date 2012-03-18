@@ -1,6 +1,6 @@
 <?php
 
-require_once 'osc/File.php';
+require_once 'cuore/fs/File.php';
 
 class FileMaintenance extends File
 {

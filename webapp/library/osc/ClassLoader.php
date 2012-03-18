@@ -33,7 +33,10 @@ class ClassLoader
 	{
 		foreach( $this->searchPaths as $searchPath )
 		{
-			$requirePath = $searchPath['searchPath'] . DIRECTORY_SEPARATOR . str_replace( '_', DIRECTORY_SEPARATOR, $filePath ) . '.php';
+			$filePathSanitized = str_replace( array( '_', '\\' ), DIRECTORY_SEPARATOR, $filePath );
+			if( DIRECTORY_SEPARATOR === $filePathSanitized[0] )	
+				$filePathSanitized = substr( $filePathSanitized, 1 );
+			$requirePath = $searchPath['searchPath'] . DIRECTORY_SEPARATOR . $filePathSanitized . '.php';
 			if( file_exists( $requirePath ) )
 			{
 				require_once $requirePath;
@@ -41,7 +44,7 @@ class ClassLoader
 			}
 		}
 
-		throw new Exception( 'File not found: ' . $filePath );
+		throw new Exception( 'File not found: ' . $filePathSanitized );
 	}
 
 	private $classInstances;

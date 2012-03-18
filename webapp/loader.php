@@ -8,7 +8,11 @@ define( 'TRANSLATIONS_PATH', CONTENT_PATH . '/languages' );
 define( 'OVERRIDE_LIBRARY_PATH', ABS_PATH . '/override/library' );
 define( 'LIBRARY_PATH', ABS_PATH . '/library' );
 
-set_include_path( get_include_path() . PATH_SEPARATOR . LIBRARY_PATH );
+set_include_path(
+	get_include_path() .
+	PATH_SEPARATOR . LIBRARY_PATH .
+	PATH_SEPARATOR . LIBRARY_PATH . '/cuore_framework'
+);
 
 require 'osc/constants.php';
 require 'osc/ClassLoader.php';
@@ -16,6 +20,7 @@ require 'osc/ClassLoader.php';
 $classLoader = ClassLoader::getInstance();
 $classLoader->addSearchPath( OVERRIDE_LIBRARY_PATH . '/osc', 'Override_' );
 $classLoader->addSearchPath( LIBRARY_PATH . '/osc' );
+$classLoader->addSearchPath( LIBRARY_PATH . '/cuore_framework' );
 
 $classLoader->loadFile( 'helpers/urls' );
 
@@ -68,7 +73,7 @@ $dbConfig = $config->getConfig( 'database' );
 define( 'DB_TABLE_PREFIX', $dbConfig['tablePrefix'] );
 
 $dbConnection = $classLoader->getClassInstance(
-	'Database_Connection',
+	'\cuore\db\Connection',
 	true,
 	array( $dbConfig['host'], $dbConfig['user'], $dbConfig['password'], $dbConfig['name'], $dbConfig['tablePrefix'] )
 );

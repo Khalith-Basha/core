@@ -25,12 +25,12 @@
  * @subpackage Model
  * @since unknown
  */
-class Model_Currency extends Model
+class Model_Currency extends DAO
 {
 	/**
 	 * Set data related to t_currency table
 	 */
-	function __constructx() 
+	public function __construct() 
 	{
 		parent::__construct();
 		$this->setTableName('t_currency');
