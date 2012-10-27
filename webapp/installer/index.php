@@ -29,21 +29,22 @@ require 'osc/ClassLoader.php';
 
 $classLoader = ClassLoader::getInstance();
 $classLoader->addSearchPath( LIBRARY_PATH . '/osc' );
+$classLoader->addSearchPath( LIBRARY_PATH . '/cuore_framework' );
 
 $classLoader->loadFile( 'helpers/urls' );
 
-require_once 'osc/Logging/Logger.php';
-require_once 'osc/Database/Connection.php';
-require_once 'osc/Database/Command.php';
-require_once 'osc/Database/Collection.php';
-require_once 'osc/Database/DAO.php';
-require_once 'osc/Session.php';
-require_once 'osc/Params.php';
-require_once 'osc/Model/Preference.php';
-require_once 'osc/helpers/locales.php';
-require_once 'osc/helpers/preference.php';
-require_once 'osc/helpers/search.php';
-require_once 'osc/helpers/paths.php';
+$classLoader->loadFile( 'Logging/Logger' );
+$classLoader->loadFile( 'Database/Command' );
+$classLoader->loadFile( 'Database/Collection' );
+$classLoader->loadFile( 'Database/DAO' );
+$classLoader->loadFile( 'Session' );
+$classLoader->loadFile( 'Params' );
+$classLoader->loadFile( 'Model/Preference' );
+$classLoader->loadFile( 'helpers/locales' );
+$classLoader->loadFile( 'helpers/preference' );
+$classLoader->loadFile( 'helpers/search' );
+$classLoader->loadFile( 'helpers/paths' );
+
 require_once 'library/steps.php';
 
 // List of steps on the installer.
@@ -73,12 +74,15 @@ if( $step >= 4 )
 	$databaseConfig = $config->getConfig( 'database' );
 	if( !defined( 'DB_TABLE_PREFIX' ) )
 		define( 'DB_TABLE_PREFIX', $databaseConfig['tablePrefix'] );
+	/*
+	 * @TODO
 	$conn = ClassLoader::getInstance()
 		->getClassInstance(
-			'Database_Connection',
+			'cuore_db_Connection',
 			true,
 			array( $databaseConfig['host'], $databaseConfig['user'], $databaseConfig['password'], $databaseConfig['name'], $databaseConfig['tablePrefix'] )
 		);
+	 */
 }
 
 function showView( $file, array $extraParams = array() )
@@ -124,6 +128,7 @@ switch ($step)
 			}
 			catch( Exception $e )
 			{
+				var_dump($e);
 				$error = $e->getMessage();
 			}
 		}
@@ -147,6 +152,14 @@ switch ($step)
 		break;
 
 	case 5:
+		$config = ClassLoader::getInstance()->getClassInstance( 'Config' );
+		$dbConfig = $config->getConfig( 'database' );
+		
+		define( 'DB_HOST', $dbConfig['host'] );
+		define( 'DB_USER', $dbConfig['user'] );
+		define( 'DB_PASS', $dbConfig['password'] );
+		define( 'DB_NAME', $dbConfig['name'] );
+
 		$password = Params::getParam('password');
 		ping_search_engines($_COOKIE['osc_ping_engines']);
 		setcookie('osc_ping_engines', '', time() - 3600);

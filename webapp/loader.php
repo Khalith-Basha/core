@@ -72,11 +72,10 @@ define( 'WEB_PATH', $generalConfig['webUrl'] );
 $dbConfig = $config->getConfig( 'database' );
 define( 'DB_TABLE_PREFIX', $dbConfig['tablePrefix'] );
 
-$dbConnection = $classLoader->getClassInstance(
-	'\cuore\db\Connection',
-	true,
-	array( $dbConfig['host'], $dbConfig['user'], $dbConfig['password'], $dbConfig['name'], $dbConfig['tablePrefix'] )
-);
+define( 'DB_HOST', $dbConfig['host'] );
+define( 'DB_USER', $dbConfig['user'] );
+define( 'DB_PASS', $dbConfig['password'] );
+define( 'DB_NAME', $dbConfig['name'] );
 
 $pluginManager = $classLoader->getClassInstance( 'PluginManager' );
 $pluginManager->loadPlugins();

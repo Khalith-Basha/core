@@ -222,7 +222,7 @@ class Manager_Item
 	 */
 	protected function updateItemStatus( array &$item )
 	{
-		$conn = ClassLoader::getInstance()->getClassInstance( 'Database_Connection' );
+		$conn = ClassLoader::getInstance()->getClassInstance( 'cuore_db_Connection' );
 
 		$bwList = getBadWordsList( $conn->getResource() );
 

@@ -1,14 +1,12 @@
 <?php
 
-require_once 'cuore/fs/File.php';
+require_once 'Cuore/Fs/File.php';
 
-class FileMaintenance extends File
+class FileMaintenance extends \Cuore\Fs\File
 {
 	public function __construct()
 	{
-		parent::__construct();
-
-		$this->setPath( ABS_PATH . '/.maintenance' );
+		parent::__construct( ABS_PATH . '/.maintenance' );
 	}
 }
 

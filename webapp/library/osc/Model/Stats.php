@@ -23,7 +23,7 @@ class Model_Stats
 	private $conn;
 	function __construct() 
 	{
-		$conn = ClassLoader::getInstance()->getClassInstance( 'Database_Connection' );
+		$conn = ClassLoader::getInstance()->getClassInstance( 'cuore_db_Connection' );
 		$data = $conn->getResource();
 		$this->conn = ClassLoader::getInstance()->getClassInstance( 'Database_Command', true, array( &$data ) );
 	}

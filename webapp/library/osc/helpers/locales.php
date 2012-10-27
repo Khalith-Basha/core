@@ -303,11 +303,17 @@ function osc_checkLocales()
 			$path = sprintf('%s%s/mail.sql', osc_translations_path(), $locale['code']);
 			if (file_exists($path)) 
 			{
-				$sql = file_get_contents($path);
-				$conn = Database_Connection::newInstance();
-				$c_db = $conn->getResource();
-				$comm = new DBCommandClass($c_db);
-				$result = $comm->importSQL($sql);
+				$sql = file_get_contents( $path );
+				// @TODO
+		if( defined( 'DB_HOST' ) )
+		{
+			$c_db = new mysqli( DB_HOST, DB_USER, DB_PASS, DB_NAME );
+		}
+
+//				$conn = ClassLoader::getInstance()->getClassInstance( 'cuore_db_Connection' );
+//				$c_db = $conn->getResource();
+				$comm = new DBCommandClass( $c_db );
+				$result = $comm->importSQL( $sql );
 				if (!$result) 
 				{
 					return false;

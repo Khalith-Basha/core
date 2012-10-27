@@ -5,3 +5,6 @@
 [submodule "webapp/library/cuore_framework"]
 	path = webapp/library/cuore_framework
 	url = git@github.com:cuore/framework.git
+[submodule "externals/cuore-framework"]
+	path = externals/cuore-framework
+	url = https://github.com/cuore/framework.git

@@ -75,10 +75,17 @@ class DAO extends Model
 	public function __construct()
 	{
 		parent::__construct();
-		$conn = ClassLoader::getInstance()->getClassInstance( 'Database_Connection' ); 
+		/* @TODO
+		$conn = ClassLoader::getInstance()->getClassInstance( 'cuore_db_Connection' ); 
 		$data = $conn->getResource();
+		 */
+		if( defined( 'DB_HOST' ) )
+		{
+			$data = new mysqli( DB_HOST, DB_USER, DB_PASS, DB_NAME );
+		}
+
 		$this->dbCommand = new Database_Command($data);
-		$this->tablePrefix = $conn->getTablePrefix();
+		$this->tablePrefix = 'osc_'; // @TODO $conn->getTablePrefix();
 	}
 	/**
 	 * Get the result match of the primary key passed by parameter

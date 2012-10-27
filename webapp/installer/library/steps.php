@@ -25,6 +25,14 @@ define( 'SAMPLE_CONFIG_FOLDER_PATH', implode(DIRECTORY_SEPARATOR, array(ABS_PATH
 
 function basic_info() 
 {
+	$config = ClassLoader::getInstance()->getClassInstance( 'Config' );
+	$dbConfig = $config->getConfig( 'database' );
+	
+	define( 'DB_HOST', $dbConfig['host'] );
+	define( 'DB_USER', $dbConfig['user'] );
+	define( 'DB_PASS', $dbConfig['password'] );
+	define( 'DB_NAME', $dbConfig['name'] );
+
 	require_once 'osc/helpers/security.php';
 	$admin = Params::getParam('s_name');
 	if ($admin == '') 
@@ -54,7 +62,6 @@ function basic_info()
 	$mPreference->insert( array('s_section' => 'osc', 's_name' => 'version', 's_value' => APP_VERSION, 'e_type' => 'STRING') );
 	$mPreference->insert( array('s_section' => 'osc', 's_name' => 'contactEmail', 's_value' => $email, 'e_type' => 'STRING') );
 
-	$config = ClassLoader::getInstance()->getClassInstance( 'Config' );
 	$generalConfig = $config->getConfig( 'general' );
 	$webPath = $generalConfig['webUrl'];
 
@@ -117,8 +124,9 @@ function oc_install()
 	{
 		$adminuser = Params::getParam('admin_username');
 		$adminpwd = Params::getParam('admin_password');
-		$master_conn = new Database_Connection($dbhost, $adminuser, $adminpwd, '');
-		$error_num = $master_conn->getErrorConnectionLevel();
+
+		$master_conn = new mysqli( $dbhost, $adminuser, $adminpwd, '' );
+		$error_num = $master_conn->connect_errno;
 		if ($error_num > 0) 
 		{
 			switch ($error_num) 
@@ -144,17 +152,18 @@ function oc_install()
 				break;
 			}
 		}
-		$m_db = $master_conn->getResource();
-		$comm = new DBCommandClass($m_db);
-		$comm->query(sprintf("CREATE DATABASE IF NOT EXISTS %s DEFAULT CHARACTER SET 'UTF8' COLLATE 'UTF8_GENERAL_CI'", $dbname));
-		$error_num = $comm->getErrorLevel();
-		if ($error_num > 0) 
+		$result = $master_conn->query( sprintf("CREATE DATABASE IF NOT EXISTS %s DEFAULT CHARACTER SET 'UTF8' COLLATE 'UTF8_GENERAL_CI'", $dbname ) );
+		if( false === $result )
 		{
-			if (in_array($error_num, array(1006, 1044, 1045))) 
+			$error_num = $master_conn->error;
+			if ($error_num > 0) 
 			{
-				return array('message' => 'Cannot create the database. Check if the admin username and password are correct.');
+				if (in_array($error_num, array(1006, 1044, 1045))) 
+				{
+					return array('message' => 'Cannot create the database. Check if the admin username and password are correct.');
+				}
+				return array('message' => 'Cannot create the database. Error number: ' . $error_num . '.');
 			}
-			return array('message' => 'Cannot create the database. Error number: ' . $error_num . '.');
 		}
 		unset($conn);
 		unset($comm);
@@ -162,8 +171,16 @@ function oc_install()
 	}
 	if( !defined( 'DB_TABLE_PREFIX' ) )
 		define( 'DB_TABLE_PREFIX', $tableprefix );
-	$conn = ClassLoader::getInstance()->getClassInstance( 'Database_Connection', true, array( $dbhost, $username, $password, $dbname, $tableprefix ) );
-	$error_num = $conn->getErrorLevel();
+
+	$conn = new mysqli( $dbhost, $username, $password, $dbname );
+
+	define( 'DB_HOST', $dbhost );
+	define( 'DB_USER', $username );
+	define( 'DB_PASS', $password );
+	define( 'DB_NAME', $dbname );
+
+	//$conn = ClassLoader::getInstance()->getClassInstance( 'cuore_db_Connection', true, array( $dbhost, $username, $password, $dbname, $tableprefix ) );
+	$error_num = $conn->connect_errno;//getErrorLevel();
 	if ($error_num > 0) 
 	{
 		switch ($error_num) 
@@ -197,7 +214,7 @@ function oc_install()
 	*/
 	create_config_file($dbname, $username, $password, $dbhost, $tableprefix);
 
-	$dbHandle = $conn->getResource();
+	$dbHandle = $conn;
 	$comm = new Database_Command( $dbHandle );
 
 	$sql = file_get_contents( ABS_PATH . '/installer/data/sql/struct.sql' );
@@ -331,7 +348,6 @@ function ping_search_engines($bool)
 		$mPreference->insert(array('s_section' => 'osc', 's_name' => 'ping_search_engines', 's_value' => '1', 'e_type' => 'BOOLEAN'));
 		$encodedUrl = urlencode( $url );
 		requestUrl('http://www.google.com/webmasters/sitemaps/ping?sitemap=' . $encodedUrl );
-		requestUrl('http://www.bing.com/webmaster/ping.aspx?siteMap=' . $encodedUrl );
 	}
 	else
 	{
