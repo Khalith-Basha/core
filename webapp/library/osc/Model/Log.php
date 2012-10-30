@@ -46,6 +46,6 @@ class Model_Log extends DAO
 	public function insertLog($section, $action, $id, $data, $who, $whoId) 
 	{
 		$array_set = array('dt_date' => date('Y-m-d H:i:s'), 's_section' => $section, 's_action' => $action, 'fk_i_id' => $id, 's_data' => $data, 's_ip' => $_SERVER['REMOTE_ADDR'], 's_who' => $who, 'fk_i_who_id' => $whoId);
-		return $this->dao->insert($this->getTableName(), $array_set);
+		return $this->dbCommand->insert($this->getTableName(), $array_set);
 	}
 }

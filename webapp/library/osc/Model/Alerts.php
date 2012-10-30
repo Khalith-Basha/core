@@ -45,10 +45,10 @@ class Model_Alerts extends DAO
 	 */
 	function findByUser($userId) 
 	{
-		$this->dao->select();
-		$this->dao->from($this->getTableName());
-		$this->dao->where('fk_i_user_id', $userId);
-		$result = $this->dao->get();
+		$this->dbCommand->select();
+		$this->dbCommand->from($this->getTableName());
+		$this->dbCommand->where('fk_i_user_id', $userId);
+		$result = $this->dbCommand->get();
 		if ($result == false) 
 		{
 			return false;
@@ -69,10 +69,10 @@ class Model_Alerts extends DAO
 	 */
 	function findByEmail($email) 
 	{
-		$this->dao->select();
-		$this->dao->from($this->getTableName());
-		$this->dao->where('s_email', $email);
-		$result = $this->dao->get();
+		$this->dbCommand->select();
+		$this->dbCommand->from($this->getTableName());
+		$this->dbCommand->where('s_email', $email);
+		$result = $this->dbCommand->get();
 		if ($result == false) 
 		{
 			return false;
@@ -93,10 +93,10 @@ class Model_Alerts extends DAO
 	 */
 	function findByType($type) 
 	{
-		$this->dao->select();
-		$this->dao->from($this->getTableName());
-		$this->dao->where('e_type', $type);
-		$result = $this->dao->get();
+		$this->dbCommand->select();
+		$this->dbCommand->from($this->getTableName());
+		$this->dbCommand->where('e_type', $type);
+		$result = $this->dbCommand->get();
 		if ($result == false) 
 		{
 			return false;
@@ -118,15 +118,15 @@ class Model_Alerts extends DAO
 	 */
 	function findByTypeGroup($type, $active = FALSE) 
 	{
-		$this->dao->select();
-		$this->dao->from($this->getTableName());
-		$this->dao->where('e_type', $type);
+		$this->dbCommand->select();
+		$this->dbCommand->from($this->getTableName());
+		$this->dbCommand->where('e_type', $type);
 		if ($active) 
 		{
-			$this->dao->where('b_active', 1);
+			$this->dbCommand->where('b_active', 1);
 		}
-		$this->dao->groupBy('s_search');
-		$result = $this->dao->get();
+		$this->dbCommand->groupBy('s_search');
+		$result = $this->dbCommand->get();
 		if ($result == false) 
 		{
 			return false;
@@ -150,12 +150,12 @@ class Model_Alerts extends DAO
 	 */
 	function findBySearchAndType($search, $type) 
 	{
-		$this->dao->select();
-		$this->dao->from($this->getTableName());
+		$this->dbCommand->select();
+		$this->dbCommand->from($this->getTableName());
 		$conditions = array('e_type' => $type, 's_search' => $search);
-		$this->dao->where('e_type', $type);
-		$this->dao->where('s_search', $search);
-		$result = $this->dao->get();
+		$this->dbCommand->where('e_type', $type);
+		$this->dbCommand->where('s_search', $search);
+		$result = $this->dbCommand->get();
 		if ($result == false) 
 		{
 			return false;
@@ -180,16 +180,16 @@ class Model_Alerts extends DAO
 	 */
 	function findUsersBySearchAndType($search, $type, $active = FALSE) 
 	{
-		$this->dao->select();
-		$this->dao->from($this->getTableName());
-		$this->dao->where('e_type', $type);
-		$this->dao->where('s_search', $search);
+		$this->dbCommand->select();
+		$this->dbCommand->from($this->getTableName());
+		$this->dbCommand->where('e_type', $type);
+		$this->dbCommand->where('s_search', $search);
 		if ($active) 
 		{
-			$this->dao->where('b_active', 1);
+			$this->dbCommand->where('b_active', 1);
 		}
-		$this->dao->groupBy('s_search');
-		$result = $this->dao->get();
+		$this->dbCommand->groupBy('s_search');
+		$result = $this->dbCommand->get();
 		if ($result == false) 
 		{
 			return false;
@@ -211,11 +211,11 @@ class Model_Alerts extends DAO
 	 */
 	function findByUserByType($userId, $type) 
 	{
-		$this->dao->select();
-		$this->dao->from($this->getTableName());
+		$this->dbCommand->select();
+		$this->dbCommand->from($this->getTableName());
 		$conditions = array('e_type' => $type, 'fk_i_user_id' => $userId);
-		$this->dao->where($conditions);
-		$result = $this->dao->get();
+		$this->dbCommand->where($conditions);
+		$result = $this->dbCommand->get();
 		if ($result == false) 
 		{
 			return false;
@@ -237,11 +237,11 @@ class Model_Alerts extends DAO
 	 */
 	function findByEmailByType($email, $type) 
 	{
-		$this->dao->select();
-		$this->dao->from($this->getTableName());
+		$this->dbCommand->select();
+		$this->dbCommand->from($this->getTableName());
 		$conditions = array('e_type' => $type, 's_email' => $email);
-		$this->dao->where($conditions);
-		$result = $this->dao->get();
+		$this->dbCommand->where($conditions);
+		$result = $this->dbCommand->get();
 		if ($result == false) 
 		{
 			return false;
@@ -266,22 +266,22 @@ class Model_Alerts extends DAO
 	function createAlert($userid, $email, $alert, $secret, $type = 'DAILY') 
 	{
 		$results = 0;
-		$this->dao->select();
-		$this->dao->from($this->getTableName());
-		$this->dao->where('s_search', $alert);
+		$this->dbCommand->select();
+		$this->dbCommand->from($this->getTableName());
+		$this->dbCommand->where('s_search', $alert);
 		if ($userid == 0 || $userid == null) 
 		{
-			$this->dao->where('fk_i_user_id', 0);
-			$this->dao->where('s_email', $email);
+			$this->dbCommand->where('fk_i_user_id', 0);
+			$this->dbCommand->where('s_email', $email);
 		}
 		else
 		{
-			$this->dao->where('fk_i_user_id', $userid);
+			$this->dbCommand->where('fk_i_user_id', $userid);
 		}
-		$results = $this->dao->get();
+		$results = $this->dbCommand->get();
 		if ($results->numRows() == 0) 
 		{
-			return $this->dao->insert($this->getTableName(), array('fk_i_user_id' => $userid, 's_email' => $email, 's_search' => $alert, 'e_type' => $type, 's_secret' => $secret));
+			return $this->dbCommand->insert($this->getTableName(), array('fk_i_user_id' => $userid, 's_email' => $email, 's_search' => $alert, 'e_type' => $type, 's_secret' => $secret));
 		}
 		return false;
 	}
@@ -296,6 +296,6 @@ class Model_Alerts extends DAO
 	 */
 	function activate($email, $secret) 
 	{
-		return $this->dao->update($this->getTableName(), array('b_active' => 1), array('s_email' => $email, 's_secret' => $secret));
+		return $this->dbCommand->update($this->getTableName(), array('b_active' => 1), array('s_email' => $email, 's_secret' => $secret));
 	}
 }

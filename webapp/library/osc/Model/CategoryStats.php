@@ -48,7 +48,7 @@ class Model_CategoryStats extends DAO
 	public function increaseNumItems($categoryId) 
 	{
 		$sql = sprintf('INSERT INTO %s (fk_i_category_id, i_num_items) VALUES (%d, 1) ON DUPLICATE KEY UPDATE i_num_items = i_num_items + 1', $this->getTableName(), $categoryId);
-		$return = $this->dao->query($sql);
+		$return = $this->dbCommand->query($sql);
 		$result = ClassLoader::getInstance()->getClassInstance( 'Model_Category' )->findByPrimaryKey($categoryId);
 		if ($return !== false) 
 		{
@@ -77,24 +77,24 @@ class Model_CategoryStats extends DAO
 	 */
 	public function decreaseNumItems($categoryId) 
 	{
-		$this->dao->select('i_num_items');
-		$this->dao->from($this->getTableName());
-		$this->dao->where($this->getPrimaryKey(), $categoryId);
-		$result = $this->dao->get();
+		$this->dbCommand->select('i_num_items');
+		$this->dbCommand->from($this->getTableName());
+		$this->dbCommand->where($this->getPrimaryKey(), $categoryId);
+		$result = $this->dbCommand->get();
 		$categoryStat = $result->row();
 		$return = 0;
 		if (isset($categoryStat['i_num_items'])) 
 		{
-			$this->dao->from($this->getTableName());
-			$this->dao->set('i_num_items', 'i_num_items - 1', false);
-			$this->dao->where('i_num_items > 0');
-			$this->dao->where('fk_i_category_id', $categoryId);
-			$return = $this->dao->update();
+			$this->dbCommand->from($this->getTableName());
+			$this->dbCommand->set('i_num_items', 'i_num_items - 1', false);
+			$this->dbCommand->where('i_num_items > 0');
+			$this->dbCommand->where('fk_i_category_id', $categoryId);
+			$return = $this->dbCommand->update();
 		}
 		else
 		{
 			$array_set = array('fk_i_category_id' => $categoryId, 'i_num_items' => 0);
-			$res = $this->dao->insert($this->getTableName(), $array_set);
+			$res = $this->dbCommand->insert($this->getTableName(), $array_set);
 			if ($res === false) 
 			{
 				$return = false;
@@ -121,7 +121,7 @@ class Model_CategoryStats extends DAO
 	public function setNumItems($categoryID, $numItems) 
 	{
 		$result = $this->insert(array('fk_i_category_id' => $categoryID, 'i_num_items' => $numItems));
-		if ($this->dao->getErrorLevel() == '1062') 
+		if ($this->dbCommand->getErrorLevel() == '1062') 
 		{
 			$result = $this->update(array('i_num_items' => $numItems), array('fk_i_category_id' => $categoryID));
 		}
@@ -149,10 +149,10 @@ class Model_CategoryStats extends DAO
 	 */
 	public function countItemsFromCategory($categoryId) 
 	{
-		$this->dao->select('i_num_items');
-		$this->dao->from($this->getTableName());
-		$this->dao->where('fk_i_category_id', $categoryId);
-		$result = $this->dao->get();
+		$this->dbCommand->select('i_num_items');
+		$this->dbCommand->from($this->getTableName());
+		$this->dbCommand->where('fk_i_category_id', $categoryId);
+		$result = $this->dbCommand->get();
 		$data = $result->row();
 		if ($data == null) 
 		{

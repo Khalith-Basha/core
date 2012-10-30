@@ -32,7 +32,7 @@ class CAdminAjax extends Controller_Administration
 			break;
 
 		case 'regions': //Return regions given a countryId
-			$regions = Region::newInstance()->findByCountry(Params::getParam("countryId"));
+			$regions = Model_Region::newInstance()->findByCountry(Params::getParam("countryId"));
 			echo json_encode($regions);
 			break;
 

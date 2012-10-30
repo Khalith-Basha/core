@@ -50,13 +50,14 @@ _e('Enable friendly urls'); ?></label>
 
                             <?php
 if (osc_rewrite_enabled()) 
-{ ?>
+{ 
+?>
                             <div style="float: left; width: 100%;">
                                 <fieldset>
                                     <legend><?php
 	_e('.htaccess file'); ?></legend>
                                     <?php
-	switch ($htaccess_status) 
+	switch ($htaccess) 
 	{
 	case 1:
 		_e('Module <em>mod_rewrite</em> was found on the server.');
@@ -69,7 +70,7 @@ if (osc_rewrite_enabled())
 ?>
                                          <br/>
                                     <?php
-	switch ($file_status) 
+	switch ($file) 
 	{
 	case 3:
 		_e('Error. We couldn\'t write the .htaccess file on your server. Please create a file called .htaccess in the root of your OpenSourceClassifieds installation with the following content.');
@@ -91,14 +92,11 @@ if (osc_rewrite_enabled())
                                         <textarea rows="8" style="width: 90%;" readonly="readonly" onclick="this.select();">
 <IfModule mod_rewrite.c>
     RewriteEngine On
-    RewriteBase <?php
-	echo REL_WEB_URL; ?>
-
+    RewriteBase /
     RewriteRule ^index\.php$ - [L]
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule . <?php
-	echo REL_WEB_URL; ?>index.php [L]
+    RewriteRule . /index.php [L]
 </IfModule>
                                         </textarea>
                                     </div>

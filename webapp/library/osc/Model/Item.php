@@ -103,11 +103,11 @@ SQL;
 			$sql = vsprintf($format, $args);
 			break;
 		}
-		$this->dao->select('l.*, i.*');
-		$this->dao->from($this->getTableName() . ' i, ' . DB_TABLE_PREFIX . 't_item_location l');
-		$this->dao->where('l.fk_i_item_id = i.pk_i_id');
-		$this->dao->where($sql);
-		$result = $this->dao->get();
+		$this->dbCommand->select('l.*, i.*');
+		$this->dbCommand->from($this->getTableName() . ' i, ' . DB_TABLE_PREFIX . 't_item_location l');
+		$this->dbCommand->where('l.fk_i_item_id = i.pk_i_id');
+		$this->dbCommand->where($sql);
+		$result = $this->dbCommand->get();
 		$items = $result->result();
 		return $this->extendData($items);
 	}
@@ -165,7 +165,7 @@ SQL;
 		$description = $description;
 		$what = $what;
 		$array_set = array('fk_i_item_id' => $id, 'fk_c_locale_code' => $locale, 's_title' => $title, 's_description' => $description, 's_what' => $what);
-		return $this->dao->insert(DB_TABLE_PREFIX . 't_item_description', $array_set);
+		return $this->dbCommand->insert(DB_TABLE_PREFIX . 't_item_description', $array_set);
 	}
 	/**
 	 * Find items belong to an user given its id
@@ -179,24 +179,24 @@ SQL;
 	 */
 	public function findByUserID($userId, $start = 0, $end = null) 
 	{
-		$this->dao->select('l.*, i.*');
-		$this->dao->from($this->getTableName() . ' i, ' . DB_TABLE_PREFIX . 't_item_location l');
-		$this->dao->where('l.fk_i_item_id = i.pk_i_id');
+		$this->dbCommand->select('l.*, i.*');
+		$this->dbCommand->from($this->getTableName() . ' i, ' . DB_TABLE_PREFIX . 't_item_location l');
+		$this->dbCommand->where('l.fk_i_item_id = i.pk_i_id');
 		$array_where = array('i.fk_i_user_id' => $userId);
-		$this->dao->where($array_where);
-		$this->dao->orderBy('i.pk_i_id', 'DESC');
+		$this->dbCommand->where($array_where);
+		$this->dbCommand->orderBy('i.pk_i_id', 'DESC');
 		if ($end != null) 
 		{
-			$this->dao->limit($start, $end);
+			$this->dbCommand->limit($start, $end);
 		}
 		else
 		{
 			if ($start > 0) 
 			{
-				$this->dao->limit($start);
+				$this->dbCommand->limit($start);
 			}
 		}
-		$result = $this->dao->get();
+		$result = $this->dbCommand->get();
 		$items = $result->result();
 		return $this->extendData($items);
 	}
@@ -212,21 +212,21 @@ SQL;
 	 */
 	public function findByUserIDEnabled($userId, $start = 0, $end = null) 
 	{
-		$this->dao->select('l.*, i.*');
-		$this->dao->from($this->getTableName() . ' i, ' . DB_TABLE_PREFIX . 't_item_location l');
-		$this->dao->where('l.fk_i_item_id = i.pk_i_id');
+		$this->dbCommand->select('l.*, i.*');
+		$this->dbCommand->from($this->getTableName() . ' i, ' . DB_TABLE_PREFIX . 't_item_location l');
+		$this->dbCommand->where('l.fk_i_item_id = i.pk_i_id');
 		$array_where = array('i.b_enabled' => 1, 'i.fk_i_user_id' => $userId);
-		$this->dao->where($array_where);
-		$this->dao->orderBy('i.pk_i_id', 'DESC');
+		$this->dbCommand->where($array_where);
+		$this->dbCommand->orderBy('i.pk_i_id', 'DESC');
 		if ($end != null) 
 		{
-			$this->dao->limit($start, $end);
+			$this->dbCommand->limit($start, $end);
 		}
 		else if ($start > 0) 
 		{
-			$this->dao->limit($start);
+			$this->dbCommand->limit($start);
 		}
-		$result = $this->dao->get();
+		$result = $this->dbCommand->get();
 		$items = $result->result();
 		return $this->extendData($items);
 	}
@@ -240,12 +240,12 @@ SQL;
 	 */
 	public function countByUserIDEnabled($userId) 
 	{
-		$this->dao->select('count(i.pk_i_id) as total');
-		$this->dao->from($this->getTableName() . ' i');
+		$this->dbCommand->select('count(i.pk_i_id) as total');
+		$this->dbCommand->from($this->getTableName() . ' i');
 		$array_where = array('i.b_enabled' => 1, 'i.fk_i_user_id' => $userId);
-		$this->dao->where($array_where);
-		$this->dao->orderBy('i.pk_i_id', 'DESC');
-		$result = $this->dao->get();
+		$this->dbCommand->where($array_where);
+		$this->dbCommand->orderBy('i.pk_i_id', 'DESC');
+		$result = $this->dbCommand->get();
 		$items = $result->row();
 		return $items['total'];
 	}
@@ -287,7 +287,7 @@ SQL;
 			break;
 		}
 		$array_conditions = array('fk_i_item_id' => $id);
-		return $this->dao->update(DB_TABLE_PREFIX . 't_item_stats', $array_set, $array_conditions);
+		return $this->dbCommand->update(DB_TABLE_PREFIX . 't_item_stats', $array_set, $array_conditions);
 	}
 	/**
 	 * Update title and description given a item id and locale.
@@ -303,7 +303,7 @@ SQL;
 	public function updateLocaleForce($id, $locale, $title, $text) 
 	{
 		$array_replace = array('s_title' => $title, 's_description' => $text, 'fk_c_locale_code' => $locale, 'fk_i_item_id' => $id, 's_what' => $title . " " . $text);
-		return $this->dao->replace(DB_TABLE_PREFIX . 't_item_description', $array_replace);
+		return $this->dbCommand->replace(DB_TABLE_PREFIX . 't_item_description', $array_replace);
 	}
 	/**
 	 * Return meta fields for a given item
@@ -315,14 +315,14 @@ SQL;
 	 */
 	public function metaFields($id) 
 	{
-		$this->dao->select('im.s_value as s_value,mf.pk_i_id as pk_i_id, mf.s_name as s_name, mf.e_type as e_type');
-		$this->dao->from($this->getTableName() . ' i, ' . DB_TABLE_PREFIX . 't_item_meta im, ' . DB_TABLE_PREFIX . 't_meta_categories mc, ' . DB_TABLE_PREFIX . 't_meta_fields mf');
-		$this->dao->where('mf.pk_i_id = im.fk_i_field_id');
-		$this->dao->where('mf.pk_i_id = mc.fk_i_field_id');
-		$this->dao->where('mc.fk_i_category_id = i.fk_i_category_id');
+		$this->dbCommand->select('im.s_value as s_value,mf.pk_i_id as pk_i_id, mf.s_name as s_name, mf.e_type as e_type');
+		$this->dbCommand->from($this->getTableName() . ' i, ' . DB_TABLE_PREFIX . 't_item_meta im, ' . DB_TABLE_PREFIX . 't_meta_categories mc, ' . DB_TABLE_PREFIX . 't_meta_fields mf');
+		$this->dbCommand->where('mf.pk_i_id = im.fk_i_field_id');
+		$this->dbCommand->where('mf.pk_i_id = mc.fk_i_field_id');
+		$this->dbCommand->where('mc.fk_i_category_id = i.fk_i_category_id');
 		$array_where = array('im.fk_i_item_id' => $id, 'i.pk_i_id' => $id);
-		$this->dao->where($array_where);
-		$result = $this->dao->get();
+		$this->dbCommand->where($array_where);
+		$result = $this->dbCommand->get();
 		return $result->result();
 	}
 	/**
@@ -345,12 +345,12 @@ SQL;
 		{
 			ClassLoader::getInstance()->getClassInstance( 'Model_CategoryStats' )->decreaseNumItems($item['fk_i_category_id']);
 		}
-		$this->dao->delete(DB_TABLE_PREFIX . 't_item_description', "fk_i_item_id = $id");
-		$this->dao->delete(DB_TABLE_PREFIX . 't_item_comment', "fk_i_item_id = $id");
-		$this->dao->delete(DB_TABLE_PREFIX . 't_item_resource', "fk_i_item_id = $id");
-		$this->dao->delete(DB_TABLE_PREFIX . 't_item_location', "fk_i_item_id = $id");
-		$this->dao->delete(DB_TABLE_PREFIX . 't_item_stats', "fk_i_item_id = $id");
-		$this->dao->delete(DB_TABLE_PREFIX . 't_item_meta', "fk_i_item_id = $id");
+		$this->dbCommand->delete(DB_TABLE_PREFIX . 't_item_description', "fk_i_item_id = $id");
+		$this->dbCommand->delete(DB_TABLE_PREFIX . 't_item_comment', "fk_i_item_id = $id");
+		$this->dbCommand->delete(DB_TABLE_PREFIX . 't_item_resource', "fk_i_item_id = $id");
+		$this->dbCommand->delete(DB_TABLE_PREFIX . 't_item_location', "fk_i_item_id = $id");
+		$this->dbCommand->delete(DB_TABLE_PREFIX . 't_item_stats', "fk_i_item_id = $id");
+		$this->dbCommand->delete(DB_TABLE_PREFIX . 't_item_meta', "fk_i_item_id = $id");
 		$res = parent::deleteByPrimaryKey($id);
 		return $res;
 	}
@@ -365,10 +365,10 @@ SQL;
 	public function extendDataSingle($item) 
 	{
 		$prefLocale = osc_current_user_locale();
-		$this->dao->select();
-		$this->dao->from(DB_TABLE_PREFIX . 't_item_description');
-		$this->dao->where('fk_i_item_id', $item['pk_i_id']);
-		$result = $this->dao->get();
+		$this->dbCommand->select();
+		$this->dbCommand->from(DB_TABLE_PREFIX . 't_item_description');
+		$this->dbCommand->where('fk_i_item_id', $item['pk_i_id']);
+		$result = $this->dbCommand->get();
 		$descriptions = $result->result();
 		$item['locale'] = array();
 		foreach ($descriptions as $desc) 
@@ -420,10 +420,10 @@ SQL;
 		$results = array();
 		foreach ($items as $item) 
 		{
-			$this->dao->select('fk_c_locale_code, s_name as s_category_name');
-			$this->dao->from(DB_TABLE_PREFIX . 't_category_description');
-			$this->dao->where('fk_i_category_id', $item['fk_i_category_id']);
-			$result = $this->dao->get();
+			$this->dbCommand->select('fk_c_locale_code, s_name as s_category_name');
+			$this->dbCommand->from(DB_TABLE_PREFIX . 't_category_description');
+			$this->dbCommand->where('fk_i_category_id', $item['fk_i_category_id']);
+			$result = $this->dbCommand->get();
 			$descriptions = $result->result();
 			foreach ($descriptions as $desc) 
 			{
@@ -457,10 +457,10 @@ SQL;
 		$results = array();
 		foreach ($items as $item) 
 		{
-			$this->dao->select();
-			$this->dao->from(DB_TABLE_PREFIX . 't_item_description');
-			$this->dao->where('fk_i_item_id', $item['pk_i_id']);
-			$result = $this->dao->get();
+			$this->dbCommand->select();
+			$this->dbCommand->from(DB_TABLE_PREFIX . 't_item_description');
+			$this->dbCommand->where('fk_i_item_id', $item['pk_i_id']);
+			$result = $this->dbCommand->get();
 			$descriptions = $result->result();
 			$item['locale'] = array();
 			foreach ($descriptions as $desc) 

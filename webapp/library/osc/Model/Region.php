@@ -84,15 +84,15 @@ SQL;
 	 */
 	public function findByName($name, $country = null) 
 	{
-		$this->dao->select('*');
-		$this->dao->from($this->getTableName());
-		$this->dao->where('s_name', $name);
+		$this->dbCommand->select('*');
+		$this->dbCommand->from($this->getTableName());
+		$this->dbCommand->where('s_name', $name);
 		if ($country != null) 
 		{
-			$this->dao->where('fk_c_country_code', $country);
+			$this->dbCommand->where('fk_c_country_code', $country);
 		}
-		$this->dao->limit(1);
-		$result = $this->dao->get();
+		$this->dbCommand->limit(1);
+		$result = $this->dbCommand->get();
 		return $result->row();
 	}
 	/**
@@ -105,15 +105,15 @@ SQL;
 	 */
 	public function ajax($query, $country = null) 
 	{
-		$this->dao->select('pk_i_id as id, s_name as label, s_name as value');
-		$this->dao->from($this->getTableName());
-		$this->dao->like('s_name', $query, 'after');
+		$this->dbCommand->select('pk_i_id as id, s_name as label, s_name as value');
+		$this->dbCommand->from($this->getTableName());
+		$this->dbCommand->like('s_name', $query, 'after');
 		if ($country != null) 
 		{
-			$this->dao->where('fk_c_country_code', strtolower($country));
+			$this->dbCommand->where('fk_c_country_code', strtolower($country));
 		}
-		$this->dao->limit(5);
-		$result = $this->dao->get();
+		$this->dbCommand->limit(5);
+		$result = $this->dbCommand->get();
 		if ($result) 
 		{
 			return $result->result();

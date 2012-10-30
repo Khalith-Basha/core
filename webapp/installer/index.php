@@ -74,15 +74,7 @@ if( $step >= 4 )
 	$databaseConfig = $config->getConfig( 'database' );
 	if( !defined( 'DB_TABLE_PREFIX' ) )
 		define( 'DB_TABLE_PREFIX', $databaseConfig['tablePrefix'] );
-	/*
-	 * @TODO
-	$conn = ClassLoader::getInstance()
-		->getClassInstance(
-			'cuore_db_Connection',
-			true,
-			array( $databaseConfig['host'], $databaseConfig['user'], $databaseConfig['password'], $databaseConfig['name'], $databaseConfig['tablePrefix'] )
-		);
-	 */
+
 }
 
 function showView( $file, array $extraParams = array() )

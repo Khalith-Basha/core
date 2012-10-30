@@ -78,10 +78,10 @@ SQL;
 	 */
 	public function findByCode($code) 
 	{
-		$this->dao->select();
-		$this->dao->from($this->getTableName());
-		$this->dao->where('pk_c_code', $code);
-		$result = $this->dao->get();
+		$this->dbCommand->select();
+		$this->dbCommand->from($this->getTableName());
+		$this->dbCommand->where('pk_c_code', $code);
+		$result = $this->dbCommand->get();
 		return $result->result();
 	}
 
@@ -95,13 +95,13 @@ SQL;
 	{
 		osc_run_hook('delete_locale', $locale);
 		$array_where = array('fk_c_locale_code' => $locale);
-		$this->dao->delete(DB_TABLE_PREFIX . 't_category_description', $array_where);
-		$this->dao->delete(DB_TABLE_PREFIX . 't_item_description', $array_where);
-		$this->dao->delete(DB_TABLE_PREFIX . 't_keywords', $array_where);
-		$this->dao->delete(DB_TABLE_PREFIX . 't_user_description', $array_where);
-		$this->dao->delete(DB_TABLE_PREFIX . 't_page_description', $array_where);
-		$this->dao->delete(DB_TABLE_PREFIX . 't_country', $array_where);
-		$result = $this->dao->delete($this->getTableName(), array('pk_c_code' => $locale));
+		$this->dbCommand->delete(DB_TABLE_PREFIX . 't_category_description', $array_where);
+		$this->dbCommand->delete(DB_TABLE_PREFIX . 't_item_description', $array_where);
+		$this->dbCommand->delete(DB_TABLE_PREFIX . 't_keywords', $array_where);
+		$this->dbCommand->delete(DB_TABLE_PREFIX . 't_user_description', $array_where);
+		$this->dbCommand->delete(DB_TABLE_PREFIX . 't_page_description', $array_where);
+		$this->dbCommand->delete(DB_TABLE_PREFIX . 't_country', $array_where);
+		$result = $this->dbCommand->delete($this->getTableName(), array('pk_c_code' => $locale));
 		return $result;
 	}
 }

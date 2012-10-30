@@ -31,14 +31,15 @@ class CAdminUser extends Controller_Administration
 		$userId = $input->getInteger( 'id', $_SESSION['adminId'] );
 		$aUser = $this->userManager->findByPrimaryKey( $userId );
 		$aCountries = ClassLoader::getInstance()->getClassInstance( 'Model_Country' )->listAll();
+		$region = ClassLoader::getInstance()->getClassInstance( 'Model_Region' );
 		$aRegions = array();
 		if ($aUser['fk_c_country_code'] != '') 
 		{
-			$aRegions = Region::newInstance()->findByCountry($aUser['fk_c_country_code']);
+			$aRegions = $region->findByCountry($aUser['fk_c_country_code']);
 		}
 		else if (count($aCountries) > 0) 
 		{
-			$aRegions = Region::newInstance()->findByCountry($aCountries[0]['pk_c_code']);
+			$aRegions = $region->findByCountry($aCountries[0]['pk_c_code']);
 		}
 		$aCities = array();
 		if ($aUser['fk_i_region_id'] != '') 

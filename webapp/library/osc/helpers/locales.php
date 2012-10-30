@@ -304,14 +304,11 @@ function osc_checkLocales()
 			if (file_exists($path)) 
 			{
 				$sql = file_get_contents( $path );
-				// @TODO
 		if( defined( 'DB_HOST' ) )
 		{
 			$c_db = new mysqli( DB_HOST, DB_USER, DB_PASS, DB_NAME );
 		}
 
-//				$conn = ClassLoader::getInstance()->getClassInstance( 'cuore_db_Connection' );
-//				$c_db = $conn->getResource();
 				$comm = new DBCommandClass( $c_db );
 				$result = $comm->importSQL( $sql );
 				if (!$result) 

@@ -163,7 +163,7 @@ class Manager_Item
 				ClassLoader::getInstance()->getClassInstance( 'Cookie' )->push('last_submit_item', time());
 				ClassLoader::getInstance()->getClassInstance( 'Cookie' )->set();
 			}
-			$itemId = $this->manager->dao->insertedId();
+			$itemId = $this->manager->dbCommand->insertedId();
 			ClassLoader::getInstance()->getClassInstance( 'Logging_Logger' )->insertLog('item', 'add', $itemId, current(array_values($aItem['title'])), $this->is_admin ? 'admin' : 'user', $this->is_admin ? osc_logged_admin_id() : osc_logged_user_id());
 			Params::setParam('itemId', $itemId);
 			// INSERT title and description locales
@@ -222,9 +222,8 @@ class Manager_Item
 	 */
 	protected function updateItemStatus( array &$item )
 	{
-		$conn = ClassLoader::getInstance()->getClassInstance( 'cuore_db_Connection' );
-
-		$bwList = getBadWordsList( $conn->getResource() );
+		$conn = new mysqli( DB_HOST, DB_USER, DB_PASS, DB_NAME );
+		$bwList = getBadWordsList( $conn );
 
 		$item['status'] = null;
 
@@ -592,7 +591,7 @@ class Manager_Item
 		$aComment = array('dt_pub_date' => date('Y-m-d H:i:s'), 'fk_i_item_id' => $itemId, 's_author_name' => $authorName, 's_author_email' => $authorEmail, 's_title' => $title, 's_body' => $body, 'b_active' => ($status == 'ACTIVE' ? 1 : 0), 'b_enabled' => 1, 'fk_i_user_id' => $userId);
 		if ($mComments->insert($aComment)) 
 		{
-			$commentID = $mComments->dao->insertedId();
+			$commentID = $mComments->dbCommand->insertedId();
 			if ($status_num == 2 && $userId != null) 
 			{ // COMMENT IS ACTIVE
 				$user = ClassLoader::getInstance()->getClassInstance( 'Model_User' )->findByPrimaryKey($userId);
@@ -956,7 +955,7 @@ class Manager_Item
 						$numImages++;
 						$tmpName = $aResources['tmp_name'][$key];
 						$itemResourceManager->insert(array('fk_i_item_id' => $itemId));
-						$resourceId = $itemResourceManager->dao->insertedId();
+						$resourceId = $itemResourceManager->dbCommand->insertedId();
 						// Create normal size
 						$normal_path = $path = osc_content_path() . '/uploads/' . $resourceId . '.jpg';
 						$size = explode('x', osc_normal_dimensions());

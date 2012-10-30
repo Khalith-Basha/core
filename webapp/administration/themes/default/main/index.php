@@ -28,12 +28,12 @@
                 },
                 setCookie: function(args) {
                     $.isArray(args) ? true : false;
-                    $.cookie.set("osc_admin_main", args, {json: true});
+                    // @TODO $.cookie.set("osc_admin_main", args, {json: true});
                 }
             });
 
             $(function() {
-                if ($.cookie.get("osc_admin_main") == '' || $.cookie.get("osc_admin_main") == null) { 
+                if (true){// @TODO $.cookie.get("osc_admin_main") == '' || $.cookie.get("osc_admin_main") == null) { 
                     var sections = ['cb_last_items', 'cb_statistics', 'cb_last_comments', 'cb_last_news'];
                     $.initDashboard(sections);
                     $.setCookie(sections);

@@ -47,14 +47,14 @@ class Model_ItemResource extends DAO
 	 */
 	function getAllResources($itemId = null) 
 	{
-		$this->dao->select('r.*, c.pub_date');
-		$this->dao->from($this->getTableName() . ' r');
-		$this->dao->join($this->getTableItemName() . ' c', 'c.pk_i_id = r.fk_i_item_id');
+		$this->dbCommand->select('r.*, c.pub_date');
+		$this->dbCommand->from($this->getTableName() . ' r');
+		$this->dbCommand->join($this->getTableItemName() . ' c', 'c.pk_i_id = r.fk_i_item_id');
 		if (!is_null($itemId)) 
 		{
-			$this->dao->where('r.fk_i_item_id', $itemId);
+			$this->dbCommand->where('r.fk_i_item_id', $itemId);
 		}
-		$result = $this->dao->get();
+		$result = $this->dbCommand->get();
 		if ($result == false) 
 		{
 			return array();
@@ -71,11 +71,11 @@ class Model_ItemResource extends DAO
 	 */
 	function getResource($itemId) 
 	{
-		$this->dao->select($this->getFields());
-		$this->dao->from($this->getTableName());
-		$this->dao->where('fk_i_item_id', $itemId);
-		$this->dao->limit(1);
-		$result = $this->dao->get();
+		$this->dbCommand->select($this->getFields());
+		$this->dbCommand->from($this->getTableName());
+		$this->dbCommand->where('fk_i_item_id', $itemId);
+		$this->dbCommand->limit(1);
+		$result = $this->dbCommand->get();
 		if ($result == false) 
 		{
 			return array();
@@ -109,11 +109,11 @@ class Model_ItemResource extends DAO
 	 */
 	function existResource($resourceId, $code) 
 	{
-		$this->dao->select('COUNT(*) AS numrows');
-		$this->dao->from($this->getTableName());
-		$this->dao->where('pk_i_id', $resourceId);
-		$this->dao->where('s_name', $code);
-		$result = $this->dao->get();
+		$this->dbCommand->select('COUNT(*) AS numrows');
+		$this->dbCommand->from($this->getTableName());
+		$this->dbCommand->where('pk_i_id', $resourceId);
+		$this->dbCommand->where('s_name', $code);
+		$result = $this->dbCommand->get();
 		if ($result == false) 
 		{
 			return 0;
@@ -135,13 +135,13 @@ class Model_ItemResource extends DAO
 	 */
 	function countResources($itemId = null) 
 	{
-		$this->dao->select('COUNT(*) AS numrows');
-		$this->dao->from($this->getTableName());
+		$this->dbCommand->select('COUNT(*) AS numrows');
+		$this->dbCommand->from($this->getTableName());
 		if (!is_null($itemId) && is_numeric($itemId)) 
 		{
-			$this->dao->where('fk_i_item_id', $itemId);
+			$this->dbCommand->where('fk_i_item_id', $itemId);
 		}
-		$result = $this->dao->get();
+		$result = $this->dbCommand->get();
 		if ($result == false) 
 		{
 			return 0;
@@ -178,17 +178,17 @@ class Model_ItemResource extends DAO
 			// order type is incorrect
 			return array();
 		}
-		$this->dao->select('r.*, c.pub_date');
-		$this->dao->from($this->getTableName() . ' r');
-		$this->dao->join($this->getTableItemName() . ' c', 'c.pk_i_id = r.fk_i_item_id');
+		$this->dbCommand->select('r.*, c.pub_date');
+		$this->dbCommand->from($this->getTableName() . ' r');
+		$this->dbCommand->join($this->getTableItemName() . ' c', 'c.pk_i_id = r.fk_i_item_id');
 		if (!is_null($itemId) && is_numeric($itemId)) 
 		{
-			$this->dao->where('r.fk_i_item_id', $itemId);
+			$this->dbCommand->where('r.fk_i_item_id', $itemId);
 		}
-		$this->dao->orderBy($order, $type);
-		$this->dao->limit($start);
-		$this->dao->offset($length);
-		$result = $this->dao->get();
+		$this->dbCommand->orderBy($order, $type);
+		$this->dbCommand->limit($start);
+		$this->dbCommand->offset($length);
+		$result = $this->dbCommand->get();
 		if ($result == false) 
 		{
 			return array();
@@ -202,8 +202,8 @@ class Model_ItemResource extends DAO
 	 */
 	public function deleteResourcesIds($ids) 
 	{
-		$this->dao->whereIn('pk_i_id', $ids);
-		return $this->dao->delete($this->getTableName());
+		$this->dbCommand->whereIn('pk_i_id', $ids);
+		return $this->dbCommand->delete($this->getTableName());
 	}
 	/**
 	 * Return table item name

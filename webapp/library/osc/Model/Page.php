@@ -65,10 +65,10 @@ SQL;
 	 */
 	function findByPrimaryKey($id, $locale = null) 
 	{
-		$this->dao->select();
-		$this->dao->from($this->getTableName());
-		$this->dao->where('pk_i_id', $id);
-		$result = $this->dao->get();
+		$this->dbCommand->select();
+		$this->dbCommand->from($this->getTableName());
+		$this->dbCommand->where('pk_i_id', $id);
+		$result = $this->dbCommand->get();
 		$row = $result->row();
 		if ($result == false) 
 		{
@@ -80,14 +80,14 @@ SQL;
 		}
 		$row = $result->row();
 		// page_description
-		$this->dao->select();
-		$this->dao->from($this->getDescriptionTableName());
-		$this->dao->where('fk_i_pages_id', $id);
+		$this->dbCommand->select();
+		$this->dbCommand->from($this->getDescriptionTableName());
+		$this->dbCommand->where('fk_i_pages_id', $id);
 		if (!is_null($locale)) 
 		{
-			$this->dao->where('fk_c_locale_code', $locale);
+			$this->dbCommand->where('fk_c_locale_code', $locale);
 		}
-		$result = $this->dao->get();
+		$result = $this->dbCommand->get();
 		$aRows = $result->result();
 		$row['locale'] = array();
 		foreach ($aRows as $r) 
@@ -107,10 +107,10 @@ SQL;
 	 */
 	function findByInternalName($intName, $locale = null) 
 	{
-		$this->dao->select();
-		$this->dao->from($this->getTableName());
-		$this->dao->where('s_internal_name', $intName);
-		$result = $this->dao->get();
+		$this->dbCommand->select();
+		$this->dbCommand->from($this->getTableName());
+		$this->dbCommand->where('s_internal_name', $intName);
+		$result = $this->dbCommand->get();
 		if ($result == false) 
 		{
 			return array();
@@ -132,11 +132,11 @@ SQL;
 	 */
 	function findByOrder($order, $locale = null) 
 	{
-		$this->dao->select();
-		$this->dao->from($this->getTableName());
+		$this->dbCommand->select();
+		$this->dbCommand->from($this->getTableName());
 		$array_where = array('i_order' => $order, 'b_indelible' => 0);
-		$this->dao->where($array_where);
-		$result = $this->dao->get();
+		$this->dbCommand->where($array_where);
+		$result = $this->dbCommand->get();
 		if ($result == false) 
 		{
 			return array();
@@ -203,14 +203,14 @@ SQL;
 	 */
 	public function extendDescription($aPage, $locale = null) 
 	{
-		$this->dao->select();
-		$this->dao->from($this->getDescriptionTableName());
-		$this->dao->where("fk_i_pages_id", $aPage['pk_i_id']);
+		$this->dbCommand->select();
+		$this->dbCommand->from($this->getDescriptionTableName());
+		$this->dbCommand->where("fk_i_pages_id", $aPage['pk_i_id']);
 		if (!is_null($locale)) 
 		{
-			$this->dao->where('fk_c_locale_code', $locale);
+			$this->dbCommand->where('fk_c_locale_code', $locale);
 		}
-		$results = $this->dao->get();
+		$results = $this->dbCommand->get();
 		$aDescriptions = $results->result();
 		if (count($aDescriptions) == 0) 
 		{
@@ -240,8 +240,8 @@ SQL;
 		$row = $this->findByPrimaryKey($id);
 		$order = $row['i_order'];
 		$this->reOrderPages($order);
-		$result = $this->dao->delete($this->getDescriptionTableName(), array('fk_i_pages_id' => $id));
-		$result = $this->dao->delete($this->tableName, array('pk_i_id' => $id));
+		$result = $this->dbCommand->delete($this->getDescriptionTableName(), array('fk_i_pages_id' => $id));
+		$result = $this->dbCommand->delete($this->tableName, array('pk_i_id' => $id));
 		return $result;
 	}
 	/**
@@ -278,7 +278,7 @@ SQL;
 			if ($page['i_order'] > $order) 
 			{
 				$new_order = $page['i_order'] - 1;
-				$this->dao->update($this->tableName, array('i_order' => $new_order), array('pk_i_id' => $page['pk_i_id']));
+				$this->dbCommand->update($this->tableName, array('i_order' => $new_order), array('pk_i_id' => $page['pk_i_id']));
 			}
 		}
 	}
@@ -293,18 +293,18 @@ SQL;
 	 */
 	public function insert( array $aFields, $aFieldsDescription = null) 
 	{
-		$this->dao->select("MAX(i_order) as o");
-		$this->dao->from($this->tableName);
-		$results = $this->dao->get();
+		$this->dbCommand->select("MAX(i_order) as o");
+		$this->dbCommand->from($this->tableName);
+		$results = $this->dbCommand->get();
 		$lastPage = $results->row();
 		$order = $lastPage['o'];
 		if (is_null($order)) 
 		{
 			$order = - 1;
 		}
-		$this->dao->insert($this->tableName, array('s_internal_name' => $aFields['s_internal_name'], 'b_indelible' => $aFields['b_indelible'], 'dt_pub_date' => date('Y-m-d H:i:s'), 'dt_mod_date' => date('Y-m-d H:i:s'), 'i_order' => ($order + 1)));
-		$id = $this->dao->insertedId();
-		if ($this->dao->affectedRows() == 0) 
+		$this->dbCommand->insert($this->tableName, array('s_internal_name' => $aFields['s_internal_name'], 'b_indelible' => $aFields['b_indelible'], 'dt_pub_date' => date('Y-m-d H:i:s'), 'dt_mod_date' => date('Y-m-d H:i:s'), 'i_order' => ($order + 1)));
+		$id = $this->dbCommand->insertedId();
+		if ($this->dbCommand->affectedRows() == 0) 
 		{
 			return false;
 		}
@@ -333,8 +333,8 @@ SQL;
 	{
 		$title = addslashes($title);
 		$text = addslashes($text);
-		$this->dao->insert($this->getDescriptionTableName(), array('fk_i_pages_id' => $id, 'fk_c_locale_code' => $locale, 's_title' => $title, 's_text' => $text));
-		if ($this->dao->affectedRows() == 0) 
+		$this->dbCommand->insert($this->getDescriptionTableName(), array('fk_i_pages_id' => $id, 'fk_c_locale_code' => $locale, 's_title' => $title, 's_text' => $text));
+		if ($this->dbCommand->affectedRows() == 0) 
 		{
 			return false;
 		}
@@ -360,7 +360,7 @@ SQL;
 			$result = $this->insertDescription($id, $locale, $title, $text);
 			return $result;
 		}
-		return $this->dao->update($this->getDescriptionTableName(), array('s_title' => $title, 's_text' => $text), array('fk_c_locale_code' => $locale, 'fk_i_pages_id' => $id));
+		return $this->dbCommand->update($this->getDescriptionTableName(), array('s_title' => $title, 's_text' => $text), array('fk_c_locale_code' => $locale, 'fk_i_pages_id' => $id));
 	}
 	/**
 	 * Check if depending the conditions, the row exists in de DB.
@@ -372,13 +372,13 @@ SQL;
 	 */
 	public function existDescription($conditions) 
 	{
-		$this->dao->select("COUNT(*) as total");
-		$this->dao->from($this->getDescriptionTableName());
+		$this->dbCommand->select("COUNT(*) as total");
+		$this->dbCommand->from($this->getDescriptionTableName());
 		foreach ($conditions as $key => $value) 
 		{
-			$this->dao->where($key, $value);
+			$this->dbCommand->where($key, $value);
 		}
-		$result = $this->dao->get();
+		$result = $this->dbCommand->get();
 		$count = $result->row();
 		if ($count['total'] > 0) return true;
 		else return false;
@@ -396,7 +396,7 @@ SQL;
 	{
 		$fields = array('s_internal_name' => $intName, 'dt_mod_date' => date('Y-m-d H:i:s'));
 		$where = array('pk_i_id' => $id);
-		$result = $this->dao->update($this->tableName, $fields, $where);
+		$result = $this->dbCommand->update($this->tableName, $fields, $where);
 		return $result;
 	}
 	/**

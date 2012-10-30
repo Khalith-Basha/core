@@ -23,8 +23,7 @@ class Model_Stats
 	private $conn;
 	function __construct() 
 	{
-		$conn = ClassLoader::getInstance()->getClassInstance( 'cuore_db_Connection' );
-		$data = $conn->getResource();
+		$data = new mysqli( DB_HOST, DB_USER, DB_PASS, DB_NAME );
 		$this->conn = ClassLoader::getInstance()->getClassInstance( 'Database_Command', true, array( &$data ) );
 	}
 	public function new_users_count($from_date, $date = 'day') 

@@ -70,12 +70,12 @@ SQL;
 	 */
 	function getSearches($limit = 20) 
 	{
-		$this->dao->select('d_date, s_search, COUNT(s_search) as i_total');
-		$this->dao->from($this->getTableName());
-		$this->dao->groupBy('s_search');
-		$this->dao->orderBy('d_date', 'DESC');
-		$this->dao->limit($limit);
-		$result = $this->dao->get();
+		$this->dbCommand->select('d_date, s_search, COUNT(s_search) as i_total');
+		$this->dbCommand->from($this->getTableName());
+		$this->dbCommand->groupBy('s_search');
+		$this->dbCommand->orderBy('d_date', 'DESC');
+		$this->dbCommand->limit($limit);
+		$result = $this->dbCommand->get();
 		if ($result == false) 
 		{
 			return false;
@@ -99,13 +99,13 @@ SQL;
 		{
 			$time = time() - (7 * 24 * 3600);
 		};
-		$this->dao->select('d_date, s_search, COUNT(s_search) as i_total');
-		$this->dao->from($this->getTableName());
-		$this->dao->where('d_date', date('Y-m-d H:i:s', $time));
-		$this->dao->groupBy('s_search');
-		$this->dao->orderBy('d_date', 'DESC');
-		$this->dao->limit($limit);
-		$result = $this->dao->get();
+		$this->dbCommand->select('d_date, s_search, COUNT(s_search) as i_total');
+		$this->dbCommand->from($this->getTableName());
+		$this->dbCommand->where('d_date', date('Y-m-d H:i:s', $time));
+		$this->dbCommand->groupBy('s_search');
+		$this->dbCommand->orderBy('d_date', 'DESC');
+		$this->dbCommand->limit($limit);
+		$result = $this->dbCommand->get();
 		if ($result == false) 
 		{
 			return false;
@@ -129,9 +129,9 @@ SQL;
 		{
 			return false;
 		}
-		$this->dao->from($this->getTableName());
-		$this->dao->where('d_date <= ' . $this->dao->escape($date));
-		return $this->dao->delete();
+		$this->dbCommand->from($this->getTableName());
+		$this->dbCommand->where('d_date <= ' . $this->dbCommand->escape($date));
+		return $this->dbCommand->delete();
 	}
 	/**
 	 * Purge n last searches.
@@ -147,12 +147,12 @@ SQL;
 		{
 			return false;
 		}
-		$this->dao->select('d_date');
-		$this->dao->from($this->getTableName());
-		$this->dao->groupBy('s_search');
-		$this->dao->orderBy('d_date', 'DESC');
-		$this->dao->limit($number, 1);
-		$result = $this->dao->get();
+		$this->dbCommand->select('d_date');
+		$this->dbCommand->from($this->getTableName());
+		$this->dbCommand->groupBy('s_search');
+		$this->dbCommand->orderBy('d_date', 'DESC');
+		$this->dbCommand->limit($number, 1);
+		$result = $this->dbCommand->get();
 		$last = $result->row();
 		if ($result == false) 
 		{

@@ -47,10 +47,10 @@ class Model_Field extends DAO
 	 */
 	public function findByPrimaryKey($id) 
 	{
-		$this->dao->select();
-		$this->dao->from($this->getTableName());
-		$this->dao->where('pk_i_id', $id);
-		$result = $this->dao->get();
+		$this->dbCommand->select();
+		$this->dbCommand->from($this->getTableName());
+		$this->dbCommand->where('pk_i_id', $id);
+		$result = $this->dbCommand->get();
 		if ($result == false) 
 		{
 			return array();
@@ -67,11 +67,11 @@ class Model_Field extends DAO
 	 */
 	public function findByCategory($id) 
 	{
-		$this->dao->select('mf.*');
-		$this->dao->from(sprintf('%st_meta_fields mf, %st_meta_categories mc', DB_TABLE_PREFIX, DB_TABLE_PREFIX));
-		$this->dao->where('mc.fk_i_category_id', $id);
-		$this->dao->where('mf.pk_i_id = mc.fk_i_field_id');
-		$result = $this->dao->get();
+		$this->dbCommand->select('mf.*');
+		$this->dbCommand->from(sprintf('%st_meta_fields mf, %st_meta_categories mc', DB_TABLE_PREFIX, DB_TABLE_PREFIX));
+		$this->dbCommand->where('mc.fk_i_category_id', $id);
+		$this->dbCommand->where('mf.pk_i_id = mc.fk_i_field_id');
+		$result = $this->dbCommand->get();
 		if ($result == false) 
 		{
 			return array();
@@ -88,7 +88,7 @@ class Model_Field extends DAO
 	 */
 	public function findByCategoryItem($catId, $itemId) 
 	{
-		$result = $this->dao->query(sprintf("SELECT query.*, im.s_value as s_value FROM (SELECT mf.* FROM %st_meta_fields mf, %st_meta_categories mc WHERE mc.fk_i_category_id = %d AND mf.pk_i_id = mc.fk_i_field_id) as query LEFT JOIN %st_item_meta im ON im.fk_i_field_id = query.pk_i_id AND im.fk_i_item_id = %d", DB_TABLE_PREFIX, DB_TABLE_PREFIX, $catId, DB_TABLE_PREFIX, $itemId));
+		$result = $this->dbCommand->query(sprintf("SELECT query.*, im.s_value as s_value FROM (SELECT mf.* FROM %st_meta_fields mf, %st_meta_categories mc WHERE mc.fk_i_category_id = %d AND mf.pk_i_id = mc.fk_i_field_id) as query LEFT JOIN %st_item_meta im ON im.fk_i_field_id = query.pk_i_id AND im.fk_i_item_id = %d", DB_TABLE_PREFIX, DB_TABLE_PREFIX, $catId, DB_TABLE_PREFIX, $itemId));
 		if ($result == false) 
 		{
 			return array();
@@ -105,10 +105,10 @@ class Model_Field extends DAO
 	 */
 	public function findByName($name) 
 	{
-		$this->dao->select();
-		$this->dao->from($this->getTableName());
-		$this->dao->where('s_name', $name);
-		$result = $this->dao->get();
+		$this->dbCommand->select();
+		$this->dbCommand->from($this->getTableName());
+		$this->dbCommand->where('s_name', $name);
+		$result = $this->dbCommand->get();
 		if ($result == false) 
 		{
 			return array();
@@ -125,10 +125,10 @@ class Model_Field extends DAO
 	 */
 	public function findBySlug($slug) 
 	{
-		$this->dao->select();
-		$this->dao->from($this->getTableName());
-		$this->dao->where('s_slug', $slug);
-		$result = $this->dao->get();
+		$this->dbCommand->select();
+		$this->dbCommand->from($this->getTableName());
+		$this->dbCommand->where('s_slug', $slug);
+		$result = $this->dbCommand->get();
 		if ($result == false) 
 		{
 			return array();
@@ -145,10 +145,10 @@ class Model_Field extends DAO
 	 */
 	public function categories($id) 
 	{
-		$this->dao->select('fk_i_category_id');
-		$this->dao->from(sprintf('%st_meta_categories', DB_TABLE_PREFIX));
-		$this->dao->where('fk_i_field_id', $id);
-		$result = $this->dao->get();
+		$this->dbCommand->select('fk_i_category_id');
+		$this->dbCommand->from(sprintf('%st_meta_categories', DB_TABLE_PREFIX));
+		$this->dbCommand->where('fk_i_field_id', $id);
+		$result = $this->dbCommand->get();
 		if ($result == false) 
 		{
 			return array();
@@ -175,15 +175,15 @@ class Model_Field extends DAO
 	 */
 	public function insertField($name, $type, $slug, $required, $options, $categories = null) 
 	{
-		$this->dao->insert($this->getTableName(), array("s_name" => $name, "e_type" => $type, "b_required" => $required, "s_slug" => $slug, 's_options' => $options));
-		$id = $this->dao->insertedId();
+		$this->dbCommand->insert($this->getTableName(), array("s_name" => $name, "e_type" => $type, "b_required" => $required, "s_slug" => $slug, 's_options' => $options));
+		$id = $this->dbCommand->insertedId();
 		if ($slug == '') 
 		{
-			$this->dao->update($this->getTableName(), array('s_slug' => $id), array('pk_i_id' => $id));
+			$this->dbCommand->update($this->getTableName(), array('s_slug' => $id), array('pk_i_id' => $id));
 		}
 		foreach ($categories as $c) 
 		{
-			$this->dao->insert(sprintf('%st_meta_categories', DB_TABLE_PREFIX), array('fk_i_category_id' => $c, 'fk_i_field_id' => $id));
+			$this->dbCommand->insert(sprintf('%st_meta_categories', DB_TABLE_PREFIX), array('fk_i_category_id' => $c, 'fk_i_field_id' => $id));
 		}
 	}
 	/**
@@ -200,7 +200,7 @@ class Model_Field extends DAO
 		{
 			foreach ($categories as $c) 
 			{
-				$this->dao->insert(sprintf('%st_meta_categories', DB_TABLE_PREFIX), array('fk_i_category_id' => $c, 'fk_i_field_id' => $id));
+				$this->dbCommand->insert(sprintf('%st_meta_categories', DB_TABLE_PREFIX), array('fk_i_category_id' => $c, 'fk_i_field_id' => $id));
 				$subcategories = ClassLoader::getInstance()->getClassInstance( 'Model_Category' )->findSubcategories($c);
 				if (count($subcategories) > 0) 
 				{
@@ -222,7 +222,7 @@ class Model_Field extends DAO
 	 */
 	public function cleanCategoriesFromField($id) 
 	{
-		return $this->dao->delete(sprintf('%st_meta_categories', DB_TABLE_PREFIX), array('fk_i_field_id' => $id));
+		return $this->dbCommand->delete(sprintf('%st_meta_categories', DB_TABLE_PREFIX), array('fk_i_field_id' => $id));
 	}
 	/**
 	 * Update a field value
@@ -236,7 +236,7 @@ class Model_Field extends DAO
 	 */
 	public function replace($itemId, $field, $value) 
 	{
-		return $this->dao->replace(sprintf('%st_item_meta', DB_TABLE_PREFIX), array('fk_i_item_id' => $itemId, 'fk_i_field_id' => $field, 's_value' => $value));
+		return $this->dbCommand->replace(sprintf('%st_item_meta', DB_TABLE_PREFIX), array('fk_i_item_id' => $itemId, 'fk_i_field_id' => $field, 's_value' => $value));
 	}
 	/**
 	 * Delete a field and all information associated with it
@@ -248,8 +248,8 @@ class Model_Field extends DAO
 	 */
 	public function deleteByPrimaryKey($id) 
 	{
-		$this->dao->delete(sprintf('%st_item_meta', DB_TABLE_PREFIX), array('fk_i_field_id' => $id));
-		$this->dao->delete(sprintf('%st_meta_categories', DB_TABLE_PREFIX), array('fk_i_field_id' => $id));
-		return $this->dao->delete($this->getTableName(), array('pk_i_id' => $id));
+		$this->dbCommand->delete(sprintf('%st_item_meta', DB_TABLE_PREFIX), array('fk_i_field_id' => $id));
+		$this->dbCommand->delete(sprintf('%st_meta_categories', DB_TABLE_PREFIX), array('fk_i_field_id' => $id));
+		return $this->dbCommand->delete($this->getTableName(), array('pk_i_id' => $id));
 	}
 }

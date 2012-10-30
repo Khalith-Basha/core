@@ -45,14 +45,14 @@ class Model_City extends DAO
 	 */
 	function ajax($query, $regionId = null) 
 	{
-		$this->dao->select('pk_i_id as id, s_name as label, s_name as value');
-		$this->dao->from($this->getTableName());
-		$this->dao->like('s_name', $query, 'after');
+		$this->dbCommand->select('pk_i_id as id, s_name as label, s_name as value');
+		$this->dbCommand->from($this->getTableName());
+		$this->dbCommand->like('s_name', $query, 'after');
 		if ($regionId != null) 
 		{
-			$this->dao->where('fk_i_region_id', $regionId);
+			$this->dbCommand->where('fk_i_region_id', $regionId);
 		}
-		$result = $this->dao->get();
+		$result = $this->dbCommand->get();
 		if ($result == false) 
 		{
 			return array();
@@ -83,11 +83,11 @@ class Model_City extends DAO
 	 */
 	function findByRegion($regionId) 
 	{
-		$this->dao->select($this->getFields());
-		$this->dao->from($this->getTableName());
-		$this->dao->where('fk_i_region_id', $regionId);
-		$this->dao->orderBy('s_name', 'ASC');
-		$result = $this->dao->get();
+		$this->dbCommand->select($this->getFields());
+		$this->dbCommand->from($this->getTableName());
+		$this->dbCommand->where('fk_i_region_id', $regionId);
+		$this->dbCommand->orderBy('s_name', 'ASC');
+		$result = $this->dbCommand->get();
 		if ($result == false) 
 		{
 			return array();
@@ -105,15 +105,15 @@ class Model_City extends DAO
 	 */
 	function findByName($cityName, $regionId = null) 
 	{
-		$this->dao->select($this->getFields());
-		$this->dao->from($this->getTableName());
-		$this->dao->where('s_name', $cityName);
-		$this->dao->limit(1);
+		$this->dbCommand->select($this->getFields());
+		$this->dbCommand->from($this->getTableName());
+		$this->dbCommand->where('s_name', $cityName);
+		$this->dbCommand->limit(1);
 		if ($regionId != null) 
 		{
-			$this->dao->where('fk_i_region_id', $regionId);
+			$this->dbCommand->where('fk_i_region_id', $regionId);
 		}
-		$result = $this->dao->get();
+		$result = $this->dbCommand->get();
 		if ($result == false) 
 		{
 			return array();

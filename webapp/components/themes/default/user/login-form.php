@@ -1,6 +1,7 @@
 <?php
 $indexUrl = $classLoader->getClassInstance( 'Url_Index' );
 $userForm = $classLoader->getClassInstance( 'Form_User' );
+$userUrls = $classLoader->getClassInstance( 'Url_User' );
 ?>
 <div class="content user_forms">
                 <div class="inner">
@@ -16,7 +17,7 @@ $userForm = $classLoader->getClassInstance( 'Form_User' );
 				<p class="checkbox"><?php echo $userForm->getDecoratedInputCheckbox( 'remember', '1', __( 'Remember me', 'modern' ) ); ?></p>
                             <button type="submit"><?php _e("Log in", 'modern'); ?></button>
                             <div class="more-login">
-                                <a href="<?php echo osc_register_account_url(); ?>"><?php _e("Register for a free account", 'modern'); ?></a> · <a href="<?php echo osc_recover_user_password_url(); ?>"><?php _e("Forgot password?", 'modern'); ?></a>
+                                <a href="<?php echo $userUrls->osc_register_account_url(); ?>"><?php _e("Register for a free account", 'modern'); ?></a> · <a href="<?php echo $userUrls->osc_recover_user_password_url(); ?>"><?php _e("Forgot password?", 'modern'); ?></a>
                             </div>
                         </fieldset>
                     </form>

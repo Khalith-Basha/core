@@ -75,10 +75,7 @@ class DAO extends Model
 	public function __construct()
 	{
 		parent::__construct();
-		/* @TODO
-		$conn = ClassLoader::getInstance()->getClassInstance( 'cuore_db_Connection' ); 
-		$data = $conn->getResource();
-		 */
+
 		if( defined( 'DB_HOST' ) )
 		{
 			$data = new mysqli( DB_HOST, DB_USER, DB_PASS, DB_NAME );

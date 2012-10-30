@@ -40,10 +40,10 @@ class Model_PluginCategory extends DAO
 	 */
 	function findByCategoryId($categoryId) 
 	{
-		$this->dao->select($this->getFields());
-		$this->dao->from($this->getTableName());
-		$this->dao->where('fk_i_category_id', $categoryId);
-		$result = $this->dao->get();
+		$this->dbCommand->select($this->getFields());
+		$this->dbCommand->from($this->getTableName());
+		$this->dbCommand->where('fk_i_category_id', $categoryId);
+		$result = $this->dbCommand->get();
 		if ($result == false) 
 		{
 			return array();
@@ -60,10 +60,10 @@ class Model_PluginCategory extends DAO
 	 */
 	function listSelected($plugin) 
 	{
-		$this->dao->select($this->getFields());
-		$this->dao->from($this->getTableName());
-		$this->dao->where('s_plugin_name', $plugin);
-		$result = $this->dao->get();
+		$this->dbCommand->select($this->getFields());
+		$this->dbCommand->from($this->getTableName());
+		$this->dbCommand->where('s_plugin_name', $plugin);
+		$result = $this->dbCommand->get();
 		if ($result == false) 
 		{
 			return array();
@@ -86,11 +86,11 @@ class Model_PluginCategory extends DAO
 	 */
 	function isThisCategory($pluginName, $categoryId) 
 	{
-		$this->dao->select('COUNT(*) AS numrows');
-		$this->dao->from($this->getTableName());
-		$this->dao->where('fk_i_category_id', $categoryId);
-		$this->dao->where('s_plugin_name', $pluginName);
-		$result = $this->dao->get();
+		$this->dbCommand->select('COUNT(*) AS numrows');
+		$this->dbCommand->from($this->getTableName());
+		$this->dbCommand->where('fk_i_category_id', $categoryId);
+		$this->dbCommand->where('s_plugin_name', $pluginName);
+		$result = $this->dbCommand->get();
 		if ($result == false) 
 		{
 			return false;

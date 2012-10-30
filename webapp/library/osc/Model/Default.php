@@ -6,11 +6,6 @@ class Model
 
 	public function __construct()
 	{
-		/* @TODO
-		$this->conn = ClassLoader::getInstance()
-			->getClassInstance( 'cuore_db_Connection' )
-			->getResource();
-		 */
 		if( defined( 'DB_HOST' ) )
 		{
 			$this->conn = new mysqli( DB_HOST, DB_USER, DB_PASS, DB_NAME );

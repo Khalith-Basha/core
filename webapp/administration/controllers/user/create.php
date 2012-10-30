@@ -26,9 +26,10 @@ class CAdminUser extends Controller_Administration
 		$aRegions = array();
 		$aCities = array();
 		$aCountries = ClassLoader::getInstance()->getClassInstance( 'Model_Country' )->listAll();
+		$region = ClassLoader::getInstance()->getClassInstance( 'Model_Region' );
 		if (isset($aCountries[0]['pk_c_code'])) 
 		{
-			$aRegions = Region::newInstance()->findByCountry($aCountries[0]['pk_c_code']);
+			$aRegions = $region->findByCountry($aCountries[0]['pk_c_code']);
 		}
 		if (isset($aRegions[0]['pk_i_id'])) 
 		{

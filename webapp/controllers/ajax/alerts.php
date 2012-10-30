@@ -35,7 +35,7 @@ class CWebAjax extends Controller_Default
 			break;
 
 		case 'regions': //Return regions given a countryId
-			$regions = Region::newInstance()->findByCountry(Params::getParam("countryId"));
+			$regions = Model_Region::newInstance()->findByCountry(Params::getParam("countryId"));
 			echo json_encode($regions);
 			break;
 
@@ -55,7 +55,7 @@ class CWebAjax extends Controller_Default
 			break;
 
 		case 'location_regions': // This is the autocomplete AJAX
-			$regions = Region::newInstance()->ajax(Params::getParam("term"), Params::getParam("country"));
+			$regions = Model_Region::newInstance()->ajax(Params::getParam("term"), Params::getParam("country"));
 			echo json_encode($regions);
 			break;
 

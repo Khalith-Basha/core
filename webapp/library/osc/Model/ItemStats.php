@@ -56,7 +56,7 @@ class Model_ItemStats extends DAO
 			return false;
 		}
 		$sql = 'INSERT INTO ' . $this->getTableName() . ' (fk_i_item_id, dt_date, ' . $column . ') VALUES (' . $itemId . ', \'' . date('Y-m-d H:i:s') . '\',1) ON DUPLICATE KEY UPDATE  ' . $column . ' = ' . $column . ' + 1 ';
-		return $this->dao->query($sql);
+		return $this->dbCommand->query($sql);
 	}
 	/**
 	 * Insert an empty row into table item stats
@@ -80,10 +80,10 @@ class Model_ItemStats extends DAO
 	 */
 	function getViews($itemId) 
 	{
-		$this->dao->select('SUM(i_num_views) AS i_num_views');
-		$this->dao->from($this->getTableName());
-		$this->dao->where('fk_i_item_id', $itemId);
-		$result = $this->dao->get();
+		$this->dbCommand->select('SUM(i_num_views) AS i_num_views');
+		$this->dbCommand->from($this->getTableName());
+		$this->dbCommand->where('fk_i_item_id', $itemId);
+		$result = $this->dbCommand->get();
 		if (!$result) 
 		{
 			return 0;

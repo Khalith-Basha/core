@@ -31,8 +31,8 @@ class CAdminTool extends Controller_Administration
 		if (isset($sql['size']) && $sql['size'] != 0) 
 		{
 			$content_file = file_get_contents($sql['tmp_name']);
-			$conn = $this->getClassLoader()->getClassInstance( 'cuore_db_Connection' );
-			$c_db = $conn->getResource();
+
+			$c_db = new mysqli( DB_HOST, DB_USER, DB_PASS, DB_NAME );
 			$comm = $this->getClassLoader()->getClassInstance( 'Database_Command', false, array( $c_db ) );
 			if ($comm->importSQL($content_file)) 
 			{

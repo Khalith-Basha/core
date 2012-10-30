@@ -34,7 +34,7 @@ class Model_Dump extends DAO
 	 */
 	function showTables() 
 	{
-		$res = $this->dao->query('SHOW TABLES;');
+		$res = $this->dbCommand->query('SHOW TABLES;');
 		if ($res) 
 		{
 			return $res->result();
@@ -56,7 +56,7 @@ class Model_Dump extends DAO
 		if (!is_writable($path)) return false;
 		$_str = "/* Table structure for table `" . $table . "` */\n";
 		$sql = 'show create table `' . $table . '`;';
-		$result = $this->dao->query($sql);
+		$result = $this->dbCommand->query($sql);
 		if ($result) 
 		{
 			$result = $result->result();
@@ -86,7 +86,7 @@ class Model_Dump extends DAO
 	{
 		if (!is_writable($path)) return false;
 		$sql = "select * from `$table`;";
-		$res = $this->dao->query($sql);
+		$res = $this->dbCommand->query($sql);
 		if ($res) 
 		{
 			$result = $res->result();
@@ -262,11 +262,11 @@ class Model_Dump extends DAO
 		}
 		else if (in_array($type, $aDates)) 
 		{
-			$_str.= '\'' . $this->dao->connId->real_escape_string($value) . '\'';
+			$_str.= '\'' . $this->dbCommand->connId->real_escape_string($value) . '\'';
 		}
 		else if (in_array($type, $aString)) 
 		{
-			$_str.= '\'' . $this->dao->connId->real_escape_string($value) . '\'';
+			$_str.= '\'' . $this->dbCommand->connId->real_escape_string($value) . '\'';
 		}
 	}
 }

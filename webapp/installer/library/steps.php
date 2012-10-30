@@ -179,7 +179,6 @@ function oc_install()
 	define( 'DB_PASS', $password );
 	define( 'DB_NAME', $dbname );
 
-	//$conn = ClassLoader::getInstance()->getClassInstance( 'cuore_db_Connection', true, array( $dbhost, $username, $password, $dbname, $tableprefix ) );
 	$error_num = $conn->connect_errno;//getErrorLevel();
 	if ($error_num > 0) 
 	{

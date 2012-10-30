@@ -53,6 +53,7 @@ function osc_field( array $item, $field, $locale = null )
 		}
 		else
 		{
+			if( is_array( $locale ) ) $locale = $locale['pk_c_code'];
 			if (isset($item["locale"]) && isset($item["locale"][$locale]) && isset($item["locale"][$locale][$field])) 
 			{
 				return $item["locale"][$locale][$field];
