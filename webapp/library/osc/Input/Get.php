@@ -1,6 +1,6 @@
 <?php
 
-class Input_Get extends TypedArray
+class Input_Get extends \Cuore\Utils\TypedArray
 {
 	public function __construct()
 	{

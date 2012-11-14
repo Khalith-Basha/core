@@ -165,6 +165,10 @@ class CWebSearch extends Controller_Default
 		$defaultRowsPerPage = osc_default_results_per_page_at_search();
 		$maxRowsPerPage = osc_max_results_per_page_at_search();
 		$rowsPerPage = $input->getInteger( 'rowsPerPage', $defaultRowsPerPage );
+		if( $rowsPerPage <= 0 )
+		{
+			$rowsPerPage = 10;
+		}
 		if( $rowsPerPage > $maxRowsPerPage )
 			$rowsPerPage = $maxRowsPerPage;
 		$this->mSearch->setRowsPerPage( $rowsPerPage );
@@ -217,7 +221,7 @@ class CWebSearch extends Controller_Default
 				$view->setMetaDescription( $itemCategory . ', ' . osc_highlight(strip_tags(osc_item_description( $item )), 140) . '..., ' . $itemCategory );
 			}
 	
-			$pagination = $classLoader->getClassInstance( 'Pagination' );
+			$pagination = new \Cuore\Web\Paginator;
 			$searchUrls = $classLoader->getClassInstance( 'Url_Search' );
 			$urlTemplate = $searchUrls->osc_update_search_url( array( 'iPage' => $pagination::PLACEHOLDER ) );
 			$pagination->setSelectedPage( $page );
@@ -237,24 +241,27 @@ class CWebSearch extends Controller_Default
 			$this->getView()->assign('items', $aItems);
 			if ($p_sFeed == '' || $p_sFeed == 'rss') 
 			{
+				$urls = $classLoader->getClassInstance( 'Url_Abstract' );
+				$itemUrls = $classLoader->getClassInstance( 'Url_Item' );
+
 				// FEED REQUESTED!
+				$feed = new \Cuore\Feed\Rss\Writer;
 				header('Content-type: text/xml; charset=utf-8');
-				$feed = $classLoader->getClassInstance( 'Feed_Rss' );
 				$feed->setTitle(__('Latest items added') . ' - ' . osc_page_title());
-				$feed->setLink(osc_base_url());
+				$feed->setLink( $urls->getBaseUrl() );
 				$feed->setDescription(__('Latest items added in') . ' ' . osc_page_title());
-				if (osc_count_items() > 0) 
+				if( count( $aItems ) > 0 ) 
 				{
-					while (osc_has_items()) 
+					foreach( $aItems as $item )
 					{
-						if (osc_count_item_resources() > 0) 
+						if (osc_count_item_resources( $item ) > 0) 
 						{
 							osc_has_item_resources();
-							$feed->addItem(array('title' => osc_item_title( $item ), 'link' => htmlentities(osc_item_url( $item )), 'description' => osc_item_description( $item ), 'pub_date' => osc_item_pub_date( $item ), 'image' => array('url' => htmlentities(osc_resource_thumbnail_url( $item )), 'title' => osc_item_title( $item ), 'link' => htmlentities(osc_item_url( $item )))));
+							$feed->addItem(array('title' => osc_item_title( $item ), 'link' => htmlentities($itemUrls->osc_item_url( $item )), 'description' => osc_item_description( $item ), 'pub_date' => osc_item_pub_date( $item ), 'image' => array('url' => htmlentities(osc_resource_thumbnail_url( $item )), 'title' => osc_item_title( $item ), 'link' => htmlentities($itemUrls->osc_item_url( $item )))));
 						}
 						else
 						{
-							$feed->addItem(array('title' => osc_item_title( $item ), 'link' => htmlentities(osc_item_url( $item )), 'description' => osc_item_description( $item ), 'pub_date' => osc_item_pub_date( $item )));
+							$feed->addItem(array('title' => osc_item_title( $item ), 'link' => htmlentities($itemUrls->osc_item_url( $item )), 'description' => osc_item_description( $item ), 'pub_date' => osc_item_pub_date( $item )));
 						}
 					}
 				}

@@ -8,8 +8,8 @@
  */
 function osc_show_widgets($location) 
 {
-	$widget = ClassLoader::getInstance()->getClassInstance( 'Model_Widget' );
-	$widgets = $widget->findByLocation($location);
+	$widgetModel = new \Osc\Model\Widget;
+	$widgets = $widgetModel->findByLocation($location);
 	foreach ($widgets as $w)
 		echo $w['s_content'];
 }

@@ -21,6 +21,9 @@
 
 require 'loader.php';
 
+require 'Cuore/ClassLoader.php';
+\Cuore\ClassLoader::getInstance();
+
 // If the "installer" folder is still present, show a warning. 
 if( file_exists( ABS_PATH . '/installer' ) )
 {
@@ -32,7 +35,7 @@ if( osc_timezone() != '' )
 	date_default_timezone_set(osc_timezone());
 }
 
-$maintenanceFile = $classLoader->getClassInstance( 'FileMaintenance' );
+$maintenanceFile = new \Osc\FileMaintenance;
 if( $maintenanceFile->exists() && false === osc_is_admin_user_logged_in() )
 {
 	die( $maintenanceFile->getContents() );
@@ -55,8 +58,6 @@ if (!osc_users_enabled() && osc_is_web_user_logged_in())
 $rewrite = $classLoader->getClassInstance( 'Rewrite' );
 $rewrite->loadRules();
 $rewrite->init();
-
-$classLoader->loadFile( 'TypedArray' );
 
 $input = $classLoader->getClassInstance( 'Input_Request' );
 $page = $input->getString( 'page', 'index' );

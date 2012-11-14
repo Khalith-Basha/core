@@ -58,17 +58,22 @@ class Url_Item extends Url_Abstract
 		
 		return $url;
 	}
-	public function osc_item_url()
+
+	public function osc_item_url( $item = null )
 	{
 		$classLoader = ClassLoader::getInstance();
-		$items = $classLoader->getClassInstance( 'View_Html' )->_get('items');
-		if( count( $items ) > 0 )
+
+		if( $item === null )
 		{
-			$itemUrl = $classLoader->getClassInstance( 'Url_Item' )->getDetailsUrl( $items[0] );
-			return $itemUrl;
+			$items = $classLoader->getClassInstance( 'View_Html' )->_get('items');
+			if( count( $items ) > 0 )
+			{
+				$item = $items[0];
+			}
 		}
 
-		return null;
+		$itemUrl = $classLoader->getClassInstance( 'Url_Item' )->getDetailsUrl( $item );
+		return $itemUrl;
 	}
 	/**
 	 * Create automatically the url of the item's comments page

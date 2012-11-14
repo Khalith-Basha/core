@@ -24,8 +24,7 @@ class CAdminAppearance extends Controller_Administration
 
 	public function doPost( HttpRequest $req, HttpResponse $res )
 	{
-		$widgetModel = $this->getClassLoader()
-			->getClassInstance( 'Model_Widget' );
+		$widgetModel = new \Osc\Model\Widget;
 		$widgetModel->insert(
 			array(
 				's_location' => Params::getParam('location'),

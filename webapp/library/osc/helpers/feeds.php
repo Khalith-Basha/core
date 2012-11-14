@@ -27,10 +27,11 @@
 function osc_listNews() 
 {
 	$cacheKey = 'admin-blog_news';
-	$cache = ClassLoader::getInstance()->getClassInstance( 'Services_Cache_Disk', true, array( $cacheKey, 900 ) );
-	if( $cache->check() )
+	$cache = new \Cuore\Cache\Disk( 900 );
+	$cache->setDirectory( ABS_PATH . '/uploads' );
+	if( $cache->check( $cacheKey ) )
 	{
-		return $cache->retrieve();
+		return $cache->get( $cacheKey );
 	}
 
 	$url = 'http://blog.opensourceclassifieds.org/feeds/posts/default';
@@ -49,7 +50,7 @@ function osc_listNews()
 			);
 		}
 	}
-	$cache->store( $cacheKey, $list );	
+	$cache->set( $cacheKey, $list );
 	return $list;
 }
 

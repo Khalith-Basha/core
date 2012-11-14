@@ -19,8 +19,7 @@ class CAdminAppearance extends Controller_Administration
 {
 	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
-		$widgetModel = $this->getClassLoader()
-			->getClassInstance( 'Model_Widget' );
+		$widgetModel = new \Osc\Model\Widget;
 		$widgetModel->delete(array('pk_i_id' => Params::getParam('id')));
 		$this->getSession()->addFlashMessage( _m('Widget removed correctly'), 'admin' );
 		$this->redirectTo(osc_admin_base_url(true) . "?page=appearance&action=widgets");

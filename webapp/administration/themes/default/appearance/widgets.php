@@ -15,7 +15,8 @@
  * You should have received a copy of the GNU Affero General Public
  * License along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-$widgetModel = ClassLoader::getInstance()->getClassInstance( 'Model_Widget' );
+$widgetModel = new \Osc\Model\Widget;
+$widgets = $widgetModel->findByLocation($location);
 ?>
 
 <div id="content_header" class="content_header">
@@ -36,7 +37,6 @@ $widgetModel = ClassLoader::getInstance()->getClassInstance( 'Model_Widget' );
 		    <?php echo $location; ?> <a href="<?php echo osc_admin_base_url(true); ?>?page=appearance&action=add_widget&amp;location=<?php echo $location; ?>"><?php _e('Add HTML widget'); ?></a>
 		    <br />
 		    <?php
-$widgets = $widgetModel->findByLocation($location);
 foreach ($widgets as $w) 
 {
 $aux_id = $w['pk_i_id'];

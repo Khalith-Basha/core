@@ -7,11 +7,11 @@ define( 'PLUGINS_PATH', CONTENT_PATH . '/plugins' );
 define( 'TRANSLATIONS_PATH', CONTENT_PATH . '/languages' );
 define( 'OVERRIDE_LIBRARY_PATH', ABS_PATH . '/override/library' );
 define( 'LIBRARY_PATH', ABS_PATH . '/library' );
+define( 'LIB_PATH', LIBRARY_PATH );
 
 set_include_path(
 	get_include_path() .
-	PATH_SEPARATOR . LIBRARY_PATH .
-	PATH_SEPARATOR . LIBRARY_PATH . '/cuore_framework'
+	PATH_SEPARATOR . LIBRARY_PATH
 );
 
 require 'osc/constants.php';
@@ -20,7 +20,6 @@ require 'osc/ClassLoader.php';
 $classLoader = ClassLoader::getInstance();
 $classLoader->addSearchPath( OVERRIDE_LIBRARY_PATH . '/osc', 'Override_' );
 $classLoader->addSearchPath( LIBRARY_PATH . '/osc' );
-$classLoader->addSearchPath( LIBRARY_PATH . '/cuore_framework' );
 
 $classLoader->loadFile( 'helpers/urls' );
 
@@ -42,7 +41,6 @@ HTML;
 	die( $errorPage );	
 }
 
-$classLoader->loadFile( 'TypedArray' );
 $classLoader->loadFile( 'Url/Abstract' );
 $classLoader->loadFile( 'Form/Form' );
 $classLoader->loadFile( 'Controller/Default' );
@@ -82,3 +80,4 @@ $pluginManager->loadPlugins();
 
 $classLoader->loadFile( 'helpers/plugins' );
 $classLoader->loadFile( 'helpers/views' );
+

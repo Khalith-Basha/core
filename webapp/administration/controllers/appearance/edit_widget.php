@@ -20,17 +20,17 @@ class CAdminAppearance extends Controller_Administration
 	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
 		$id = Params::getParam('id');
-		$widgetModel = $this->getClassLoader()
-			->getClassInstance( 'Model_Widget' );
-		$widget = $widgetModel->findByPrimaryKey($id);
+
+		$widgetModel = new \Osc\Model\Widget;
+		$widget = $widgetModel->findByPrimaryKey( $id );
+
 		$this->getView()->assign("widget", $widget);
 		$this->doView('appearance/add_widget.php');
 	}
 
 	public function doPost( HttpRequest $req, HttpResponse $res )
 	{
-		$widgetModel = $this->getClassLoader()
-			->getClassInstance( 'Model_Widget' );
+		$widgetModel = new \Osc\Model\Widget;
 		$res = $widgetModel->update(array('s_description' => Params::getParam('description'), 's_content' => Params::getParam('content')), array('pk_i_id' => Params::getParam('id')));
 		if ($res) 
 		{

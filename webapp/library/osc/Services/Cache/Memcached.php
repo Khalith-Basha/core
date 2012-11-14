@@ -19,9 +19,7 @@
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-require_once 'osc/Services/Cache/Interface.php';
-
-class Services_Cache_Memcached implements CacheService
+class Services_Cache_Memcached
 {
 	private $service;
 

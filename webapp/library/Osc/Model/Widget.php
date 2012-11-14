@@ -1,5 +1,5 @@
 <?php
-/**
+/*
  *      OpenSourceClassifieds – software for creating and publishing online classified
  *                           advertising platforms
  *
@@ -18,8 +18,37 @@
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-interface CacheService
+namespace Osc\Model;
+
+class Widget extends \Cuore\Model\DbObject
 {
-	public function read( $key );
-	public function write( $key, $content );
+	public function __construct() 
+	{
+		parent::__construct();
+
+		$this->setTableName( DB_TABLE_PREFIX . 't_widget' );
+		$this->setPrimaryKey( 'pk_i_id' );
+		$this->setFields( array( 'pk_i_id', 's_description', 's_location', 'e_kind', 's_content' ) );
+	}
+
+	/**
+	 * @return array
+	 */
+	public function findByLocation($location) 
+	{
+		$fields = implode( ', ', $this->fields );
+
+		$sql = <<<SQL
+SELECT
+	$fields
+FROM
+	$this->tableName
+WHERE
+	s_location = ?
+SQL;
+		$stmt = $this->prepareStatement( $sql );
+		$stmt->bind_param( 's', $s_location );
+		return $this->fetchAll( $stmt );
+	}
 }
+
