@@ -25,6 +25,11 @@
 
 function osc_get_current_web_theme_path( $file, View $view = null ) 
 {
+	if( empty( $file ) )
+	{
+		return null;
+	}
+	
 	$classLoader = ClassLoader::getInstance();
 	$themes = $classLoader->getClassInstance( 'Ui_MainTheme' );
 	if( is_null( $view ) )
@@ -44,7 +49,7 @@ function osc_get_current_web_theme_path( $file, View $view = null )
 		}
 	}
 
-	trigger_error('File not found: ' . $filePath, E_USER_NOTICE);
+	trigger_error('File not found: ' . $file, E_USER_NOTICE);
 	return null;
 }
 

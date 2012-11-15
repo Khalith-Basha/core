@@ -37,7 +37,7 @@ class CAdminIndex extends Controller_Default
 				$userModel->update(array('s_secret' => $secret), array('pk_i_id' => $admin['pk_i_id']));
 
 				$cookie = $this->getCookie();
-				$cookie->set_expires(osc_time_cookie());
+				$cookie->setExpires(osc_time_cookie());
 				$cookie->push('oc_adminId', $admin['pk_i_id']);
 				$cookie->push('oc_adminSecret', $secret);
 				$cookie->push('oc_adminLocale', Params::getParam('locale'));

@@ -67,7 +67,7 @@ class CWebUser extends Controller_Default
 				);
 
 				$cookie = $this->getCookie();
-				$cookie->set_expires(osc_time_cookie());
+				$cookie->setExpires(osc_time_cookie());
 				$cookie->push('oc_userId', $user['pk_i_id']);
 				$cookie->push('oc_userSecret', $secret);
 				$cookie->set();

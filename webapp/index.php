@@ -49,7 +49,7 @@ if (!osc_users_enabled() && osc_is_web_user_logged_in())
 	$session->remove('userEmail');
 	$session->remove('userPhone');
 
-	$cookie = $classLoader->getClassInstance( 'Cookie' );
+	$cookie = new \Cuore\Input\Cookie;
 	$cookie->remove('oc_userId');
 	$cookie->remove('oc_userSecret');
 	$cookie->set();

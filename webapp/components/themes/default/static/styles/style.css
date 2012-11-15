@@ -56,7 +56,7 @@ option.pad { margin-left:10px;}
 /*#form_publish .search input#query { width:375px; }*/
 #form_publish .search #expand_advanced { font-size:11px; margin-left:10px;}
 #form_publish .search .extras { display:none; }
-#form_publish .publish_button { background:#ec4901 url(images/button_link_bg.gif) repeat-x top; border:1px solid #c54f00; float:right; margin:9px 10px 0 0; padding:6px 10px 7px; -moz-border-radius:5px; -webkit-border-radius:5px; border-radius:5px; }
+#form_publish .publish_button { background:#ec4901 ; border:1px solid #c54f00; float:right; margin:9px 10px 0 0; padding:6px 10px 7px; -moz-border-radius:5px; -webkit-border-radius:5px; border-radius:5px; }
 #form_publish .margin-bottom { margin-bottom: 10px; margin-top: 0px; }
 #form_publish .publish_button a { background:url(images/button_link_icon.gif) no-repeat 0 2px; color:#FFF; float:left; padding-left:15px; text-decoration:none; }
 #form_publish .publish_button a:hover { text-decoration: underline;}
@@ -99,7 +99,7 @@ option.pad { margin-left:10px;}
 .home .publish_box { background:#fff4d4; border: 1px solid #ffa727; clear:both; color:#000; float:left; margin-bottom:15px; padding:10px; width:218px; }
 .home .publish_box h2 { font:14px Georgia, Times, 'Times New Roman', serif; }
 .home .publish_box p { font-size:11px; margin:5px 0 8px; }
-.home .publish_box .button_link { background:#ec4901 url(images/button_link_bg.gif) repeat-x top; border:1px solid #c54f00; float:left; padding:7px 10px; -moz-border-radius:5px; -webkit-border-radius:5px; border-radius:5px; }
+.home .publish_box .button_link { background:#ec4901 ; border:1px solid #c54f00; float:left; padding:7px 10px; -moz-border-radius:5px; -webkit-border-radius:5px; border-radius:5px; }
 .home .publish_box .button_link a { background:url(images/button_link_icon.gif) no-repeat 0 2px; color:#FFF; float:left; padding-left:15px; text-decoration:none; }
 .home .publish_box.candidates { background:#f8f8ea; border-color:#c7c13e; }
 .home .publish_box.candidates .button_link { background:#808b05 url(images/button_link_green_bg.gif) repeat-x top; border-color:#6f6e00; }

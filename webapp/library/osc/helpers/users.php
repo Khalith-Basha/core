@@ -58,10 +58,10 @@ function osc_is_web_user_logged_in()
 	}
 	//can already be a logged user or not, we'll take a look into the cookie
 
-	$cookie = ClassLoader::getInstance()->getClassInstance( 'Cookie' );
-	if ($cookie->get_value('oc_userId') != '' && $cookie->get_value('oc_userSecret') != '') 
+	$cookie = new \Cuore\Input\Cookie;
+	if ($cookie->getValue('oc_userId') != '' && $cookie->getValue('oc_userSecret') != '') 
 	{
-		$user = $classLoader->getClassInstance( 'Model_User' )->findByIdSecret($cookie->get_value('oc_userId'), $cookie->get_value('oc_userSecret'));
+		$user = $classLoader->getClassInstance( 'Model_User' )->findByIdSecret($cookie->getValue('oc_userId'), $cookie->getValue('oc_userSecret'));
 		if (isset($user['b_enabled']) && $user['b_enabled'] == 1) 
 		{
 			$session->_set('userId', $user['pk_i_id']);
@@ -134,17 +134,17 @@ function osc_is_admin_user_logged_in()
 		return (isset($admin['pk_i_id'])); 
 	}
 	//can already be a logged user or not, we'll take a look into the cookie
-	$cookie = $classLoader->getClassInstance( 'Cookie' );
-	if ($cookie->get_value('oc_adminId') != '' && $cookie->get_value('oc_adminSecret') != '') 
+	$cookie = new \Cuore\Input\Cookie;
+	if ($cookie->getValue('oc_adminId') != '' && $cookie->getValue('oc_adminSecret') != '') 
 	{
-		$admin = $userModel->findByIdSecret($cookie->get_value('oc_adminId'), $cookie->get_value('oc_adminSecret'));
+		$admin = $userModel->findByIdSecret($cookie->getValue('oc_adminId'), $cookie->getValue('oc_adminSecret'));
 		if (isset($admin['pk_i_id'])) 
 		{
 			$session->_set('adminId', $admin['pk_i_id']);
 			$session->_set('adminUserName', $admin['s_username']);
 			$session->_set('adminName', $admin['s_name']);
 			$session->_set('adminEmail', $admin['s_email']);
-			$session->_set('adminLocale', $cookie->get_value('oc_adminLocale'));
+			$session->_set('adminLocale', $cookie->getValue('oc_adminLocale'));
 			return true;
 		}
 	}

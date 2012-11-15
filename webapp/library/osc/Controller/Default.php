@@ -99,7 +99,7 @@ abstract class Controller_Default
 
 		$this->classLoader = ClassLoader::getInstance();
 		$this->server = $this->classLoader->getClassInstance( 'Server' );
-		$this->cookie = $this->classLoader->getClassInstance( 'Cookie' );
+		$this->cookie = new \Cuore\Input\Cookie;
 		
 		$this->view = $this->classLoader->getClassInstance( 'View_Html' );
 		$this->view->setTitle( osc_page_title() );

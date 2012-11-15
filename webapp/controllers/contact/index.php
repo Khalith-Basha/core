@@ -66,7 +66,7 @@ class CWebContact extends Controller_Cacheable
 			$this->getSession()->_setForm("message_body", $message);
 			$this->redirectTo( $indexUrls->osc_contact_url());
 		}
-		$params = array('from' => $yourEmail, 'from_name' => $yourName, 'subject' => '[' . osc_page_title() . '] ' . __('Contact form') . ': ' . $subject, 'to' => osc_contact_email(), 'to_name' => __('Administrator'), 'body' => $message, 'alt_body' => $message);
+
 		if (osc_contact_attachment()) 
 		{
 			$attachment = Params::getFiles('attachment');
@@ -86,16 +86,33 @@ class CWebContact extends Controller_Cacheable
 		}
 		if (isset($path)) 
 		{
-			$params['attachment'] = $path;
+			$params = array( 'attachment' => $path );
 		}
+
+		$emailSubject = '[' . osc_page_title() . '] ' . __('Contact form') . ': ' . $subject;
 
 		try
 		{
-			osc_sendMail($params);
+			$emailConfig = array(
+				'smtp_host' => osc_mailserver_host(),
+				'smtp_port' => osc_mailserver_port(),
+				'smtp_user' => osc_mailserver_username(),
+				'smtp_pass' => osc_mailserver_password(),
+			);
+
+			$email = new \Cuore\Email\Message;
+			$email->setFrom( $yourEmail, $yourName );
+			$email->setSubject( $emailSubject );
+			$email->addRecipient( osc_contact_email(), __('Administrator') );
+			$email->setBody( $message );
+			$email->send( $emailConfig );
+
 			$this->getSession()->addFlashMessage( _m('Your e-mail has been sent properly. Thank your for contacting us!') );
 		}
-		catch( Exception $e )
+		catch( \Exception $e )
 		{
+			trigger_error( $e->getMessage(), E_USER_WARNING );
+
 			$this->getSession()->addFlashMessage( _m('There was a problem trying to send contact form.') );
 		}
 		$this->redirectToBaseUrl();

@@ -370,8 +370,9 @@ function osc_validate_spam_delay($type = 'item')
 		$delay = osc_comment_spam_delay();
 		$saved_as = 'last_submit_comment';
 	}
-	// check $_SESSION
-	if ((ClassLoader::getInstance()->getClassInstance( 'Session' )->_get($saved_as) + $delay) > time() || (ClassLoader::getInstance()->getClassInstance( 'Cookie' )->get_value($saved_as) + $delay) > time()) 
+
+	$cookie = new \Cuore\Input\Cookie;
+	if ((ClassLoader::getInstance()->getClassInstance( 'Session' )->_get($saved_as) + $delay) > time() || ($cookie->getValue($saved_as) + $delay) > time()) 
 	{
 		return false;
 	}

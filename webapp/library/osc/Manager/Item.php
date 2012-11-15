@@ -159,9 +159,10 @@ class Manager_Item
 				// Track spam delay: Session
 				ClassLoader::getInstance()->getClassInstance( 'Session' )->_set('last_submit_item', time());
 				// Track spam delay: Cookie
-				ClassLoader::getInstance()->getClassInstance( 'Cookie' )->set_expires(osc_time_cookie());
-				ClassLoader::getInstance()->getClassInstance( 'Cookie' )->push('last_submit_item', time());
-				ClassLoader::getInstance()->getClassInstance( 'Cookie' )->set();
+				$cookie = new \Cuore\Input\Cookie;
+				$cookie->setExpires(osc_time_cookie());
+				$cookie->push('last_submit_item', time());
+				$cookie->set();
 			}
 			$itemId = $this->manager->dbCommand->insertedId();
 			ClassLoader::getInstance()->getClassInstance( 'Logging_Logger' )->insertLog('item', 'add', $itemId, current(array_values($aItem['title'])), $this->is_admin ? 'admin' : 'user', $this->is_admin ? osc_logged_admin_id() : osc_logged_user_id());

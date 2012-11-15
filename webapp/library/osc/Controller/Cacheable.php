@@ -4,14 +4,22 @@ abstract class Controller_Cacheable extends Controller_Default
 {
 	public final function doGet( HttpRequest $req, HttpResponse $res )
 	{
+		$cacheConfig = array();
+
+		$config = ClassLoader::getInstance()->getClassInstance( 'Config' );
+		if( $config->hasConfig( 'memcached' ) )
+		{
+			$cacheConfig = $config->getConfig( 'memcached' );
+		}
+
 		$cacheKey = $this->getCacheKey();
-		$cacheService = $this->getClassLoader()->getClassInstance( 'Services_Cache_Memcached' );
-		$cachedResponse = $cacheService->read( $cacheKey );
+		$cacheService = new \Cuore\Cache\Volatile( $cacheConfig );
+		$cachedResponse = $cacheService->get( $cacheKey );
 		if( true||false === $cachedResponse ) // @TODO REMOVE
 		{
 			$cachedResponse = $this->renderView( $req, $res );
 			$cacheExpiration = $this->getCacheExpiration();
-			$cacheService->write( $cacheKey, $cachedResponse, $cacheExpiration );
+			$cacheService->set( $cacheKey, $cachedResponse, $cacheExpiration );
 		}
 
 		if( is_array( $cachedResponse ) )
