@@ -35,7 +35,7 @@ class CWebIndex extends Controller_Cacheable
 		$locale = osc_current_user_locale();
 
 		$classLoader = $this->getClassLoader();
-		$pagesModel = $classLoader->getClassInstance( 'Model_Page' );
+		$pagesModel = new \Osc\Model\Page;
 		$pageUrl = $classLoader->getClassInstance( 'Url_Page' );
 		$pages = $pagesModel->findUserPagesByLocale( $locale );
 		foreach( $pages as &$page )
@@ -44,20 +44,23 @@ class CWebIndex extends Controller_Cacheable
 		}
 		$view->assign( 'pages', $pages );
 
-		$category = $classLoader->getClassInstance( 'Model_Category' );
+		$category = new \Osc\Model\Category;
 		$view->assign( 'categories', $category->toTree() );
 
-		$search = $classLoader->getClassInstance( 'Model_Search' );
-		$search->limit( 0, osc_max_latest_items() );
-		$latestItems = $search->getLatestItems();
+		$searchModel = new \Osc\Model\Search;
+		$searchModel->limit( 0, osc_max_latest_items() );
+		$latestItems = $searchModel->getLatestItems();
+
+		$resourceModel = new \Osc\Model\ItemResource;
+
 		foreach( $latestItems as &$item )
 		{
-			$item['resources'] = $classLoader->getClassInstance( 'Model_ItemResource' )->getAllResources( $item['pk_i_id'] );
+			$item['resources'] = $resourceModel->getAllResources( $item['pk_i_id'] );
 		}
 		$view->assign( 'latestItems', $latestItems );
 
 		$country = '%%%%';
-		$regions = $classLoader->getClassInstance( 'Model_Search' )->listRegions( $country, '>' );
+		$regions = $searchModel->listRegions( $country, '>' );
 		$view->assign( 'regions', $regions );
 
 		return $view->render( 'main' );

@@ -50,7 +50,10 @@
 	    <div class="row checkboxes">
 		<h6><?php _e('Category', 'modern'); ?></h6>
 		<ul>
-			<?php foreach( $classLoader->getClassInstance( 'Model_Category' )->toTree() as $category ): ?>
+<?php
+$categoryModel = new \Osc\Model\Category;
+?>
+			<?php foreach( $categoryModel->toTree() as $category ): ?>
 			<li>
 			    <input type="checkbox" id="cat<?php echo osc_category_id( $category ); ?>" name="sCategory[]" value="<?php echo osc_category_id( $category ); ?>" <?php echo ((in_array(osc_category_id( $category ), osc_search_category( $category )) || in_array(osc_category_slug( $category ) . "/", osc_search_category( $category )) || count(osc_search_category( $category )) == 0) ? 'checked' : ''); ?> /> <label for="cat<?php echo osc_category_id( $category ); ?>"><strong><?php echo osc_category_name( $category ); ?></strong></label>
 			</li>

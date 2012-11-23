@@ -18,34 +18,43 @@
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+namespace Osc\Model;
 /**
- * Log DAO
+ *
  */
-class Model_Log extends DAO
+class UserEmailTmp extends \DAO
 {
 	function __construct() 
 	{
 		parent::__construct();
-		$this->setTableName('t_audit');
-		$array_fields = array('dt_date', 's_section', 's_action', 'fk_i_id', 's_data', 's_ip', 's_who', 'fk_i_who_id');
-		$this->setFields($array_fields);
+		$this->setTableName('t_user_email_tmp');
+		$this->setPrimaryKey('fk_i_user_id');
+		$this->setFields(array('fk_i_user_id', 's_new_email', 'dt_date'));
 	}
 	/**
-	 * Insert a log row.
 	 *
 	 * @access public
 	 * @since unknown
-	 * @param string $section
-	 * @param string $action
-	 * @param integer $id
-	 * @param string $data
-	 * @param string $who
-	 * @param integer $who_id
-	 * @return boolean
+	 * @param type $id
+	 * @return array
 	 */
-	public function insertLog($section, $action, $id, $data, $who, $whoId) 
+	function findByPk($id) 
 	{
-		$array_set = array('dt_date' => date('Y-m-d H:i:s'), 's_section' => $section, 's_action' => $action, 'fk_i_id' => $id, 's_data' => $data, 's_ip' => $_SERVER['REMOTE_ADDR'], 's_who' => $who, 'fk_i_who_id' => $whoId);
-		return $this->dbCommand->insert($this->getTableName(), $array_set);
+		return $this->findByPrimaryKey($id);
+	}
+	/**
+	 *
+	 * @access public
+	 * @since unknown
+	 * @param type $userEmailTmp
+	 * @return array
+	 */
+	public function insertOrUpdate($userEmailTmp) 
+	{
+		$status = $this->dbCommand->insert($this->getTableName(), array('fk_i_user_id' => $userEmailTmp['fk_i_user_id'], 's_new_email' => $userEmailTmp['s_new_email'], 'dt_date' => date('Y-m-d H:i:s')));
+		if (!$status) 
+		{
+			$this->dbCommand->update($this->getTableName(), array('s_new_email' => $userEmailTmp['s_new_email'], 'dt_date' => date('Y-m-d H:i:s')), array('fk_i_user_id' => $userEmailTmp['fk_i_user_id']));
+		}
 	}
 }

@@ -64,9 +64,8 @@ function osc_locale()
  */
 function osc_get_locales() 
 {
-	return ClassLoader::getInstance()
-		->getClassInstance( 'Model_Locale' )
-		->listAllEnabled();
+	$localeModel = new \Osc\Model\Locale;
+	return $localeModel->listAllEnabled();
 }
 
 /**
@@ -98,9 +97,10 @@ function osc_count_web_enabled_locales()
 {
 	$classLoader = ClassLoader::getInstance();
 	$view = $classLoader->getClassInstance( 'View_Default' );
+	$localeModel = new \Osc\Model\Locale;
 	if (!$view->varExists('locales')) 
 	{
-		$view->assign('locales', $classLoader->getClassInstance( 'Model_Locale' )->listAllEnabled());
+		$view->assign('locales', $localeModel->listAllEnabled());
 	}
 	return osc_priv_count_locales();
 }
@@ -113,9 +113,10 @@ function osc_has_web_enabled_locales()
 {
 	$classLoader = ClassLoader::getInstance();
 	$view = $classLoader->getClassInstance( 'View_Default' );
+	$localeModel = new \Osc\Model\Locale;
 	if (!$view->varExists('locales')) 
 	{
-		$view->assign('locales', $classLoader->getClassInstance( 'Model_Locale' )->listAllEnabled());
+		$view->assign('locales', $localeModel->listAllEnabled());
 	}
 	return $view->_next('locales');
 }
@@ -221,7 +222,8 @@ function osc_locale_num_dec()
 function osc_all_enabled_locales_for_admin($indexed_by_pk = false) 
 {
 	$classLoader = ClassLoader::getInstance();
-	return ($classLoader->getClassInstance( 'Model_Locale' )->listAllEnabled(true, $indexed_by_pk));
+	$localeModel = new \Osc\Model\Locale;
+	return ( $localeModel->listAllEnabled(true, $indexed_by_pk));
 }
 /**
  * Gets current locale object
@@ -232,7 +234,8 @@ function osc_get_current_user_locale()
 {
 	$classLoader = ClassLoader::getInstance();
 	$view = $classLoader->getClassInstance( 'View_Default' );
-	$view->assign('locale', $classLoader->getClassInstance( 'Model_Locale' )->findByPrimaryKey(osc_current_user_locale()));
+	$localeModel = new \Osc\Model\Locale;
+	$view->assign('locale', $localeModel->findByPrimaryKey(osc_current_user_locale()));
 }
 /**
  * Get the actual locale of the user.
@@ -288,13 +291,14 @@ function osc_listLocales()
 function osc_checkLocales() 
 {
 	$locales = osc_listLocales();
+	$localeModel = new \Osc\Model\Locale;
 	foreach ($locales as $locale) 
 	{
-		$data = ClassLoader::getInstance()->getClassInstance( 'Model_Locale' )->findByPrimaryKey($locale['code']);
+		$data = $localeModel->findByPrimaryKey($locale['code']);
 		if (!is_array($data)) 
 		{
 			$values = array('pk_c_code' => $locale['code'], 's_name' => $locale['name'], 's_short_name' => $locale['short_name'], 's_description' => $locale['description'], 's_version' => $locale['version'], 's_author_name' => $locale['author_name'], 's_author_url' => $locale['author_url'], 's_currency_format' => $locale['currency_format'], 's_date_format' => $locale['date_format'], 's_stop_words' => $locale['stop_words'], 'b_enabled' => 0, 'b_enabled_bo' => 1);
-			$result = ClassLoader::getInstance()->getClassInstance( 'Model_Locale' )->insert($values);
+			$result = $localeModel->insert($values);
 			if (!$result) 
 			{
 				return false;

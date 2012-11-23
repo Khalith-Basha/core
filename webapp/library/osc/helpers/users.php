@@ -44,9 +44,10 @@ function osc_is_web_user_logged_in()
 {
 	$classLoader = ClassLoader::getInstance();
 	$session = $classLoader->getClassInstance( 'Session' );
+	$userModel = new \Osc\Model\User;
 	if ( $session->_get("userId") != '') 
 	{
-		$user = $classLoader->getClassInstance( 'Model_User' )->findByPrimaryKey( $session->_get("userId"));
+		$user = $userModel->findByPrimaryKey( $session->_get("userId"));
 		if (isset($user['b_enabled']) && $user['b_enabled'] == 1) 
 		{
 			return true;
@@ -61,7 +62,7 @@ function osc_is_web_user_logged_in()
 	$cookie = new \Cuore\Input\Cookie;
 	if ($cookie->getValue('oc_userId') != '' && $cookie->getValue('oc_userSecret') != '') 
 	{
-		$user = $classLoader->getClassInstance( 'Model_User' )->findByIdSecret($cookie->getValue('oc_userId'), $cookie->getValue('oc_userSecret'));
+		$user = $userModel->findByIdSecret($cookie->getValue('oc_userId'), $cookie->getValue('oc_userSecret'));
 		if (isset($user['b_enabled']) && $user['b_enabled'] == 1) 
 		{
 			$session->_set('userId', $user['pk_i_id']);
@@ -126,7 +127,7 @@ function osc_logged_user_phone()
 function osc_is_admin_user_logged_in() 
 {
 	$classLoader = ClassLoader::getInstance();
-	$userModel = $classLoader->getClassInstance( 'Model_User' );
+	$userModel = new \Osc\Model\User;
 	$session = $classLoader->getClassInstance( 'Session' );
 	if ($session->_get("adminId") != '') 
 	{

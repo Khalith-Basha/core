@@ -65,8 +65,8 @@ function osc_get_categories()
 {
 	$classLoader = ClassLoader::getInstance();
 	$view = $classLoader->getClassInstance( 'View_Html' );
-	$category = $classLoader->getClassInstance( 'Model_Category' );
-	$view->assign('categories', $category->toTree());
+	$categoryModel = new \Osc\Model\Category;
+	$view->assign('categories', $categoryModel->toTree());
 	return $view->getVar('categories');
 }
 function osc_field_toTree($item, $field) 
@@ -97,8 +97,8 @@ function osc_count_categories()
 	$view = $classLoader->getClassInstance( 'View_Html' );
 	if (!$view->varExists('categories')) 
 	{
-		$category = $classLoader->getClassInstance( 'Model_Category' );
-		$view->assign('categories', $category->toTree());
+		$categoryModel = new \Osc\Model\Category;
+		$view->assign('categories', $categoryModel->toTree());
 	}
 	return $view->countVar('subcategories');
 }
@@ -159,8 +159,8 @@ function osc_get_non_empty_categories()
 {
 	$classLoader = ClassLoader::getInstance();
 	$view = $classLoader->getClassInstance( 'View_Html' );
-	$category = $classLoader->getClassInstance( 'Model_Category' );
-	$aCategories = $category->toTree(false);
+	$categoryModel = new \Osc\Model\Category;
+	$aCategories = $categoryModel->toTree(false);
 	$view->assign('categories', $aCategories);
 	return $aCategories;
 }
@@ -174,7 +174,7 @@ function osc_categories_select($name = 'sCategory', $category = null, $default_s
 	$classLoader = ClassLoader::getInstance();
 	if ($default_str == null)
 		$default_str = __('Select a category');
-	$categoryModel = $classLoader->getClassInstance( 'Model_Category' );
+	$categoryModel = new \Osc\Model\Category;
 	$categoryForm = $classLoader->getClassInstance( 'Form_Category' );
 	$categoryForm->category_select($categoryModel->toTree(), $category, $default_str, $name);
 }

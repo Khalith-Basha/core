@@ -18,10 +18,11 @@
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+namespace Osc\Model;
 /**
  * User DAO
  */
-class Model_User extends DAO
+class User extends \DAO
 {
 	function __construct() 
 	{

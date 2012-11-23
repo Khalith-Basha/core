@@ -18,6 +18,8 @@
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+namespace Osc\Model;
+
 /**
  * Model database for CategoryStats table
  *
@@ -25,7 +27,7 @@
  * @subpackage Model
  * @since unknown
  */
-class Model_CategoryStats extends DAO
+class CategoryStats extends \DAO
 {
 	/**
 	 * Set data related to t_category_stats table

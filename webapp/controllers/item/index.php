@@ -37,8 +37,9 @@ class CWebItem extends Controller_Default
 	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
 		$classLoader = $this->getClassLoader();
-		$this->itemModel = $this->getClassLoader()->getClassInstance( 'Model_Item' );
-		$locales = $this->getClassLoader()->getClassInstance( 'Model_Locale' )->listAllEnabled();
+		$this->itemModel = new \Osc\Model\Item;
+		$localeModel = new \Osc\Model\Locale;
+		$locales = $localeModel->listAllEnabled();
 		$this->view->assign('locales', $locales);
 		if (Params::getParam('id') == '') 
 		{
@@ -75,7 +76,7 @@ class CWebItem extends Controller_Default
 			$this->getSession()->addFlashMessage( _m('The item has been suspended'), 'ERROR' );
 			$this->redirectToBaseUrl();
 		}
-		$mStats = ClassLoader::getInstance()->getClassInstance( 'Model_ItemStats' );
+		$mStats = new \Osc\Model\ItemStats; 
 		$mStats->increase('i_num_views', $item['pk_i_id']);
 		foreach ($item['locale'] as $k => $v) 
 		{
@@ -92,13 +93,15 @@ class CWebItem extends Controller_Default
 		$this->view->addJavaScript( '/static/scripts/comment-form.js' );
 		$view->setMetaDescription( osc_item_category( $item ) . ', ' . osc_highlight( strip_tags( osc_item_description( $item ) ), 140) . '..., ' . osc_item_category( $item ) );
 
-		$metafields = $classLoader->getClassInstance( 'Model_Item' )->metaFields( osc_item_id( $item ) );
+		$itemModel = new \Osc\Model\Item;
+		$metafields = $itemModel->metaFields( osc_item_id( $item ) );
 		$view->assign( 'metafields', $metafields );
 
-		$itemResourceManager = $classLoader->getClassInstance( 'Model_ItemResource' );
+		$itemResourceManager = new \Osc\Model\ItemResource;
 		$view->assign('resources', $itemResourceManager->getAllResources( osc_item_id( $item ) ) );
-		
-		$view->assign('user', $classLoader->getClassInstance( 'Model_User' )->findByPrimaryKey( osc_item_user_id( $item ) ) );
+
+		$userModel = new \Osc\Model\User;
+		$view->assign('user', $userModel->findByPrimaryKey( osc_item_user_id( $item ) ) );
 
 		$classLoader->loadFile( 'helpers/security' );
 
@@ -110,8 +113,8 @@ class CWebItem extends Controller_Default
 		$classLoader = ClassLoader::getInstance();
 		$view = $this->getView();
 
-		$comments = $classLoader->getClassInstance( 'Model_ItemComment' )
-			->findByItemID( $item['pk_i_id'], osc_item_comments_page(), osc_comments_per_page() );
+		$commentModel = new \Osc\Model\ItemComment;
+		$comments = $commentModel->findByItemID( $item['pk_i_id'], osc_item_comments_page(), osc_comments_per_page() );
 		$view->assign( 'comments', $comments );
 
 		if( 0 === osc_comments_per_page() || 'all' === osc_item_comments_page() )
@@ -119,7 +122,7 @@ class CWebItem extends Controller_Default
 
 		$itemUrls = $classLoader->getClassInstance( 'Url_Item' );
 
-		$pagination = $classLoader->getClassInstance( 'Pagination', false );
+		$pagination = new \Cuore\Web\Paginator;
 		$pagination->setNumItems( osc_item_total_comments( $item ) );
 		$pagination->setUrlTemplate( $itemUrls->osc_item_comments_url( $item, $pagination::PLACEHOLDER ) );
 		$pagination->setSelectedPage( osc_item_comments_page() );

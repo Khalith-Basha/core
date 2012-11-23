@@ -24,11 +24,11 @@ class CWebSearch extends Controller_Default
 		$input = $this->getInput();
 		$view = $this->getView();
 
-		$this->mSearch = $this->getClassLoader()->getClassInstance( 'Model_Search' );
+		$this->mSearch = new \Osc\Model\Search;
 
 		$classLoader->loadFile( 'helpers/premium' );
 		osc_run_hook('before_search');
-		$mCategories = $this->getClassLoader()->getClassInstance( 'Model_Category' );
+		$mCategories = new \Osc\Model\Category;
 
 		$p_sCategory = Params::getParam('sCategory');
 		if (!is_array($p_sCategory)) 
@@ -324,7 +324,7 @@ class CWebSearch extends Controller_Default
 		if ($b_category) 
 		{
 			$list = array();
-			$categoryModel = ClassLoader::getInstance()->getClassInstance( 'Model_Category' );
+			$categoryModel = new \Osc\Model\Category;
 			$aCategories = $categoryModel->toRootTree($category);
 			if (count($aCategories) > 0) 
 			{

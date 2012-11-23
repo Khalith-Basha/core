@@ -39,8 +39,8 @@ function osc_search()
 	}
 	else
 	{
-		$search = $classLoader->getClassInstance( 'Model_Search' );
-		$view->assign('search', $search);
+		$searchModel = new \Osc\Model\Search;
+		$view->assign( 'search', $searchModel );
 		return $search;
 	}
 }
@@ -341,7 +341,8 @@ function osc_has_list_countries()
 	$view = $classLoader->getClassInstance( 'View_Html' );
 	if (!$view->varExists('list_countries')) 
 	{
-		$view->assign('list_countries', $classLoader->getClassInstance( 'Model_Search' )->listCountries('>='));
+		$searchModel = new \Osc\Model\Search;
+		$view->assign('list_countries', $searchModel->listCountries('>='));
 	}
 	return $view->_next('list_countries');
 }
@@ -357,7 +358,8 @@ function osc_has_list_regions($country = '%%%%')
 	$view = $classLoader->getClassInstance( 'View_Html' );
 	if (!$view->varExists('list_regions')) 
 	{
-		$view->assign('list_regions', $classLoader->getClassInstance( 'Model_Search' )->listRegions($country, '>'));
+		$searchModel = new \Osc\Model\Search;
+		$view->assign('list_regions', $searchModel->listRegions($country, '>'));
 	}
 	return $view->_next('list_regions');
 }
@@ -373,7 +375,8 @@ function osc_has_list_cities($region = '%%%%')
 	$view = $classLoader->getClassInstance( 'View_Html' );
 	if (!$view->varExists('list_cities')) 
 	{
-		$view->assign('list_cities', $classLoader->getClassInstance( 'Model_Search' )->listCities($region, '>='));
+		$searchModel = new \Osc\Model\Search;
+		$view->assign('list_cities', $searchModel->listCities($region, '>='));
 	}
 	$result = $view->_next('list_cities');
 	if (!$result) $view->_erase('list_cities');
@@ -390,7 +393,8 @@ function osc_count_list_countries()
 	$view = $classLoader->getClassInstance( 'View_Html' );
 	if (!$view->varExists('list_countries')) 
 	{
-		$view->assign('list_countries', $classLoader->getClassInstance( 'Model_Search' )->listCountries());
+		$searchModel = new \Osc\Model\Search;
+		$view->assign('list_countries', $searchModel->listCountries());
 	}
 	return $view->countVar('list_countries');
 }
@@ -406,7 +410,8 @@ function osc_count_list_regions($country = '%%%%')
 	$view = $classLoader->getClassInstance( 'View_Html' );
 	if (!$view->varExists('list_regions')) 
 	{
-		$view->assign('list_regions', $classLoader->getClassInstance( 'Model_Search' )->listRegions($country));
+		$searchModel = new \Osc\Model\Search;
+		$view->assign('list_regions', $searchModel->listRegions($country));
 	}
 	return $view->countVar('list_regions');
 }
@@ -422,7 +427,8 @@ function osc_count_list_cities($region = '%%%%')
 	$view = $classLoader->getClassInstance( 'View_Html' );
 	if (!$view->varExists('list_cities')) 
 	{
-		$view->assign('list_cities', $classLoader->getClassInstance( 'Model_Search' )->listCities($region));
+		$searchModel = new \Osc\Model\Search;
+		$view->assign('list_cities', $searchModel->listCities($region));
 	}
 	return $view->countVar('list_cities');
 }

@@ -1,6 +1,7 @@
 <?php
+namespace Osc\Model;
 
-class Model_BadWord extends Model
+class BadWord extends Model
 {
 	public function getWordsBySeverity( $severity )
 	{

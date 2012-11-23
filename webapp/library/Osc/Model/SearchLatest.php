@@ -18,8 +18,9 @@
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+namespace Osc\Model;
 
-class Model_SearchLatest extends Model 
+class SearchLatest extends Model 
 {
 	public function insert( $query )
 	{

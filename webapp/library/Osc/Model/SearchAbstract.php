@@ -1,6 +1,7 @@
 <?php
+namespace Osc\Model;
 
-abstract class Model_SearchAbstract extends DAO
+abstract class SearchAbstract extends \DAO
 {
 	private $queryString;
 	private $rowsPerPage;

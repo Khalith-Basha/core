@@ -18,42 +18,56 @@
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+namespace Osc\Model;
 /**
+ * Model database for Currency table
  *
+ * @package OpenSourceClassifieds
+ * @subpackage Model
+ * @since unknown
  */
-class Model_UserEmailTmp extends DAO
+class Currency extends \DAO
 {
-	function __construct() 
+	/**
+	 * Set data related to t_currency table
+	 */
+	public function __construct() 
 	{
 		parent::__construct();
-		$this->setTableName('t_user_email_tmp');
-		$this->setPrimaryKey('fk_i_user_id');
-		$this->setFields(array('fk_i_user_id', 's_new_email', 'dt_date'));
+		$this->setTableName('t_currency');
+		$this->setPrimaryKey('pk_c_code');
+		$this->setFields(array('pk_c_code', 's_name', 's_description', 'b_enabled'));
 	}
 	/**
+	 * Find currency by currency code
 	 *
+	 * @deprecated
 	 * @access public
 	 * @since unknown
-	 * @param type $id
+	 * @param int $id
 	 * @return array
 	 */
-	function findByPk($id) 
+	public function findBycode($id) 
 	{
 		return $this->findByPrimaryKey($id);
 	}
-	/**
-	 *
-	 * @access public
-	 * @since unknown
-	 * @param type $userEmailTmp
-	 * @return array
-	 */
-	public function insertOrUpdate($userEmailTmp) 
+
+	public function listAll()
 	{
-		$status = $this->dbCommand->insert($this->getTableName(), array('fk_i_user_id' => $userEmailTmp['fk_i_user_id'], 's_new_email' => $userEmailTmp['s_new_email'], 'dt_date' => date('Y-m-d H:i:s')));
-		if (!$status) 
-		{
-			$this->dbCommand->update($this->getTableName(), array('s_new_email' => $userEmailTmp['s_new_email'], 'dt_date' => date('Y-m-d H:i:s')), array('fk_i_user_id' => $userEmailTmp['fk_i_user_id']));
-		}
+		$sql = <<<SQL
+SELECT
+	pk_c_code, s_name, s_description, b_enabled
+FROM
+	/*TABLE_PREFIX*/t_currency
+ORDER BY
+	s_name ASC
+SQL;
+
+		$stmt = $this->prepareStatement( $sql );
+		$currencies = $this->fetchAll( $stmt );
+		$stmt->close();
+
+		return $currencies;
 	}
 }
+

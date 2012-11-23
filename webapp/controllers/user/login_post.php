@@ -33,7 +33,7 @@ class CWebUser extends Controller_Default
 		$email = $this->getInput()->getString( 'email' );
 		$password = $this->getInput()->getString( 'password' );
 
-		$userModel = $classLoader->getClassInstance( 'Model_User' );
+		$userModel = new \Osc\Model\User;
 		$user = $userModel->findByEmailPassword( $email, $password );
 		if( is_null( $user ) )
 		{

@@ -22,7 +22,7 @@ define('DB_CONST_NULL', 'NULL');
 define('DB_CUSTOM_COND', 'DB_CUSTOM_COND');
 
 require_once 'osc/Database/Command.php';
-require_once 'osc/Model/Default.php';
+require_once 'Osc/Model/Default.php';
 
 /**
  * DAO base model

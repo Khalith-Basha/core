@@ -721,7 +721,7 @@ function osc_get_preference($key, $section = 'osc')
  */
 function osc_set_preference($key, $value = '', $section = 'osc', $type = 'STRING') 
 {
-	$_P = ClassLoader::getInstance()->getClassInstance( 'Model_Preference' );
+	$_P = new \Osc\Model\Preference;
 	return $_P->replace($key, $value, $section, $type);
 }
 /**
@@ -733,7 +733,7 @@ function osc_set_preference($key, $value = '', $section = 'osc', $type = 'STRING
  */
 function osc_delete_preference($key = '', $section = 'osc') 
 {
-	$_P = ClassLoader::getInstance()->getClassInstance( 'Model_Preference' );
+	$_P = new \Osc\Model\Preference;
 	return $_P->delete(array('s_name' => $key, 's_section' => $section));
 }
 /**
@@ -743,7 +743,7 @@ function osc_delete_preference($key = '', $section = 'osc')
  */
 function osc_reset_preferences() 
 {
-	$_P = ClassLoader::getInstance()->getClassInstance( 'Model_Preference' );
+	$_P = new \Osc\Model\Preference;
 	return $_P->toArray();
 }
 /**
@@ -803,7 +803,7 @@ function osc_watermark_place()
  */
 function getBoolPreference($key) 
 {
-	$_P = ClassLoader::getInstance()->getClassInstance( 'Model_Preference' );
+	$_P = new \Osc\Model\Preference;
 	return $_P->get($key);
 }
 //PRIVATE FUNCTION FOR GETTING NO BOOLEAN INFORMATION (if there was a class :P)
@@ -817,6 +817,6 @@ function getBoolPreference($key)
  */
 function getPreference($key, $section = 'osc') 
 {
-	$_P = ClassLoader::getInstance()->getClassInstance( 'Model_Preference' );
+	$_P = new \Osc\Model\Preference;
 	return ($_P->get($key, $section));
 }

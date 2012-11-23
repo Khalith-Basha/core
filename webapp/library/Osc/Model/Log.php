@@ -18,24 +18,35 @@
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+namespace Osc\Model;
 /**
- * Model database for ItemLocation table
- *
- * @package OpenSourceClassifieds
- * @subpackage Model
- * @since unknown
+ * Log DAO
  */
-class Model_ItemLocation extends DAO
+class Log extends \DAO
 {
-	/**
-	 * Set data related to t_item_location table
-	 */
 	function __construct() 
 	{
 		parent::__construct();
-		$this->setTableName('t_item_location');
-		$this->setPrimaryKey('fk_i_item_id');
-		$array_fields = array('fk_i_item_id', 'fk_c_country_code', 's_country', 's_address', 's_zip', 'fk_i_region_id', 's_region', 'fk_i_city_id', 's_city', 'fk_i_city_area_id', 's_city_area', 'd_coord_lat', 'd_coord_long');
+		$this->setTableName('t_audit');
+		$array_fields = array('dt_date', 's_section', 's_action', 'fk_i_id', 's_data', 's_ip', 's_who', 'fk_i_who_id');
 		$this->setFields($array_fields);
+	}
+	/**
+	 * Insert a log row.
+	 *
+	 * @access public
+	 * @since unknown
+	 * @param string $section
+	 * @param string $action
+	 * @param integer $id
+	 * @param string $data
+	 * @param string $who
+	 * @param integer $who_id
+	 * @return boolean
+	 */
+	public function insertLog($section, $action, $id, $data, $who, $whoId) 
+	{
+		$array_set = array('dt_date' => date('Y-m-d H:i:s'), 's_section' => $section, 's_action' => $action, 'fk_i_id' => $id, 's_data' => $data, 's_ip' => $_SERVER['REMOTE_ADDR'], 's_who' => $who, 'fk_i_who_id' => $whoId);
+		return $this->dbCommand->insert($this->getTableName(), $array_set);
 	}
 }

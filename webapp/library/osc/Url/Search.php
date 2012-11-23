@@ -28,7 +28,7 @@ class Url_Search extends Url_Abstract
 		{
 			if ($category != '') 
 			{
-				$categoryModel = ClassLoader::getInstance()->getClassInstance( 'Model_Category' );
+				$categoryModel = new \Osc\Model\Category;
 				$category = $categoryModel->hierarchy($category['pk_i_id']);
 				$sanitized_category = "";
 				for ($i = count($category); $i > 0; $i--) 

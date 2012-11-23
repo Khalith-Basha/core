@@ -17,11 +17,13 @@
  *
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
+namespace Osc\Model;
+
 /**
  * Category DAO
  */
-class Model_Category extends DAO
+class Category extends \DAO
 {
 	private $language;
 	private $tree;

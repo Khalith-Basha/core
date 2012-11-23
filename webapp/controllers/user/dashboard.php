@@ -34,7 +34,8 @@ class CWebUser extends Controller_User
 		{
 		case ('dashboard'):
 			$max_items = (Params::getParam('max_items') != '') ? Params::getParam('max_items') : 5;
-			$aItems = ClassLoader::getInstance()->getClassInstance( 'Model_Item' )->findByUserIDEnabled($this->getSession()->_get('userId'), 0, $max_items);
+			$itemModel = new \Osc\Model\Item;
+			$aItems = $itemModel->findByUserIDEnabled($this->getSession()->_get('userId'), 0, $max_items);
 
 			$view = $this->getView();
 			$this->getView()->assign('items', $aItems);
@@ -82,7 +83,8 @@ class CWebUser extends Controller_User
 			$name = Params::getParam('name');
 			$fkid = Params::getParam('fkid');
 			osc_deleteResource($id);
-			ClassLoader::getInstance()->getClassInstance( 'Model_ItemResource' )->delete(array('pk_i_id' => $id, 'fk_i_item_id' => $fkid, 's_name' => $name));
+			$resourceModel = new \Osc\Model\ItemResource;
+			$resourceModel->delete(array('pk_i_id' => $id, 'fk_i_item_id' => $fkid, 's_name' => $name));
 			$this->redirectTo(osc_base_url(true) . "?page=item&action=item_edit&id=" . $fkid);
 			break;
 		}

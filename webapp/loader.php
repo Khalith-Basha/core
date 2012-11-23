@@ -50,8 +50,6 @@ $classLoader->loadFile( 'Controller/Cacheable' );
 $classLoader->loadFile( 'Params' );
 $classLoader->loadFile( 'Database/DAO' );
 $classLoader->loadFile( 'Ui/Theme' );
-$classLoader->loadFile( 'Model/Preference' );
-$classLoader->loadFile( 'Model/Locale' );
 
 $classLoader->loadFile( 'helpers/themes' );
 $classLoader->loadFile( 'helpers/paths' );

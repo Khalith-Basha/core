@@ -24,7 +24,7 @@ class Manager_User
 	public function __construct($is_admin) 
 	{
 		$this->is_admin = $is_admin;
-		$this->manager = ClassLoader::getInstance()->getClassInstance( 'Model_User' );
+		$this->manager = new \Osc\Model\User;
 	}
 
 	public function add() 
@@ -80,7 +80,8 @@ class Manager_User
 			osc_run_hook('hook_email_user_validation', $user, $input);
 			return 1;
 		}
-		ClassLoader::getInstance()->getClassInstance( 'Model_User' )->update(array('b_active' => '1'), array('pk_i_id' => $userId));
+		$userModel = new \Osc\Model\User;
+		$userModel->update(array('b_active' => '1'), array('pk_i_id' => $userId));
 		return 2;
 	}
 	
@@ -140,7 +141,8 @@ class Manager_User
 	}
 	function recover_password() 
 	{
-		$user = ClassLoader::getInstance()->getClassInstance( 'Model_User' )->findByEmail(Params::getParam('s_email'));
+		$userModel = new \Osc\Model\User;
+		$user = $userModel->findByEmail(Params::getParam('s_email'));
 		ClassLoader::getInstance()->getClassInstance( 'Session' )->_set('recover_time', time());
 		if ((osc_recaptcha_private_key() != '') && Params::existParam("recaptcha_challenge_field")) 
 		{
@@ -156,7 +158,7 @@ class Manager_User
 		}
 		$code = osc_genRandomPassword(30);
 		$date = date('Y-m-d H:i:s');
-		ClassLoader::getInstance()->getClassInstance( 'Model_User' )->update(array('s_pass_code' => $code, 's_pass_date' => $date, 's_pass_ip' => $_SERVER['REMOTE_ADDR']), array('pk_i_id' => $user['pk_i_id']));
+		$userModel->update(array('s_pass_code' => $code, 's_pass_date' => $date, 's_pass_ip' => $_SERVER['REMOTE_ADDR']), array('pk_i_id' => $user['pk_i_id']));
 		$password_url = osc_forgot_user_password_confirm_url($user['pk_i_id'], $code);
 		osc_run_hook('hook_email_user_forgot_password', $user, $password_url);
 		return 0;
@@ -343,7 +345,8 @@ class Manager_User
 	public function bootstrap_login($user_id) 
 	{
 		$classLoader = ClassLoader::getInstance();
-		$user = $classLoader->getClassInstance( 'Model_User' )->findByPrimaryKey($user_id);
+		$userModel = new \Osc\Model\User;
+		$user = $userModel->findByPrimaryKey($user_id);
 		if (!$user) 
 		{
 			return 0;

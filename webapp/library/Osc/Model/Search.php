@@ -18,10 +18,9 @@
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+namespace Osc\Model;
 
-require 'osc/Model/SearchAbstract.php';
-
-class Model_Search extends Model_SearchAbstract
+class Search extends SearchAbstract
 {
 	private $conditions;
 	private $tables;
@@ -67,8 +66,6 @@ class Model_Search extends Model_SearchAbstract
 		parent::__construct();
 		$this->setTableName('item');
 		$this->setFields(array('pk_i_id'));
-
-		$this->classLoader = ClassLoader::getInstance();
 	}
 
 	public function setQueryString( $queryString )
@@ -540,14 +537,15 @@ class Model_Search extends Model_SearchAbstract
 		if( empty( $category ) )
 			return;
 
+		$categoryModel = new \Osc\Model\Category;
 		if (!is_numeric($category)) 
 		{
 			$category = preg_replace('|/$|', '', $category);
 			$aCategory = explode('/', $category);
-			$category = ClassLoader::getInstance()->getClassInstance( 'Model_Category' )->findBySlug($aCategory[count($aCategory) - 1]);
+			$category = $categoryModel->findBySlug($aCategory[count($aCategory) - 1]);
 			$category = $category['pk_i_id'];
 		}
-		$tree = ClassLoader::getInstance()->getClassInstance( 'Model_Category' )->toSubTree($category);
+		$tree = $categoryModel->toSubTree($category);
 		if (!in_array($category, $this->categories)) 
 		{
 			$this->categories[] = sprintf("%sitem.fk_i_category_id = %d ", DB_TABLE_PREFIX, $category);
@@ -716,7 +714,8 @@ SQL;
 		}
 		if ($extended) 
 		{
-			return ClassLoader::getInstance()->getClassInstance( 'Model_Item' )->extendData($items);
+			$itemModel = new \Osc\Model\Item;
+			return $itemModel->extendData($items);
 		}
 		else
 		{
@@ -801,7 +800,8 @@ SQL;
 		$items = $this->fetchAll( $stmt );
 		$stmt->close();
 
-		return $this->classLoader->getClassInstance( 'Model_Item' )->extendData( $items );
+		$itemModel = new \Osc\Model\Item;
+		return $itemModel->extendData( $items );
 	}
 	/**
 	 * Returns number of ads from each country

@@ -203,7 +203,8 @@ function osc_item_category( array $item, $locale = "")
 	if (!$view->varExists('item_category')) 
 	{
 		$categoryId = osc_item_category_id( $item );
-		$view->assign('item_category', $classLoader->getClassInstance( 'Model_Category' )->findByPrimaryKey( $categoryId ));
+		$categoryModel = new \Osc\Model\Category;
+		$view->assign('item_category', $categoryModel->findByPrimaryKey( $categoryId ));
 	}
 	$category = $view->getVar('item_category');
 	return (string)osc_field($category, "s_name", $locale);
@@ -431,7 +432,8 @@ function osc_item_is_expired( array $item )
 	else
 	{
 		$classLoader = ClassLoader::getInstance();
-		$category = $classLoader->getClassInstance( 'Model_Category' )->findByPrimaryKey( osc_item_category_id( $item ) );
+		$categoryModel = new \Osc\Model\Category;
+		$category = $categoryModel->findByPrimaryKey( osc_item_category_id( $item ) );
 		$expiration = $category['i_expiration_days'];
 		if ($expiration == 0) 
 		{
@@ -510,8 +512,8 @@ function osc_list_page()
  */
 function osc_item_total_comments( array $item ) 
 {
-	$classLoader = ClassLoader::getInstance();
-	return $classLoader->getClassInstance( 'Model_ItemComment' )->totalComments(osc_item_id( $item ));
+	$commentModel = new \Osc\Model\ItemComment;
+	return $commentModel->totalComments(osc_item_id( $item ));
 }
 /**
  * Gets page of comments in current pagination

@@ -34,7 +34,8 @@ class Url_Item extends Url_Abstract
 		{
 			$sanitized_title = osc_sanitizeString( osc_item_title( $item ) );
 			$sanitized_category = '/';
-			$cat = ClassLoader::getInstance()->getClassInstance( 'Model_Category' )->hierarchy( osc_item_category_id( $item ) );
+			$categoryModel = new \Osc\Model\Category;
+			$cat = $categoryModel->hierarchy( osc_item_category_id( $item ) );
 			for( $i = count( $cat ); $i > 0; $i-- )
 			{
 				$sanitized_category .= $cat[$i - 1]['s_slug'] . '/';
@@ -116,7 +117,8 @@ class Url_Item extends Url_Abstract
 		{
 			$sanitized_title = osc_sanitizeString(osc_premium_title());
 			$sanitized_category = '';
-			$cat = ClassLoader::getInstance()->getClassInstance( 'Model_Category' )->hierarchy(osc_premium_category_id());
+			$categoryModel = new \Osc\Model\Category;
+			$cat = $categoryModel->hierarchy(osc_premium_category_id());
 			for ($i = (count($cat)); $i > 0; $i--) 
 			{
 				$sanitized_category.= $cat[$i - 1]['s_slug'] . '/';

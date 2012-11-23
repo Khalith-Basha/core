@@ -22,8 +22,7 @@ class CAdminCategory extends Controller_Administration
 {
 	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
-		$categoryModel = $this->getClassLoader()
-			->getClassInstance( 'Model_Category' );
+		$categoryModel = new \Osc\Model\Category;
 
 		$view = $this->getView();
 		$view->addJavaScript( 'jquery.jstree.js' );

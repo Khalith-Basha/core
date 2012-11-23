@@ -18,10 +18,11 @@
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+namespace Osc\Model;
 /**
  *
  */
-class Model_Preference extends DAO
+class Preference extends \DAO
 {
 	private $pref;
 	function __construct() 
