@@ -1,7 +1,7 @@
 <?php
 namespace Osc\Model;
 
-class BadWord extends Model
+class BadWord extends \DAO
 {
 	public function getWordsBySeverity( $severity )
 	{

@@ -20,7 +20,7 @@
 */
 namespace Osc\Model;
 
-class SearchLatest extends Model 
+class SearchLatest extends \DAO
 {
 	public function insert( $query )
 	{

@@ -18,25 +18,28 @@
  *      You should have received a copy of the GNU Affero General Public
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-
-class CAdminIndex extends Controller_Administration 
+class CAdminCategory extends Controller_Administration
 {
-	public function doGet( HttpRequest $req, HttpResponse $res ) 
+	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
-		$classLoader = $this->getClassLoader();
-		$classLoader->loadFile( 'helpers/feeds' );
-
-		$userModel = new \Osc\Model\User;
-		$itemModel = new \Osc\Model\Item;
-		$commentModel = new \Osc\Model\ItemComment;
-
-		$this->getView()->assign( "numUsers", $userModel->count() );
-		$this->getView()->assign( "numItems", $itemModel->count() );
-		$this->getView()->assign( "numItemsPerCategory", osc_get_non_empty_categories() );
-		$this->getView()->assign( "newsList", osc_listNews() );
-		$this->getView()->assign( "comments", $commentModel->getLastComments(5) );
-
-		$this->doView('main/index.php');
+		$this->categoryManager = ClassLoader::getInstance()->getClassInstance( 'Model_Category' );
+		$fields['fk_i_parent_id'] = NULL;
+		$fields['i_expiration_days'] = 0;
+		$fields['i_position'] = 0;
+		$fields['b_enabled'] = 1;
+		$default_locale = osc_language();
+		$aFieldsDescription[$default_locale]['s_name'] = "NEW CATEGORY, EDIT ME!";
+		$categoryId = $this->categoryManager->insert($fields, $aFieldsDescription);
+		// reorder parent categories. NEW category first
+		$rootCategories = $this->categoryManager->findRootCategories();
+		foreach ($rootCategories as $cat) 
+		{
+			$order = $cat['i_position'];
+			$order++;
+			$this->categoryManager->updateOrder($cat['pk_i_id'], $order);
+		}
+		$this->categoryManager->updateOrder($categoryId, '0');
+		$this->redirectTo(osc_admin_base_url(true) . '?page=category');
 	}
 }
 

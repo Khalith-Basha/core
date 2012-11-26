@@ -30,7 +30,8 @@ class CWebItem extends Controller_Default
 		if (osc_is_web_user_logged_in()) 
 		{
 			$this->userId = osc_logged_user_id();
-			$this->user = ClassLoader::getInstance()->getClassInstance( 'Model_User' )->findByPrimaryKey($this->userId);
+			$userModel = new \Osc\Model\User;
+			$this->user = $userModel->findByPrimaryKey($this->userId);
 		}
 	}
 

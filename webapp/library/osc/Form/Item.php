@@ -220,8 +220,8 @@ class Form_Item extends Form
 		$classLoader = ClassLoader::getInstance();
 		if ($currencies == null) 
 		{
-			$currencies = $classLoader->getClassInstance( 'Model_Currency' )
-				->listAll();
+			$currencyModel = new \Osc\Model\Currency;
+			$currencies = $currencyModel->listAll();
 		};
 		if ( $classLoader->getClassInstance( 'Session' )->_getForm('currency') != "") 
 		{

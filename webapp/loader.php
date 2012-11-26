@@ -79,3 +79,25 @@ $pluginManager->loadPlugins();
 $classLoader->loadFile( 'helpers/plugins' );
 $classLoader->loadFile( 'helpers/views' );
 
+require 'Cuore/ClassLoader.php';
+\Cuore\ClassLoader::getInstance();
+
+// Ugly workaround... migration to Cuore framework in progress.
+class HttpRequest extends \Cuore\Http\Request {}
+
+class HttpResponse extends \Cuore\Http\Response
+{
+	private $redirector;
+
+	public function __construct()
+	{
+		$this->redirector = new \Cuore\Web\Redirector;
+	}
+
+	public function sendRedirection( $url )
+	{
+		$this->redirector->goToUrl( $url );
+	}
+}
+
+

@@ -23,7 +23,7 @@ class CAdminIndex extends Controller_Default
 	public function doPost( HttpRequest $req, HttpResponse $res )
 	{
 		$classLoader = $this->getClassLoader();
-		$userModel = $classLoader->getClassInstance( 'Model_User' );
+		$userModel = new \Osc\Model\User;
 
 		$username = Params::getParam('user');
 		$password = Params::getParam('password');

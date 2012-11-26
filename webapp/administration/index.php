@@ -21,9 +21,6 @@
 
 require '../loader.php';
 
-require 'Cuore/ClassLoader.php';
-\Cuore\ClassLoader::getInstance();
-
 require_once 'osc/Controller/Secure.php';
 require_once 'osc/Controller/Administration.php';
 

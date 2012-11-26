@@ -21,13 +21,14 @@ class CWebItem extends Controller_Default
 
 	public function init() 
 	{
-		$this->itemManager = ClassLoader::getInstance()->getClassInstance( 'Model_Item' );
+		$this->itemManager = new \Osc\Model\Item;
 	}
 
 	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
 		$classLoader = $this->getClassLoader();
-		$locales = $classLoader->getClassInstance( 'Model_Locale' )->listAllEnabled();
+		$localeModel = new \Osc\Model\Locale;
+		$locales = $localeModel->listAllEnabled();
 		$item = $this->itemManager->findByPrimaryKey(Params::getParam('id'));
 
 		$classLoader->loadFile( 'helpers/security' );

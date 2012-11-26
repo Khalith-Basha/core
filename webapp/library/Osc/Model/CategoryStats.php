@@ -51,7 +51,8 @@ class CategoryStats extends \DAO
 	{
 		$sql = sprintf('INSERT INTO %s (fk_i_category_id, i_num_items) VALUES (%d, 1) ON DUPLICATE KEY UPDATE i_num_items = i_num_items + 1', $this->getTableName(), $categoryId);
 		$return = $this->dbCommand->query($sql);
-		$result = ClassLoader::getInstance()->getClassInstance( 'Model_Category' )->findByPrimaryKey($categoryId);
+		$categoryModel = new \Osc\Model\Category;
+		$result = $categoryModel->findByPrimaryKey($categoryId);
 		if ($return !== false) 
 		{
 			if ($result['fk_i_parent_id'] != NULL) 
@@ -59,7 +60,7 @@ class CategoryStats extends \DAO
 				$parent_res = $this->increaseNumItems($result['fk_i_parent_id']);
 				if ($parent_res !== false) 
 				{
-					$return += $parent_res;
+					// return += $parent_res;
 				}
 				else
 				{
@@ -181,9 +182,12 @@ class CategoryStats extends \DAO
 		{
 			$numItemsMap = $this->toNumItemsMap();
 		}
-		if (isset($numItemsMap['parent'][$cat['pk_i_id']])) return $numItemsMap['parent'][$cat['pk_i_id']]['numItems'];
-		else if (isset($numItemsMap['subcategories'][$cat['pk_i_id']])) return $numItemsMap['subcategories'][$cat['pk_i_id']]['numItems'];
-		else return 0;
+		if (isset($numItemsMap['parent'][$cat['pk_i_id']]))
+			return $numItemsMap['parent'][$cat['pk_i_id']]['numItems'];
+		elseif( isset($numItemsMap['subcategories'][$cat['pk_i_id']]))
+			return $numItemsMap['subcategories'][$cat['pk_i_id']]['numItems'];
+		else
+			return 0;
 	}
 	/**
 	 *

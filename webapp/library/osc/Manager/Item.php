@@ -27,7 +27,7 @@ class Manager_Item
 		$classLoader = ClassLoader::getInstance();
 		$classLoader->loadFile( 'helpers/filtering' );
 		$classLoader->loadFile( 'helpers/string' );
-		$this->manager = $classLoader->getClassInstance( 'Model_Item' );
+		$this->manager = new \Osc\Model\Item;
 	}
 	/**
 	 * @return boolean
@@ -165,13 +165,14 @@ class Manager_Item
 				$cookie->set();
 			}
 			$itemId = $this->manager->dbCommand->insertedId();
-			ClassLoader::getInstance()->getClassInstance( 'Logging_Logger' )->insertLog('item', 'add', $itemId, current(array_values($aItem['title'])), $this->is_admin ? 'admin' : 'user', $this->is_admin ? osc_logged_admin_id() : osc_logged_user_id());
+			$logModel = new \Osc\Model\Log;
+			$logModel->insertLog('item', 'add', $itemId, current(array_values($aItem['title'])), $this->is_admin ? 'admin' : 'user', $this->is_admin ? osc_logged_admin_id() : osc_logged_user_id());
 			Params::setParam('itemId', $itemId);
 			// INSERT title and description locales
 			$this->insertItemLocales('ADD', $aItem['title'], $aItem['description'], $itemId);
 			// INSERT location item
 			$location = array('fk_i_item_id' => $itemId, 'fk_c_country_code' => $aItem['countryId'], 's_country' => $aItem['countryName'], 'fk_i_region_id' => $aItem['regionId'], 's_region' => $aItem['regionName'], 'fk_i_city_id' => $aItem['cityId'], 's_city' => $aItem['cityName'], 's_city_area' => $aItem['cityArea'], 's_address' => $aItem['address']);
-			$locationManager = ClassLoader::getInstance()->getClassInstance( 'Model_ItemLocation' );
+			$locationManager = new \Osc\Model\ItemLocation;
 			$locationManager->insert($location);
 			$this->uploadItemResources($aItem['photos'], $itemId);
 			/**
@@ -187,7 +188,7 @@ class Manager_Item
 			}
 			osc_run_hook('item_form_post', $aItem['catId'], $itemId);
 			// We need at least one record in t_item_stats
-			$mStats = ClassLoader::getInstance()->getClassInstance( 'Model_ItemStats' );
+			$mStats = new \Osc\Model\ItemStats;
 			$mStats->emptyRow($itemId);
 			$item = $this->manager->findByPrimaryKey($itemId);
 			$aItem['item'] = $item;
@@ -205,13 +206,15 @@ class Manager_Item
 			{
 				if ($aItem['userId'] != null) 
 				{
-					$user = ClassLoader::getInstance()->getClassInstance( 'Model_User' )->findByPrimaryKey($aItem['userId']);
+					$userModel = new \Osc\Model\User;
+					$user = $userModel->findByPrimaryKey($aItem['userId']);
 					if ($user) 
 					{
-						ClassLoader::getInstance()->getClassInstance( 'Model_User' )->update(array('i_items' => $user['i_items'] + 1), array('pk_i_id' => $user['pk_i_id']));
+						$userModel->update(array('i_items' => $user['i_items'] + 1), array('pk_i_id' => $user['pk_i_id']));
 					}
 				}
-				ClassLoader::getInstance()->getClassInstance( 'Model_CategoryStats' )->increaseNumItems($aItem['catId']);
+				$categoryStatsModel = new \Osc\Model\CategoryStats;
+				$categoryStatsModel->increaseNumItems($aItem['catId']);
 				return 2;
 			}
 		}
@@ -692,7 +695,8 @@ class Manager_Item
 			}
 			if ($userId != null) 
 			{
-				$data = ClassLoader::getInstance()->getClassInstance( 'Model_User' )->findByPrimaryKey($userId);
+				$userModel = new \Osc\Model\User;
+				$data = $userModel->findByPrimaryKey($userId);
 				$aItem['contactName'] = $data['s_name'];
 				$aItem['contactEmail'] = $data['s_email'];
 				Params::setParam('contactName', $data['s_name']);
@@ -743,7 +747,8 @@ class Manager_Item
 		$aItem['photos'] = Params::getFiles('photos');
 
 		$classLoader = ClassLoader::getInstance();
-		$country = $classLoader->getClassInstance( 'Model_Country' )->findByCode($aItem['countryId']);
+		$countryModel = new \Osc\Model\Country;
+		$country = $countryModel->findByCode($aItem['countryId']);
 		if (count($country) > 0) 
 		{
 			$countryId = $country['pk_c_code'];
@@ -760,7 +765,7 @@ class Manager_Item
 		{
 			if (intval($aItem['regionId'])) 
 			{
-				$modelRegion = $classLoader->getClassInstance( 'Model_Region' );
+				$modelRegion = new \Osc\Model\Region;
 				$region = $modelRegion->findByPrimaryKey($aItem['regionId']);
 				if (count($region) > 0) 
 				{
@@ -775,7 +780,7 @@ class Manager_Item
 			$regionName = $aItem['region'];
 			if ($aItem['countryId'] != '') 
 			{
-				$modelRegion = $classLoader->getClassInstance( 'Model_Region' );
+				$modelRegion = new \Osc\Model\Region;
 				$auxRegion = $modelRegion->findByName($aItem['region'], $aItem['countryId']);
 				if ($auxRegion) 
 				{
@@ -790,7 +795,7 @@ class Manager_Item
 		{
 			if (intval($aItem['cityId'])) 
 			{
-				$modelCity = $classLoader->getClassInstance( 'Model_City' );
+				$modelCity = new \Osc\Model\City;
 				$city = $modelCity->findByPrimaryKey($aItem['cityId']);
 				if (count($city) > 0) 
 				{
@@ -805,7 +810,7 @@ class Manager_Item
 			$cityName = $aItem['city'];
 			if ($aItem['countryId'] != '') 
 			{
-				$modelCity = $classLoader->getClassInstance( 'Model_City' );
+				$modelCity = new \Osc\Model\City;
 				$auxCity = $modelCity->findByName($aItem['city'], $aItem['regionId']);
 				if ($auxCity) 
 				{
@@ -944,7 +949,7 @@ class Manager_Item
 		if ($aResources != '') 
 		{
 			$wat = ClassLoader::getInstance()->getClassInstance( 'Image_Watermark' );
-			$itemResourceManager = ClassLoader::getInstance()->getClassInstance( 'Model_ItemResource' );
+			$itemResourceManager = new \Osc\Model\ItemResource;
 			$numImagesItems = osc_max_images_per_item();
 			$numImages = $itemResourceManager->countResources($itemId);
 			foreach ($aResources['error'] as $key => $error) 

@@ -22,7 +22,7 @@ class CAdminCategory extends Controller_Administration
 {
 	public function doGet( HttpRequest $req, HttpResponse $res )
 	{
-		$this->categoryManager = ClassLoader::getInstance()->getClassInstance( 'Model_Category' );
+		$this->categoryManager = new \Osc\Model\Category;
 		$fields['fk_i_parent_id'] = NULL;
 		$fields['i_expiration_days'] = 0;
 		$fields['i_position'] = 0;

@@ -24,11 +24,12 @@ class CWebItem extends Controller_Default
 	public function __construct() 
 	{
 		parent::__construct();
-		$this->itemManager = $this->getClassLoader()->getClassInstance( 'Model_Item' );
+		$this->itemManager = new \Osc\Model\Item;
 		if (osc_is_web_user_logged_in()) 
 		{
 			$this->userId = osc_logged_user_id();
-			$this->user = $this->getClassLoader()->getClassInstance( 'Model_User' )->findByPrimaryKey($this->userId);
+			$userModel = new \Osc\Model\User;
+			$this->user = $userModel->findByPrimaryKey($this->userId);
 		}
 		else
 		{
@@ -42,26 +43,29 @@ class CWebItem extends Controller_Default
 		$classLoader = $this->getClassLoader();
 		$userUrls = $classLoader->getClassInstance( 'Url_User' );
 		$classLoader->loadFile( 'helpers/locations' );
-		$locales = $classLoader->getClassInstance( 'Model_Locale' )->listAllEnabled();
+		$localeModel = new \Osc\Model\Locale;
+		$locales = $localeModel->listAllEnabled();
 		$this->getView()->assign('locales', $locales);
 		if (osc_reg_user_post() && $this->user == null) 
 		{
 			$this->getSession()->addFlashMessage( _m('Only registered users are allowed to post items'), 'WARNING' );
 			$this->redirectTo( $userUrls->osc_user_login_url());
 		}
-		$countries = $classLoader->getClassInstance( 'Model_Country' )->listAll();
+		$countryModel = new \Osc\Model\Country;
+		$countries = $countryModel->listAll();
 		$regions = array();
+		$regionModel = new \Osc\Model\Region;
 		if (isset($this->user['fk_c_country_code']) && $this->user['fk_c_country_code'] != '') 
 		{
-			$regions = $this->getClassLoader()->getClassInstance( 'Model_Region' )->findByCountry($this->user['fk_c_country_code']);
+			$regions = $regionModel->findByCountry($this->user['fk_c_country_code']);
 		}
 		else if (count($countries) > 0) 
 		{
-			$regions = $this->getClassLoader()->getClassInstance( 'Model_Region' )->findByCountry($countries[0]['pk_c_code']);
+			$regions = $regionModel->findByCountry($countries[0]['pk_c_code']);
 		}
 		$cities = array();
 
-		$cityModel = $classLoader->getClassInstance( 'Model_City' );
+		$cityModel = new \Osc\Model\City;
 		if (isset($this->user['fk_i_region_id']) && $this->user['fk_i_region_id'] != '') 
 		{
 			$cities = $cityModel->findByRegion( $this->user['fk_i_region_id'] );
@@ -85,7 +89,7 @@ class CWebItem extends Controller_Default
 		if ($this->getSession()->_getForm('countryId') != "") 
 		{
 			$countryId = $this->getSession()->_getForm('countryId');
-			$regions = $this->getClassLoader()->getClassInstance( 'Model_Region' )->findByCountry($countryId);
+			$regions = $regionModel->findByCountry($countryId);
 			$this->getView()->assign('regions', $regions);
 			if ($this->getSession()->_getForm('regionId') != "") 
 			{

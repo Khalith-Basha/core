@@ -19,69 +19,6 @@
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once 'osc/Server.php';
-
-class HttpRequest
-{
-	public function getMethod() 
-	{
-		return $_SERVER['REQUEST_METHOD'];
-	}
-}
-class HttpResponse
-{
-	private $headers;
-
-	private $statusCodes = array(
-		404 => 'Not Found',
-		500 => 'Internal Server Error'
-	);
-
-	public function __construct()
-	{
-		$this->headers = array();
-	}
-
-	public function addHeader( $name, $value = null )
-	{
-		$this->headers[ $name ] = $value;
-	}
-
-	public function sendHeaders()
-	{
-		foreach( $this->headers as $headerName => $headerValue )
-		{
-			$header = $headerName;
-			if( !is_null( $headerValue ) )
-				$header .= ': ' . $headerValue;
-			header( $header );
-		}
-	}
-
-	public function sendRedirection( $url = null, $permanent = false ) 
-	{
-		if( $permanent )
-			addHeader( 'HTTP/1.1 301 Moved Permanently' );
-		$this->addHeader( 'Location', $url );
-		$this->sendHeaders();
-		exit;
-	}
-
-	public function sendRedirectToReferer( $permanent = false )
-	{
-		$referer = empty( $_SERVER['HTTP_REFERER'] ) ? '/' : $_SERVER['HTTP_REFERER'];
-		$this->sendRedirect( $referer, $permanent );
-	}
-
-	public function sendStatusCode( $statusCode )
-	{
-		if( false === isset( $this->statusCodes[ $statusCode ] ) )
-			$statusCode = 500;
-
-		$header = sprintf( 'HTTP/1.1 %d %s', $statusCode, $this->statusCodes[ $statusCode ] );
-		$this->addHeader( $header );
-	}
-}
 abstract class Controller_Default
 {
 	protected $action;
@@ -92,20 +29,23 @@ abstract class Controller_Default
 	protected $view;
 	protected $session;
 
+	protected $redirector;
+
 	public function __construct() 
 	{
 		$this->action = Params::getParam('action');
 		$this->ajax = false;
 
 		$this->classLoader = ClassLoader::getInstance();
-		$this->server = $this->classLoader->getClassInstance( 'Server' );
+		$this->server = new \Cuore\Input\Server;
 		$this->cookie = new \Cuore\Input\Cookie;
 		
 		$this->view = $this->classLoader->getClassInstance( 'View_Html' );
 		$this->view->setTitle( osc_page_title() );
 
-		$inputClass = 'POST' === $_SERVER['REQUEST_METHOD'] ? 'Input_Post' : 'Input_Get';
-		$this->input = $this->classLoader->getClassInstance( $inputClass );
+		$this->input = new \Cuore\Input\Http( $_SERVER['REQUEST_METHOD'] );
+
+		$this->redirector = new \Cuore\Web\Redirector;
 	}
 
 	public function __destruct() 
@@ -131,18 +71,21 @@ abstract class Controller_Default
 		$this->getView()->assign( $key, $value );
 	}
 
-	public function processRequest(HttpRequest $req, HttpResponse $resp) 
+	public function processRequest( HttpRequest $req, HttpResponse $resp ) 
 	{
-		if ('POST' == $req->getMethod() && method_exists($this, 'doPost')) 
+		$method = $req->getMethod();
+		if ('POST' == $method && method_exists($this, 'doPost')) 
 		{
 			$this->doPost($req, $resp);
+			exit;
 		}
 		elseif (method_exists($this, 'doGet')) 
 		{
 			$this->doGet($req, $resp);
+			exit;
 		}
 
-		$resp->sendStatusCode( 500 );
+		$resp->setStatusCode( 500 );
 	}
 
 	public function redirectTo($url) 

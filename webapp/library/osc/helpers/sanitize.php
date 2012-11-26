@@ -298,7 +298,8 @@ function osc_validate_category($value)
 {
 	if (osc_validate_nozero($value)) 
 	{
-		$data = ClassLoader::getInstance()->getClassInstance( 'Model_Category' )->findByPrimaryKey($value);
+		$categoryModel = new \Osc\Model\Category;
+		$data = $categoryModel->findByPrimaryKey($value);
 		if (isset($data['b_enabled']) && $data['b_enabled'] == 1) 
 		{
 			if (osc_selectable_parent_categories()) 

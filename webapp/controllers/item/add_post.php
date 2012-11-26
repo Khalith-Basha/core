@@ -24,12 +24,13 @@ class CWebItem extends Controller_Default
 	function __construct() 
 	{
 		parent::__construct();
-		$this->itemManager = ClassLoader::getInstance()->getClassInstance( 'Model_Item' );
+		$this->itemManager = new \Osc\Model\Item;
 		// here allways userId == ''
 		if (osc_is_web_user_logged_in()) 
 		{
 			$this->userId = osc_logged_user_id();
-			$this->user = ClassLoader::getInstance()->getClassInstance( 'Model_User' )->findByPrimaryKey($this->userId);
+			$userModel = new \Osc\Model\User;
+			$this->user = $userModel->findByPrimaryKey($this->userId);
 		}
 		else
 		{
@@ -43,7 +44,8 @@ class CWebItem extends Controller_Default
 		$classLoader = ClassLoader::getInstance();
 		$classLoader->loadFile( 'helpers/security' );
 		$classLoader->loadFile( 'helpers/sanitize' );
-		$locales = $classLoader->getClassInstance( 'Model_Locale' )->listAllEnabled();
+		$localeModel = new \Osc\Model\Locale;
+		$locales = $localeModel->listAllEnabled();
 		$urlItem = $classLoader->getClassInstance( 'Url_Item' );
 		$this->getView()->assign('locales', $locales);
 		if (osc_reg_user_post() && $this->user == null) 
@@ -99,7 +101,8 @@ class CWebItem extends Controller_Default
 			osc_run_hook('posted_item', $item);
 
 			$classLoader = ClassLoader::getInstance();
-			$category = $classLoader->getClassInstance( 'Model_Category' )->findByPrimaryKey(Params::getParam('catId'));
+			$categoryModel = new \Osc\Model\Category;
+			$category = $categoryModel->findByPrimaryKey(Params::getParam('catId'));
 			$searchUrls = $classLoader->getClassInstance( 'Url_Search' );
 
 			$this->getView()->assign('category', $category);

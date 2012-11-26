@@ -30,12 +30,15 @@ class CWebUser extends Controller_User
 	public function doGet( HttpRequest $req, HttpResponse $res ) 
 	{
 		$classLoader = ClassLoader::getInstance();
-		$user = $classLoader->getClassInstance( 'Model_User' )->findByPrimaryKey($this->getSession()->_get('userId'));
-		$aCountries = $classLoader->getClassInstance( 'Model_Country' )->listAll();
+		$userModel = new \Osc\Model\User;
+		$user = $userModel->findByPrimaryKey($this->getSession()->_get('userId'));
+
+		$countryModel = new \Osc\Model\Country;
+		$aCountries = $countryModel->listAll();
 		$aRegions = array();
 
-		$regionModel = $classLoader->getClassInstance( 'Model_Region' );
-		$cityModel = $classLoader->getClassInstance( 'Model_City' );
+		$regionModel = new \Osc\Model\Region;
+		$cityModel = new \Osc\Model\City;
 		if ($user['fk_c_country_code'] != '') 
 		{
 			$aRegions = $regionModel->findByCountry($user['fk_c_country_code']);

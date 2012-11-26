@@ -287,7 +287,8 @@ function osc_city_area_url()
  */
 function osc_get_countries() 
 {
-	return ClassLoader::getInstance()->getClassInstance( 'Model_Country' )->listAll();
+	$countryModel = new \Osc\Model\Country;
+	return $countryModel->listAll();
 }
 /**
  * Gets list of regions (from a country)
@@ -297,13 +298,14 @@ function osc_get_countries()
  */
 function osc_get_regions($country = '') 
 {
+	$regionModel = new \Osc\Model\Region;
 	if ($country == '') 
 	{
-		return ClassLoader::getInstance()->getClassInstance( 'Model_Region' )->listAll();
+		return $regionModel->listAll();
 	}
 	else
 	{
-		return ClassLoader::getInstance()->getClassInstance( 'Model_Region' )->findByCountry($country);
+		return $regionModel->findByCountry($country);
 	}
 }
 /**
@@ -314,13 +316,14 @@ function osc_get_regions($country = '')
  */
 function osc_get_cities($region = '') 
 {
+	$cityModel = new \Osc\Model\City;
 	if ($region == '') 
 	{
-		return ClassLoader::getInstance()->getClassInstance( 'Model_City' )->listAll();
+		return $cityModel->listAll();
 	}
 	else
 	{
-		return ClassLoader::getInstance()->getClassInstance( 'Model_City' )->findByRegion($region);
+		return $cityModel->findByRegion($region);
 	}
 }
 

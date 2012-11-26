@@ -21,9 +21,6 @@
 
 require 'loader.php';
 
-require 'Cuore/ClassLoader.php';
-\Cuore\ClassLoader::getInstance();
-
 // If the "installer" folder is still present, show a warning. 
 if( file_exists( ABS_PATH . '/installer' ) )
 {
@@ -59,7 +56,7 @@ $rewrite = $classLoader->getClassInstance( 'Rewrite' );
 $rewrite->loadRules();
 $rewrite->init();
 
-$input = $classLoader->getClassInstance( 'Input_Request' );
+$input = new \Cuore\Input\Request;
 $page = $input->getString( 'page', 'index' );
 $action = $input->getString( 'action', 'index' );
 

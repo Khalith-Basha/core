@@ -95,8 +95,8 @@ class CWebSearch extends Controller_Default
 		$this->mSearch->setQueryString( $p_sPattern );
 		if( osc_save_latest_searches() && !empty( $p_sPattern ) )
 		{
-			$classLoader->getClassInstance( 'Model_SearchLatest' )
-				->insert( $p_sPattern );
+			$latestModel = new \Osc\Model\SearchLatest;
+			$latestModel->insert( $p_sPattern );
 		}
 
 		$page = $input->getInteger( 'iPage', 0 );
@@ -275,7 +275,7 @@ class CWebSearch extends Controller_Default
 		}
 	}
 
-	protected function setSearchOrder( View_Default $view, Input_Get $input )
+	protected function setSearchOrder( View_Default $view, \Cuore\Input\Http $input )
 	{
 		$p_sOrder = $input->getString( 'sOrder' );
 		if( !in_array( $p_sOrder, $this->mSearch->getAllowedColumnsForSorting() ) )
@@ -294,7 +294,7 @@ class CWebSearch extends Controller_Default
 		$view->assign('search_order_type', $p_iOrderType);
 	}
 
-	protected function setViewTitle( View_Html $view, Input_Get $input )
+	protected function setViewTitle( View_Html $view, \Cuore\Input\Http $input )
 	{
 		$region = Params::getParam('sRegion');
 		$city = Params::getParam('sCity');
