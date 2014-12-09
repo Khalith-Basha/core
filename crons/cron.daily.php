@@ -26,7 +26,7 @@ function purge_latest_searches_daily()
 {
 	$purge = osc_purge_latest_searches();
 	if ($purge == 'day') 
-	{
+	{fds
 		LatestSearches::newInstance()->purgeDate(date('Y-m-d H:i:s', (time() - (24 * 3600))));
 	}
 }
